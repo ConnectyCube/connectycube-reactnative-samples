@@ -1,0 +1,35 @@
+{
+  "name": "RNVideoChat",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "start:reset": "npm run start --reset-cache",
+    "test": "jest",
+    "ios": "react-native run-ios",
+    "android": "react-native run-android",
+    "android:clean": "cd android && ./gradlew clean && ./gradlew cleanBuildCache",
+    "reinstall": "rm -rf node_modules && npm install",
+    "clean": "watchman watch-del-all && rm -rf /tmp/metro-bundler-cache-* && rm -rf /tmp/haste-map-react-native-packager-*"
+  },
+  "dependencies": {
+    "connectycube-reactnative": "^1.7.3",
+    "react": "16.8.6",
+    "react-native": "0.59.5",
+    "react-native-router-flux": "4.0.6",
+    "react-native-vector-icons": "6.4.2",
+    "react-redux": "6.0.0",
+    "redux": "4.0.1",
+    "rn-prompt": "1.0.3"
+  },
+  "devDependencies": {
+    "babel-core": "7.0.0-bridge.0",
+    "babel-jest": "24.1.0",
+    "jest": "24.1.0",
+    "metro-react-native-babel-preset": "0.51.1",
+    "react-test-renderer": "16.6.3"
+  },
+  "jest": {
+    "preset": "react-native"
+  }
+}

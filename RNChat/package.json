@@ -1,0 +1,39 @@
+{
+  "name": "RNVideoChat",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "start:reset": "npm run start --reset-cache",
+    "test": "jest",
+    "ios": "react-native run-ios",
+    "android": "react-native run-android",
+    "reinstall": "rm -rf node_modules && npm install",
+    "clear": "watchman watch-del-all && rm -rf /tmp/metro-bundler-cache-* && rm -rf /tmp/haste-map-react-native-packager-*"
+  },
+  "dependencies": {
+    "connectycube-reactnative": "1.7.3",
+    "react": "16.8.3",
+    "react-native": "0.59.2",
+    "react-native-autogrow-textinput": "^5.2.0",
+    "react-native-device-info": "^0.26.4",
+    "react-native-push-notification": "^3.1.2",
+    "react-native-router-flux": "^4.0.6",
+    "react-native-set-soft-input-mode": "^1.0.3",
+    "react-native-status-bar-height": "^2.2.0",
+    "react-native-vector-icons": "^6.3.0",
+    "react-redux": "^6.0.1",
+    "redux": "^4.0.1",
+    "rn-prompt": "^1.0.3"
+  },
+  "devDependencies": {
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-jest": "24.1.0",
+    "jest": "24.1.0",
+    "metro-react-native-babel-preset": "0.53.0",
+    "react-test-renderer": "16.6.3"
+  },
+  "jest": {
+    "preset": "react-native"
+  }
+}

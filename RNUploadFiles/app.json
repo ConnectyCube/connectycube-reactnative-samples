@@ -1,0 +1,31 @@
+{
+  "expo": {
+    "name": "RNUploadFiles",
+    "slug": "RNUploadFiles",
+    "privacy": "public",
+    "sdkVersion": "32.0.0",
+    "platforms": [
+      "ios",
+      "android"
+    ],
+    "version": "1.0.1",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "description": "A sample how to upload photos from React Native application to ConnectyCube storage",
+    "githubUrl": "https://github.com/ConnectyCube/connectycube-js-samples/tree/master/RNUploadFiles"
+  }
+}
