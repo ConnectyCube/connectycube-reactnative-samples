@@ -5,9 +5,9 @@ This project contains chat and video chat code samples for JavaScript, React Nat
 The following code samples are available:
 
 
-- [Chat code sample](https://github.com/ConnectyCube/connectycube-js-samples/tree/master/RNChat)
-- [Video Chat code sample](https://github.com/ConnectyCube/connectycube-js-samples/tree/master/RNVideoChat)
-- [File upload code sample](https://github.com/ConnectyCube/connectycube-js-samples/tree/master/RNUploadFiles)
+- [Chat code sample](https://github.com/ConnectyCube/connectycube-reactnative-samples/tree/master/RNChat)
+- [Video Chat code sample](https://github.com/ConnectyCube/connectycube-reactnative-samples/tree/master/RNVideoChat)
+- [File upload code sample](https://github.com/ConnectyCube/connectycube-reactnative-samples/tree/master/RNUploadFiles)
 
 ## Documentation
 
