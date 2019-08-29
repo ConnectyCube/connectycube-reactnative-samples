@@ -12,7 +12,7 @@
     "clear": "watchman watch-del-all && rm -rf /tmp/metro-bundler-cache-* && rm -rf /tmp/haste-map-react-native-packager-*"
   },
   "dependencies": {
-    "connectycube-reactnative": "1.7.3",
+    "connectycube-reactnative": "^1.7.3",
     "react": "16.8.3",
     "react-native": "0.59.2",
     "react-native-autogrow-textinput": "^5.2.0",
