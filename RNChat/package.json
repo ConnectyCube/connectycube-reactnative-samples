@@ -12,11 +12,13 @@
     "clear": "watchman watch-del-all && rm -rf /tmp/metro-bundler-cache-* && rm -rf /tmp/haste-map-react-native-packager-*"
   },
   "dependencies": {
+    "@react-native-community/netinfo": "^4.2.1",
     "connectycube-reactnative": "^1.7.3",
     "react": "16.8.3",
     "react-native": "0.59.2",
     "react-native-autogrow-textinput": "^5.2.0",
     "react-native-device-info": "^0.26.4",
+    "react-native-gesture-handler": "^1.4.1",
     "react-native-push-notification": "^3.1.2",
     "react-native-router-flux": "^4.0.6",
     "react-native-set-soft-input-mode": "^1.0.3",
@@ -30,7 +32,7 @@
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "24.1.0",
     "jest": "24.1.0",
-    "metro-react-native-babel-preset": "0.53.0",
+    "metro-react-native-babel-preset": "0.51.0",
     "react-test-renderer": "16.6.3"
   },
   "jest": {
