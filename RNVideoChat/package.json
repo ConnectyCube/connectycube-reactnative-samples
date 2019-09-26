@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "postinstall": "npx jetify && cd ios && pod install",
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "start:reset": "npm run start --reset-cache",
     "test": "jest",
@@ -10,24 +11,32 @@
     "android": "react-native run-android",
     "android:clean": "cd android && ./gradlew clean && ./gradlew cleanBuildCache",
     "reinstall": "rm -rf node_modules && npm install",
-    "clean": "watchman watch-del-all && rm -rf /tmp/metro-bundler-cache-* && rm -rf /tmp/haste-map-react-native-packager-*"
+    "clean": "watchman watch-del-all && rm -rf /tmp/metro-bundler-cache-* && rm -rf /tmp/haste-map-react-native-packager-*",
+    "lint": "eslint ."
   },
   "dependencies": {
     "connectycube-reactnative": "^1.7.3",
-    "react": "16.8.6",
-    "react-native": "0.59.5",
-    "react-native-router-flux": "4.0.6",
-    "react-native-vector-icons": "6.4.2",
-    "react-redux": "6.0.0",
-    "redux": "4.0.1",
-    "rn-prompt": "1.0.3"
+    "react": "16.9.0",
+    "react-native": "0.61.1",
+    "react-native-gesture-handler": "^1.4.1",
+    "react-native-incall-manager": "^3.2.4",
+    "react-native-reanimated": "^1.2.0",
+    "react-native-router-flux": "4.2.0-beta.1",
+    "react-native-vector-icons": "^6.6.0",
+    "react-native-webrtc": "^1.75.0",
+    "react-redux": "^7.1.1",
+    "redux": "^4.0.4",
+    "rn-prompt": "^1.0.4"
   },
   "devDependencies": {
-    "babel-core": "7.0.0-bridge.0",
-    "babel-jest": "24.1.0",
-    "jest": "24.1.0",
-    "metro-react-native-babel-preset": "0.51.1",
-    "react-test-renderer": "16.6.3"
+    "@babel/core": "^7.6.2",
+    "@babel/runtime": "^7.6.2",
+    "@react-native-community/eslint-config": "^0.0.5",
+    "babel-jest": "^24.9.0",
+    "eslint": "^6.4.0",
+    "jest": "^24.9.0",
+    "metro-react-native-babel-preset": "^0.56.0",
+    "react-test-renderer": "16.9.0"
   },
   "jest": {
     "preset": "react-native"
