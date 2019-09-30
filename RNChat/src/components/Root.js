@@ -23,16 +23,17 @@ class AppRoot extends Component {
     ConnectyCube.init(...appConfig.connectyCubeConfig);
 
     User.autologin()
-      .then(this.props.userLogin)
+      .then(user => {
+        this.props.userLogin(user);
+        new PushNotificationService(this.onNotificationListener);
+      })
       .catch(() => Actions.auth());
 
-    this.state = {
-      appIsActive: true,
-      waitConnect: false,
-    };
-
-    this.pushService;
+    this._setupListeners();
   }
+
+  static appIsActive = true;
+  static waitConnect = false;
 
   componentWillUnmount() {
     AppState.removeEventListener(
@@ -41,8 +42,8 @@ class AppRoot extends Component {
     );
   }
 
-  componentWillReceiveProps(props) {
-    this._connect(props);
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    AppRoot._connect(nextProps);
   }
 
   /*               *
@@ -57,20 +58,19 @@ class AppRoot extends Component {
    *               */
   _handleAppStateChange(nextAppState) {
     if (nextAppState === 'active') {
-      this.setState({appIsActive: true});
+      AppRoot.appIsActive = true;
       this._reconnect();
     } else {
-      this.setState({appIsActive: false});
+      AppRoot.appIsActive = false;
       this._disconnect();
     }
   }
 
-  _connect(props) {
+  static _connect(props) {
     const {connected, user, chatConnected, fetchDialogs} = props;
-    const {waitConnect, appIsActive} = this.state;
 
-    if (appIsActive && user && !connected && !waitConnect) {
-      this.setState({waitConnect: true});
+    if (AppRoot.appIsActive && user && !connected && !AppRoot.waitConnect) {
+      AppRoot.waitConnect = true;
 
       Chat.getConversations()
         .then(dialogs => {
@@ -80,21 +80,17 @@ class AppRoot extends Component {
         })
         .then(() => {
           chatConnected();
-          this._setupListeners();
         })
         .catch(e => alert(`Error.\n\n${JSON.stringify(e)}`))
-        .then(() => this.setState({waitConnect: false}));
-
-      new PushNotificationService(this.onNotificationListener.bind(this));
+        .then(() => (AppRoot.waitConnect = false));
     }
   }
 
   _reconnect() {
     const {connected, user, chatConnected} = this.props;
-    const {waitConnect, appIsActive} = this.state;
 
-    if (appIsActive && user && !connected && !waitConnect) {
-      this.setState({waitConnect: true});
+    if (AppRoot.appIsActive && user && !connected && !AppRoot.waitConnect) {
+      AppRoot.waitConnect = true;
 
       Chat.getConversations()
         .then(dialogs => {
@@ -103,7 +99,7 @@ class AppRoot extends Component {
         })
         .then(chatConnected)
         .catch(e => alert(`Error.\n\n${JSON.stringify(e)}`))
-        .then(() => this.setState({waitConnect: false}));
+        .then(() => (AppRoot.waitConnect = false));
     }
   }
 
@@ -143,7 +139,6 @@ class AppRoot extends Component {
   // }
 
   onNotificationListener(notification) {
-    console.warn(notification);
     Actions.dialogs();
   }
 }

@@ -357,7 +357,7 @@ SPEC CHECKSUMS:
   React-RCTText: 81b62b4e7f11531a5154e4daa5617670d5a2d5de
   React-RCTVibration: 8be61459e3749d1fb02cf414edd05b3007622882
   ReactCommon: 4fba5be89efdf0b5720e0adb3d8d7edf6e532db0
-  ReactNativeIncallManager: 3eb7c9164b7e9511ea582e14d663b7a6c6590216
+  ReactNativeIncallManager: 39fcd48e381903b9ee3372ba26d9be69263ad5e6
   RNGestureHandler: 4cb47a93019c1a201df2644413a0a1569a51c8aa
   RNReanimated: 1b52415c4302f198cb581282a0166690bad62c43
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4

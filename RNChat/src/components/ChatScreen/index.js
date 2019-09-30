@@ -10,8 +10,8 @@ import {
   View,
   TouchableOpacity,
 } from 'react-native';
-import SoftInputMode from 'react-native-set-soft-input-mode';
 import {connect} from 'react-redux';
+import {Header} from 'react-navigation-stack';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {AutoGrowingTextInput} from 'react-native-autogrow-textinput';
 import {fetchMessages, pushMessage} from '../../actions/messages';
@@ -39,10 +39,6 @@ export class ChatScreen extends Component {
   }
 
   componentDidMount() {
-    if (Platform.OS === 'android') {
-      SoftInputMode.set(SoftInputMode.ADJUST_RESIZE);
-    }
-
     const {fetchMessages, dialog} = this.props;
 
     Chat.getHistory(dialog.id)
@@ -101,7 +97,7 @@ export class ChatScreen extends Component {
       <KeyboardAvoidingView
         style={{flex: 1, backgroundColor: 'white'}}
         behavior={Platform.OS === 'ios' ? 'padding' : null}
-        keyboardVerticalOffset={0}>
+        keyboardVerticalOffset={Platform.OS === 'ios' ? Header.HEIGHT + 20 : 0}>
         <StatusBar backgroundColor="blue" barStyle="light-content" animated />
         {inProgress && (
           <ActivityIndicator

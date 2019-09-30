@@ -18,6 +18,7 @@ export class VideoScreen extends React.Component {
           {this.props.videoStreamsDataSource.map((item, i, arr) => (
             <View style={styles.videoViewWrapper} key={i}>
               <RTCView
+                objectFit="cover"
                 style={styles.videoView(arr.length)}
                 key={item.userId}
                 streamURL={item.stream.toURL()}
@@ -40,9 +41,11 @@ const styles = StyleSheet.create({
   videoView: count =>
     Platform.select({
       ios: {
-        height: screenH,
-        width: screenW,
-        top: count === 2 ? -screenH / 4 : 0,
+        // height: screenH,
+        // width: screenW,
+        // top: count === 2 ? -screenH / 4 : 0,
+        // backgroundColor: 'black',
+        flex: 1,
         backgroundColor: 'black',
       },
       android: {

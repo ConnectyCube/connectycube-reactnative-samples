@@ -9,6 +9,7 @@
     "test": "jest",
     "ios": "react-native run-ios",
     "android": "react-native run-android",
+    "android:release": "cd android && ./gradlew app:assembleRelease",
     "android:clean": "cd android && ./gradlew clean && ./gradlew cleanBuildCache",
     "reinstall": "rm -rf node_modules && npm install",
     "clean": "watchman watch-del-all && rm -rf /tmp/metro-bundler-cache-* && rm -rf /tmp/haste-map-react-native-packager-*",

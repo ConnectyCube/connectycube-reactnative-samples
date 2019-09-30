@@ -26,8 +26,7 @@ export default class PushNotificationService {
 
   subscribe(register) {
     const DeviceInfo = require('react-native-device-info').default;
-    console.warn('register', register);
-    console.warn('DeviceInfo', DeviceInfo.getUniqueID());
+
     const params = {
       notification_channels: Platform.OS === 'ios' ? 'apns' : 'gcm',
       device: {
@@ -42,9 +41,7 @@ export default class PushNotificationService {
 
     ConnectyCube.pushnotifications.subscriptions.create(
       params,
-      (error, response) => {
-        console.warn('subscriptions', error, response);
-      },
+      (error, response) => {},
     );
   }
 }
