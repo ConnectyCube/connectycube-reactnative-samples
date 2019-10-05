@@ -1,6 +1,6 @@
 {
-  "name": "RNVideoChat",
-  "version": "0.1.0",
+  "name": "ConnectyCubeVideoChatCodeSample",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "postinstall": "npx jetify && cd ios && pod install",
@@ -16,7 +16,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "connectycube-reactnative": "^1.7.3",
+    "connectycube-reactnative": "^1.8.0",
     "react": "16.9.0",
     "react-native": "0.61.1",
     "react-native-gesture-handler": "^1.4.1",
