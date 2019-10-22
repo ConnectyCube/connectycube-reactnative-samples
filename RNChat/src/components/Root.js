@@ -1,166 +1,165 @@
-import React, { Component } from 'react'
-import { AppState } from 'react-native';
-import { Actions } from 'react-native-router-flux'
-import { connect } from 'react-redux'
-import { userLogin } from '../actions/user'
-import { fetchDialogs, sortDialogs } from '../actions/dialogs'
-import { chatConnected, chatDisconnected } from '../actions/connection'
-import { pushMessage } from '../actions/messages'
-import ConnectyCube from 'connectycube-reactnative'
+import React, {Component} from 'react';
+import {AppState} from 'react-native';
+import {Actions} from 'react-native-router-flux';
+import {connect} from 'react-redux';
+import {userLogin} from '../actions/user';
+import {fetchDialogs, sortDialogs} from '../actions/dialogs';
+import {chatConnected, chatDisconnected} from '../actions/connection';
+import {pushMessage} from '../actions/messages';
+import ConnectyCube from 'connectycube-reactnative';
 import appConfig from '../../app.json';
-import AppRouter from '../router'
-import Message from '../models/Message'
-import User from '../services/UserService'
-import Chat from '../services/ChatService'
+import AppRouter from '../router';
+import Message from '../models/Message';
+import User from '../services/UserService';
+import Chat from '../services/ChatService';
 import PushNotificationService from '../services/PushNotification';
 
 class AppRoot extends Component {
-	constructor(props) {
-		super(props)
+  constructor(props) {
+    super(props);
 
-		this.state = {
-			appIsActive: true,
-			waitConnect: false
-		}
+    AppState.addEventListener('change', this._handleAppStateChange.bind(this));
 
-		this.pushService
-	}
+    ConnectyCube.init(...appConfig.connectyCubeConfig);
 
-	componentWillMount() {
-		AppState.addEventListener('change', this._handleAppStateChange.bind(this))
+    User.autologin()
+      .then(user => {
+        this.props.userLogin(user);
+        new PushNotificationService(this.onNotificationListener);
+      })
+      .catch(() => Actions.auth());
 
-		ConnectyCube.init(...appConfig.connectyCubeConfig)
+    this._setupListeners();
+  }
 
-		User.autologin()
-			.then(this.props.userLogin)
-			.catch(() => Actions.auth())
-	}
+  static appIsActive = true;
+  static waitConnect = false;
 
   componentWillUnmount() {
-    AppState.removeEventListener('change', this._handleAppStateChange.bind(this));
-	}
+    AppState.removeEventListener(
+      'change',
+      this._handleAppStateChange.bind(this),
+    );
+  }
 
-	componentWillReceiveProps(props) {
-		this._connect(props)
-	}
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    AppRoot._connect(nextProps);
+  }
 
-	/*               *
-	 * Render method *
-	 *               */
-	render() {
-		return <AppRouter />
-	}
-	
-	/*               *
-	 * Chat activity *
-	 *               */
-	_handleAppStateChange(nextAppState) {
-		if (nextAppState === 'active') {
-			this.setState({ appIsActive: true })
-			this._reconnect()
-		} else {
-			this.setState({ appIsActive: false })
-			this._disconnect()
-		}
-	}
+  /*               *
+   * Render method *
+   *               */
+  render() {
+    return <AppRouter />;
+  }
 
-	_connect(props) {
-		const { connected, user, chatConnected, fetchDialogs } = props
-		const { waitConnect, appIsActive } = this.state
+  /*               *
+   * Chat activity *
+   *               */
+  _handleAppStateChange(nextAppState) {
+    if (nextAppState === 'active') {
+      AppRoot.appIsActive = true;
+      this._reconnect();
+    } else {
+      AppRoot.appIsActive = false;
+      this._disconnect();
+    }
+  }
 
-		if (appIsActive && user && !connected && !waitConnect) {			
-			this.setState({ waitConnect: true })
+  static _connect(props) {
+    const {connected, user, chatConnected, fetchDialogs} = props;
 
-			Chat.getConversations()
-				.then(dialogs => {
-					Actions.dialogs()
-					Chat.connect(user, dialogs)
-					fetchDialogs(dialogs)
-				})
-				.then(() => {
-					chatConnected()
-					this._setupListeners()
-				})
-				.catch(e => alert(`Error.\n\n${JSON.stringify(e)}`))
-				.then(() => this.setState({ waitConnect: false }))
+    if (AppRoot.appIsActive && user && !connected && !AppRoot.waitConnect) {
+      AppRoot.waitConnect = true;
 
-			new PushNotificationService(this.onNotificationListener.bind(this))
-		}
-	}
-	
-	_reconnect() {
-		const { connected, user, chatConnected } = this.props
-		const { waitConnect, appIsActive } = this.state
+      Chat.getConversations()
+        .then(dialogs => {
+          Actions.dialogs();
+          Chat.connect(user, dialogs);
+          fetchDialogs(dialogs);
+        })
+        .then(() => {
+          chatConnected();
+        })
+        .catch(e => alert(`Error.\n\n${JSON.stringify(e)}`))
+        .then(() => (AppRoot.waitConnect = false));
+    }
+  }
 
-		if (appIsActive && user && !connected && !waitConnect) {			
-			this.setState({ waitConnect: true })
+  _reconnect() {
+    const {connected, user, chatConnected} = this.props;
 
-			Chat.getConversations()
-				.then(dialogs => {
-					Chat.connect(user, dialogs)
-					fetchDialogs(dialogs)
-				})
-				.then(chatConnected)
-				.catch(e => alert(`Error.\n\n${JSON.stringify(e)}`))
-				.then(() => this.setState({ waitConnect: false }))
-		}
-	}
+    if (AppRoot.appIsActive && user && !connected && !AppRoot.waitConnect) {
+      AppRoot.waitConnect = true;
 
-	_disconnect() {
-		this.props.chatDisconnected()
-		Chat.disonnect()
-	}
+      Chat.getConversations()
+        .then(dialogs => {
+          Chat.connect(user, dialogs);
+          fetchDialogs(dialogs);
+        })
+        .then(chatConnected)
+        .catch(e => alert(`Error.\n\n${JSON.stringify(e)}`))
+        .then(() => (AppRoot.waitConnect = false));
+    }
+  }
 
-	_setupListeners() {
-		ConnectyCube.chat.onDisconnectedListener = this.props.chatDisconnected
-		ConnectyCube.chat.onReconnectedListener = this.props.chatDisconnected
-		ConnectyCube.chat.onMessageListener = this._onMessageListener.bind(this)
-		// ConnectyCube.chat.onSentMessageCallback = this._onSentMessage.bind(this)
-	}
+  _disconnect() {
+    this.props.chatDisconnected();
+    Chat.disonnect();
+  }
 
-	_onMessageListener(id, msg) {
-		const { user, selected, pushMessage, sortDialogs } = this.props
-		const message = new Message(msg)
+  _setupListeners() {
+    ConnectyCube.chat.onDisconnectedListener = this.props.chatDisconnected;
+    ConnectyCube.chat.onReconnectedListener = this.props.chatDisconnected;
+    ConnectyCube.chat.onMessageListener = this._onMessageListener.bind(this);
+    // ConnectyCube.chat.onSentMessageCallback = this._onSentMessage.bind(this)
+  }
 
-		if (id !== user.id) {
-			if (selected.id === message.dialog_id) {
-				pushMessage(message)
-				sortDialogs(message)
-				Chat.readMessage(message.id, message.dialog_id)
-			} else {
-				sortDialogs(message, true)
-			}
-		}
-	}
+  _onMessageListener(id, msg) {
+    const {user, selected, pushMessage, sortDialogs} = this.props;
+    const message = new Message(msg);
 
-	// _onSentMessage(failedMessage, successMessage) {
-	// 	if (failedMessage && !successMessage) {
-	// 		console.log('Send message - FAIL');
-	// 	} else {
-	// 		console.log('Send message - SUCCESS');
-	// 	}
-	// }
+    if (id !== user.id) {
+      if (selected.id === message.dialog_id) {
+        pushMessage(message);
+        sortDialogs(message);
+        Chat.readMessage(message.id, message.dialog_id);
+      } else {
+        sortDialogs(message, true);
+      }
+    }
+  }
 
-	onNotificationListener(notification) {
-		Actions.dialogs()
-	}
+  // _onSentMessage(failedMessage, successMessage) {
+  // 	if (failedMessage && !successMessage) {
+  // 		console.log('Send message - FAIL');
+  // 	} else {
+  // 		console.log('Send message - SUCCESS');
+  // 	}
+  // }
 
+  onNotificationListener(notification) {
+    Actions.dialogs();
+  }
 }
 
-const mapStateToProps = (state) => ({
-	connected: state.connection,
-	user: state.user,
-	selected: state.selected,
-	dialogs: state.dialogs
-})
+const mapStateToProps = state => ({
+  connected: state.connection,
+  user: state.user,
+  selected: state.selected,
+  dialogs: state.dialogs,
+});
 
-const mapDispatchToProps = (dispatch) => ({
-	chatConnected: () => dispatch(chatConnected()),
-	chatDisconnected: () => dispatch(chatDisconnected()),
-	userLogin: user => dispatch(userLogin(user)),
-	fetchDialogs: dialogs => dispatch(fetchDialogs(dialogs)),
-	sortDialogs: (message, count) => dispatch(sortDialogs(message, count)),
-	pushMessage: message => dispatch(pushMessage(message))
-})
+const mapDispatchToProps = dispatch => ({
+  chatConnected: () => dispatch(chatConnected()),
+  chatDisconnected: () => dispatch(chatDisconnected()),
+  userLogin: user => dispatch(userLogin(user)),
+  fetchDialogs: dialogs => dispatch(fetchDialogs(dialogs)),
+  sortDialogs: (message, count) => dispatch(sortDialogs(message, count)),
+  pushMessage: message => dispatch(pushMessage(message)),
+});
 
-export default connect(mapStateToProps, mapDispatchToProps)(AppRoot)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(AppRoot);

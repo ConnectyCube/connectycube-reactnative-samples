@@ -4,16 +4,16 @@ This README introduces [ConnectyCube](https://connectycube.com) Chat code sample
 
 Project contains the following features implemented:
 
-* User authorization
-* Chat dialogs creation
-* 1-1 messaging
-* Group messaging
-* Users search
-* Unread messages counter
-* Last message preview
-* Last massage date sent
-* App activity state management
-* Push Notifications for chat messages when a user is not in the app
+- User authorization
+- Chat dialogs creation
+- 1-1 messaging
+- Group messaging
+- Users search
+- Unread messages counter
+- Last message preview
+- Last massage date sent
+- App activity state management
+- Push Notifications for chat messages when a user is not in the app
 
 ## Documentation
 
@@ -27,23 +27,25 @@ ConnectyCube Chat API documentation - [https://developers.connectycube.com/js/me
 
 ## Roadmap
 
-* Sent/Delivered/Read statuses
-* ‘Is typing’ statuses
-* File attachments
-* Group chat info
-* Group chat: add/remove participants
-* Delete chat functionality
-* Edit messages
-* Delete messages
+- Sent/Delivered/Read statuses
+- ‘Is typing’ statuses
+- File attachments
+- Group chat info
+- Group chat: add/remove participants
+- Delete chat functionality
+- Edit messages
+- Delete messages
 
 ## Quick start and develop
 
 Quick start [React Native](https://facebook.github.io/react-native/docs/getting-started.html) app.
 
 Prepare environment for React Native and:
-1) Clone the project;
-2) Install node_modules from connectycube-js-samples/RNChat - `npm install`;
-3) Run `npm run ios` or `npm run android`.
+
+1. Clone the project;
+2. Install node_modules from connectycube-js-samples/RNChat - `npm install`;
+3. Run `npm run ios` or `npm run android`.
 
 ## Can't build yourself?
+
 Got troubles with building React Native code sample? Just create an issue at [Issues page](https://github.com/ConnectyCube/connectycube-reactnative-samples/issues) - we will create the sample for you. For FREE!
