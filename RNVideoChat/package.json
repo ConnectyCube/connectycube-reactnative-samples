@@ -18,13 +18,13 @@
   "dependencies": {
     "connectycube-reactnative": "^1.8.0",
     "react": "16.9.0",
-    "react-native": "0.61.1",
+    "react-native": "0.61.2",
     "react-native-gesture-handler": "^1.4.1",
     "react-native-incall-manager": "^3.2.4",
     "react-native-reanimated": "^1.2.0",
     "react-native-router-flux": "4.2.0-beta.1",
     "react-native-vector-icons": "^6.6.0",
-    "react-native-webrtc": "^1.75.0",
+    "react-native-webrtc": "1.69.1",
     "react-redux": "^7.1.1",
     "redux": "^4.0.4",
     "rn-prompt": "^1.0.4"

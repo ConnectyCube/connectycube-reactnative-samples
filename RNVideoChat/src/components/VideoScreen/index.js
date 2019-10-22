@@ -1,14 +1,10 @@
 import React from 'react';
-import {StyleSheet, View, StatusBar, Dimensions, Platform} from 'react-native';
+import {StyleSheet, View, StatusBar} from 'react-native';
 import {RTCView} from 'react-native-webrtc';
 import {connect} from 'react-redux';
 import ToolBar from './ToolBar';
 import CallingLoader from './CallingLoader';
 
-const [screenH, screenW] = [
-  Dimensions.get('window').height,
-  Dimensions.get('window').width,
-];
 export class VideoScreen extends React.Component {
   render() {
     return (
@@ -16,14 +12,12 @@ export class VideoScreen extends React.Component {
         <StatusBar backgroundColor="black" barStyle="light-content" animated />
         <View removeClippedSubviews style={{flex: 1, overflow: 'hidden'}}>
           {this.props.videoStreamsDataSource.map((item, i, arr) => (
-            <View style={styles.videoViewWrapper} key={i}>
-              <RTCView
-                objectFit="cover"
-                style={styles.videoView(arr.length)}
-                key={item.userId}
-                streamURL={item.stream.toURL()}
-              />
-            </View>
+            <RTCView
+              objectFit="cover"
+              style={styles.videoView}
+              key={item.userId}
+              streamURL={item.stream.toURL()}
+            />
           ))}
         </View>
         <CallingLoader />
@@ -34,25 +28,10 @@ export class VideoScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  videoViewWrapper: {
+  videoView: {
     flex: 1,
-    overflow: 'hidden',
+    backgroundColor: 'black',
   },
-  videoView: count =>
-    Platform.select({
-      ios: {
-        // height: screenH,
-        // width: screenW,
-        // top: count === 2 ? -screenH / 4 : 0,
-        // backgroundColor: 'black',
-        flex: 1,
-        backgroundColor: 'black',
-      },
-      android: {
-        flex: 1,
-        backgroundColor: 'black',
-      },
-    }),
 });
 
 const mapStateToProps = state => {
@@ -71,7 +50,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  null,
-)(VideoScreen);
+export default connect(mapStateToProps)(VideoScreen);

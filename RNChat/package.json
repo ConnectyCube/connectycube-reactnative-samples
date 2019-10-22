@@ -19,7 +19,7 @@
     "@react-native-community/async-storage": "github:react-native-community/react-native-async-storage",
     "connectycube-reactnative": "^1.8.0",
     "react": "16.9.0",
-    "react-native": "0.61.1",
+    "react-native": "0.61.2",
     "react-native-autogrow-textinput": "^5.2.0",
     "react-native-device-info": "2.3.2",
     "react-native-gesture-handler": "^1.4.1",
