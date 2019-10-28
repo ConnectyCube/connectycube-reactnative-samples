@@ -34,12 +34,10 @@ export class ChatScreen extends Component {
     messageValue: '',
   };
 
-  static getDerivedStateFromState(nextProps) {
-    nextProps.setSelected(nextProps.dialog);
-  }
-
   componentDidMount() {
-    const {fetchMessages, dialog} = this.props;
+    const {fetchMessages, setSelected, dialog} = this.props;
+
+    setSelected(dialog);
 
     Chat.getHistory(dialog.id)
       .then(fetchMessages)
