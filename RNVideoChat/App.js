@@ -1,14 +1,13 @@
-import React from 'react';
-import {Provider} from 'react-redux';
-import store from './src/store';
-import AppRoot from './src/components/Root';
+import React, {Component} from 'react';
+import Navigator from './src/navigator';
+import {AuthService} from './src/services';
 
-export default class App extends React.Component {
-  render() {
-    return (
-      <Provider store={store}>
-        <AppRoot />
-      </Provider>
-    );
+export default class App extends Component {
+  constructor(props) {
+    super(props);
+
+    AuthService.init();
   }
+
+  render = () => <Navigator />;
 }

@@ -188,11 +188,13 @@ android {
 }
 
 dependencies {
+    implementation "com.facebook.react:react-native:+"  // From node_modules
+    implementation 'androidx.appcompat:appcompat:1.1.0-rc01'
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0-alpha02'
+    implementation "com.android.support:support-v4:+"
+    implementation project(':WebRTCModule')
     implementation project(':react-native-incall-manager')
     implementation fileTree(dir: "libs", include: ["*.jar"])
-    implementation "com.facebook.react:react-native:+"  // From node_modules
-    implementation project(':WebRTCModule')
-    implementation "com.android.support:support-v4:+"
     
     if (enableHermes) {
         def hermesPath = "../../node_modules/hermes-engine/android/";
