@@ -1,117 +1,89 @@
-import React from 'react';
-import {StyleSheet, View, TouchableOpacity, Platform} from 'react-native';
+import React, {Component} from 'react';
+import {StyleSheet, SafeAreaView, TouchableOpacity} from 'react-native';
+import {CallService} from '../../services';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
-import {connect} from 'react-redux';
-import {
-  userIsCalling,
-  callInProgress,
-  videoSessionObtained,
-  localVideoStreamObtained,
-  clearVideoSession,
-  clearVideoStreams,
-  muteAudio,
-  setMediaDevices,
-} from '../../actions/videosession';
-import CallingService from '../../services/CallingService';
 
-export class ToolBar extends React.Component {
-  initiateCall() {
-    CallingService.createVideoSession(this.props.opponentsIds).then(session => {
-      this.props.videoSessionObtained(session);
+export default class ToolBar extends Component {
+  state = {isAudioMuted: false};
 
-      CallingService.getVideoDevices().then(this.props.setMediaDevices);
+  startCall = () => {
+    const {opponentsIds, setCalling, setLocalStream} = this.props;
 
-      CallingService.getUserMedia(session)
-        .then(stream => {
-          this.props.localVideoStreamObtained(stream);
-          this.props.userIsCalling(true);
-          CallingService.initiateCall(this.props.videoSession);
-        })
-        .catch(err => {
-          console.error('getUserMedia err' + err);
-        });
+    CallService.startCall(opponentsIds).then(stream => {
+      setCalling();
+      setLocalStream(stream);
     });
-  }
+  };
 
-  stopCall() {
-    this.props.userIsCalling(false);
-    this.props.callInProgress(false);
+  stopCall = () => {
+    const {resetState} = this.props;
 
-    CallingService.finishCall(this.props.videoSession);
+    CallService.stopCall();
+    resetState();
+  };
 
-    this.props.clearVideoSession();
-    this.props.clearVideoStreams();
-  }
+  switchCamera = () => {
+    const {localStream} = this.props;
 
-  switchCamera() {
-    CallingService.switchCamera(this.props.localVideoStream);
-  }
+    CallService.switchCamera(localStream);
+  };
 
-  muteUnmuteAudio() {
-    if (this.props.audioMuted) {
-      CallingService.unmuteAudio(this.props.videoSession);
-      this.props.muteAudio(false);
-    } else {
-      CallingService.muteAudio(this.props.videoSession);
-      this.props.muteAudio(true);
-    }
-  }
+  muteUnmuteAudio = () => {
+    this.setState(prevState => {
+      const mute = !prevState.isAudioMuted;
+      CallService.setAudioMuteState(mute);
+      return {isAudioMuted: mute};
+    });
+  };
 
-  render() {
-    const isCallingOrCallInProgress =
-      this.props.isCalling || this.props.activeCall;
-    const isActiveCall = this.props.activeCall;
-    const isTwoCamerasAvailable = this.props.mediaDevices.length > 1;
-
-    const callStartStop = isCallingOrCallInProgress ? (
-      <TouchableOpacity
-        style={[styles.buttonContainer, styles.buttonCallEnd]}
-        onPress={() => this.stopCall()}>
-        <MaterialIcon name="call-end" size={38} color="white" />
-      </TouchableOpacity>
-    ) : (
-      <TouchableOpacity
-        style={[styles.buttonContainer, styles.buttonCall]}
-        onPress={() => this.initiateCall()}>
-        <MaterialIcon name="call" size={38} color="white" />
-      </TouchableOpacity>
-    );
+  _renderCallStartStopButton = isCallInProgress => {
+    const style = isCallInProgress ? styles.buttonCallEnd : styles.buttonCall;
+    const onPress = isCallInProgress ? this.stopCall : this.startCall;
+    const type = isCallInProgress ? 'call-end' : 'call';
 
     return (
-      <View style={styles.container}>
-        {callStartStop}
-        {isActiveCall && (
-          <TouchableOpacity
-            style={[styles.buttonContainer, styles.buttonMute]}
-            onPress={() => this.muteUnmuteAudio()}>
-            {this.props.audioMuted ? (
-              <MaterialCommunityIcon
-                name="microphone-plus"
-                size={38}
-                color="white"
-              />
-            ) : (
-              <MaterialCommunityIcon
-                name="microphone-minus"
-                size={38}
-                color="white"
-              />
-            )}
-          </TouchableOpacity>
-        )}
-        {isActiveCall && isTwoCamerasAvailable && (
-          <TouchableOpacity
-            style={[styles.buttonContainer, styles.buttonSwitch]}
-            onPress={() => this.switchCamera()}>
-            <MaterialCommunityIcon
-              name="video-switch"
-              size={38}
-              color="white"
-            />
-          </TouchableOpacity>
-        )}
-      </View>
+      <TouchableOpacity
+        style={[styles.buttonContainer, style]}
+        onPress={onPress}>
+        <MaterialIcon name={type} size={38} color="white" />
+      </TouchableOpacity>
+    );
+  };
+
+  _renderMuteButton = () => {
+    const {isAudioMuted} = this.state;
+    const type = isAudioMuted ? 'microphone-plus' : 'microphone-minus';
+
+    return (
+      <TouchableOpacity
+        style={[styles.buttonContainer, styles.buttonMute]}
+        onPress={this.muteUnmuteAudio}>
+        <MaterialCommunityIcon name={type} size={38} color="white" />
+      </TouchableOpacity>
+    );
+  };
+
+  _renderSwitchVideoSourceButton = () => (
+    <TouchableOpacity
+      style={[styles.buttonContainer, styles.buttonSwitch]}
+      onPress={this.switchCamera}>
+      <MaterialCommunityIcon name="video-switch" size={38} color="white" />
+    </TouchableOpacity>
+  );
+
+  render() {
+    const {isCalling, isActiveCall} = this.props;
+    const isCallInProgress = isActiveCall || isCalling;
+    const isAvailableToSwitch =
+      isActiveCall && CallService.mediaDevices.length > 1;
+
+    return (
+      <SafeAreaView style={styles.container}>
+        {this._renderCallStartStopButton(isCallInProgress)}
+        {isActiveCall && this._renderMuteButton()}
+        {isAvailableToSwitch && this._renderSwitchVideoSourceButton()}
+      </SafeAreaView>
     );
   }
 }
@@ -144,46 +116,8 @@ const styles = StyleSheet.create({
   },
   buttonMute: {
     backgroundColor: 'mediumblue',
-    paddingTop: Platform.select({android: 0, ios: 5}),
   },
   buttonSwitch: {
     backgroundColor: 'gold',
-    paddingTop: Platform.select({android: 0, ios: 5}),
   },
 });
-
-const mapStateToProps = state => {
-  let jointProps = {};
-
-  if (state.videosession) {
-    jointProps.videoSession = state.videosession.videoSession;
-    jointProps.isCalling = state.videosession.userIsCalling;
-    jointProps.activeCall = state.videosession.callInProgress;
-    jointProps.audioMuted = state.videosession.audioMuted;
-    jointProps.mediaDevices = state.videosession.mediaDevices;
-    jointProps.activeVideoDevice = state.videosession.activeVideoDevice;
-    jointProps.localVideoStream = state.videosession.localVideoStream;
-  }
-
-  jointProps.opponentsIds = state.user.opponentsIds;
-
-  return jointProps;
-};
-
-const mapDispatchToProps = dispatch => ({
-  userIsCalling: isCalling => dispatch(userIsCalling(isCalling)),
-  callInProgress: inProgress => dispatch(callInProgress(inProgress)),
-  videoSessionObtained: videoSession =>
-    dispatch(videoSessionObtained(videoSession)),
-  clearVideoSession: () => dispatch(clearVideoSession()),
-  clearVideoStreams: () => dispatch(clearVideoStreams()),
-  localVideoStreamObtained: localStream =>
-    dispatch(localVideoStreamObtained(localStream)),
-  muteAudio: mute => dispatch(muteAudio(mute)),
-  setMediaDevices: mediaDevices => dispatch(setMediaDevices(mediaDevices)),
-});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(ToolBar);
