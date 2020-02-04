@@ -48,17 +48,21 @@ export default class AuthScreen extends PureComponent {
         <StatusBar backgroundColor="white" barStyle="dark-content" />
         <SafeAreaView style={[styles.centeredChildren, styles.f1]}>
           <Image resizeMode="contain" source={logoSrc} style={styles.logoImg} />
-          <Text style={styles.f1}>
-            {isLogging ? 'Connecting...' : 'Video Chat'}
-          </Text>
+          <View
+            style={[
+              styles.f1,
+              styles.centeredChildren,
+              {flexDirection: 'row'},
+            ]}>
+            <Text>{isLogging ? 'Connecting... ' : 'Video Chat'}</Text>
+            {isLogging && <ActivityIndicator size="small" color="#1198d4" />}
+          </View>
         </SafeAreaView>
-        <View style={[styles.centeredChildren, styles.f1]}>
-          {isLogging && <ActivityIndicator size="large" color="blue" />}
-        </View>
         <SafeAreaView style={[styles.authBtns, styles.f1]}>
           {users.map(user => (
             <TouchableOpacity key={user.id} onPress={() => this.login(user)}>
-              <View style={[styles.authBtn, styles.centeredChildren]}>
+              <View
+                style={[styles.authBtn(user.color), styles.centeredChildren]}>
                 <Text style={styles.authBtnText}>
                   {`Log in as ${user.name}`}
                 </Text>
@@ -90,13 +94,13 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     marginBottom: 20,
   },
-  authBtn: {
+  authBtn: backgroundColor => ({
+    backgroundColor,
     height: 50,
     borderRadius: 25,
-    backgroundColor: '#00e3cf',
-    marginHorizontal: 20,
-    marginVertical: 10,
-  },
+    marginHorizontal: 25,
+    marginVertical: 5,
+  }),
   authBtnText: {
     color: 'white',
     fontSize: 20,

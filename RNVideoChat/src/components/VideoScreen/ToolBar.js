@@ -1,19 +1,38 @@
 import React, {Component} from 'react';
-import {StyleSheet, SafeAreaView, TouchableOpacity} from 'react-native';
+import {StyleSheet, SafeAreaView, TouchableOpacity, View} from 'react-native';
 import {CallService} from '../../services';
-import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
 export default class ToolBar extends Component {
-  state = {isAudioMuted: false};
+  state = {
+    isAudioMuted: false,
+    isFrontCamera: true,
+  };
+
+  static getDerivedStateFromProps(props, state) {
+    if (!props.isActiveCall) {
+      return {
+        isAudioMuted: false,
+        isFrontCamera: true,
+      };
+    }
+  }
 
   startCall = () => {
-    const {opponentsIds, setCalling, setLocalStream} = this.props;
+    const {
+      selectedUsersIds,
+      closeSelect,
+      initRemoteStreams,
+      setLocalStream,
+    } = this.props;
 
-    CallService.startCall(opponentsIds).then(stream => {
-      setCalling();
-      setLocalStream(stream);
-    });
+    if (selectedUsersIds.length === 0) {
+      CallService.showToast('Select at less one user to start Videocall');
+    } else {
+      closeSelect();
+      initRemoteStreams(selectedUsersIds);
+      CallService.startCall(selectedUsersIds).then(setLocalStream);
+    }
   };
 
   stopCall = () => {
@@ -27,6 +46,7 @@ export default class ToolBar extends Component {
     const {localStream} = this.props;
 
     CallService.switchCamera(localStream);
+    this.setState(prevState => ({isFrontCamera: !prevState.isFrontCamera}));
   };
 
   muteUnmuteAudio = () => {
@@ -46,31 +66,36 @@ export default class ToolBar extends Component {
       <TouchableOpacity
         style={[styles.buttonContainer, style]}
         onPress={onPress}>
-        <MaterialIcon name={type} size={38} color="white" />
+        <MaterialIcon name={type} size={32} color="white" />
       </TouchableOpacity>
     );
   };
 
   _renderMuteButton = () => {
     const {isAudioMuted} = this.state;
-    const type = isAudioMuted ? 'microphone-plus' : 'microphone-minus';
+    const type = isAudioMuted ? 'mic-off' : 'mic';
 
     return (
       <TouchableOpacity
         style={[styles.buttonContainer, styles.buttonMute]}
         onPress={this.muteUnmuteAudio}>
-        <MaterialCommunityIcon name={type} size={38} color="white" />
+        <MaterialIcon name={type} size={32} color="white" />
       </TouchableOpacity>
     );
   };
 
-  _renderSwitchVideoSourceButton = () => (
-    <TouchableOpacity
-      style={[styles.buttonContainer, styles.buttonSwitch]}
-      onPress={this.switchCamera}>
-      <MaterialCommunityIcon name="video-switch" size={38} color="white" />
-    </TouchableOpacity>
-  );
+  _renderSwitchVideoSourceButton = () => {
+    const {isFrontCamera} = this.state;
+    const type = isFrontCamera ? 'camera-rear' : 'camera-front';
+
+    return (
+      <TouchableOpacity
+        style={[styles.buttonContainer, styles.buttonSwitch]}
+        onPress={this.switchCamera}>
+        <MaterialIcon name={type} size={32} color="white" />
+      </TouchableOpacity>
+    );
+  };
 
   render() {
     const {isCalling, isActiveCall} = this.props;
@@ -80,9 +105,15 @@ export default class ToolBar extends Component {
 
     return (
       <SafeAreaView style={styles.container}>
-        {this._renderCallStartStopButton(isCallInProgress)}
-        {isActiveCall && this._renderMuteButton()}
-        {isAvailableToSwitch && this._renderSwitchVideoSourceButton()}
+        <View style={styles.toolBarItem}>
+          {isActiveCall && this._renderMuteButton()}
+        </View>
+        <View style={styles.toolBarItem}>
+          {this._renderCallStartStopButton(isCallInProgress)}
+        </View>
+        <View style={styles.toolBarItem}>
+          {isAvailableToSwitch && this._renderSwitchVideoSourceButton()}
+        </View>
       </SafeAreaView>
     );
   }
@@ -100,24 +131,29 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     zIndex: 100,
   },
+  toolBarItem: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   buttonContainer: {
-    height: 60,
-    width: 60,
-    borderRadius: 30,
-    marginHorizontal: 15,
+    height: 50,
+    width: 50,
+    borderRadius: 25,
+    marginHorizontal: 25,
     justifyContent: 'center',
     alignItems: 'center',
   },
   buttonCall: {
-    backgroundColor: 'forestgreen',
+    backgroundColor: 'green',
   },
   buttonCallEnd: {
     backgroundColor: 'red',
   },
   buttonMute: {
-    backgroundColor: 'mediumblue',
+    backgroundColor: 'blue',
   },
   buttonSwitch: {
-    backgroundColor: 'gold',
+    backgroundColor: 'orange',
   },
 });

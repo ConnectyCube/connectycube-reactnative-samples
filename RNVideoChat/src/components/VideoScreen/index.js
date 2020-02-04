@@ -1,21 +1,26 @@
 import React from 'react';
-import {StyleSheet, View, StatusBar} from 'react-native';
+import {SafeAreaView, StatusBar} from 'react-native';
 import ConnectyCube from 'react-native-connectycube';
-import {RTCView} from 'react-native-webrtc';
+import RTCViewGrid from './RTCViewGrid';
 import {CallService, AuthService} from '../../services';
 import ToolBar from './ToolBar';
-import CallingLoader from './CallingLoader';
+import UsersSelect from './UsersSelect';
 
 export default class VideoScreen extends React.Component {
-  state = {
-    isCalling: false,
-    isActiveCall: false,
-    localStream: null,
-    remoteStreams: [],
-  };
+  constructor(props) {
+    super(props);
 
-  componentDidMount() {
-    this.setUpListeners();
+    this.opponentsIds = props.navigation.getParam('opponentsIds');
+
+    this.state = {
+      localStream: null,
+      remoteStreams: [],
+      selectedUsersIds: [],
+      isActiveSelect: true,
+      isActiveCall: false,
+    };
+
+    this._setUpListeners();
   }
 
   componentWillUnmount() {
@@ -23,135 +28,162 @@ export default class VideoScreen extends React.Component {
     CallService.stopCall();
   }
 
-  setUpListeners() {
-    ConnectyCube.videochat.onCallListener = (session, extension) => {
-      CallService.processOnCallListener(session, extension).then(stream => {
-        this.setCalling();
-        this.setLocalStream(stream);
-      });
-    };
+  componentDidUpdate(prevProps, prevState) {
+    const currState = this.state;
 
-    ConnectyCube.videochat.onAcceptCallListener = (
-      session,
-      userId,
-      extension,
-    ) => {
-      CallService.processOnAcceptCallListener(session, extension);
-      this.setOnCall();
-    };
-
-    ConnectyCube.videochat.onRejectCallListener = (
-      session,
-      userId,
-      extension,
-    ) => {
-      CallService.processOnRejectCallListener(session, extension);
+    if (
+      prevState.remoteStreams.length === 1 &&
+      currState.remoteStreams.length === 0
+    ) {
+      CallService.stopCall();
       this.resetState();
-    };
-
-    ConnectyCube.videochat.onStopCallListener = (
-      session,
-      userId,
-      extension,
-    ) => {
-      CallService.processOnStopCallListener(session, extension);
-      this.resetState();
-    };
-
-    ConnectyCube.videochat.onUserNotAnswerListener = (session, userId) => {
-      CallService.processOnUserNotAnswer(session, userId);
-      this.resetState();
-    };
-
-    ConnectyCube.videochat.onRemoteStreamListener = (
-      session,
-      userID,
-      stream,
-    ) => {
-      this.setState(({remoteStreams}) => ({
-        remoteStreams: [...remoteStreams, {userID, stream}],
-        isCalling: false,
-        isActiveCall: true,
-      }));
-    };
-
-    ConnectyCube.videochat.onSessionConnectionStateChangedListener = (
-      session,
-      userID,
-      connectionState,
-    ) => {
-      console.log('change', userID, connectionState);
-    };
+    }
   }
 
-  setCalling = () => this.setState({isCalling: true, isActiveCall: false});
+  selectUser = userId =>
+    this.setState(prevState => ({
+      selectedUsersIds: [...prevState.selectedUsersIds, userId],
+    }));
 
-  setOnCall = () => this.setState({isCalling: false, isActiveCall: true});
+  unselectUser = userId =>
+    this.setState(prevState => ({
+      selectedUsersIds: prevState.selectedUsersIds.filter(id => userId !== id),
+    }));
+
+  closeSelect = () => this.setState({isActiveSelect: false});
+
+  setOnCall = () => this.setState({isActiveCall: true});
+
+  initRemoteStreams = opponentsIds => {
+    const emptyStreams = opponentsIds.map(userId => ({
+      userId,
+      stream: null,
+    }));
+
+    this.setState({remoteStreams: emptyStreams});
+  };
+
+  updateRemoteStream = (userId, stream) => {
+    this.setState(({remoteStreams}) => {
+      const updatedRemoteStreams = remoteStreams.map(item => {
+        if (item.userId === userId) {
+          return {userId, stream};
+        }
+
+        return {userId: item.userId, stream: item.stream};
+      });
+
+      return {remoteStreams: updatedRemoteStreams};
+    });
+  };
+
+  removeRemoteStream = userId => {
+    this.setState(({remoteStreams}) => ({
+      remoteStreams: remoteStreams.filter(item => item.userId !== userId),
+    }));
+  };
 
   setLocalStream = stream => this.setState({localStream: stream});
 
   resetState = () =>
     this.setState({
-      isCalling: false,
-      isActiveCall: false,
       localStream: null,
       remoteStreams: [],
+      selectedUsersIds: [],
+      isActiveSelect: true,
+      isActiveCall: false,
     });
 
+  _setUpListeners() {
+    ConnectyCube.videochat.onCallListener = this._onCallListener;
+    ConnectyCube.videochat.onAcceptCallListener = this._onAcceptCallListener;
+    ConnectyCube.videochat.onRejectCallListener = this._onRejectCallListener;
+    ConnectyCube.videochat.onStopCallListener = this._onStopCallListener;
+    ConnectyCube.videochat.onUserNotAnswerListener = this._onUserNotAnswerListener;
+    ConnectyCube.videochat.onRemoteStreamListener = this._onRemoteStreamListener;
+  }
+
+  _onCallListener = (session, extension) => {
+    CallService.processOnCallListener(session).then(stream => {
+      const {opponentsIDs, initiatorID, currentUserID} = session;
+      const opponentsIds = [initiatorID, ...opponentsIDs].filter(
+        userId => currentUserID !== userId,
+      );
+
+      this.initRemoteStreams(opponentsIds);
+      this.setLocalStream(stream);
+      this.closeSelect();
+    });
+  };
+
+  _onAcceptCallListener = (session, userId, extension) => {
+    this.setOnCall();
+  };
+
+  _onRejectCallListener = (session, userId, extension) => {
+    CallService.processOnRejectCallListener(userId);
+  };
+
+  _onStopCallListener = (session, userId, extension) => {
+    const isStoppedByInitiator = session.initiatorID === userId;
+
+    CallService.processOnStopCallListener(userId, isStoppedByInitiator);
+
+    if (isStoppedByInitiator) {
+      this.resetState();
+    } else {
+      this.removeRemoteStream(userId);
+    }
+  };
+
+  _onUserNotAnswerListener = (session, userId) => {
+    CallService.processOnUserNotAnswer(userId);
+    this.removeRemoteStream(userId);
+  };
+
+  _onRemoteStreamListener = (session, userId, stream) => {
+    this.updateRemoteStream(userId, stream);
+    this.setOnCall();
+  };
+
   render() {
-    const {isCalling, isActiveCall, localStream, remoteStreams} = this.state;
-    const {navigation} = this.props;
-    const opponentsIds = navigation.getParam('opponentsIds');
+    const {
+      localStream,
+      remoteStreams,
+      selectedUsersIds,
+      isActiveSelect,
+      isActiveCall,
+    } = this.state;
+
+    const localStreamItem = localStream
+      ? [{userId: 'localStream', stream: localStream}]
+      : [];
+    const streams = [...remoteStreams, ...localStreamItem];
 
     CallService.setSpeakerphoneOn(remoteStreams.length > 0);
 
     return (
-      <View style={styles.screen}>
+      <SafeAreaView style={{flex: 1, backgroundColor: 'black'}}>
         <StatusBar backgroundColor="black" barStyle="light-content" />
-        <View removeClippedSubviews style={styles.rtcWrap}>
-          {remoteStreams.map(({userId, stream}) => (
-            <RTCView
-              objectFit="cover"
-              style={styles.rtcView}
-              key={userId}
-              streamURL={stream.toURL()}
-            />
-          ))}
-          {localStream && (
-            <RTCView
-              objectFit="cover"
-              style={styles.rtcView}
-              key="localStream"
-              streamURL={localStream.toURL()}
-            />
-          )}
-        </View>
-        {isCalling && <CallingLoader />}
+        <RTCViewGrid streams={streams} />
+        <UsersSelect
+          isActiveSelect={isActiveSelect}
+          opponentsIds={this.opponentsIds}
+          selectedUsersIds={selectedUsersIds}
+          selectUser={this.selectUser}
+          unselectUser={this.unselectUser}
+        />
         <ToolBar
-          opponentsIds={opponentsIds}
+          selectedUsersIds={selectedUsersIds}
           localStream={localStream}
-          isCalling={isCalling}
+          isActiveSelect={isActiveSelect}
           isActiveCall={isActiveCall}
-          setCalling={this.setCalling}
+          closeSelect={this.closeSelect}
+          initRemoteStreams={this.initRemoteStreams}
           setLocalStream={this.setLocalStream}
           resetState={this.resetState}
         />
-      </View>
+      </SafeAreaView>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    backgroundColor: 'black',
-  },
-  rtcWrap: {
-    flex: 1,
-    overflow: 'hidden',
-  },
-  rtcView: {
-    flex: 1,
-    backgroundColor: 'black',
-  },
-});
