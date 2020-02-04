@@ -4,10 +4,10 @@ This README introduces [ConnectyCube](https://connectycube.com) Video Chat code 
 
 Project contains the following features implemented:
 
-* User authorization
-* 1-1 video calls
-* Mute/unmute microphone
-* Switch cameras
+- User authorization
+- Group video calls (up to 4 users)
+- Mute/unmute microphone
+- Switch cameras
 
 ## Documentation
 
@@ -19,22 +19,20 @@ ConnectyCube Video Chat API documentation - [https://developers.connectycube.com
 
 <kbd><img alt="React Native video chat code sample, login" src="https://developers.connectycube.com/docs/_images/code_samples/reactnative_codesample_video_login.png" width="200" /></kbd> <kbd><img alt="React Native video chat code sample, 1-1 video chat" src="https://developers.connectycube.com/docs/_images/code_samples/reactnative_codesample_video_video.png" width="200" /></kbd>
 
-
 ## Roadmap
 
-* UI updates
-* Group calls
-* Push notifications on incoming call
-* Call Kit
+- Push notifications on incoming call
+- Call Kit
 
 ## Quick start and develop
 
 Quick start [React Native](https://facebook.github.io/react-native/docs/getting-started.html) app.
 
 Prepare environment for React Native and:
-1) Clone the project;
-2) Install node_modules from connectycube-js-samples/RNVideoChat - `npm install`;
-3) Run `npm run ios` or `npm run android`.
+
+1. Clone the project;
+2. Install node_modules from connectycube-js-samples/RNVideoChat - `npm install`;
+3. Run `npm run ios` or `npm run android`.
 
 ## Running on a device
 

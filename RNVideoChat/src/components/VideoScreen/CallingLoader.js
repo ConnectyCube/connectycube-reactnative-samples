@@ -1,11 +1,11 @@
 import React from 'react';
 import {ActivityIndicator, View, Text, StyleSheet} from 'react-native';
 
-export default () => (
+export default ({name}) => (
   <View style={styles.container}>
     <View style={styles.info}>
-      <Text style={styles.text}>Calling...</Text>
-      <ActivityIndicator size="large" color="white" />
+      <Text style={styles.text}>{name}</Text>
+      <ActivityIndicator size="small" color="white" />
     </View>
   </View>
 );
@@ -21,8 +21,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   text: {
-    fontSize: 28,
+    fontSize: 16,
     color: 'white',
-    marginRight: 10,
+    marginRight: 16,
   },
 });

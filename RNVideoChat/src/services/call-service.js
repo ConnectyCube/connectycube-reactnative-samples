@@ -1,12 +1,31 @@
+import {Platform, ToastAndroid} from 'react-native';
+import Toast from 'react-native-simple-toast';
 import ConnectyCube from 'react-native-connectycube';
 import InCallManager from 'react-native-incall-manager';
 import {Alert} from 'react-native';
+import {users} from '../config';
 
 export default class CallService {
   static MEDIA_OPTIONS = {audio: true, video: {facingMode: 'user'}};
 
   _session = null;
   mediaDevices = [];
+
+  showToast = text => {
+    const commonToast = Platform.OS === 'android' ? ToastAndroid : Toast;
+
+    commonToast.showWithGravity(text, Toast.LONG, Toast.TOP);
+  };
+
+  getUserById = (userId, key) => {
+    const user = users.find(user => user.id == userId);
+
+    if (typeof key === 'string') {
+      return user[key];
+    }
+
+    return user;
+  };
 
   setMediaDevices() {
     return ConnectyCube.videochat.getMediaDevices().then(mediaDevices => {
@@ -66,20 +85,15 @@ export default class CallService {
 
   setSpeakerphoneOn = flag => InCallManager.setSpeakerphoneOn(flag);
 
-  processOnUserNotAnswer(session, userId) {
-    Alert.alert(
-      'An opponent did not answer',
-      '',
-      [{text: 'Ok', onPress: () => {}}],
-      {cancelable: true},
-    );
+  processOnUserNotAnswer(userId) {
+    this.showToast(`${this.getUserById(userId, 'name')} did not answer`);
   }
 
-  processOnCallListener(session, extension) {
+  processOnCallListener(session) {
     return new Promise(resolve => {
       Alert.alert(
         'Incoming call',
-        'from user',
+        `from ${this.getUserById(session.initiatorID, 'name')}`,
         [
           {
             text: 'Accept',
@@ -96,20 +110,17 @@ export default class CallService {
     });
   }
 
-  processOnAcceptCallListener(session, extension) {}
-
-  processOnRejectCallListener(session, extension) {
-    Alert.alert(
-      'An opponent rejected the call request',
-      '',
-      [{text: 'Ok', onPress: () => {}}],
-      {cancelable: true},
+  processOnRejectCallListener(userId) {
+    this.showToast(
+      `${this.getUserById(userId, 'name')} rejected the call request`,
     );
   }
 
-  processOnStopCallListener(session, extension) {
-    Alert.alert('The call is finished', '', [{text: 'Ok', onPress: () => {}}], {
-      cancelable: true,
-    });
+  processOnStopCallListener(userId, isInitiator) {
+    this.showToast(
+      `${this.getUserById(userId, 'name')} has ${
+        isInitiator ? 'stopped' : 'left'
+      } the call`,
+    );
   }
 }
