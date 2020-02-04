@@ -50,7 +50,6 @@ export default class CallService {
     const type = ConnectyCube.videochat.CallType.VIDEO; // AUDIO is also possible
 
     this._session = ConnectyCube.videochat.createNewSession(ids, type, options);
-
     this.setMediaDevices();
 
     return this._session
