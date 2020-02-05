@@ -31,7 +31,7 @@ Quick start [React Native](https://facebook.github.io/react-native/docs/getting-
 Prepare environment for React Native and:
 
 1. Clone the project;
-2. Install node_modules from connectycube-js-samples/RNVideoChat - `npm install`;
+2. Install node_modules: `cd connectycube-reactnative-samples/RNVideoChat && npm install`;
 3. Run `npm run ios` or `npm run android`.
 
 ## Running on a device
