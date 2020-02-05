@@ -17,9 +17,9 @@ Project contains the following features implemented:
 
 ## Documentation
 
-ConnectyCube React Native getting started - [https://developers.connectycube.com/js/react-native](https://developers.connectycube.com/js/react-native)
+ConnectyCube React Native getting started - [https://developers.connectycube.com/reactnative](https://developers.connectycube.com/reactnative)
 
-ConnectyCube Chat API documentation - [https://developers.connectycube.com/js/messaging](https://developers.connectycube.com/js/messaging)
+ConnectyCube Chat API documentation - [https://developers.connectycube.com/reactnative/messaging](https://developers.connectycube.com/reactnative/messaging)
 
 ## Screenshots
 
