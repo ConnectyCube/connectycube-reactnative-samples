@@ -35,7 +35,6 @@ target 'RNVideoChat' do
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
   pod 'react-native-webrtc', :path => '../node_modules/react-native-webrtc'
-  pod 'ReactNativeIncallManager', :path => '../node_modules/react-native-incall-manager'
 
 
   target 'RNVideoChatTests' do
