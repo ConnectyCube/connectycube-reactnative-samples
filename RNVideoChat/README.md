@@ -11,13 +11,13 @@ Project contains the following features implemented:
 
 ## Documentation
 
-ConnectyCube React Native getting started - [https://developers.connectycube.com/js/react-native](https://developers.connectycube.com/js/react-native)
+ConnectyCube React Native getting started - [https://developers.connectycube.com/reactnative](https://developers.connectycube.com/reactnative)
 
-ConnectyCube Video Chat API documentation - [https://developers.connectycube.com/js/videocalling](https://developers.connectycube.com/js/videocalling)
+ConnectyCube Video Chat API documentation - [https://developers.connectycube.com/reactnative/videocalling](https://developers.connectycube.com/reactnative/videocalling)
 
 ## Screenshots
 
-<kbd><img alt="React Native video chat code sample, login" src="https://developers.connectycube.com/docs/_images/code_samples/reactnative_codesample_video_login.png" width="200" /></kbd> <kbd><img alt="React Native video chat code sample, 1-1 video chat" src="https://developers.connectycube.com/docs/_images/code_samples/reactnative_codesample_video_video.png" width="200" /></kbd>
+<kbd><img alt="React Native video chat code sample, login" src="https://developers.connectycube.com/docs/_images/code_samples/reactnative/reactnative_codesample_video_login.PNG  " width="200" /></kbd> <kbd><img alt="React Native video chat code sample, select users" src="https://developers.connectycube.com/docs/_images/code_samples/reactnative/reactnative_codesample_video_select_users.PNG" width="200" /></kbd> <kbd><img alt="React Native video chat code sample, video chat" src="https://developers.connectycube.com/docs/_images/code_samples/reactnative/reactnative_codesample_video_video.PNG" width="200" /></kbd>
 
 ## Roadmap
 
