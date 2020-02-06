@@ -193,7 +193,6 @@ dependencies {
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0-alpha02'
     implementation "com.android.support:support-v4:+"
     implementation project(':WebRTCModule')
-    implementation project(':react-native-incall-manager')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     
     if (enableHermes) {
