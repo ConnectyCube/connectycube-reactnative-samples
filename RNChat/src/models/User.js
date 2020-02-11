@@ -1,19 +1,17 @@
-const defaultUser = {
-	id: null,
-	full_name: 'Unknown user',
-	email: '',
-	phone: '',
-	avatar: null,
-	custom_data: ''
-}
-
+import { getImageLinkFromUID } from '../helpers/file'
 export default class User {
-	constructor(user = defaultUser) {
-		this.id = user.id
-		this.full_name = user.full_name || defaultUser.full_name
-		this.email = user.email
-		this.phone = user.phone
-		this.avatar = user.avatar && { uri: user.avatar }
-		this.custom_data = user.custom_data && JSON.parse(user.custom_data)
-	}
+  constructor(user) {
+    this.id = user.id
+    this.avatar = User.getAvatarUrl(user.avatar)
+    this.login = user.login
+    this.custom_data = user.custom_data ? user.custom_data : ''
+    this.full_name = user.full_name
+    this.phone = user.phone
+    this.created_at = user.created_at
+    this.updated_at = user.updated_at
+    this.last_request_at = user.last_request_at
+  }
+  static getAvatarUrl(avatarUID) {
+    return getImageLinkFromUID(avatarUID)
+  }
 }

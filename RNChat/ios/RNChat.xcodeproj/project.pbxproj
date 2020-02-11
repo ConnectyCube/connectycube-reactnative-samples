@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		00E356F31AD99517003FC87E /* RNChatTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* RNChatTests.m */; };
+		00E356F31AD99517003FC87E /* RnchatTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* RnchatTests.m */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
@@ -15,9 +15,11 @@
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		2DCD954D1E0B4F2C00145EB5 /* RNChatTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* RNChatTests.m */; };
-		AA669A76C7AD2035701199E8 /* libPods-RNChatTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E9B3E52F602D90A681C4EA5 /* libPods-RNChatTests.a */; };
-		EAAC6F7AD18B2C1E29D078AA /* libPods-RNChat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A628DC13620EFD38C5B3E464 /* libPods-RNChat.a */; };
+		2DCD954D1E0B4F2C00145EB5 /* RnchatTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* RnchatTests.m */; };
+		5EF20AA6754374CA501C2BEA /* libPods-Rnchat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B50FC6C9C61DBF6F2ECCE03 /* libPods-Rnchat.a */; };
+		9360C2C15D7F74AB8964C451 /* libPods-Rnchat-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C64CD4B493900D0E8FFE171 /* libPods-Rnchat-tvOS.a */; };
+		94492459CF8EEA25836B9D41 /* libPods-Rnchat-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 850D8CA0A2077791AE43290E /* libPods-Rnchat-tvOSTests.a */; };
+		C3558DAC27C460E62A0790EC /* libPods-RnchatTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 322DFC756A50BCF5D436D691 /* libPods-RnchatTests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -26,53 +28,60 @@
 			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
-			remoteInfo = RNChat;
+			remoteInfo = Rnchat;
 		};
 		2D02E4911E0B4A5D006451C7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 2D02E47A1E0B4A5D006451C7;
-			remoteInfo = "RNChat-tvOS";
+			remoteInfo = "Rnchat-tvOS";
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
-		00E356EE1AD99517003FC87E /* RNChatTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RNChatTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		00E356EE1AD99517003FC87E /* RnchatTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RnchatTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		00E356F21AD99517003FC87E /* RNChatTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNChatTests.m; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* RNChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RNChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = RNChat/AppDelegate.h; sourceTree = "<group>"; };
-		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = RNChat/AppDelegate.m; sourceTree = "<group>"; };
+		00E356F21AD99517003FC87E /* RnchatTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RnchatTests.m; sourceTree = "<group>"; };
+		0B50FC6C9C61DBF6F2ECCE03 /* libPods-Rnchat.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Rnchat.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07F961A680F5B00A75B9A /* Rnchat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Rnchat.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Rnchat/AppDelegate.h; sourceTree = "<group>"; };
+		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = Rnchat/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB21A68108700A75B9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = RNChat/Images.xcassets; sourceTree = "<group>"; };
-		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = RNChat/Info.plist; sourceTree = "<group>"; };
-		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = RNChat/main.m; sourceTree = "<group>"; };
-		2A3B6F0849C2427B8A0C76D3 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
-		2D02E47B1E0B4A5D006451C7 /* RNChat-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "RNChat-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		2D02E4901E0B4A5D006451C7 /* RNChat-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "RNChat-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		3B128C05D60F454E920EC0E6 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
-		533175286EEF47B69940CBD2 /* Fontisto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Fontisto.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf"; sourceTree = "<group>"; };
-		5A005CADDA4269B1A255DA00 /* Pods-RNChatTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNChatTests.debug.xcconfig"; path = "Target Support Files/Pods-RNChatTests/Pods-RNChatTests.debug.xcconfig"; sourceTree = "<group>"; };
-		6076EA54FCFA4C8EA6CD2295 /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
-		71F463AE7EF445D7AFD241F2 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
-		72DED96F6E09E5A3A073DE2F /* Pods-RNChat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNChat.debug.xcconfig"; path = "Target Support Files/Pods-RNChat/Pods-RNChat.debug.xcconfig"; sourceTree = "<group>"; };
-		7E601F27C12945048AD48F2E /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
-		8755DCCCC2E249F09234A603 /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
-		8E9B3E52F602D90A681C4EA5 /* libPods-RNChatTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RNChatTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		91A97ED2808B60398115A12A /* Pods-RNChatTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNChatTests.release.xcconfig"; path = "Target Support Files/Pods-RNChatTests/Pods-RNChatTests.release.xcconfig"; sourceTree = "<group>"; };
-		98886C2984CC4D3BBFD6E971 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
-		9A03A3615A9F429FAFE9F7BC /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
-		9FA2BD0B28494EB191F1861A /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
-		A628DC13620EFD38C5B3E464 /* libPods-RNChat.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RNChat.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		A6B0DC73822E4158BF9AE363 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
-		A8B2479BB82F4E49AB9010F4 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
-		B2D1741B8D2144ED8FE1D150 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
-		C12E885597874185B6859A3E /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
-		CC7689D36FB54C3FB97BCD97 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
-		E1FF75BD180F4C27ABD904D9 /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
-		E7889D9B167C064E4BDC0EB2 /* Pods-RNChat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNChat.release.xcconfig"; path = "Target Support Files/Pods-RNChat/Pods-RNChat.release.xcconfig"; sourceTree = "<group>"; };
+		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Rnchat/Images.xcassets; sourceTree = "<group>"; };
+		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Rnchat/Info.plist; sourceTree = "<group>"; };
+		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Rnchat/main.m; sourceTree = "<group>"; };
+		29ED7EBD4278DAA5A3FCF0DD /* Pods-RnchatTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RnchatTests.release.xcconfig"; path = "Target Support Files/Pods-RnchatTests/Pods-RnchatTests.release.xcconfig"; sourceTree = "<group>"; };
+		2CD2E35423B4C708003C0777 /* MaterialIcons copy.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "MaterialIcons copy.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons copy.ttf"; sourceTree = "<group>"; };
+		2CD2E35523B4C708003C0777 /* FontAwesome5_Solid copy.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "FontAwesome5_Solid copy.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid copy.ttf"; sourceTree = "<group>"; };
+		2CD2E35623B4C708003C0777 /* EvilIcons copy.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "EvilIcons copy.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons copy.ttf"; sourceTree = "<group>"; };
+		2CD2E35723B4C708003C0777 /* Octicons copy.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Octicons copy.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Octicons copy.ttf"; sourceTree = "<group>"; };
+		2CD2E35823B4C708003C0777 /* Ionicons copy.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Ionicons copy.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons copy.ttf"; sourceTree = "<group>"; };
+		2CD2E35923B4C709003C0777 /* AntDesign copy.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "AntDesign copy.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign copy.ttf"; sourceTree = "<group>"; };
+		2CD2E35A23B4C709003C0777 /* Foundation copy.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Foundation copy.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Foundation copy.ttf"; sourceTree = "<group>"; };
+		2CD2E35B23B4C709003C0777 /* Zocial copy.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Zocial copy.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Zocial copy.ttf"; sourceTree = "<group>"; };
+		2CD2E35C23B4C709003C0777 /* Entypo copy.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Entypo copy.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Entypo copy.ttf"; sourceTree = "<group>"; };
+		2CD2E35D23B4C709003C0777 /* SimpleLineIcons copy.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SimpleLineIcons copy.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons copy.ttf"; sourceTree = "<group>"; };
+		2CD2E35E23B4C709003C0777 /* FontAwesome copy.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "FontAwesome copy.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome copy.ttf"; sourceTree = "<group>"; };
+		2CD2E35F23B4C709003C0777 /* MaterialCommunityIcons copy.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "MaterialCommunityIcons copy.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons copy.ttf"; sourceTree = "<group>"; };
+		2CD2E36023B4C70A003C0777 /* Fontisto copy.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Fontisto copy.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Fontisto copy.ttf"; sourceTree = "<group>"; };
+		2CD2E36123B4C70A003C0777 /* FontAwesome5_Brands copy.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "FontAwesome5_Brands copy.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands copy.ttf"; sourceTree = "<group>"; };
+		2CD2E36223B4C70A003C0777 /* Feather copy.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Feather copy.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Feather copy.ttf"; sourceTree = "<group>"; };
+		2CD2E36323B4C70A003C0777 /* FontAwesome5_Regular copy.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "FontAwesome5_Regular copy.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular copy.ttf"; sourceTree = "<group>"; };
+		2CE98D4923EB0944000380B2 /* Rnchat.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Rnchat.entitlements; path = Rnchat/Rnchat.entitlements; sourceTree = "<group>"; };
+		2D02E47B1E0B4A5D006451C7 /* Rnchat-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Rnchat-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2D02E4901E0B4A5D006451C7 /* Rnchat-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Rnchat-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		322DFC756A50BCF5D436D691 /* libPods-RnchatTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RnchatTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3418DA39172AC201E3A63C71 /* Pods-Rnchat-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Rnchat-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-Rnchat-tvOSTests/Pods-Rnchat-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
+		4D7A737186EAE3454F98E124 /* Pods-Rnchat-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Rnchat-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-Rnchat-tvOSTests/Pods-Rnchat-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
+		5A3F5669ECCB2058FB6BBC6A /* Pods-Rnchat-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Rnchat-tvOS.release.xcconfig"; path = "Target Support Files/Pods-Rnchat-tvOS/Pods-Rnchat-tvOS.release.xcconfig"; sourceTree = "<group>"; };
+		60D9A4EE8C929D0695209C51 /* Pods-Rnchat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Rnchat.debug.xcconfig"; path = "Target Support Files/Pods-Rnchat/Pods-Rnchat.debug.xcconfig"; sourceTree = "<group>"; };
+		7C64CD4B493900D0E8FFE171 /* libPods-Rnchat-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Rnchat-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		850D8CA0A2077791AE43290E /* libPods-Rnchat-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Rnchat-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		92E35F3216F3A31DBFEDE784 /* Pods-RnchatTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RnchatTests.debug.xcconfig"; path = "Target Support Files/Pods-RnchatTests/Pods-RnchatTests.debug.xcconfig"; sourceTree = "<group>"; };
+		A69EF3537B4F6F06207CA3A5 /* Pods-Rnchat-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Rnchat-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-Rnchat-tvOS/Pods-Rnchat-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
+		AC639B722163F5C695A5CB92 /* Pods-Rnchat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Rnchat.release.xcconfig"; path = "Target Support Files/Pods-Rnchat/Pods-Rnchat.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
@@ -82,7 +91,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AA669A76C7AD2035701199E8 /* libPods-RNChatTests.a in Frameworks */,
+				C3558DAC27C460E62A0790EC /* libPods-RnchatTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -90,7 +99,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EAAC6F7AD18B2C1E29D078AA /* libPods-RNChat.a in Frameworks */,
+				5EF20AA6754374CA501C2BEA /* libPods-Rnchat.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -98,6 +107,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9360C2C15D7F74AB8964C451 /* libPods-Rnchat-tvOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -105,19 +115,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				94492459CF8EEA25836B9D41 /* libPods-Rnchat-tvOSTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		00E356EF1AD99517003FC87E /* RNChatTests */ = {
+		00E356EF1AD99517003FC87E /* RnchatTests */ = {
 			isa = PBXGroup;
 			children = (
-				00E356F21AD99517003FC87E /* RNChatTests.m */,
+				00E356F21AD99517003FC87E /* RnchatTests.m */,
 				00E356F01AD99517003FC87E /* Supporting Files */,
 			);
-			path = RNChatTests;
+			path = RnchatTests;
 			sourceTree = "<group>";
 		};
 		00E356F01AD99517003FC87E /* Supporting Files */ = {
@@ -128,9 +139,11 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		13B07FAE1A68108700A75B9A /* RNChat */ = {
+		13B07FAE1A68108700A75B9A /* Rnchat */ = {
 			isa = PBXGroup;
 			children = (
+				2CE98D4923EB0944000380B2 /* Rnchat.entitlements */,
+				2CD2E35323B4C694003C0777 /* Fonts */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -139,7 +152,30 @@
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
-			name = RNChat;
+			name = Rnchat;
+			sourceTree = "<group>";
+		};
+		2CD2E35323B4C694003C0777 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				2CD2E35A23B4C709003C0777 /* Foundation copy.ttf */,
+				2CD2E36023B4C70A003C0777 /* Fontisto copy.ttf */,
+				2CD2E36323B4C70A003C0777 /* FontAwesome5_Regular copy.ttf */,
+				2CD2E35C23B4C709003C0777 /* Entypo copy.ttf */,
+				2CD2E35923B4C709003C0777 /* AntDesign copy.ttf */,
+				2CD2E35623B4C708003C0777 /* EvilIcons copy.ttf */,
+				2CD2E36223B4C70A003C0777 /* Feather copy.ttf */,
+				2CD2E35E23B4C709003C0777 /* FontAwesome copy.ttf */,
+				2CD2E36123B4C70A003C0777 /* FontAwesome5_Brands copy.ttf */,
+				2CD2E35523B4C708003C0777 /* FontAwesome5_Solid copy.ttf */,
+				2CD2E35723B4C708003C0777 /* Octicons copy.ttf */,
+				2CD2E35823B4C708003C0777 /* Ionicons copy.ttf */,
+				2CD2E35F23B4C709003C0777 /* MaterialCommunityIcons copy.ttf */,
+				2CD2E35423B4C708003C0777 /* MaterialIcons copy.ttf */,
+				2CD2E35D23B4C709003C0777 /* SimpleLineIcons copy.ttf */,
+				2CD2E35B23B4C709003C0777 /* Zocial copy.ttf */,
+			);
+			name = Fonts;
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
@@ -147,8 +183,10 @@
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
-				A628DC13620EFD38C5B3E464 /* libPods-RNChat.a */,
-				8E9B3E52F602D90A681C4EA5 /* libPods-RNChatTests.a */,
+				0B50FC6C9C61DBF6F2ECCE03 /* libPods-Rnchat.a */,
+				7C64CD4B493900D0E8FFE171 /* libPods-Rnchat-tvOS.a */,
+				850D8CA0A2077791AE43290E /* libPods-Rnchat-tvOSTests.a */,
+				322DFC756A50BCF5D436D691 /* libPods-RnchatTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -163,13 +201,12 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				13B07FAE1A68108700A75B9A /* RNChat */,
+				13B07FAE1A68108700A75B9A /* Rnchat */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
-				00E356EF1AD99517003FC87E /* RNChatTests */,
+				00E356EF1AD99517003FC87E /* RnchatTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
-				FEDB8C92B4E285E382128D52 /* Pods */,
-				A0ADD65164CA47D1B386FC45 /* Resources */,
+				CB37E3BD55CAB16ED00A5F15 /* Pods */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -179,44 +216,25 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* RNChat.app */,
-				00E356EE1AD99517003FC87E /* RNChatTests.xctest */,
-				2D02E47B1E0B4A5D006451C7 /* RNChat-tvOS.app */,
-				2D02E4901E0B4A5D006451C7 /* RNChat-tvOSTests.xctest */,
+				13B07F961A680F5B00A75B9A /* Rnchat.app */,
+				00E356EE1AD99517003FC87E /* RnchatTests.xctest */,
+				2D02E47B1E0B4A5D006451C7 /* Rnchat-tvOS.app */,
+				2D02E4901E0B4A5D006451C7 /* Rnchat-tvOSTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		A0ADD65164CA47D1B386FC45 /* Resources */ = {
+		CB37E3BD55CAB16ED00A5F15 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				6076EA54FCFA4C8EA6CD2295 /* AntDesign.ttf */,
-				8755DCCCC2E249F09234A603 /* Entypo.ttf */,
-				98886C2984CC4D3BBFD6E971 /* EvilIcons.ttf */,
-				E1FF75BD180F4C27ABD904D9 /* Feather.ttf */,
-				3B128C05D60F454E920EC0E6 /* FontAwesome.ttf */,
-				9A03A3615A9F429FAFE9F7BC /* FontAwesome5_Brands.ttf */,
-				9FA2BD0B28494EB191F1861A /* FontAwesome5_Regular.ttf */,
-				CC7689D36FB54C3FB97BCD97 /* FontAwesome5_Solid.ttf */,
-				533175286EEF47B69940CBD2 /* Fontisto.ttf */,
-				B2D1741B8D2144ED8FE1D150 /* Foundation.ttf */,
-				7E601F27C12945048AD48F2E /* Ionicons.ttf */,
-				A8B2479BB82F4E49AB9010F4 /* MaterialCommunityIcons.ttf */,
-				A6B0DC73822E4158BF9AE363 /* MaterialIcons.ttf */,
-				2A3B6F0849C2427B8A0C76D3 /* Octicons.ttf */,
-				C12E885597874185B6859A3E /* SimpleLineIcons.ttf */,
-				71F463AE7EF445D7AFD241F2 /* Zocial.ttf */,
-			);
-			name = Resources;
-			sourceTree = "<group>";
-		};
-		FEDB8C92B4E285E382128D52 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				72DED96F6E09E5A3A073DE2F /* Pods-RNChat.debug.xcconfig */,
-				E7889D9B167C064E4BDC0EB2 /* Pods-RNChat.release.xcconfig */,
-				5A005CADDA4269B1A255DA00 /* Pods-RNChatTests.debug.xcconfig */,
-				91A97ED2808B60398115A12A /* Pods-RNChatTests.release.xcconfig */,
+				60D9A4EE8C929D0695209C51 /* Pods-Rnchat.debug.xcconfig */,
+				AC639B722163F5C695A5CB92 /* Pods-Rnchat.release.xcconfig */,
+				A69EF3537B4F6F06207CA3A5 /* Pods-Rnchat-tvOS.debug.xcconfig */,
+				5A3F5669ECCB2058FB6BBC6A /* Pods-Rnchat-tvOS.release.xcconfig */,
+				3418DA39172AC201E3A63C71 /* Pods-Rnchat-tvOSTests.debug.xcconfig */,
+				4D7A737186EAE3454F98E124 /* Pods-Rnchat-tvOSTests.release.xcconfig */,
+				92E35F3216F3A31DBFEDE784 /* Pods-RnchatTests.debug.xcconfig */,
+				29ED7EBD4278DAA5A3FCF0DD /* Pods-RnchatTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -224,11 +242,11 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		00E356ED1AD99517003FC87E /* RNChatTests */ = {
+		00E356ED1AD99517003FC87E /* RnchatTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "RNChatTests" */;
+			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "RnchatTests" */;
 			buildPhases = (
-				0A82BD03346060597621DCC4 /* [CP] Check Pods Manifest.lock */,
+				D3A15CAAB2128D980BF04159 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
@@ -238,36 +256,37 @@
 			dependencies = (
 				00E356F51AD99517003FC87E /* PBXTargetDependency */,
 			);
-			name = RNChatTests;
-			productName = RNChatTests;
-			productReference = 00E356EE1AD99517003FC87E /* RNChatTests.xctest */;
+			name = RnchatTests;
+			productName = RnchatTests;
+			productReference = 00E356EE1AD99517003FC87E /* RnchatTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		13B07F861A680F5B00A75B9A /* RNChat */ = {
+		13B07F861A680F5B00A75B9A /* Rnchat */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "RNChat" */;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Rnchat" */;
 			buildPhases = (
-				6075ABCDC9F6CBD5B653E82C /* [CP] Check Pods Manifest.lock */,
+				EC5AFF577E478434393FBD19 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				77C37B1678962A98233E9A12 /* [CP] Copy Pods Resources */,
+				3BB2C73514F1371F9C55445A /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = RNChat;
-			productName = RNChat;
-			productReference = 13B07F961A680F5B00A75B9A /* RNChat.app */;
+			name = Rnchat;
+			productName = Rnchat;
+			productReference = 13B07F961A680F5B00A75B9A /* Rnchat.app */;
 			productType = "com.apple.product-type.application";
 		};
-		2D02E47A1E0B4A5D006451C7 /* RNChat-tvOS */ = {
+		2D02E47A1E0B4A5D006451C7 /* Rnchat-tvOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "RNChat-tvOS" */;
+			buildConfigurationList = 2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "Rnchat-tvOS" */;
 			buildPhases = (
+				30D9052EA98608453E210C3C /* [CP] Check Pods Manifest.lock */,
 				FD10A7F122414F3F0027D42C /* Start Packager */,
 				2D02E4771E0B4A5D006451C7 /* Sources */,
 				2D02E4781E0B4A5D006451C7 /* Frameworks */,
@@ -278,15 +297,16 @@
 			);
 			dependencies = (
 			);
-			name = "RNChat-tvOS";
-			productName = "RNChat-tvOS";
-			productReference = 2D02E47B1E0B4A5D006451C7 /* RNChat-tvOS.app */;
+			name = "Rnchat-tvOS";
+			productName = "Rnchat-tvOS";
+			productReference = 2D02E47B1E0B4A5D006451C7 /* Rnchat-tvOS.app */;
 			productType = "com.apple.product-type.application";
 		};
-		2D02E48F1E0B4A5D006451C7 /* RNChat-tvOSTests */ = {
+		2D02E48F1E0B4A5D006451C7 /* Rnchat-tvOSTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "RNChat-tvOSTests" */;
+			buildConfigurationList = 2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "Rnchat-tvOSTests" */;
 			buildPhases = (
+				F0133F2B4A3D5F25D0FCBB23 /* [CP] Check Pods Manifest.lock */,
 				2D02E48C1E0B4A5D006451C7 /* Sources */,
 				2D02E48D1E0B4A5D006451C7 /* Frameworks */,
 				2D02E48E1E0B4A5D006451C7 /* Resources */,
@@ -296,9 +316,9 @@
 			dependencies = (
 				2D02E4921E0B4A5D006451C7 /* PBXTargetDependency */,
 			);
-			name = "RNChat-tvOSTests";
-			productName = "RNChat-tvOSTests";
-			productReference = 2D02E4901E0B4A5D006451C7 /* RNChat-tvOSTests.xctest */;
+			name = "Rnchat-tvOSTests";
+			productName = "Rnchat-tvOSTests";
+			productReference = 2D02E4901E0B4A5D006451C7 /* Rnchat-tvOSTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -307,7 +327,7 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 940;
+				LastUpgradeCheck = 0940;
 				ORGANIZATIONNAME = Facebook;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
@@ -316,6 +336,7 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = 7FN8T8KP47;
+						ProvisioningStyle = Automatic;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -328,7 +349,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "RNChat" */;
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Rnchat" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -342,10 +363,10 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				13B07F861A680F5B00A75B9A /* RNChat */,
-				00E356ED1AD99517003FC87E /* RNChatTests */,
-				2D02E47A1E0B4A5D006451C7 /* RNChat-tvOS */,
-				2D02E48F1E0B4A5D006451C7 /* RNChat-tvOSTests */,
+				13B07F861A680F5B00A75B9A /* Rnchat */,
+				00E356ED1AD99517003FC87E /* RnchatTests */,
+				2D02E47A1E0B4A5D006451C7 /* Rnchat-tvOS */,
+				2D02E48F1E0B4A5D006451C7 /* Rnchat-tvOSTests */,
 			);
 		};
 /* End PBXProject section */
@@ -399,28 +420,6 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
 		};
-		0A82BD03346060597621DCC4 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-RNChatTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
 		2D02E4CB1E0B4B27006451C7 /* Bundle React Native Code And Images */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -435,7 +434,7 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
 		};
-		6075ABCDC9F6CBD5B653E82C /* [CP] Check Pods Manifest.lock */ = {
+		30D9052EA98608453E210C3C /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -450,20 +449,21 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-RNChat-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-Rnchat-tvOS-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		77C37B1678962A98233E9A12 /* [CP] Copy Pods Resources */ = {
+		3BB2C73514F1371F9C55445A /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-RNChat/Pods-RNChat-resources.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-Rnchat/Pods-Rnchat-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/QBImagePickerController/QBImagePicker.bundle",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Entypo.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf",
@@ -480,9 +480,11 @@
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Octicons.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Zocial.ttf",
+				"${PODS_ROOT}/RSKImageCropper/RSKImageCropper/RSKImageCropperStrings.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/QBImagePicker.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AntDesign.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Entypo.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EvilIcons.ttf",
@@ -499,10 +501,77 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Octicons.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SimpleLineIcons.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Zocial.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/RSKImageCropperStrings.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-RNChat/Pods-RNChat-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Rnchat/Pods-Rnchat-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D3A15CAAB2128D980BF04159 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-RnchatTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		EC5AFF577E478434393FBD19 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Rnchat-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F0133F2B4A3D5F25D0FCBB23 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Rnchat-tvOSTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
@@ -550,7 +619,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				00E356F31AD99517003FC87E /* RNChatTests.m in Sources */,
+				00E356F31AD99517003FC87E /* RnchatTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -576,7 +645,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2DCD954D1E0B4F2C00145EB5 /* RNChatTests.m in Sources */,
+				2DCD954D1E0B4F2C00145EB5 /* RnchatTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -585,12 +654,12 @@
 /* Begin PBXTargetDependency section */
 		00E356F51AD99517003FC87E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 13B07F861A680F5B00A75B9A /* RNChat */;
+			target = 13B07F861A680F5B00A75B9A /* Rnchat */;
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
 		};
 		2D02E4921E0B4A5D006451C7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 2D02E47A1E0B4A5D006451C7 /* RNChat-tvOS */;
+			target = 2D02E47A1E0B4A5D006451C7 /* Rnchat-tvOS */;
 			targetProxy = 2D02E4911E0B4A5D006451C7 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -602,7 +671,7 @@
 				13B07FB21A68108700A75B9A /* Base */,
 			);
 			name = LaunchScreen.xib;
-			path = RNChat;
+			path = Rnchat;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -610,14 +679,14 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5A005CADDA4269B1A255DA00 /* Pods-RNChatTests.debug.xcconfig */;
+			baseConfigurationReference = 92E35F3216F3A31DBFEDE784 /* Pods-RnchatTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = RNChatTests/Info.plist;
+				INFOPLIST_FILE = RnchatTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -627,17 +696,17 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RNChat.app/RNChat";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Rnchat.app/Rnchat";
 			};
 			name = Debug;
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 91A97ED2808B60398115A12A /* Pods-RNChatTests.release.xcconfig */;
+			baseConfigurationReference = 29ED7EBD4278DAA5A3FCF0DD /* Pods-RnchatTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
-				INFOPLIST_FILE = RNChatTests/Info.plist;
+				INFOPLIST_FILE = RnchatTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -647,53 +716,62 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RNChat.app/RNChat";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Rnchat.app/Rnchat";
 			};
 			name = Release;
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 72DED96F6E09E5A3A073DE2F /* Pods-RNChat.debug.xcconfig */;
+			baseConfigurationReference = 60D9A4EE8C929D0695209C51 /* Pods-Rnchat.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Rnchat/Rnchat.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = 7FN8T8KP47;
-				INFOPLIST_FILE = RNChat/Info.plist;
+				INFOPLIST_FILE = Rnchat/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = RNChat;
+				PRODUCT_BUNDLE_IDENTIFIER = com.connectycube.chat.sample;
+				PRODUCT_NAME = Rnchat;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E7889D9B167C064E4BDC0EB2 /* Pods-RNChat.release.xcconfig */;
+			baseConfigurationReference = AC639B722163F5C695A5CB92 /* Pods-Rnchat.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Rnchat/Rnchat.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 7FN8T8KP47;
-				INFOPLIST_FILE = RNChat/Info.plist;
+				INFOPLIST_FILE = Rnchat/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = RNChat;
+				PRODUCT_BUNDLE_IDENTIFIER = com.connectycube.chat.sample;
+				PRODUCT_NAME = Rnchat;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
 		};
 		2D02E4971E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A69EF3537B4F6F06207CA3A5 /* Pods-Rnchat-tvOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -704,14 +782,14 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_TESTABILITY = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = "RNChat-tvOS/Info.plist";
+				INFOPLIST_FILE = "Rnchat-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.RNChat-tvOS";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.Rnchat-tvOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
 				TARGETED_DEVICE_FAMILY = 3;
@@ -721,6 +799,7 @@
 		};
 		2D02E4981E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5A3F5669ECCB2058FB6BBC6A /* Pods-Rnchat-tvOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -731,14 +810,14 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = "RNChat-tvOS/Info.plist";
+				INFOPLIST_FILE = "Rnchat-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.RNChat-tvOS";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.Rnchat-tvOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
 				TARGETED_DEVICE_FAMILY = 3;
@@ -748,6 +827,7 @@
 		};
 		2D02E4991E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3418DA39172AC201E3A63C71 /* Pods-Rnchat-tvOSTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -757,23 +837,24 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_TESTABILITY = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = "RNChat-tvOSTests/Info.plist";
+				INFOPLIST_FILE = "Rnchat-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.RNChat-tvOSTests";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.Rnchat-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RNChat-tvOS.app/RNChat-tvOS";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Rnchat-tvOS.app/Rnchat-tvOS";
 				TVOS_DEPLOYMENT_TARGET = 10.1;
 			};
 			name = Debug;
 		};
 		2D02E49A1E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4D7A737186EAE3454F98E124 /* Pods-Rnchat-tvOSTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -783,17 +864,17 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = "RNChat-tvOSTests/Info.plist";
+				INFOPLIST_FILE = "Rnchat-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.RNChat-tvOSTests";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.Rnchat-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RNChat-tvOS.app/RNChat-tvOS";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Rnchat-tvOS.app/Rnchat-tvOS";
 				TVOS_DEPLOYMENT_TARGET = 10.1;
 			};
 			name = Release;
@@ -900,7 +981,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "RNChatTests" */ = {
+		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "RnchatTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				00E356F61AD99517003FC87E /* Debug */,
@@ -909,7 +990,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "RNChat" */ = {
+		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Rnchat" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
@@ -918,7 +999,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "RNChat-tvOS" */ = {
+		2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "Rnchat-tvOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2D02E4971E0B4A5E006451C7 /* Debug */,
@@ -927,7 +1008,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "RNChat-tvOSTests" */ = {
+		2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "Rnchat-tvOSTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2D02E4991E0B4A5E006451C7 /* Debug */,
@@ -936,7 +1017,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "RNChat" */ = {
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Rnchat" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,

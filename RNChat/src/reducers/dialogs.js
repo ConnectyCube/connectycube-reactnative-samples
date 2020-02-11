@@ -1,51 +1,36 @@
 import {
-	FETCH_DIALOGS,
-	ADD_DIALOG,
-	SORT_DIALOGS
+  FETCH_DIALOGS,
+  ADD_DIALOG,
+  SORT_DIALOGS,
+  UPDATE_DIALOG,
+  DELETE_DIALOG
 } from '../actions/dialogs'
-import { SELECT_DIALOG } from '../actions/selected'
+import { updateDialog, sortedDialog } from './reducer-function'
 
 export default (dialogs = [], action) => {
-	switch (action.type) {
-		case FETCH_DIALOGS:
-			return action.dialogs
-		
-		case ADD_DIALOG:
-			return [ action.dialog, ...dialogs ]
+  switch (action.type) {
+    case FETCH_DIALOGS:
+      return action.dialogs
 
-		case SORT_DIALOGS: {
-			const { message, count } = action
+    case UPDATE_DIALOG: {
+      const result = updateDialog(action, dialogs)
+      return result
+    }
 
-			for (let i = 0; i < dialogs.length; i++) {
-				const dialog = dialogs[i]
+    case ADD_DIALOG:
+      return [action.dialog, ...dialogs]
 
-				if (dialog.id === message.dialog_id) {
-					dialog.last_message = message.body
-					dialog.last_message_date_sent = message.date_sent
-					dialog.updated_at = message.date_sent
-					if (count) dialog.unread_messages_count += 1
-					dialogs.unshift(dialogs.splice(i, 1)[0])
-					break
-				}
-			}
+    case SORT_DIALOGS: {
+      const result = sortedDialog(action, dialogs)
+      return result
+    }
 
-			return [ ...dialogs ]
-		}
-		
-		case SELECT_DIALOG: {
-			for (let i = 0; i < dialogs.length; i++) {
-				const dialog = dialogs[i]
+    case DELETE_DIALOG: {
+      const result = dialogs.filter(dialog => dialog.id !== action.dialogId)
+      return result
+    }
 
-				if (dialog.id === action.dialog.id) {
-					dialog.unread_messages_count = 0
-					break
-				}
-			}
-
-			return [ ...dialogs ]
-		}
-
-		default:
-			return dialogs
-	}
+    default:
+      return dialogs
+  }
 }
