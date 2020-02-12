@@ -66,5 +66,4 @@ export default createAppContainer(createSwitchNavigator(
   }
 ))
 
-
 export const popToTop = StackActions.popToTop()
