@@ -92,6 +92,7 @@ export default class CreateDialog extends PureComponent {
               placeholder="Group name..."
               returnKeyType="search"
               onChangeText={this.updateSearch}
+              placeholderTextColor="grey"
               value={this.state.search}
               maxLength={255}
             />

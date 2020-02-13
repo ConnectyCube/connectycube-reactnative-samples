@@ -94,6 +94,7 @@ export default class Settings extends Component {
               ref="input"
               autoCapitalize="none"
               placeholder="Change name ..."
+              placeholderTextColor="grey"
               onChangeText={this.updateName}
               value={name}
               maxLength={100}
@@ -108,6 +109,7 @@ export default class Settings extends Component {
               ref="input"
               autoCapitalize="none"
               placeholder="Change login ..."
+              placeholderTextColor="grey"
               onChangeText={this.updateLogin}
               value={login}
               maxLength={100}

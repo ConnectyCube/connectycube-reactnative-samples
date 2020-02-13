@@ -160,6 +160,7 @@ class Contacts extends PureComponent {
           <TextInput style={styles.searchInput}
             autoCapitalize="none"
             placeholder="Search users..."
+            placeholderTextColor="grey"
             returnKeyType="search"
             onChangeText={this.updateSearch}
             onSubmitEditing={this.searchUsers}
@@ -217,6 +218,7 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     borderRadius: 20,
     borderColor: 'grey',
+    color: 'black',
     padding: 10,
   },
   dialogTypeContainer: {

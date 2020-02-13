@@ -208,6 +208,7 @@ export default class GroupDetails extends Component {
               ref="input"
               autoCapitalize="none"
               placeholder="Change group name ..."
+              placeholderTextColor="grey"
               onChangeText={this.updateName}
               value={dialogName}
               maxLength={100}

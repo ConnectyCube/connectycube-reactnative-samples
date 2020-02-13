@@ -159,6 +159,7 @@ export class Chat extends PureComponent {
             <AutoGrowingTextInput
               style={styles.textInput}
               placeholder="Type a message..."
+              placeholderTextColor="grey"
               value={messageText}
               onChangeText={this.onTypeMessage}
               maxHeight={170}

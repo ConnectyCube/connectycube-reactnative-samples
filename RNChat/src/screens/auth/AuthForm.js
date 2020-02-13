@@ -75,6 +75,7 @@ export default class AuthForm extends Component {
 				}
 				<TextInput
 					placeholder="Login"
+					placeholderTextColor="grey"
 					returnKeyType="next"
 					onSubmitEditing={() => this.emailInput.focus()}
 					onChangeText={text => this.setState({ name: text })}
@@ -83,6 +84,7 @@ export default class AuthForm extends Component {
 				/>
 				<TextInput
 					placeholder="Password"
+					placeholderTextColor="grey"
 					secureTextEntry={true}
 					autoCapitalize="none"
 					returnKeyType="done"
@@ -107,6 +109,7 @@ const styles = StyleSheet.create({
 	},
 	input: {
 		height: 50,
+		color: 'black',
 		borderRadius: 25,
 		marginVertical: 5,
 		marginHorizontal: 20,
