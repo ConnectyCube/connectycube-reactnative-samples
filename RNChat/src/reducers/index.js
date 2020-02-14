@@ -1,20 +1,27 @@
 import { combineReducers } from 'redux'
-import auth from './auth'
+import currentUser from './currentUser'
 import dialogs from './dialogs'
-import connection from './connection'
 import messages from './messages'
-import selected from './selected'
-import user from './user'
-import usersSearch from './usersSearch'
-import usersSelect from './usersSelect'
+import connection from './connection'
+import users from './users'
+import selectedDialog from './selectedDialog'
 
-export default combineReducers({
-	auth,
-	connection,
-	dialogs,
-	messages,
-	selected,
-	user,
-	usersSearch,
-	usersSelect
+const appReducer = combineReducers({
+  currentUser,
+  dialogs,
+  messages,
+  connection,
+  users,
+  selectedDialog
 })
+
+export const LogOut = () => ({ type: 'RESSET_STORE' })
+
+const rootReducer = (state, action) => {
+  if (action.type === 'RESSET_STORE') {
+    state = {}
+  }
+  return appReducer(state, action)
+}
+
+export default rootReducer
