@@ -55,7 +55,7 @@ export default class ContactDetails extends Component {
         </View>
         <TouchableOpacity onPress={this.gotToChat}>
           <View style={styles.buttonContainer}>
-            <Text style={styles.buttonLabel}>Start a dialogue</Text>
+            <Text style={styles.buttonLabel}>Start a dialog</Text>
           </View>
         </TouchableOpacity>
       </View>
