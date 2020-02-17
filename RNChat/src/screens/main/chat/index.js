@@ -137,7 +137,8 @@ export class Chat extends PureComponent {
       <KeyboardAvoidingView
         style={{ flex: 1, backgroundColor: 'white' }}
         behavior={Platform.OS === 'ios' ? 'padding' : null}
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 120 : 100}>
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 100}
+      >
         <StatusBar barStyle="dark-content" />
         {activIndicator &&
           (
@@ -209,6 +210,7 @@ const styles = StyleSheet.create({
   button: {
     width: 40,
     height: 50,
+    marginBottom: Platform.OS === 'ios' ? 15 : 0,
     marginLeft: 12,
     alignItems: 'center',
     justifyContent: 'center',
@@ -231,6 +233,7 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   inputContainer: {
+    marginBottom: Platform.OS === 'ios' ? 15 : 0,
     flexDirection: 'row'
   }
 });
