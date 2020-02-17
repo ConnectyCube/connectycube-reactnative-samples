@@ -12,8 +12,7 @@
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		5EF20AA6754374CA501C2BEA /* libPods-Rnchat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B50FC6C9C61DBF6F2ECCE03 /* libPods-Rnchat.a */; };
-		C3558DAC27C460E62A0790EC /* libPods-RnchatTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 322DFC756A50BCF5D436D691 /* libPods-RnchatTests.a */; };
+		C05CADC5936AF078A857EF51 /* libPods-RNChat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B6888CD0CE6E672DD0983E58 /* libPods-RNChat.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -31,7 +30,6 @@
 		00E356EE1AD99517003FC87E /* RnchatTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RnchatTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* RnchatTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RnchatTests.m; sourceTree = "<group>"; };
-		0B50FC6C9C61DBF6F2ECCE03 /* libPods-Rnchat.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Rnchat.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07F961A680F5B00A75B9A /* Rnchat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Rnchat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Rnchat/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = Rnchat/AppDelegate.m; sourceTree = "<group>"; };
@@ -39,7 +37,6 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Rnchat/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Rnchat/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Rnchat/main.m; sourceTree = "<group>"; };
-		29ED7EBD4278DAA5A3FCF0DD /* Pods-RnchatTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RnchatTests.release.xcconfig"; path = "Target Support Files/Pods-RnchatTests/Pods-RnchatTests.release.xcconfig"; sourceTree = "<group>"; };
 		2CD2E35423B4C708003C0777 /* MaterialIcons copy.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "MaterialIcons copy.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons copy.ttf"; sourceTree = "<group>"; };
 		2CD2E35523B4C708003C0777 /* FontAwesome5_Solid copy.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "FontAwesome5_Solid copy.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid copy.ttf"; sourceTree = "<group>"; };
 		2CD2E35623B4C708003C0777 /* EvilIcons copy.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "EvilIcons copy.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons copy.ttf"; sourceTree = "<group>"; };
@@ -57,16 +54,17 @@
 		2CD2E36223B4C70A003C0777 /* Feather copy.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Feather copy.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Feather copy.ttf"; sourceTree = "<group>"; };
 		2CD2E36323B4C70A003C0777 /* FontAwesome5_Regular copy.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "FontAwesome5_Regular copy.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular copy.ttf"; sourceTree = "<group>"; };
 		2CE98D4923EB0944000380B2 /* Rnchat.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Rnchat.entitlements; path = Rnchat/Rnchat.entitlements; sourceTree = "<group>"; };
-		322DFC756A50BCF5D436D691 /* libPods-RnchatTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RnchatTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3418DA39172AC201E3A63C71 /* Pods-Rnchat-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Rnchat-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-Rnchat-tvOSTests/Pods-Rnchat-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		4D7A737186EAE3454F98E124 /* Pods-Rnchat-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Rnchat-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-Rnchat-tvOSTests/Pods-Rnchat-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		5A3F5669ECCB2058FB6BBC6A /* Pods-Rnchat-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Rnchat-tvOS.release.xcconfig"; path = "Target Support Files/Pods-Rnchat-tvOS/Pods-Rnchat-tvOS.release.xcconfig"; sourceTree = "<group>"; };
+		5B639327DB3B1347966F2053 /* Pods-RNChat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNChat.debug.xcconfig"; path = "Target Support Files/Pods-RNChat/Pods-RNChat.debug.xcconfig"; sourceTree = "<group>"; };
 		60D9A4EE8C929D0695209C51 /* Pods-Rnchat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Rnchat.debug.xcconfig"; path = "Target Support Files/Pods-Rnchat/Pods-Rnchat.debug.xcconfig"; sourceTree = "<group>"; };
 		7C64CD4B493900D0E8FFE171 /* libPods-Rnchat-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Rnchat-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		850D8CA0A2077791AE43290E /* libPods-Rnchat-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Rnchat-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		92E35F3216F3A31DBFEDE784 /* Pods-RnchatTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RnchatTests.debug.xcconfig"; path = "Target Support Files/Pods-RnchatTests/Pods-RnchatTests.debug.xcconfig"; sourceTree = "<group>"; };
 		A69EF3537B4F6F06207CA3A5 /* Pods-Rnchat-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Rnchat-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-Rnchat-tvOS/Pods-Rnchat-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		AC639B722163F5C695A5CB92 /* Pods-Rnchat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Rnchat.release.xcconfig"; path = "Target Support Files/Pods-Rnchat/Pods-Rnchat.release.xcconfig"; sourceTree = "<group>"; };
+		B6888CD0CE6E672DD0983E58 /* libPods-RNChat.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RNChat.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		DCBA280B95E3C078BBF8F73B /* Pods-RNChat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNChat.release.xcconfig"; path = "Target Support Files/Pods-RNChat/Pods-RNChat.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
@@ -76,7 +74,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C3558DAC27C460E62A0790EC /* libPods-RnchatTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -84,7 +81,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5EF20AA6754374CA501C2BEA /* libPods-Rnchat.a in Frameworks */,
+				C05CADC5936AF078A857EF51 /* libPods-RNChat.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -152,10 +149,9 @@
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
-				0B50FC6C9C61DBF6F2ECCE03 /* libPods-Rnchat.a */,
 				7C64CD4B493900D0E8FFE171 /* libPods-Rnchat-tvOS.a */,
 				850D8CA0A2077791AE43290E /* libPods-Rnchat-tvOSTests.a */,
-				322DFC756A50BCF5D436D691 /* libPods-RnchatTests.a */,
+				B6888CD0CE6E672DD0983E58 /* libPods-RNChat.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -200,8 +196,8 @@
 				5A3F5669ECCB2058FB6BBC6A /* Pods-Rnchat-tvOS.release.xcconfig */,
 				3418DA39172AC201E3A63C71 /* Pods-Rnchat-tvOSTests.debug.xcconfig */,
 				4D7A737186EAE3454F98E124 /* Pods-Rnchat-tvOSTests.release.xcconfig */,
-				92E35F3216F3A31DBFEDE784 /* Pods-RnchatTests.debug.xcconfig */,
-				29ED7EBD4278DAA5A3FCF0DD /* Pods-RnchatTests.release.xcconfig */,
+				5B639327DB3B1347966F2053 /* Pods-RNChat.debug.xcconfig */,
+				DCBA280B95E3C078BBF8F73B /* Pods-RNChat.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -213,7 +209,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "RnchatTests" */;
 			buildPhases = (
-				D3A15CAAB2128D980BF04159 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
@@ -328,7 +323,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Rnchat/Pods-Rnchat-resources.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-RNChat/Pods-RNChat-resources.sh",
 				"${PODS_CONFIGURATION_BUILD_DIR}/QBImagePickerController/QBImagePicker.bundle",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Entypo.ttf",
@@ -371,29 +366,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Rnchat/Pods-Rnchat-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		D3A15CAAB2128D980BF04159 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-RnchatTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-RNChat/Pods-RNChat-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		EC5AFF577E478434393FBD19 /* [CP] Check Pods Manifest.lock */ = {
@@ -411,7 +384,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Rnchat-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-RNChat-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -482,7 +455,6 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 92E35F3216F3A31DBFEDE784 /* Pods-RnchatTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -505,7 +477,6 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 29ED7EBD4278DAA5A3FCF0DD /* Pods-RnchatTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
@@ -525,7 +496,7 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 60D9A4EE8C929D0695209C51 /* Pods-Rnchat.debug.xcconfig */;
+			baseConfigurationReference = 5B639327DB3B1347966F2053 /* Pods-RNChat.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Rnchat/Rnchat.entitlements;
@@ -550,7 +521,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AC639B722163F5C695A5CB92 /* Pods-Rnchat.release.xcconfig */;
+			baseConfigurationReference = DCBA280B95E3C078BBF8F73B /* Pods-RNChat.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Rnchat/Rnchat.entitlements;
