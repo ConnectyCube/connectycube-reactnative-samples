@@ -121,7 +121,8 @@ export default class VideoScreen extends React.Component {
   };
 
   _onRejectCallListener = (session, userId, extension) => {
-    CallService.processOnRejectCallListener(userId);
+    CallService.processOnRejectCallListener(userId, extension);
+    this.removeRemoteStream(userId);
   };
 
   _onStopCallListener = (session, userId, extension) => {

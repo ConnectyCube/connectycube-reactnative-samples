@@ -69,7 +69,7 @@ export default class CallService {
     }
   };
 
-  rejectCall = session => session.reject({});
+  rejectCall = (session, extension) => session.reject(extension);
 
   setAudioMuteState = mute => {
     if (mute) {
@@ -90,30 +90,38 @@ export default class CallService {
   }
 
   processOnCallListener(session) {
-    return new Promise(resolve => {
-      Alert.alert(
-        'Incoming call',
-        `from ${this.getUserById(session.initiatorID, 'name')}`,
-        [
-          {
-            text: 'Accept',
-            onPress: () => this.acceptCall(session).then(resolve),
-          },
-          {
-            text: 'Reject',
-            onPress: () => this.rejectCall(session),
-            style: 'cancel',
-          },
-        ],
-        {cancelable: false},
-      );
+    return new Promise((resolve, reject) => {
+      if (this._session) {
+        this.rejectCall(session, {busy: true});
+        reject();
+      } else {
+        Alert.alert(
+          'Incoming call',
+          `from ${this.getUserById(session.initiatorID, 'name')}`,
+          [
+            {
+              text: 'Accept',
+              onPress: () => this.acceptCall(session).then(resolve),
+            },
+            {
+              text: 'Reject',
+              onPress: () => this.rejectCall(session),
+              style: 'cancel',
+            },
+          ],
+          {cancelable: false},
+        );
+      }
     });
   }
 
-  processOnRejectCallListener(userId) {
-    this.showToast(
-      `${this.getUserById(userId, 'name')} rejected the call request`,
-    );
+  processOnRejectCallListener(userId, extension = {}) {
+    const userName = this.getUserById(userId, 'name');
+    const message = extension.busy
+      ? `${userName} is busy`
+      : `${userName} rejected the call request`;
+
+    this.showToast(message);
   }
 
   processOnStopCallListener(userId, isInitiator) {
