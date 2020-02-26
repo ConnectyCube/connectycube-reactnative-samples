@@ -2,7 +2,6 @@ import {Platform, ToastAndroid} from 'react-native';
 import Toast from 'react-native-simple-toast';
 import ConnectyCube from 'react-native-connectycube';
 import InCallManager from 'react-native-incall-manager';
-import {Alert} from 'react-native';
 import {users} from '../config';
 
 export default class CallService {
@@ -111,22 +110,7 @@ export default class CallService {
         reject();
       }
 
-      Alert.alert(
-        'Incoming call',
-        `from ${this.getUserById(session.initiatorID, 'name')}`,
-        [
-          {
-            text: 'Accept',
-            onPress: () => this.acceptCall(session).then(resolve),
-          },
-          {
-            text: 'Reject',
-            onPress: () => this.rejectCall(session),
-            style: 'cancel',
-          },
-        ],
-        {cancelable: false},
-      );
+      resolve();
     });
   }
 
