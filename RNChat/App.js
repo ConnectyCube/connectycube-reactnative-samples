@@ -1,13 +1,13 @@
-import React from 'react';
-import {Provider} from 'react-redux';
-import store from './src/store';
-import AppRoot from './src/components/Root';
+import React from 'react'
+import { Provider, connect } from 'react-redux'
+import store from './src/store'
+import Navigation from './src/routing/init'
 
 export default class App extends React.Component {
   render() {
     return (
       <Provider store={store}>
-        <AppRoot />
+        <Navigation />
       </Provider>
     );
   }

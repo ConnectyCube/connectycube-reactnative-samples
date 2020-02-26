@@ -9,10 +9,12 @@ Project contains the following features implemented:
 - 1-1 messaging
 - Group messaging
 - Users search
-- Unread messages counter
-- Last message preview
-- Last massage date sent
-- App activity state management
+- Unread messages counters
+- Sent/Delivered/Read statuses
+- ‘Is typing’ statuses
+- File attachments
+- Group chat info
+- Group chat: add/remove participants
 - Push Notifications for chat messages when a user is not in the app
 
 ## Documentation
@@ -23,15 +25,10 @@ ConnectyCube Chat API documentation - [https://developers.connectycube.com/react
 
 ## Screenshots
 
-<kbd><img alt="React Native chat code sample, list of chats" src="https://developers.connectycube.com/docs/_images/code_samples/reactnative_codesample_list_of_chats.jpg" width="200" /></kbd> <kbd><img alt="React Native chat code sample, chat history" src="https://developers.connectycube.com/docs/_images/code_samples/reactnative_codesample_chat.jpg" width="200" /></kbd> <kbd><img alt="React Native chat code sample, login screen" src="https://developers.connectycube.com/docs/_images/code_samples/reactnative_codesample_login.jpg" width="200" /></kbd>
+<kbd><img alt="React Native chat code sample, list of chats" src="https://developers.connectycube.com/docs/_images/code_samples/reactnative/reactnative_codesample_chat_chats.jpg" width="200" /></kbd> <kbd><img alt="React Native chat code sample, chat history" src="https://developers.connectycube.com/docs/_images/code_samples/reactnative/reactnative_codesample_chat_chat.jpg" width="200" /></kbd> <kbd><img alt="React Native chat code sample, profile" src="https://developers.connectycube.com/docs/_images/code_samples/reactnative/reactnative_codesample_chat_profile.jpg" width="200" /></kbd>
 
 ## Roadmap
 
-- Sent/Delivered/Read statuses
-- ‘Is typing’ statuses
-- File attachments
-- Group chat info
-- Group chat: add/remove participants
 - Delete chat functionality
 - Edit messages
 - Delete messages
@@ -43,7 +40,7 @@ Quick start [React Native](https://facebook.github.io/react-native/docs/getting-
 Prepare environment for React Native and:
 
 1. Clone the project;
-2. Install node_modules from connectycube-js-samples/RNChat - `npm install`;
+2. Install node_modules: `cd connectycube-js-samples/RNChat && npm install`
 3. Run `npm run ios` or `npm run android`.
 
 ## Can't build yourself?

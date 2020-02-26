@@ -1,9 +1,10 @@
-import { CHAT_CONNECTED, CHAT_DISCONNECTED } from '../actions/connection'
+import { CHAT_CONNECTED, CHAT_DISCONNECTED, CHAT_CONNECTING, DISCONNECTED } from '../actions/connection'
 
-export default (connected = false, action) => {
-	switch (action.type) {
-		case CHAT_CONNECTED: return true
-    case CHAT_DISCONNECTED: return false
-		default: return connected
-	}
+export default (chatConnectionState = DISCONNECTED, action) => {
+  switch (action.type) {
+  case CHAT_CONNECTED: return action.chatConnectionState
+  case CHAT_CONNECTING: return action.chatConnectionState
+  case CHAT_DISCONNECTED: return action.chatConnectionState
+  default: return chatConnectionState
+  }
 }

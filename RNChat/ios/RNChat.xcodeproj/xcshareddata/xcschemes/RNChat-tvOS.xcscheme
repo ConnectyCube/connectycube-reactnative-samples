@@ -29,8 +29,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-               BuildableName = "RNChat-tvOS.app"
-               BlueprintName = "RNChat-tvOS"
+               BuildableName = "Rnchat-tvOS.app"
+               BlueprintName = "Rnchat-tvOS"
                ReferencedContainer = "container:RNChat.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -43,8 +43,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2D02E48F1E0B4A5D006451C7"
-               BuildableName = "RNChat-tvOSTests.xctest"
-               BlueprintName = "RNChat-tvOSTests"
+               BuildableName = "Rnchat-tvOSTests.xctest"
+               BlueprintName = "Rnchat-tvOSTests"
                ReferencedContainer = "container:RNChat.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -55,29 +55,27 @@
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
+            BuildableName = "Rnchat-tvOS.app"
+            BlueprintName = "Rnchat-tvOS"
+            ReferencedContainer = "container:RNChat.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <Testables>
          <TestableReference
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2D02E48F1E0B4A5D006451C7"
-               BuildableName = "RNChat-tvOSTests.xctest"
-               BlueprintName = "RNChat-tvOSTests"
+               BuildableName = "Rnchat-tvOSTests.xctest"
+               BlueprintName = "Rnchat-tvOSTests"
                ReferencedContainer = "container:RNChat.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-            BuildableName = "RNChat-tvOS.app"
-            BlueprintName = "RNChat-tvOS"
-            ReferencedContainer = "container:RNChat.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
-      <AdditionalOptions>
-      </AdditionalOptions>
    </TestAction>
    <LaunchAction
       buildConfiguration = "Debug"
@@ -94,13 +92,11 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-            BuildableName = "RNChat-tvOS.app"
-            BlueprintName = "RNChat-tvOS"
+            BuildableName = "Rnchat-tvOS.app"
+            BlueprintName = "Rnchat-tvOS"
             ReferencedContainer = "container:RNChat.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
-      <AdditionalOptions>
-      </AdditionalOptions>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -113,8 +109,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-            BuildableName = "RNChat-tvOS.app"
-            BlueprintName = "RNChat-tvOS"
+            BuildableName = "Rnchat-tvOS.app"
+            BlueprintName = "Rnchat-tvOS"
             ReferencedContainer = "container:RNChat.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
