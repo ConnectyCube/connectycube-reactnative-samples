@@ -117,34 +117,46 @@ export default class VideoScreen extends React.Component {
   };
 
   _onAcceptCallListener = (session, userId, extension) => {
-    this.setOnCall();
+    CallService.processOnAcceptCallListener(
+      session,
+      userId,
+      extension,
+    ).then(() => this.setOnCall());
   };
 
   _onRejectCallListener = (session, userId, extension) => {
-    CallService.processOnRejectCallListener(userId, extension);
-    this.removeRemoteStream(userId);
+    CallService.processOnRejectCallListener(
+      session,
+      userId,
+      extension,
+    ).then(() => this.removeRemoteStream(userId));
   };
 
   _onStopCallListener = (session, userId, extension) => {
     const isStoppedByInitiator = session.initiatorID === userId;
 
-    CallService.processOnStopCallListener(userId, isStoppedByInitiator);
-
-    if (isStoppedByInitiator) {
-      this.resetState();
-    } else {
-      this.removeRemoteStream(userId);
-    }
+    CallService.processOnStopCallListener(userId, isStoppedByInitiator).then(
+      () => {
+        if (isStoppedByInitiator) {
+          this.resetState();
+        } else {
+          this.removeRemoteStream(userId);
+        }
+      },
+    );
   };
 
   _onUserNotAnswerListener = (session, userId) => {
-    CallService.processOnUserNotAnswer(userId);
-    this.removeRemoteStream(userId);
+    CallService.processOnUserNotAnswerListener(userId).then(() =>
+      this.removeRemoteStream(userId),
+    );
   };
 
   _onRemoteStreamListener = (session, userId, stream) => {
-    this.updateRemoteStream(userId, stream);
-    this.setOnCall();
+    CallService.processOnRemoteStreamListener(userId).then(() => {
+      this.updateRemoteStream(userId, stream);
+      this.setOnCall();
+    });
   };
 
   render() {

@@ -85,50 +85,113 @@ export default class CallService {
 
   setSpeakerphoneOn = flag => InCallManager.setSpeakerphoneOn(flag);
 
-  processOnUserNotAnswer(userId) {
-    this.showToast(`${this.getUserById(userId, 'name')} did not answer`);
-  }
-
-  processOnCallListener(session) {
+  processOnUserNotAnswerListener(userId) {
     return new Promise((resolve, reject) => {
-      if (this._session) {
-        this.rejectCall(session, {busy: true});
+      if (!this._session) {
         reject();
       } else {
-        Alert.alert(
-          'Incoming call',
-          `from ${this.getUserById(session.initiatorID, 'name')}`,
-          [
-            {
-              text: 'Accept',
-              onPress: () => this.acceptCall(session).then(resolve),
-            },
-            {
-              text: 'Reject',
-              onPress: () => this.rejectCall(session),
-              style: 'cancel',
-            },
-          ],
-          {cancelable: false},
-        );
+        const userName = this.getUserById(userId, 'name');
+        const message = `${userName} did not answer`;
+
+        this.showToast(message);
+
+        resolve();
       }
     });
   }
 
-  processOnRejectCallListener(userId, extension = {}) {
-    const userName = this.getUserById(userId, 'name');
-    const message = extension.busy
-      ? `${userName} is busy`
-      : `${userName} rejected the call request`;
+  processOnCallListener(session) {
+    return new Promise((resolve, reject) => {
+      if (session.initiatorID === session.currentUserID) {
+        reject();
+      }
 
-    this.showToast(message);
+      if (this._session) {
+        this.rejectCall(session, {busy: true});
+        reject();
+      }
+
+      Alert.alert(
+        'Incoming call',
+        `from ${this.getUserById(session.initiatorID, 'name')}`,
+        [
+          {
+            text: 'Accept',
+            onPress: () => this.acceptCall(session).then(resolve),
+          },
+          {
+            text: 'Reject',
+            onPress: () => this.rejectCall(session),
+            style: 'cancel',
+          },
+        ],
+        {cancelable: false},
+      );
+    });
+  }
+
+  processOnAcceptCallListener(session, userId, extension = {}) {
+    return new Promise((resolve, reject) => {
+      if (userId === session.currentUserID) {
+        this._session = null;
+        this.showToast('You have accepted the call on other side');
+
+        reject();
+      } else {
+        const userName = this.getUserById(userId, 'name');
+        const message = `${userName} has accepted the call`;
+
+        this.showToast(message);
+
+        resolve();
+      }
+    });
+  }
+
+  processOnRejectCallListener(session, userId, extension = {}) {
+    return new Promise((resolve, reject) => {
+      if (userId === session.currentUserID) {
+        this._session = null;
+        this.showToast('You have rejected the call on other side');
+
+        reject();
+      } else {
+        const userName = this.getUserById(userId, 'name');
+        const message = extension.busy
+          ? `${userName} is busy`
+          : `${userName} rejected the call request`;
+
+        this.showToast(message);
+
+        resolve();
+      }
+    });
   }
 
   processOnStopCallListener(userId, isInitiator) {
-    this.showToast(
-      `${this.getUserById(userId, 'name')} has ${
-        isInitiator ? 'stopped' : 'left'
-      } the call`,
-    );
+    return new Promise((resolve, reject) => {
+      if (!this._session) {
+        reject();
+      } else {
+        const userName = this.getUserById(userId, 'name');
+        const message = `${userName} has ${
+          isInitiator ? 'stopped' : 'left'
+        } the call`;
+
+        this.showToast(message);
+
+        resolve();
+      }
+    });
   }
+
+  processOnRemoteStreamListener = () => {
+    return new Promise((resolve, reject) => {
+      if (!this._session) {
+        reject();
+      } else {
+        resolve();
+      }
+    });
+  };
 }
