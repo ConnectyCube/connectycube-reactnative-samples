@@ -1,6 +1,6 @@
 {
   "name": "ConnectyCubeVideoChatCodeSample",
-  "version": "1.0.0",
+  "version": "2.1.6",
   "private": true,
   "scripts": {
     "postinstall": "npx jetify && cd ios && pod install",
