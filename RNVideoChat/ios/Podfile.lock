@@ -187,6 +187,8 @@ PODS:
   - react-native-simple-toast (1.0.0):
     - React
     - Toast (~> 4.0.0)
+  - react-native-track-player (1.2.2):
+    - React
   - react-native-webrtc (1.75.3):
     - React
   - React-RCTActionSheet (0.61.5):
@@ -230,11 +232,11 @@ PODS:
     - React
   - RNCMaskedView (0.1.6):
     - React
-  - RNGestureHandler (1.5.6):
+  - RNGestureHandler (1.6.0):
     - React
   - RNReanimated (1.7.0):
     - React
-  - RNScreens (2.0.0-beta.1):
+  - RNScreens (2.1.0):
     - React
   - RNVectorIcons (6.6.0):
     - React
@@ -260,6 +262,7 @@ DEPENDENCIES:
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-simple-toast (from `../node_modules/react-native-simple-toast`)
+  - react-native-track-player (from `../node_modules/react-native-track-player`)
   - react-native-webrtc (from `../node_modules/react-native-webrtc`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
   - React-RCTAnimation (from `../node_modules/react-native/Libraries/NativeAnimation`)
@@ -319,6 +322,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-simple-toast:
     :path: "../node_modules/react-native-simple-toast"
+  react-native-track-player:
+    :path: "../node_modules/react-native-track-player"
   react-native-webrtc:
     :path: "../node_modules/react-native-webrtc"
   React-RCTActionSheet:
@@ -376,6 +381,7 @@ SPEC CHECKSUMS:
   React-jsinspector: fa0ecc501688c3c4c34f28834a76302233e29dc0
   react-native-safe-area-context: 042dfc9d4db17196841df962ba9497f6e7a5bd02
   react-native-simple-toast: 9c2f5979dfe555d0aa7b084348a06fd6ef7a6f55
+  react-native-track-player: 5aeff0bd6a0ad18079d458d4a5e87aae6568feeb
   react-native-webrtc: 86d841823e66d68cc1f86712db1c2956056bf0c2
   React-RCTActionSheet: 600b4d10e3aea0913b5a92256d2719c0cdd26d76
   React-RCTAnimation: 791a87558389c80908ed06cc5dfc5e7920dfa360
@@ -390,9 +396,9 @@ SPEC CHECKSUMS:
   ReactNativeIncallManager: 35e387f58d3fc6e8cc042f47a2256b5f50134a67
   RNCAsyncStorage: 8539fc80a0075fcc9c8e2dff84cd22dc5bf1dacf
   RNCMaskedView: e5b99bc191945f157adeede68da9d424462de177
-  RNGestureHandler: 911d3b110a7a233a34c4f800e7188a84b75319c6
+  RNGestureHandler: dde546180bf24af0b5f737c8ad04b6f3fa51609a
   RNReanimated: 031fe8d9ea93c2bd689a40f05320ef9d96f74d7f
-  RNScreens: 9d9519aa32b6bc9c4a3ab8ea4d3d86932aa29588
+  RNScreens: 2a9cd603bcebc34319c92e595283d760dd1f55f5
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
   Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
   Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b
