@@ -165,6 +165,8 @@ export default class CallService {
 
   processOnStopCallListener(userId, isInitiator) {
     return new Promise((resolve, reject) => {
+      this.resetRingtone();
+
       if (!this._session) {
         reject();
       } else {
@@ -174,7 +176,6 @@ export default class CallService {
         } the call`;
 
         this.showToast(message);
-        this.resetRingtone();
 
         resolve();
       }
