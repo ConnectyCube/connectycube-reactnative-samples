@@ -2,7 +2,7 @@ import {Platform, ToastAndroid} from 'react-native';
 import Toast from 'react-native-simple-toast';
 import ConnectyCube from 'react-native-connectycube';
 import InCallManager from 'react-native-incall-manager';
-import {Alert} from 'react-native';
+import TrackPlayer from 'react-native-track-player';
 import {users} from '../config';
 
 export default class CallService {
@@ -36,6 +36,7 @@ export default class CallService {
   acceptCall = session => {
     this._session = session;
     this.setMediaDevices();
+    this.resetRingtone();
 
     return this._session
       .getUserMedia(CallService.MEDIA_OPTIONS)
@@ -51,6 +52,7 @@ export default class CallService {
 
     this._session = ConnectyCube.videochat.createNewSession(ids, type, options);
     this.setMediaDevices();
+    this.playRingtone('out');
 
     return this._session
       .getUserMedia(CallService.MEDIA_OPTIONS)
@@ -62,6 +64,8 @@ export default class CallService {
 
   stopCall = () => {
     if (this._session) {
+      this.resetRingtone();
+      this.playRingtone('end');
       this._session.stop({});
       ConnectyCube.videochat.clearSession(this._session.ID);
       this._session = null;
@@ -69,7 +73,10 @@ export default class CallService {
     }
   };
 
-  rejectCall = (session, extension) => session.reject(extension);
+  rejectCall = (session, extension) => {
+    this.resetRingtone();
+    session.reject(extension);
+  };
 
   setAudioMuteState = mute => {
     if (mute) {
@@ -111,22 +118,9 @@ export default class CallService {
         reject();
       }
 
-      Alert.alert(
-        'Incoming call',
-        `from ${this.getUserById(session.initiatorID, 'name')}`,
-        [
-          {
-            text: 'Accept',
-            onPress: () => this.acceptCall(session).then(resolve),
-          },
-          {
-            text: 'Reject',
-            onPress: () => this.rejectCall(session),
-            style: 'cancel',
-          },
-        ],
-        {cancelable: false},
-      );
+      this.playRingtone('in');
+
+      resolve();
     });
   }
 
@@ -142,6 +136,7 @@ export default class CallService {
         const message = `${userName} has accepted the call`;
 
         this.showToast(message);
+        this.resetRingtone();
 
         resolve();
       }
@@ -170,6 +165,8 @@ export default class CallService {
 
   processOnStopCallListener(userId, isInitiator) {
     return new Promise((resolve, reject) => {
+      this.resetRingtone();
+
       if (!this._session) {
         reject();
       } else {
@@ -193,5 +190,37 @@ export default class CallService {
         resolve();
       }
     });
+  };
+
+  playRingtone = type => {
+    const outgoingCall = new Array(20).fill({
+      id: '1',
+      url: require('../../assets/sounds/dialing.mp3'),
+      title: 'Outgoing Call',
+      artist: 'Unknown',
+    });
+    const incomingCall = new Array(20).fill({
+      id: '2',
+      url: require('../../assets/sounds/calling.mp3'),
+      title: 'Incoming Call',
+      artist: 'Unknown',
+    });
+    const endCall = {
+      id: '3',
+      url: require('../../assets/sounds/end_call.mp3'),
+      title: 'End Call',
+      artist: 'Unknown',
+    };
+    const tracks =
+      type === 'out' ? outgoingCall : type === 'in' ? incomingCall : endCall;
+
+    TrackPlayer.setupPlayer().then(async () => {
+      await TrackPlayer.add(tracks);
+      TrackPlayer.play();
+    });
+  };
+
+  resetRingtone = () => {
+    TrackPlayer.reset();
   };
 }

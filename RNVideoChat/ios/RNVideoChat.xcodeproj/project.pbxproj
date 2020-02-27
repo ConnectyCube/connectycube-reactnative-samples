@@ -20,6 +20,20 @@
 		9DC014FC51856A45DE85728B /* libPods-RNVideoChat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0BF4F5550934767032D96F8A /* libPods-RNVideoChat.a */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXBuildRule section */
+		F53AA265240822D9008ED0DB /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			fileType = sourcecode.swift;
+			inputFiles = (
+			);
+			isEditable = 1;
+			outputFiles = (
+			);
+			script = "# $(SWIFT_EXEC)\n";
+		};
+/* End PBXBuildRule section */
+
 /* Begin PBXContainerItemProxy section */
 		00E356F41AD99517003FC87E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -233,6 +247,7 @@
 				6022A4F5C1D5FA2D4C041A57 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
+				F53AA265240822D9008ED0DB /* PBXBuildRule */,
 			);
 			dependencies = (
 			);
@@ -677,6 +692,7 @@
 				INFOPLIST_FILE = RNVideoChat/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				NEW_SETTING = "";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -684,6 +700,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = RNVideoChat;
+				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -700,6 +717,7 @@
 				INFOPLIST_FILE = RNVideoChat/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				NEW_SETTING = "";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -707,6 +725,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = RNVideoChat;
+				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;

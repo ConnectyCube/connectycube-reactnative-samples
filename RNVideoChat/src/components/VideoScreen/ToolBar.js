@@ -98,8 +98,8 @@ export default class ToolBar extends Component {
   };
 
   render() {
-    const {isCalling, isActiveCall} = this.props;
-    const isCallInProgress = isActiveCall || isCalling;
+    const {isActiveSelect, isActiveCall} = this.props;
+    const isCallInProgress = isActiveCall || !isActiveSelect;
     const isAvailableToSwitch =
       isActiveCall && CallService.mediaDevices.length > 1;
 
