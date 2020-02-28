@@ -41,7 +41,6 @@ export default class CallService {
     this.stopSounds();
     this._session = session;
     this.setMediaDevices();
-    this.resetRingtone();
 
     return this._session
       .getUserMedia(CallService.MEDIA_OPTIONS)
