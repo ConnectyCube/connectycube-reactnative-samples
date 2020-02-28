@@ -27,8 +27,8 @@ export default class VideoScreen extends React.Component {
   }
 
   componentWillUnmount() {
-    AuthService.logout();
     CallService.stopCall();
+    AuthService.logout();
   }
 
   componentDidUpdate(prevProps, prevState) {

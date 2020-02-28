@@ -64,7 +64,6 @@ export default class CallService {
 
   stopCall = () => {
     if (this._session) {
-      this.resetRingtone();
       this.playRingtone('end');
       this._session.stop({});
       ConnectyCube.videochat.clearSession(this._session.ID);
@@ -74,7 +73,6 @@ export default class CallService {
   };
 
   rejectCall = (session, extension) => {
-    this.resetRingtone();
     session.reject(extension);
   };
 
