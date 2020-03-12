@@ -1,6 +1,6 @@
 # Chat and Video Chat code samples for React Native, based on ConnectyCube platform
 
-This project contains chat and video chat code samples for JavaScript, React Native, NativeScript, Cordova environments and based on [ConnectyCube](https://connectycube.com/) communication platform.
+This project contains chat and video chat code samples for React Native platform based on [ConnectyCube](https://connectycube.com/) communication platform.
 
 The following code samples are available:
 
