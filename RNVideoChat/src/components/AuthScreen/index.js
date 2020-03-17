@@ -27,7 +27,7 @@ export default class AuthScreen extends PureComponent {
       navigation.push('VideoScreen', {opponentsIds});
     };
 
-    const _onFailLogin = () => {
+    const _onFailLogin = (error = {}) => {
       alert(`Error.\n\n${JSON.stringify(error)}`);
     };
 
