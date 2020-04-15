@@ -1,21 +1,21 @@
-import React, { Component } from 'react'
-import { StyleSheet, View, Image } from 'react-native'
-import AuthService from '../services/auth-service'
-import ChatService from '../services/chat-service'
+import React, { Component } from 'react';
+import { StyleSheet, View, Image } from 'react-native';
+import AuthService from '../services/auth-service';
+import ChatService from '../services/chat-service';
 
 export default class AppWrap extends Component {
   constructor(props) {
-    super(props)
-    this.initUser()
+    super(props);
+    this.initUser();
   }
 
   initUser = async () => {
-    const { navigation } = this.props
-    const rootStackScreen = await AuthService.init()
+    const { navigation } = this.props;
+    const rootStackScreen = await AuthService.init();
     if (rootStackScreen === 'Dialogs') {
-      ChatService.setUpListeners()
+      ChatService.setUpListeners();
     }
-    navigation.navigate(rootStackScreen)
+    navigation.navigate(rootStackScreen);
   }
 
   render() {
@@ -23,7 +23,7 @@ export default class AppWrap extends Component {
       <View style={styles.container}>
         <Image style={styles.imageSize} source={require('../../assets/image/logo_with_text.png')} />
       </View>
-    )
+    );
   }
 }
 
@@ -35,6 +35,6 @@ const styles = StyleSheet.create({
   },
   imageSize: {
     width: 200,
-    height: 150
+    height: 150,
   },
-})
+});

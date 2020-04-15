@@ -1,29 +1,32 @@
-import React, { Component } from 'react'
-import { KeyboardAvoidingView, StatusBar, Platform } from 'react-native'
-import { Header } from 'react-navigation-stack'
-import AuthLogo from './AuthLogo'
-import AuthForm from './AuthForm'
-import AuthLinks from './AuthLinks'
-import { STATUS_BAR_COLOR } from '../../helpers/constants'
+import React, { Component } from 'react';
+import { KeyboardAvoidingView, StatusBar, Platform } from 'react-native';
+import { Header } from 'react-navigation-stack';
 
-export default class Auth extends Component {
+import AuthLogo from './AuthLogo';
+import AuthForm from './AuthForm';
+import AuthLinks from './AuthLinks';
+import { STATUS_BAR_COLOR } from '../../helpers/constants';
+
+class Auth extends Component {
   state = {
-    isLogin: true
+    isLogin: true,
   }
 
   toggleAuthState = () => {
-    this.setState({ isLogin: !this.state.isLogin })
+    const { isLogin } = this.state;
+    this.setState({ isLogin: !isLogin });
   }
 
   render() {
-    const { isLogin } = this.state
-    const { navigation } = this.props
+    const { isLogin } = this.state;
+    const { navigation } = this.props;
     return (
       <KeyboardAvoidingView
         style={{ flex: 1, backgroundColor: 'white' }}
         behavior={Platform.OS === 'ios' ? 'padding' : null}
-        keyboardVerticalOffset={Platform.OS === 'ios' ? Header.HEIGHT + 20 : 0}>
-        <StatusBar barStyle={'dark-content'} />
+        keyboardVerticalOffset={Platform.OS === 'ios' ? Header.HEIGHT + 20 : 0}
+      >
+        <StatusBar barStyle="dark-content" />
         <AuthLogo />
         <AuthForm
           navigation={navigation}
@@ -34,6 +37,8 @@ export default class Auth extends Component {
           isLogin={isLogin}
         />
       </KeyboardAvoidingView>
-    )
+    );
   }
 }
+
+export default Auth;

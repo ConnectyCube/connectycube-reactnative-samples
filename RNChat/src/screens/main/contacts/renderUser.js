@@ -1,27 +1,28 @@
-import React, { PureComponent } from 'react'
-import { StyleSheet, View, TouchableOpacity, Text } from 'react-native'
-import Avatar from '../../components/avatar'
-import Icon from 'react-native-vector-icons/MaterialIcons'
+import React, { PureComponent } from 'react';
+import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+
+import Avatar from '../../components/avatar';
 
 export default class User extends PureComponent {
   state = {
-    isSelectedUser: false
+    isSelectedUser: false,
   }
 
   toggleUserSelect() {
-    const { selectUsers, user } = this.props
-    selectUsers(user)
+    const { selectUsers, user } = this.props;
+    selectUsers(user);
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.selectedUsers !== this.props.selectedUsers) {
-      this.setState({ isSelectedUser: this.props.selectedUsers })
+      this.setState({ isSelectedUser: this.props.selectedUsers });
     }
   }
 
   render() {
-    const { user, selectedUsers, dialogType } = this.props
-    const { isSelectedUser } = this.state
+    const { user, selectedUsers, dialogType } = this.props;
+    const { isSelectedUser } = this.state;
     return (
       <TouchableOpacity onPress={() => this.toggleUserSelect()}>
         <View style={styles.container}>
@@ -37,11 +38,9 @@ export default class User extends PureComponent {
             {dialogType ? isSelectedUser || selectedUsers ? (
               <Icon name="radio-button-checked" size={24} color="green" />
             ) : (
-                <Icon name="radio-button-unchecked" size={24} color="black" />
-              ) : <Icon name="arrow-forward" size={24} color="green" />
-            }
+              <Icon name="radio-button-unchecked" size={24} color="black" />
+            ) : <Icon name="arrow-forward" size={24} color="green" />}
           </>
-
         </View>
       </TouchableOpacity>
     );

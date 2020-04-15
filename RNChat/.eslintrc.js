@@ -1,42 +1,49 @@
 module.exports = {
   'extends': [
+    "plugin:react/recommended",
+    'plugin:react-native/all',
     'airbnb',
-    'plugin:react-native/all'
   ],
   'parser': 'babel-eslint',
+  'globals': {
+    '__DEV__': true,
+  },
   'plugins': [
     'react',
     'react-native',
-    'operatorChaining'
+    'react-hooks',
   ],
   'parserOptions': {
     'ecmaFeatures': {
-      'jsx': true
+      'jsx': true,
     }
   },
   'env': {
-    'react-native/react-native': true
+    'react-native/react-native': true,
   },
   'settings': {
     'react-native/style-sheet-object-names': [
       'EStyleSheet',
       'OtherStyleSheet',
-      'PStyleSheet'
+      'PStyleSheet',
     ]
   },
   'rules': {
+    'no-alert': 0,
+    'react/state-in-constructor': 0,
     'react/prop-types': 0,
     'react/sort-comp': 0,
     'react/destructuring-assignment': 1,
     'react/jsx-filename-extension': 0,
     'react-native/no-unused-styles': 2,
+    'react-native/no-color-literals': 0,
+    'react/no-string-refs': 1,
+    'react/no-did-update-set-state': 0,
     'react-native/split-platform-components': 2,
-    'react-native/no-inline-styles': 2,
-    'react-native/no-color-literals': 2,
+    'react-native/no-inline-styles': 0,
     'react-native/no-raw-text': 2,
     'class-methods-use-this': 0,
-    'comma-dangle': [1, 'never'],
-    'semi': [1, 'never'],
+    'comma-dangle': [1, 'always-multiline'],
     'object-curly-newline': 0,
     'indent': [1, 2],
     'camelcase': 0,
@@ -57,6 +64,8 @@ module.exports = {
     'no-use-before-define': 0,
     'no-param-reassign': 1,
     'linebreak-style': 0,
-    'no-nested-ternary': 0
+    'no-nested-ternary': 0,
+    'import/no-cycle': 0,
+    'implicit-arrow-linebreak': 0,
   }
 }

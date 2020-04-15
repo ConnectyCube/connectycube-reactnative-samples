@@ -1,18 +1,15 @@
-import React, { PureComponent } from 'react'
-import { View, StyleSheet, ActivityIndicator } from 'react-native'
-import { SIZE_SCREEN } from '../../helpers/constants'
+import React from 'react';
+import { View, StyleSheet, ActivityIndicator } from 'react-native';
 
-export default class Indicator extends PureComponent {
+import { SIZE_SCREEN } from '../../helpers/constants';
 
-  render() {
-    const { color, size } = this.props
-    return (
-      <View style={styles.container}>
-        <ActivityIndicator size={size} color={color} />
-      </View>
-    )
-  }
-}
+const Indicator = ({ color, size }) => (
+  <View style={styles.container}>
+    <ActivityIndicator size={size} color={color} />
+  </View>
+);
+
+export default Indicator;
 
 const styles = StyleSheet.create({
   container: {
@@ -21,6 +18,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: SIZE_SCREEN.width,
     height: SIZE_SCREEN.height - 78,
-    zIndex: 1000
-  }
-})
+    zIndex: 1000,
+  },
+});

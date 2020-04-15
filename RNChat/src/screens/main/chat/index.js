@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import React, { PureComponent } from 'react';
 import {
   StyleSheet,
   View,
@@ -8,37 +8,35 @@ import {
   KeyboardAvoidingView,
   TouchableOpacity,
   Platform,
-  ActivityIndicator
-} from 'react-native'
-import { connect } from 'react-redux'
-import Icon from 'react-native-vector-icons/MaterialIcons'
-import AttachmentIcon from 'react-native-vector-icons/Entypo'
-import { AutoGrowingTextInput } from 'react-native-autogrow-textinput'
-import ChatService from '../../../services/chat-service'
-import UsersService from '../../../services/users-service'
-import Message from './message'
-import Avatar from '../../components/avatar'
-import ImagePicker from 'react-native-image-crop-picker'
-import { DIALOG_TYPE } from '../../../helpers/constants'
+  ActivityIndicator,
+} from 'react-native';
+import { connect } from 'react-redux';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import AttachmentIcon from 'react-native-vector-icons/Entypo';
+import { AutoGrowingTextInput } from 'react-native-autogrow-textinput';
+
+import ImagePicker from 'react-native-image-crop-picker';
+import ChatService from '../../../services/chat-service';
+import UsersService from '../../../services/users-service';
+import Message from './message';
+import Avatar from '../../components/avatar';
+import { DIALOG_TYPE } from '../../../helpers/constants';
 
 export class Chat extends PureComponent {
-  constructor(props) {
-    super(props)
-    this.state = {
-      activIndicator: true,
-      messageText: ''
-    }
-  }
+  state = {
+    activIndicator: true,
+    messageText: '',
+  };
 
   needToGetMoreMessage = null
 
   static navigationOptions = ({ navigation }) => {
-    let dialog = navigation.state.params.dialog
-    let dialogPhoto = ''
+    const { dialog } = navigation.state.params;
+    let dialogPhoto = '';
     if (dialog.type === DIALOG_TYPE.PRIVATE) {
-      dialogPhoto = UsersService.getUsersAvatar(dialog.occupants_ids)
+      dialogPhoto = UsersService.getUsersAvatar(dialog.occupants_ids);
     } else {
-      dialogPhoto = dialog.photo
+      dialogPhoto = dialog.photo;
     }
     return {
       headerTitle: (
@@ -54,85 +52,85 @@ export class Chat extends PureComponent {
             iconSize="small"
           />
         </TouchableOpacity>
-      )
-    }
+      ),
+    };
   }
 
   static goToDetailsScreen = (props) => {
-    const isNeedFetchUsers = props.getParam('isNeedFetchUsers', false)
+    const isNeedFetchUsers = props.getParam('isNeedFetchUsers', false);
     if (props.state.params.dialog.type === DIALOG_TYPE.PRIVATE) {
-      props.push('ContactDetails', { dialog: props.state.params.dialog })
+      props.push('ContactDetails', { dialog: props.state.params.dialog });
     } else {
-      props.push('GroupDetails', { dialog: props.state.params.dialog, isNeedFetchUsers })
+      props.push('GroupDetails', { dialog: props.state.params.dialog, isNeedFetchUsers });
     }
   }
 
   componentDidMount() {
-    const { dialog } = this.props.navigation.state.params
+    const { navigation } = this.props;
+    const { dialog } = navigation.state.params;
     ChatService.getMessages(dialog)
       .catch(e => alert(`Error.\n\n${JSON.stringify(e)}`))
       .then(amountMessages => {
-        amountMessages === 100 ? this.needToGetMoreMessage = true : this.needToGetMoreMessage = false
-        this.setState({ activIndicator: false })
-      })
+        amountMessages === 100 ? this.needToGetMoreMessage = true : this.needToGetMoreMessage = false;
+        this.setState({ activIndicator: false });
+      });
   }
 
   componentWillUnmount() {
-    ChatService.resetSelectedDialogs()
+    ChatService.resetSelectedDialogs();
   }
 
-
   getMoreMessages = () => {
-    const { dialog } = this.props.navigation.state.params
+    const { navigation } = this.props;
+    const { dialog } = navigation.state.params;
     if (this.needToGetMoreMessage) {
-      this.setState({ activIndicator: true })
+      this.setState({ activIndicator: true });
       ChatService.getMoreMessages(dialog)
         .then(amountMessages => {
-          amountMessages === 100 ? this.needToGetMoreMessage = true : this.needToGetMoreMessage = false
-          this.setState({ activIndicator: false })
-        })
+          amountMessages === 100 ? this.needToGetMoreMessage = true : this.needToGetMoreMessage = false;
+          this.setState({ activIndicator: false });
+        });
     }
   }
 
   onTypeMessage = messageText => this.setState({ messageText })
 
   sendMessage = async () => {
-    const { dialog } = this.props.navigation.state.params
-    const { messageText } = this.state
-    if (messageText.length <= 0) return
-    await ChatService.sendMessage(dialog, messageText)
-    this.setState({ messageText: '' })
+    const { navigation } = this.props;
+    const { dialog } = navigation.state.params;
+    const { messageText } = this.state;
+    if (messageText.length <= 0) return;
+    await ChatService.sendMessage(dialog, messageText);
+    this.setState({ messageText: '' });
   }
 
   sendAttachment = async () => {
-    const { dialog } = this.props.navigation.state.params
-    const img = await this.onPickImage()
-    ChatService.sendMessage(dialog, '', img)
+    const { navigation } = this.props;
+    const { dialog } = navigation.state.params;
+    const img = await this.onPickImage();
+    ChatService.sendMessage(dialog, '', img);
   }
 
-  onPickImage = () => {
-    return ImagePicker.openPicker({
+  onPickImage = () =>
+    ImagePicker.openPicker({
       width: 300,
       height: 400,
-      cropping: true
-    }).then(image => {
-      return image
-    })
-  }
+      cropping: true,
+    }).then(image => image)
 
   _keyExtractor = (item, index) => index.toString()
 
   _renderMessageItem(message) {
-    const { user } = this.props.currentUser
-    const isOtherSender = message.sender_id !== user.id ? true : false
+    const { currentUser: { user } } = this.props;
+    const isOtherSender = Number(message.sender_id) !== user.id;
     return (
       <Message otherSender={isOtherSender} message={message} key={message.id} />
-    )
+    );
   }
 
   render() {
-    const { history } = this.props
-    const { messageText, activIndicator } = this.state
+    const { history } = this.props;
+    const { messageText, activIndicator } = this.state;
     return (
       <KeyboardAvoidingView
         style={{ flex: 1, backgroundColor: 'white' }}
@@ -140,13 +138,12 @@ export class Chat extends PureComponent {
         keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 100}
       >
         <StatusBar barStyle="dark-content" />
-        {activIndicator &&
-          (
+        {activIndicator
+          && (
             <View style={styles.indicator}>
               <ActivityIndicator size="large" color="#0000ff" />
             </View>
-          )
-        }
+          )}
         <FlatList
           inverted
           data={history}
@@ -176,7 +173,7 @@ export class Chat extends PureComponent {
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
-    )
+    );
   }
 }
 
@@ -188,7 +185,7 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: 'lightgrey',
     paddingVertical: 12,
-    paddingHorizontal: 35
+    paddingHorizontal: 35,
   },
   activityIndicator: {
     position: 'absolute',
@@ -234,13 +231,13 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     marginBottom: Platform.OS === 'ios' ? 15 : 0,
-    flexDirection: 'row'
-  }
+    flexDirection: 'row',
+  },
 });
 
 const mapStateToProps = (state, props) => ({
   history: state.messages[props.navigation.state.params.dialog.id],
-  currentUser: state.currentUser
-})
+  currentUser: state.currentUser,
+});
 
-export default connect(mapStateToProps)(Chat)
+export default connect(mapStateToProps)(Chat);

@@ -1,6 +1,6 @@
-import { Alert } from 'react-native'
+import { Alert } from 'react-native';
 
-export function showAlert(message, title = '') {
+const showAlert = (message, title = '') =>
   Alert.alert(
     title,
     message,
@@ -8,5 +8,7 @@ export function showAlert(message, title = '') {
       { text: 'Ok' },
     ],
     { cancelable: false },
-  )
-}
+  );
+
+
+export { showAlert };
