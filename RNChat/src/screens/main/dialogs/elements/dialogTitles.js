@@ -1,14 +1,14 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-export default function DialogTitles({ name, message }) {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.name} numberOfLines={1}>{name}</Text>
-      <Text style={styles.message} numberOfLines={1}>{message}</Text>
-    </View>
-  );
-}
+const DialogTitles = ({ name, message }) => (
+  <View style={styles.container}>
+    <Text style={styles.name} numberOfLines={1}>{name}</Text>
+    <Text style={styles.message} numberOfLines={1}>{message}</Text>
+  </View>
+);
+
+export default DialogTitles;
 
 const styles = StyleSheet.create({
   container: {

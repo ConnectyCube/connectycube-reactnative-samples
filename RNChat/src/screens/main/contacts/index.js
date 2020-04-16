@@ -35,7 +35,6 @@ class Contacts extends PureComponent {
 
   userNotFound = false
 
-
   updateSearch = keyword => this.setState({ keyword })
 
   keyExtractor = (item, index) => index.toString()

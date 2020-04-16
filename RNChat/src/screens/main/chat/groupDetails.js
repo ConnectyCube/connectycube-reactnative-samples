@@ -22,7 +22,7 @@ import Indicator from '../../components/indicator';
 import { showAlert } from '../../../helpers/alert';
 import { popToTop } from '../../../routing/init';
 
-export default class GroupDetails extends Component {
+class GroupDetails extends Component {
   constructor(props) {
     super(props);
     const dialog = this.props.navigation.getParam('dialog', false);
@@ -241,6 +241,8 @@ export default class GroupDetails extends Component {
     );
   }
 }
+
+export default GroupDetails;
 
 const styles = StyleSheet.create({
   container: {

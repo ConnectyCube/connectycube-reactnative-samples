@@ -12,17 +12,13 @@ import ChatImage from '../../components/chatImage';
 const fullWidth = Dimensions.get('window').width;
 const fullHeight = Dimensions.get('window').height;
 
-export default class Message extends Component {
-  isAtachment = null
+class Message extends Component {
+  state = {
+    isModal: false,
+    send_state: this.props.message.send_state,
+  };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      isModal: false,
-      send_state: props.message.send_state,
-    };
-    this.isAtachment = props.message.attachment;
-  }
+  isAtachment = this.props.message.attachment;
 
   shouldComponentUpdate(nextProps, nextState) {
     if (nextProps.message.send_state != nextState.send_state
@@ -32,7 +28,6 @@ export default class Message extends Component {
     }
     return false;
   }
-
 
   renderAttachment = () => {
     const { message } = this.props;
@@ -126,6 +121,8 @@ export default class Message extends Component {
     );
   }
 }
+
+export default Message;
 
 const styles = StyleSheet.create({
   container: {

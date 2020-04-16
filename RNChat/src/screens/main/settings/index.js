@@ -6,7 +6,7 @@ import Indicator from '../../components/indicator';
 import { showAlert } from '../../../helpers/alert';
 import ImgPicker from '../../components/imgPicker';
 
-export default class Settings extends Component {
+class Settings extends Component {
   constructor(props) {
     super(props);
     const user = props.navigation.getParam('user');
@@ -141,6 +141,8 @@ export default class Settings extends Component {
     );
   }
 }
+
+export default Settings;
 
 const styles = StyleSheet.create({
   container: {
