@@ -205,7 +205,7 @@ export default class GroupDetails extends Component {
           name={dialogName}
           photo={dialogPhoto}
           pickPhoto={this.pickPhoto}
-          isDidabled={!this.isGroupCreator()}
+          isDisabled={!this.isGroupCreator()}
         />
         {this.isGroupCreator()
           ? (

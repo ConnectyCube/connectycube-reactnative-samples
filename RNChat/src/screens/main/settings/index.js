@@ -23,7 +23,6 @@ export default class Settings extends Component {
     this.isPickImage = image;
   }
 
-
   onSaveProfile = () => {
     const { navigation } = this.props;
     const user = navigation.getParam('user');
@@ -87,7 +86,11 @@ export default class Settings extends Component {
       <KeyboardAvoidingView style={styles.container}>
         {isLoader
           && <Indicator size={40} color="blue" />}
-        <ImgPicker name={user.full_name} photo={user.avatar} pickPhoto={this.pickPhoto} />
+        <ImgPicker
+          name={user.full_name}
+          photo={user.avatar}
+          pickPhoto={this.pickPhoto}
+        />
         <View style={styles.inputWrap}>
           <View>
             <TextInput

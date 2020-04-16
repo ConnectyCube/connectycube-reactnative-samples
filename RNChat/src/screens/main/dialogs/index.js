@@ -12,16 +12,11 @@ import Avatar from '../../components/avatar';
 import PushNotificationService from '../../../services/push-notification';
 
 class Dialogs extends Component {
-  static currentUserInfo = ''
-
   dialogs = []
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      isLoader: props.dialogs.length === 0 && true,
-    };
-  }
+  state = {
+    isLoader: this.props.dialogs.length === 0 && true,
+  };
 
   static navigationOptions = ({ navigation }) => {
     Dialogs.currentUserInfo = { ...store.getState().currentUser.user };
