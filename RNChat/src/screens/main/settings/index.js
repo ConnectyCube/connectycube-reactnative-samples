@@ -6,7 +6,7 @@ import Indicator from '../../components/indicator';
 import { showAlert } from '../../../helpers/alert';
 import ImgPicker from '../../components/imgPicker';
 
-export default class Settings extends Component {
+class Settings extends Component {
   constructor(props) {
     super(props);
     const user = props.navigation.getParam('user');
@@ -22,7 +22,6 @@ export default class Settings extends Component {
   pickPhoto = (image) => {
     this.isPickImage = image;
   }
-
 
   onSaveProfile = () => {
     const { navigation } = this.props;
@@ -87,7 +86,11 @@ export default class Settings extends Component {
       <KeyboardAvoidingView style={styles.container}>
         {isLoader
           && <Indicator size={40} color="blue" />}
-        <ImgPicker name={user.full_name} photo={user.avatar} pickPhoto={this.pickPhoto} />
+        <ImgPicker
+          name={user.full_name}
+          photo={user.avatar}
+          pickPhoto={this.pickPhoto}
+        />
         <View style={styles.inputWrap}>
           <View>
             <TextInput
@@ -138,6 +141,8 @@ export default class Settings extends Component {
     );
   }
 }
+
+export default Settings;
 
 const styles = StyleSheet.create({
   container: {

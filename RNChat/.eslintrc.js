@@ -31,6 +31,7 @@ module.exports = {
   'rules': {
     'no-alert': 0,
     'react/state-in-constructor': 0,
+    'react/jsx-props-no-spreading': 0,
     'react/prop-types': 0,
     'react/sort-comp': 0,
     'react/destructuring-assignment': 1,

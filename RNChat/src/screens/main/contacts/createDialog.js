@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View, TextInput, Text, TouchableOpacity, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -11,14 +11,14 @@ import Indicator from '../../components/indicator';
 import { showAlert } from '../../../helpers/alert';
 import { popToTop } from '../../../routing/init';
 
-export default class CreateDialog extends PureComponent {
-  state = {
-    keyword: '',
-    isPickImage: null,
-    isLoader: false,
-  };
+const CreateDialog = ({ navigation }) => {
+  const [keyword, setKeyword] = useState('');
+  const [isPickImage, setIsPickImage] = useState(null);
+  const [isLoader, setIsLoader] = useState(false);
+  const [search, setSearch] = useState(null);
+  const users = navigation.getParam('users');
 
-  renderParticipant = (item) => (
+  const renderParticipant = (item) => (
     <View style={styles.participant} key={item.id}>
       <View style={{ paddingLeft: 10 }}>
         <Avatar
@@ -29,83 +29,75 @@ export default class CreateDialog extends PureComponent {
       </View>
       <Text numberOfLines={2} style={{ textAlign: 'center' }}>{item.full_name}</Text>
     </View>
-  )
+  );
 
-  createDialog = () => {
-    const { navigation } = this.props;
-    const { isPickImage, keyword } = this.state;
+  const createDialog = async () => {
     const users = navigation.getParam('users');
     const str = keyword.trim();
     if (str.length < 3) {
       return showAlert('Enter more than 4 characters');
     }
-    this.setState({ isLoader: true });
+    setIsLoader(true);
     const occupants_ids = users.map(elem => elem.id);
-    ChatService.createPublicDialog(occupants_ids, str, isPickImage)
-      .then((newDialog) => {
-        this.setState({ isLoader: false });
-        navigation.dispatch(popToTop);
-        navigation.push('Chat', { dialog: newDialog, isNeedFetchUsers: true });
-      });
-  }
+    const newDialog = await ChatService.createPublicDialog(occupants_ids, str, isPickImage);
+    setIsLoader(false);
+    navigation.dispatch(popToTop);
+    navigation.push('Chat', { dialog: newDialog, isNeedFetchUsers: true });
+  };
 
-  onPickImage = () => {
-    ImagePicker.openPicker({
+  const onPickImage = async () => {
+    const image = await ImagePicker.openPicker({
       width: 300,
       height: 400,
       cropping: true,
-    }).then(image => {
-      this.setState({ isPickImage: image });
     });
-  }
+    setIsPickImage(image);
+  };
 
-  updateSearch = keyword => this.setState({ keyword })
+  const updateSearch = keyword => setKeyword(keyword);
 
-  render() {
-    const { isPickImage, isLoader, search } = this.state;
-    const { navigation } = this.props;
-    const users = navigation.getParam('users');
-
-    return (
-      <View style={styles.container}>
-        {isLoader
-          && <Indicator color="blue" size={40} />}
-        <View style={styles.header}>
-          <TouchableOpacity onPress={this.onPickImage} style={styles.picker}>
-            {isPickImage ? (
+  return (
+    <View style={styles.container}>
+      {isLoader
+        && <Indicator color="blue" size={40} />}
+      <View style={styles.header}>
+        <TouchableOpacity onPress={onPickImage} style={styles.picker}>
+          {isPickImage
+            ? (
               <Image
                 style={styles.imgPicker}
                 source={{ uri: isPickImage.path }}
               />
             )
-              : (
-                <View style={styles.iconPicker}>
-                  <Icon name="local-see" size={50} color="#48A6E3" />
-                </View>
-              )}
-          </TouchableOpacity>
-          <View style={styles.description}>
-            <TextInput
-              style={styles.searchInput}
-              autoCapitalize="none"
-              placeholder="Group name..."
-              returnKeyType="search"
-              onChangeText={this.updateSearch}
-              placeholderTextColor="grey"
-              value={search}
-              maxLength={255}
-            />
-            <Text style={styles.descriptionText}>Please provide a group subject and optional group icon</Text>
-          </View>
+            : (
+              <View style={styles.iconPicker}>
+                <Icon name="local-see" size={50} color="#48A6E3" />
+              </View>
+            )}
+        </TouchableOpacity>
+        <View style={styles.description}>
+          <TextInput
+            style={styles.searchInput}
+            autoCapitalize="none"
+            placeholder="Group name..."
+            returnKeyType="search"
+            onChangeText={updateSearch}
+            placeholderTextColor="grey"
+            value={search}
+            maxLength={255}
+          />
+          <Text style={styles.descriptionText}>Please provide a group subject and optional group icon</Text>
         </View>
-        <View style={styles.participantsContainer}>
-          {users.map(elem => this.renderParticipant(elem))}
-        </View>
-        <CreateBtn goToScreen={this.createDialog} type={BTN_TYPE.CREATE_GROUP} />
       </View>
-    );
-  }
-}
+      <View style={styles.participantsContainer}>
+        {users.map(renderParticipant)}
+      </View>
+      <CreateBtn goToScreen={createDialog} type={BTN_TYPE.CREATE_GROUP} />
+    </View>
+  );
+};
+
+export default CreateDialog;
 
 const styles = StyleSheet.create({
   container: {

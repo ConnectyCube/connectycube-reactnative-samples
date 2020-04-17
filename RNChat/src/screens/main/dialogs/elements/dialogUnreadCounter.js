@@ -1,16 +1,16 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-export default function DialogUnreadCounter({ unreadMessagesCount }) {
-  return (
-    unreadMessagesCount > 0
-    && (
-      <View style={styles.container}>
-        <Text style={styles.counter}>{unreadMessagesCount < 100 ? unreadMessagesCount : 99}</Text>
-      </View>
-    )
-  );
-}
+const DialogUnreadCounter = ({ unreadMessagesCount }) => (
+  unreadMessagesCount > 0
+  && (
+    <View style={styles.container}>
+      <Text style={styles.counter}>{unreadMessagesCount < 100 ? unreadMessagesCount : 99}</Text>
+    </View>
+  )
+);
+
+export default DialogUnreadCounter;
 
 const styles = StyleSheet.create({
   container: {

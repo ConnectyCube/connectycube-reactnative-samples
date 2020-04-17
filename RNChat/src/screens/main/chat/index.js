@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   View,
@@ -22,160 +22,158 @@ import Message from './message';
 import Avatar from '../../components/avatar';
 import { DIALOG_TYPE } from '../../../helpers/constants';
 
-export class Chat extends PureComponent {
-  state = {
-    activIndicator: true,
-    messageText: '',
+const Chat = ({ history, navigation, currentUser: { user } }) => {
+  const [activIndicator, setActivIndicator] = useState(true);
+  const [messageText, setMessageText] = useState('');
+  let needToGetMoreMessage = null;
+
+  useEffect(() => {
+    init();
+    return () => {
+      ChatService.resetSelectedDialogs();
+    };
+  }, []);
+
+  const init = async () => {
+    try {
+      const { dialog } = navigation.state.params;
+      setActivIndicator(true);
+      const amountMessages = await ChatService.getMessages(dialog);
+      if (amountMessages === 100) {
+        needToGetMoreMessage = true;
+      } else {
+        needToGetMoreMessage = false;
+      }
+      setActivIndicator(false);
+    } catch (e) {
+      alert(`Error.\n\n${JSON.stringify(e)}`);
+    }
   };
 
-  needToGetMoreMessage = null
-
-  static navigationOptions = ({ navigation }) => {
-    const { dialog } = navigation.state.params;
-    let dialogPhoto = '';
-    if (dialog.type === DIALOG_TYPE.PRIVATE) {
-      dialogPhoto = UsersService.getUsersAvatar(dialog.occupants_ids);
-    } else {
-      dialogPhoto = dialog.photo;
+  const getMoreMessages = async () => {
+    if (needToGetMoreMessage) {
+      const { dialog } = navigation.state.params;
+      setActivIndicator(true);
+      const amountMessages = await ChatService.getMoreMessages(dialog);
+      if (amountMessages === 100) {
+        needToGetMoreMessage = true;
+      } else {
+        needToGetMoreMessage = false;
+      }
+      setActivIndicator(false);
     }
-    return {
-      headerTitle: (
-        <Text numberOfLines={3} style={{ fontSize: 22, color: 'black' }}>
-          {navigation.state.params.dialog.name}
-        </Text>
-      ),
-      headerRight: (
-        <TouchableOpacity onPress={() => this.goToDetailsScreen(navigation)}>
-          <Avatar
-            photo={dialogPhoto}
-            name={navigation.state.params.dialog.name}
-            iconSize="small"
-          />
-        </TouchableOpacity>
-      ),
-    };
-  }
+  };
 
-  static goToDetailsScreen = (props) => {
+  const onTypeMessage = messageText => setMessageText(messageText);
+
+  const sendMessage = async () => {
+    const { dialog } = navigation.state.params;
+    if (messageText.length <= 0) return;
+    await ChatService.sendMessage(dialog, messageText);
+    setMessageText('');
+  };
+
+  const sendAttachment = async () => {
+    const { dialog } = navigation.state.params;
+    const img = await onPickImage();
+    ChatService.sendMessage(dialog, '', img);
+  };
+
+  const onPickImage = async () =>
+    ImagePicker.openPicker({
+      width: 300,
+      height: 400,
+      cropping: true,
+    });
+
+  const _keyExtractor = (item, index) => index.toString();
+
+  const _renderMessageItem = (message) => {
+    const isOtherSender = Number(message.sender_id) !== user.id;
+    return (
+      <Message otherSender={isOtherSender} message={message} key={message.id} />
+    );
+  };
+
+  return (
+    <KeyboardAvoidingView
+      style={{ flex: 1, backgroundColor: 'white' }}
+      behavior={Platform.OS === 'ios' ? 'padding' : null}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 100}
+    >
+      <StatusBar barStyle="dark-content" />
+      {activIndicator
+        && (
+          <View style={styles.indicator}>
+            <ActivityIndicator size="large" color="#0000ff" />
+          </View>
+        )}
+      <FlatList
+        inverted
+        data={history}
+        keyExtractor={_keyExtractor}
+        renderItem={({ item }) => _renderMessageItem(item)}
+        onEndReachedThreshold={5}
+        onEndReached={getMoreMessages}
+      />
+      <View style={styles.container}>
+        <View style={styles.inputContainer}>
+          <AutoGrowingTextInput
+            style={styles.textInput}
+            placeholder="Type a message..."
+            placeholderTextColor="grey"
+            value={messageText}
+            onChangeText={onTypeMessage}
+            maxHeight={170}
+            minHeight={50}
+            enableScrollToCaret
+          />
+          <TouchableOpacity style={styles.attachment}>
+            <AttachmentIcon name="attachment" size={22} color="#8c8c8c" onPress={sendAttachment} />
+          </TouchableOpacity>
+        </View>
+        <TouchableOpacity style={styles.button}>
+          <Icon name="send" size={32} color="blue" onPress={sendMessage} />
+        </TouchableOpacity>
+      </View>
+    </KeyboardAvoidingView>
+  );
+};
+
+Chat.navigationOptions = ({ navigation }) => {
+  const goToDetailsScreen = (props) => {
     const isNeedFetchUsers = props.getParam('isNeedFetchUsers', false);
     if (props.state.params.dialog.type === DIALOG_TYPE.PRIVATE) {
       props.push('ContactDetails', { dialog: props.state.params.dialog });
     } else {
       props.push('GroupDetails', { dialog: props.state.params.dialog, isNeedFetchUsers });
     }
+  };
+
+  const { dialog } = navigation.state.params;
+  let dialogPhoto = '';
+  if (dialog.type === DIALOG_TYPE.PRIVATE) {
+    dialogPhoto = UsersService.getUsersAvatar(dialog.occupants_ids);
+  } else {
+    dialogPhoto = dialog.photo;
   }
-
-  componentDidMount() {
-    const { navigation } = this.props;
-    const { dialog } = navigation.state.params;
-    ChatService.getMessages(dialog)
-      .catch(e => alert(`Error.\n\n${JSON.stringify(e)}`))
-      .then(amountMessages => {
-        amountMessages === 100 ? this.needToGetMoreMessage = true : this.needToGetMoreMessage = false;
-        this.setState({ activIndicator: false });
-      });
-  }
-
-  componentWillUnmount() {
-    ChatService.resetSelectedDialogs();
-  }
-
-  getMoreMessages = () => {
-    const { navigation } = this.props;
-    const { dialog } = navigation.state.params;
-    if (this.needToGetMoreMessage) {
-      this.setState({ activIndicator: true });
-      ChatService.getMoreMessages(dialog)
-        .then(amountMessages => {
-          amountMessages === 100 ? this.needToGetMoreMessage = true : this.needToGetMoreMessage = false;
-          this.setState({ activIndicator: false });
-        });
-    }
-  }
-
-  onTypeMessage = messageText => this.setState({ messageText })
-
-  sendMessage = async () => {
-    const { navigation } = this.props;
-    const { dialog } = navigation.state.params;
-    const { messageText } = this.state;
-    if (messageText.length <= 0) return;
-    await ChatService.sendMessage(dialog, messageText);
-    this.setState({ messageText: '' });
-  }
-
-  sendAttachment = async () => {
-    const { navigation } = this.props;
-    const { dialog } = navigation.state.params;
-    const img = await this.onPickImage();
-    ChatService.sendMessage(dialog, '', img);
-  }
-
-  onPickImage = () =>
-    ImagePicker.openPicker({
-      width: 300,
-      height: 400,
-      cropping: true,
-    }).then(image => image)
-
-  _keyExtractor = (item, index) => index.toString()
-
-  _renderMessageItem(message) {
-    const { currentUser: { user } } = this.props;
-    const isOtherSender = Number(message.sender_id) !== user.id;
-    return (
-      <Message otherSender={isOtherSender} message={message} key={message.id} />
-    );
-  }
-
-  render() {
-    const { history } = this.props;
-    const { messageText, activIndicator } = this.state;
-    return (
-      <KeyboardAvoidingView
-        style={{ flex: 1, backgroundColor: 'white' }}
-        behavior={Platform.OS === 'ios' ? 'padding' : null}
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 100}
-      >
-        <StatusBar barStyle="dark-content" />
-        {activIndicator
-          && (
-            <View style={styles.indicator}>
-              <ActivityIndicator size="large" color="#0000ff" />
-            </View>
-          )}
-        <FlatList
-          inverted
-          data={history}
-          keyExtractor={this._keyExtractor}
-          renderItem={({ item }) => this._renderMessageItem(item)}
-          onEndReachedThreshold={5}
-          onEndReached={this.getMoreMessages}
+  return {
+    headerTitle: (
+      <Text numberOfLines={3} style={{ fontSize: 22, color: 'black' }}>
+        {navigation.state.params.dialog.name}
+      </Text>
+    ),
+    headerRight: (
+      <TouchableOpacity onPress={() => goToDetailsScreen(navigation)}>
+        <Avatar
+          photo={dialogPhoto}
+          name={navigation.state.params.dialog.name}
+          iconSize="small"
         />
-        <View style={styles.container}>
-          <View style={styles.inputContainer}>
-            <AutoGrowingTextInput
-              style={styles.textInput}
-              placeholder="Type a message..."
-              placeholderTextColor="grey"
-              value={messageText}
-              onChangeText={this.onTypeMessage}
-              maxHeight={170}
-              minHeight={50}
-              enableScrollToCaret
-            />
-            <TouchableOpacity style={styles.attachment}>
-              <AttachmentIcon name="attachment" size={22} color="#8c8c8c" onPress={this.sendAttachment} />
-            </TouchableOpacity>
-          </View>
-          <TouchableOpacity style={styles.button}>
-            <Icon name="send" size={32} color="blue" onPress={this.sendMessage} />
-          </TouchableOpacity>
-        </View>
-      </KeyboardAvoidingView>
-    );
-  }
-}
+      </TouchableOpacity>
+    ),
+  };
+};
 
 const styles = StyleSheet.create({
   container: {

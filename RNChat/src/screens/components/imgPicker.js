@@ -1,63 +1,55 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View, TouchableOpacity, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import ImagePicker from 'react-native-image-crop-picker';
 
 import Avatar from './avatar';
 
-class ImgPicker extends Component {
-  state = {
-    isPickImage: null,
-  };
+const ImgPicker = ({ name, photo, pickPhoto, isDisabled = false }) => {
+  const [isPickImage, setIsPickImage] = useState(null);
 
-  onPickImage = () => {
-    const { pickPhoto } = this.props;
-    ImagePicker.openPicker({
+  const onPickImage = async () => {
+    const image = await ImagePicker.openPicker({
       width: 300,
       height: 400,
       cropping: true,
-    }).then(image => {
-      pickPhoto(image);
-      this.setState({ isPickImage: image });
     });
-  }
+    pickPhoto(image);
+    setIsPickImage(image);
+  };
 
-  render() {
-    const { isPickImage } = this.state;
-    const { name, photo, isDidabled = false } = this.props;
-    return (
-      <TouchableOpacity onPress={this.onPickImage} style={styles.picker} disabled={isDidabled}>
-        {isPickImage
-          ? (
-            <>
-              <Image
-                style={styles.imgPicker}
-                source={{ uri: isPickImage.path }}
-              />
+  return (
+    <TouchableOpacity onPress={onPickImage} style={styles.picker} disabled={isDisabled}>
+      {isPickImage
+        ? (
+          <>
+            <Image
+              style={styles.imgPicker}
+              source={{ uri: isPickImage.path }}
+            />
+            <View style={styles.icon}>
+              <Icon name="create" size={20} color="#48A6E3" />
+            </View>
+          </>
+        )
+        : (
+          <View>
+            <Avatar
+              photo={photo}
+              name={name}
+              iconSize="extra-large"
+            />
+            {!isDisabled
+            && (
               <View style={styles.icon}>
                 <Icon name="create" size={20} color="#48A6E3" />
               </View>
-            </>
-          )
-          : (
-            <View>
-              <Avatar
-                photo={photo}
-                name={name}
-                iconSize="extra-large"
-              />
-              {!isDidabled
-              && (
-                <View style={styles.icon}>
-                  <Icon name="create" size={20} color="#48A6E3" />
-                </View>
-              )}
-            </View>
-          )}
-      </TouchableOpacity>
-    );
-  }
-}
+            )}
+          </View>
+        )}
+    </TouchableOpacity>
+  );
+};
 
 export default ImgPicker;
 

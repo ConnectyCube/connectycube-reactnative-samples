@@ -4,7 +4,7 @@ import FastImage from 'react-native-fast-image';
 
 import { getCbToken } from '../../helpers/file';
 
-export default function ProfileIcon({ photo, name, iconSize }) {
+const ProfileIcon = ({ photo, name, iconSize }) => {
   let styles;
   switch (iconSize) {
   case 'extra-large':
@@ -73,7 +73,9 @@ export default function ProfileIcon({ photo, name, iconSize }) {
         </View>
       )
   );
-}
+};
+
+export default ProfileIcon;
 
 const extraLargeIcon = StyleSheet.create({
   photo: {

@@ -1,51 +1,44 @@
-import React, { PureComponent } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import Avatar from '../../components/avatar';
 
-export default class User extends PureComponent {
-  state = {
-    isSelectedUser: false,
-  }
+const User = ({ selectedUsers, selectUsers, user, dialogType }) => {
+  const [isSelectedUser, setIsSelectedUser] = useState(false);
 
-  toggleUserSelect() {
-    const { selectUsers, user } = this.props;
+  const toggleUserSelect = () => {
     selectUsers(user);
-  }
+  };
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.selectedUsers !== this.props.selectedUsers) {
-      this.setState({ isSelectedUser: this.props.selectedUsers });
-    }
-  }
+  useEffect(() => {
+    setIsSelectedUser(selectedUsers);
+  }, [selectedUsers]);
 
-  render() {
-    const { user, selectedUsers, dialogType } = this.props;
-    const { isSelectedUser } = this.state;
-    return (
-      <TouchableOpacity onPress={() => this.toggleUserSelect()}>
-        <View style={styles.container}>
-          <View style={styles.userContainer}>
-            <Avatar
-              photo={user.avatar}
-              name={user.full_name}
-              iconSize="medium"
-            />
-            <Text style={styles.nameTitle}>{user.full_name}</Text>
-          </View>
-          <>
-            {dialogType ? isSelectedUser || selectedUsers ? (
-              <Icon name="radio-button-checked" size={24} color="green" />
-            ) : (
-              <Icon name="radio-button-unchecked" size={24} color="black" />
-            ) : <Icon name="arrow-forward" size={24} color="green" />}
-          </>
+  return (
+    <TouchableOpacity onPress={() => toggleUserSelect()}>
+      <View style={styles.container}>
+        <View style={styles.userContainer}>
+          <Avatar
+            photo={user.avatar}
+            name={user.full_name}
+            iconSize="medium"
+          />
+          <Text style={styles.nameTitle}>{user.full_name}</Text>
         </View>
-      </TouchableOpacity>
-    );
-  }
-}
+        <>
+          {dialogType ? isSelectedUser || selectedUsers ? (
+            <Icon name="radio-button-checked" size={24} color="green" />
+          ) : (
+            <Icon name="radio-button-unchecked" size={24} color="black" />
+          ) : <Icon name="arrow-forward" size={24} color="green" />}
+        </>
+      </View>
+    </TouchableOpacity>
+  );
+};
+
+export default User;
 
 const styles = StyleSheet.create({
   container: {
