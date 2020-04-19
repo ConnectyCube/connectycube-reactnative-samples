@@ -1,21 +1,19 @@
 import {
   FETCH_USERS,
   ADD_USERS,
-} from '../actions/users'
+} from '../actions/users';
 
-import { fetchUsers } from './reducer-function'
+import { fetchUsers } from './reducer-function';
 
 export default (users = {}, action) => {
   switch (action.type) {
-    case FETCH_USERS: {
-      return fetchUsers(action.users, users)
-    }
+  case FETCH_USERS:
+    return fetchUsers(action.users, users);
 
-    case ADD_USERS: {
+  case ADD_USERS:
+    return null;
 
-    }
-
-    default:
-      return users
+  default:
+    return users;
   }
-}
+};
