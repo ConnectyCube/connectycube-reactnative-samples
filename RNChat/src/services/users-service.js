@@ -1,17 +1,23 @@
+import React, { useContext } from 'react';
 import ConnectyCube from 'react-native-connectycube';
 
 import UserModel from '../models/user';
-import store from '../store';
 import { fetchUsers } from '../actions/users';
+import GlobalContext from '../store';
 
-class UsersService {
-  async getUserById(id) {
+const UsersContext = React.createContext();
+
+export default UsersContext;
+
+const UsersProvider = ({ children }) => {
+  const { store, dispatch } = useContext(GlobalContext);
+
+  const getUserById = async (id) => {
     ConnectyCube.users.get(id);
-  }
+  };
 
-  async getOccupants(ids) {
-    const users = this.getUsers;
-    const { currentUser } = this;
+  const getOccupants = async (ids) => {
+    const users = getUsers;
     const idsForFetch = [];
 
     ids.forEach(elem => {
@@ -31,23 +37,23 @@ class UsersService {
       },
     });
     const newUsers = usersFromServer.items.map(elem => new UserModel(elem.user));
-    store.dispatch(fetchUsers(newUsers));
-  }
+    dispatch(fetchUsers(newUsers));
+  };
 
-  getUsersAvatar(ids) {
-    const currentUserId = this.currentUser;
+  const getUsersAvatar = (ids) => {
+    const currentUserId = currentUser;
     let userId = null;
     ids.forEach(elem => {
       if (elem != currentUserId.id) {
         userId = elem;
       }
     });
-    return store.getState().users[userId].avatar;
-  }
+    return store.users[userId].avatar;
+  };
 
-  async listUsersByFullName(name, usersIdsToIgnore = []) {
+  const listUsersByFullName = async (name, usersIdsToIgnore = []) => {
     if (!usersIdsToIgnore) {
-      usersIdsToIgnore = [this.currentUser.id];
+      usersIdsToIgnore = [currentUser.id];
     }
     const allUsers = await ConnectyCube.users.get({ per_page: 100, full_name: name });
     const contacts = [];
@@ -57,32 +63,37 @@ class UsersService {
       }
     });
     return contacts;
-  }
+  };
 
-  getUsersInfoFromRedux(ids) {
-    const { currentUser } = this;
+  const getUsersInfoFromRedux = (ids) => {
     const usersInfo = [];
     ids.forEach(elem => {
       if (elem !== currentUser.id) {
-        usersInfo.push(store.getState().users[elem]);
+        usersInfo.push(store.users[elem]);
       }
     });
     return usersInfo;
-  }
+  };
 
-  get currentUser() {
-    return store.getState().currentUser.user;
-  }
+  const currentUser = store.currentUser?.user;
 
-  get getUsers() {
-    return store.getState().users;
-  }
-}
+  const getUsers = store.users;
 
+  return (
+    <UsersContext.Provider
+      value={{
+        getUserById,
+        getOccupants,
+        getUsersAvatar,
+        listUsersByFullName,
+        getUsersInfoFromRedux,
+        getUsers: store.users,
+        users: store.users,
+      }}
+    >
+      {children}
+    </UsersContext.Provider>
+  );
+};
 
-// create instance
-const User = new UsersService();
-
-Object.freeze(User);
-
-export default User;
+export { UsersProvider };

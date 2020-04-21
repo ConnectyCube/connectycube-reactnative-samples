@@ -1,19 +1,26 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { StyleSheet, View, Image } from 'react-native';
-import AuthService from '../services/auth-service';
-import ChatService from '../services/chat-service';
+
+import AuthContext from '../services/auth-service';
 
 const AppWrap = ({ navigation }) => {
+  const AuthService = useContext(AuthContext);
+
   useEffect(() => {
     initUser();
   }, []);
 
+  useEffect(() => {
+    if (AuthService.currentUser) {
+      navigation.navigate('Dialogs', { currentUser: AuthService.currentUser });
+    }
+  }, [AuthService.currentUser]);
+
   const initUser = async () => {
     const rootStackScreen = await AuthService.init();
-    if (rootStackScreen === 'Dialogs') {
-      ChatService.setUpListeners();
+    if (rootStackScreen !== 'Dialogs') {
+      navigation.navigate(rootStackScreen);
     }
-    navigation.navigate(rootStackScreen);
   };
 
   return (

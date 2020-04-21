@@ -1,24 +1,27 @@
+import React, { useContext } from 'react';
 import ConnectyCube from 'react-native-connectycube';
 import AsyncStorage from '@react-native-community/async-storage';
 
 import appConfig from '../../config.json';
 import User from '../models/user';
-import store from '../store';
 import { LogOut } from '../reducers/index';
 import { setCurrentUser, updateCurrentUser } from '../actions/currentUser';
 import { preparationUploadImg, getImageLinkFromUID } from '../helpers/file';
+import GlobalContext from '../store';
 
-class AuthService {
-  static CURRENT_USER_SESSION_KEY = 'CURRENT_USER_SESSION_KEY';
+const AuthContext = React.createContext();
 
-  static DEVICE_TOKEN_KEY = 'DEVICE_TOKEN_KEY';
+export default AuthContext;
 
-  async init() {
+const AuthProvider = ({ children }) => {
+  const { store, dispatch } = useContext(GlobalContext);
+
+  const init = async () => {
     await ConnectyCube.init(...appConfig.connectyCubeConfig);
-    return this.autologin();
-  }
+    return autologin();
+  };
 
-  async updateCurrentUser({ image, full_name, login }) {
+  const updateCurrentUserMethod = async ({ image, full_name, login }) => {
     const updateData = {};
     if (full_name) {
       updateData.full_name = full_name;
@@ -32,70 +35,92 @@ class AuthService {
       updateData.avatar = resultUploadImg.uid;
     }
     const responseUpdateUser = await ConnectyCube.users.update(updateData);
-    const prewSession = await this.getUserSession();
+    const prewSession = await getUserSession();
     responseUpdateUser.user.avatar = getImageLinkFromUID(responseUpdateUser.user.avatar);
     const newSession = Object.assign(JSON.parse(prewSession), responseUpdateUser.user);
-    await this.setUserSession(newSession);
-    store.dispatch(updateCurrentUser(responseUpdateUser.user));
-  }
+    await setUserSession(newSession);
+    // eslint-disable-next-line import/no-named-as-default-member
+    dispatch(updateCurrentUser(responseUpdateUser.user));
+  };
 
-  async autologin() {
-    const checkUserSessionFromStore = await this.getUserSession();
+  const autologin = async () => {
+    const checkUserSessionFromStore = await getUserSession();
     if (checkUserSessionFromStore) {
       const data = JSON.parse(checkUserSessionFromStore);
-      await this.signIn({ login: data.login, password: data.password });
+      await signIn({ login: data.login, password: data.password });
       return 'Dialogs';
     } return 'Auth';
-  }
+  };
 
-  async signIn(params) {
+  const signIn = async (params) => {
     const session = await ConnectyCube.createSession(params);
     const currentUser = new User(session.user);
     session.user.avatar = getImageLinkFromUID(session.user.avatar);
-    store.dispatch(setCurrentUser(session));
+    // eslint-disable-next-line import/no-named-as-default-member
+    dispatch(setCurrentUser(session));
     const customSession = { ...currentUser, password: params.password };
-    this.setUserSession(customSession);
-    this.connect(customSession.id, customSession.password);
-  }
+    setUserSession(customSession);
+    connect(customSession.id, customSession.password);
 
-  async signUp(params) {
+    // Should return result matching setCurrentUser action
+    return { ...session };
+  };
+
+  const signUp = async (params) => {
     await ConnectyCube.createSession();
     await ConnectyCube.users.signup(params);
-    return this.signIn(params);
-  }
+    return signIn(params);
+  };
 
-  setUserSession = async (userSession) => AsyncStorage.setItem(
-    AuthService.CURRENT_USER_SESSION_KEY,
+  const setUserSession = async (userSession) => AsyncStorage.setItem(
+    AuthProvider.CURRENT_USER_SESSION_KEY,
     JSON.stringify(userSession),
   );
 
-  getUserSession = async () => AsyncStorage.getItem(AuthService.CURRENT_USER_SESSION_KEY);
+  const getUserSession = async () => AsyncStorage.getItem(AuthProvider.CURRENT_USER_SESSION_KEY);
 
-  async unsubscribePushNotifications() {
-    const token = await this.getStoreToken();
+  const unsubscribePushNotifications = async () => {
+    const token = await getStoreToken();
     ConnectyCube.pushnotifications.subscriptions.delete(token);
-  }
+  };
 
-  getStoreToken = async () => AsyncStorage.getItem(AuthService.DEVICE_TOKEN_KEY)
+  const getStoreToken = async () => AsyncStorage.getItem(AuthProvider.DEVICE_TOKEN_KEY);
 
-  async logout() {
-    await this.unsubscribePushNotifications();
+  const logout = async () => {
+    await unsubscribePushNotifications();
     await AsyncStorage.clear();
     await ConnectyCube.logout();
-    store.dispatch(LogOut());
-  }
+    dispatch(LogOut());
+  };
 
-  async connect(userId, password) {
+  const connect = async (userId, password) => {
     await ConnectyCube.chat.connect({ userId, password });
-  }
+  };
 
-  get currentUser() {
-    return store.getState().currentUser;
-  }
-}
+  return (
+    <AuthContext.Provider
+      value={{
+        init,
+        updateCurrentUser: updateCurrentUserMethod,
+        autologin,
+        signIn,
+        signUp,
+        setUserSession,
+        getUserSession,
+        unsubscribePushNotifications,
+        getStoreToken,
+        logout,
+        connect,
+        currentUser: store.currentUser,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
+};
 
-const authService = new AuthService();
+AuthProvider.CURRENT_USER_SESSION_KEY = 'CURRENT_USER_SESSION_KEY';
 
-Object.freeze(authService);
+AuthProvider.DEVICE_TOKEN_KEY = 'DEVICE_TOKEN_KEY';
 
-export default authService;
+export { AuthProvider };

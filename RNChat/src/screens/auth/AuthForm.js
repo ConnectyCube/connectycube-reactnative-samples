@@ -1,15 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, Keyboard } from 'react-native';
 
 import { showAlert } from '../../helpers/alert';
-import AuthService from '../../services/auth-service';
+import AuthContext from '../../services/auth-service';
 import Indicator from '../components/indicator';
-import ChatService from '../../services/chat-service';
 
 const AuthForm = ({ isLogin, navigation }) => {
+  const AuthService = useContext(AuthContext);
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [isLoader, setIsLoader] = useState(false);
+  const emailInput = useRef(null);
 
   useEffect(() => {
     setName('');
@@ -31,21 +32,19 @@ const AuthForm = ({ isLogin, navigation }) => {
 
     if (isLogin) {
       try {
-        await AuthService.signIn(dataUser);
-        ChatService.setUpListeners();
+        const currentUser = await AuthService.signIn(dataUser);
         setIsLoader(false);
-        navigation.navigate('Dialogs');
+        navigation.navigate('Dialogs', { currentUser });
       } catch (error) {
         setIsLoader(false);
         showAlert(`Error.\n\n${JSON.stringify(error)}`);
       }
     } else {
       try {
-        await AuthService.signUp(dataUser);
+        const currentUser = await AuthService.signUp(dataUser);
         setIsLoader(false);
-        ChatService.setUpListeners();
         showAlert('Account successfully registered');
-        navigation.navigate('Dialogs');
+        navigation.navigate('Dialogs', { currentUser });
       } catch (error) {
         setIsLoader(false);
         showAlert(`Error.\n\n${JSON.stringify(error)}`);
@@ -59,10 +58,11 @@ const AuthForm = ({ isLogin, navigation }) => {
         <Indicator color="green" size={40} />
       )}
       <TextInput
+        ref={emailInput}
         placeholder="Login"
         placeholderTextColor="grey"
         returnKeyType="next"
-        // onSubmitEditing={() => this.emailInput.focus()}
+        onSubmitEditing={() => emailInput.current.focus()}
         onChangeText={text => setName(text)}
         value={name}
         style={styles.input}

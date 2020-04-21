@@ -1,77 +1,66 @@
-import React, { PureComponent } from 'react';
+import React, { useState, useContext } from 'react';
 import { StyleSheet, View, TextInput, FlatList, Text, TouchableOpacity } from 'react-native';
-import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import IconGroup from 'react-native-vector-icons/FontAwesome';
 
-import UsersService from '../../../services/users-service';
+import UsersContext from '../../../services/users-service';
 import Indicator from '../../components/indicator';
 import User from './renderUser';
 import Avatar from '../../components/avatar';
 import { showAlert } from '../../../helpers/alert';
 import CreateBtn from '../../components/createBtn';
 import { BTN_TYPE } from '../../../helpers/constants';
-import ChatService from '../../../services/chat-service';
+import ChatContext from '../../../services/chat-service';
 import { popToTop } from '../../../routing/init';
 
-class Contacts extends PureComponent {
-  isGroupDetails = false
+const Contacts = ({ navigation }) => {
+  const UsersService = useContext(UsersContext);
+  const ChatService = useContext(ChatContext);
+  const isGroupDetails = navigation.getParam('isGroupDetails', false);
+  const dialog = navigation.getParam('dialog', false);
 
-  constructor(props) {
-    super(props);
-    this.isGroupDetails = this.props.navigation.getParam('isGroupDetails', false);
+  const [keyword, setKeyword] = useState('');
+  const [isLoader, setIsLoader] = useState(false);
+  const [isUpdate, setIsUpdate] = useState(false);
+  const [dialogType, setDialogType] = useState(isGroupDetails);
+  const [listUsers, setListUsers] = useState([]);
+  const [selectedUsers, setSelectedUsers] = useState([]);
+  const [userNotFound, setUserNotFound] = useState(false);
 
-    this.state = {
-      keyword: '',
-      isLoader: false,
-      isUpdate: false,
-      dialogType: this.isGroupDetails,
-    };
-  }
+  const updateSearch = curKeyword => setKeyword(curKeyword);
 
-  listUsers = null
+  const keyExtractor = (item, index) => index.toString();
 
-  selectedUsers = []
-
-  userNotFound = false
-
-  updateSearch = keyword => this.setState({ keyword })
-
-  keyExtractor = (item, index) => index.toString()
-
-  toggleUserSelect = (user) => {
-    const { isUpdate } = this.state;
+  const toggleUserSelect = (user) => {
     const newArr = [];
-    this.selectedUsers.forEach(elem => {
+    selectedUsers.forEach(elem => {
       if (elem.id !== user.id) {
         newArr.push(elem);
       }
     });
-    this.selectedUsers = newArr;
-    this.setState({ isUpdate: !isUpdate });
-  }
+    setSelectedUsers(newArr);
+    setIsUpdate(!isUpdate);
+  };
 
-  _renderUser = ({ item }) => {
-    const { dialogType } = this.state;
-    const isSelected = this.selectedUsers.find(elem => elem.id === item.id);
+  const _renderUser = ({ item }) => {
+    const isSelected = selectedUsers.find(elem => elem.id === item.id);
     return (
       <User
         user={item}
-        selectUsers={this.selectUsers}
+        selectUsers={selectUsers}
         dialogType={dialogType}
         selectedUsers={!!isSelected}
       />
     );
-  }
+  };
 
-  changeTypeDialog = () => {
-    const { dialogType } = this.state;
-    this.selectedUsers = [];
-    this.setState({ dialogType: !dialogType });
-  }
+  const changeTypeDialog = () => {
+    setSelectedUsers([]);
+    setDialogType(!dialogType);
+  };
 
-  _renderSelectedUser = ({ item }) => (
-    <TouchableOpacity style={styles.selectedUser} onPress={() => this.toggleUserSelect(item)}>
+  const _renderSelectedUser = ({ item }) => (
+    <TouchableOpacity style={styles.selectedUser} onPress={() => toggleUserSelect(item)}>
       <View style={{ paddingLeft: 10 }}>
         <Avatar
           photo={item.avatar}
@@ -94,130 +83,119 @@ class Contacts extends PureComponent {
       </View>
       <Text numberOfLines={2} style={{ textAlign: 'center' }}>{item.full_name}</Text>
     </TouchableOpacity>
-  )
+  );
 
-  selectUsers = (user) => {
-    const { dialogType, isUpdate } = this.state;
-    const { navigation } = this.props;
-    const dialog = navigation.getParam('dialog', false);
-    const str = dialog ? dialog.occupants_ids.length : 1;
+  const selectUsers = async (user) => {
+    const str = dialog
+      ? dialog.occupants_ids.length
+      : 1;
     // False - Private dialog
     if (!dialogType) {
-      return ChatService.createPrivateDialog(user.id)
-        .then((newDialog) => {
-          navigation.dispatch(popToTop);
-          navigation.push('Chat', { dialog: newDialog });
-        });
+      const newDialog = await ChatService.createPrivateDialog(user.id);
+      navigation.dispatch(popToTop);
+      navigation.push('Chat', { dialog: newDialog, getUsersAvatar: UsersService.getUsersAvatar });
     }
 
     // True - Publick dialog
-    const userSelect = this.selectedUsers.find(elem => elem.id === user.id);
+    const userSelect = selectedUsers.find(elem => elem.id === user.id);
     if (userSelect) {
       const newArr = [];
-      this.selectedUsers.forEach(elem => {
+      selectedUsers.forEach(elem => {
         if (elem.id !== user.id) {
           newArr.push(elem);
         }
       });
-      this.selectedUsers = newArr;
+      setSelectedUsers(newArr);
     } else {
-      if (this.selectedUsers.length + str === 9) {
+      if (selectedUsers.length + str === 9) {
         showAlert('Maximum 9 participants');
         return;
       }
-      this.selectedUsers.push(user);
+      selectedUsers.push(user);
     }
-    this.setState({ isUpdate: !isUpdate });
-  }
+    setIsUpdate(!isUpdate);
+  };
 
-  searchUsers = () => {
-    const { navigation } = this.props;
-    const { keyword } = this.state;
-    const dialog = navigation.getParam('dialog', false);
+  const searchUsers = async () => {
     const str = keyword.trim();
     if (str.length > 2) {
-      this.setState({ isLoader: true });
-      UsersService.listUsersByFullName(str, dialog?.occupants_ids)
-        .then(users => {
-          this.listUsers = users;
-          this.userNotFound = false;
-          this.setState({ isLoader: false });
-        })
-        .catch(() => {
-          this.userNotFound = true;
-          this.setState({ isLoader: false });
-        });
+      setIsLoader(true);
+      try {
+        const users = await UsersService.listUsersByFullName(str, dialog?.occupants_ids);
+        setListUsers(users);
+        setUserNotFound(false);
+        setIsLoader(false);
+      } catch (error) {
+        setUserNotFound(true);
+        setIsLoader(false);
+      }
     } else {
       showAlert('Enter more than 3 characters');
     }
-  }
+  };
 
-  goToCreateDialogScreen = () => {
-    const { navigation } = this.props;
-    if (this.isGroupDetails) {
+  const goToCreateDialogScreen = () => {
+    if (isGroupDetails) {
       const addParticipant = navigation.getParam('addParticipant', false);
       navigation.goBack();
-      addParticipant(this.selectedUsers);
+      addParticipant(selectedUsers);
       return;
     }
-    navigation.push('CreateDialog', { users: this.selectedUsers });
-  }
+    navigation.push('CreateDialog', { users: selectedUsers });
+  };
 
-  render() {
-    const { isLoader, dialogType, search } = this.state;
-    return (
-      <View style={styles.container}>
-        {isLoader && (
-          <Indicator color="red" size={40} />
-        )}
-        <View style={styles.searchUser}>
-          <TextInput
-            style={styles.searchInput}
-            autoCapitalize="none"
-            placeholder="Search users..."
-            placeholderTextColor="grey"
-            returnKeyType="search"
-            onChangeText={this.updateSearch}
-            onSubmitEditing={this.searchUsers}
-            value={search}
-          />
-        </View>
-        <View style={styles.dialogTypeContainer}>
-          {!this.isGroupDetails
-            && (
-              <TouchableOpacity style={styles.dialogType} onPress={this.changeTypeDialog}>
-                {dialogType ? <IconGroup name="group" size={25} color="#48A6E3" />
-                  : <IconGroup name="user" size={25} color="#48A6E3" />}
-                <Text style={styles.dialogTypeText}>{dialogType ? 'Create private chat' : 'Create group chat'}</Text>
-              </TouchableOpacity>
-            )}
-        </View>
-        <View style={this.selectedUsers.length > 0 && styles.containerCeletedUsers}>
-          <FlatList
-            data={this.selectedUsers}
-            keyExtractor={this.keyExtractor}
-            renderItem={(item) => this._renderSelectedUser(item)}
-            horizontal
-          />
-        </View>
-        {this.userNotFound
-          ? (<Text style={styles.userNotFound}>{'Couldn\'t find user'}</Text>)
-          : (
-            <View style={{ flex: 1 }}>
-              <FlatList
-                data={this.listUsers}
-                keyExtractor={this.keyExtractor}
-                renderItem={(item) => this._renderUser(item)}
-              />
-            </View>
-          )}
-        {this.selectedUsers.length > 0 && (
-          <CreateBtn goToScreen={this.goToCreateDialogScreen} type={BTN_TYPE.CONTACTS} />
-        )}
+  return (
+    <View style={styles.container}>
+      {isLoader && (
+        <Indicator color="red" size={40} />
+      )}
+      <View style={styles.searchUser}>
+        <TextInput
+          style={styles.searchInput}
+          autoCapitalize="none"
+          placeholder="Search users..."
+          placeholderTextColor="grey"
+          returnKeyType="search"
+          onChangeText={updateSearch}
+          onSubmitEditing={searchUsers}
+          value={keyword}
+        />
       </View>
-    );
-  }
-}
+      <View style={styles.dialogTypeContainer}>
+        {!isGroupDetails
+          && (
+            <TouchableOpacity style={styles.dialogType} onPress={changeTypeDialog}>
+              {dialogType ? <IconGroup name="group" size={25} color="#48A6E3" />
+                : <IconGroup name="user" size={25} color="#48A6E3" />}
+              <Text style={styles.dialogTypeText}>{dialogType ? 'Create private chat' : 'Create group chat'}</Text>
+            </TouchableOpacity>
+          )}
+      </View>
+      <View style={selectedUsers.length > 0 && styles.containerCeletedUsers}>
+        <FlatList
+          data={selectedUsers}
+          keyExtractor={keyExtractor}
+          renderItem={(item) => _renderSelectedUser(item)}
+          horizontal
+        />
+      </View>
+      {userNotFound
+        ? (<Text style={styles.userNotFound}>{'Couldn\'t find user'}</Text>)
+        : (
+          <View style={{ flex: 1 }}>
+            <FlatList
+              data={listUsers}
+              keyExtractor={keyExtractor}
+              renderItem={(item) => _renderUser(item)}
+            />
+          </View>
+        )}
+      {selectedUsers.length > 0 && (
+        <CreateBtn goToScreen={goToCreateDialogScreen} type={BTN_TYPE.CONTACTS} />
+      )}
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -264,8 +242,4 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = ({ dialogs }) => ({
-  dialogs,
-});
-
-export default connect(mapStateToProps)(Contacts);
+export default Contacts;

@@ -38,12 +38,12 @@ const sortedDialog = (action, dialogs) => {
 };
 
 const updateStatusMessages = (action, message) => {
-  if (Object.keys(message).length == 0) {
+  if (Object.keys(message).length === 0) {
     return message;
   }
 
   let isBreak = true;
-  const newMessages = message[action.dialogId].map((elem, index) => {
+  const newMessages = message[action.dialogId].map((elem) => {
     if (elem.id === action.msgId) {
       isBreak = false;
       return Object.assign(elem, action.msg);

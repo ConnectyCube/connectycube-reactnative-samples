@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 
 import Avatar from '../../components/avatar';
-import ChatService from '../../../services/chat-service';
-import UsersService from '../../../services/users-service';
+import ChatContext from '../../../services/chat-service';
+import UsersContext from '../../../services/users-service';
 import Indicator from '../../components/indicator';
 import { popToTop } from '../../../routing/init';
 
 const ContactDetails = ({ navigation }) => {
+  const ChatService = useContext(ChatContext);
+  const UsersService = useContext(UsersContext);
   const [isLoader, setIsLoader] = useState(false);
 
   const gotToChat = async () => {
@@ -19,7 +21,7 @@ const ContactDetails = ({ navigation }) => {
       const newDialog = await ChatService.createPrivateDialog(user.id);
       setIsLoader(false);
       navigation.dispatch(popToTop);
-      navigation.push('Chat', { dialog: newDialog });
+      navigation.push('Chat', { dialog: newDialog, getUsersAvatar: UsersService.getUsersAvatar });
     }
   };
 

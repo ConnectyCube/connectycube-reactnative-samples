@@ -1,25 +1,30 @@
+import React, { useContext } from 'react';
 import PushNotification from 'react-native-push-notification';
 import ConnectyCube from 'react-native-connectycube';
 import { Platform } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
-import store from '../store';
 import appConfig from '../../config.json';
 import Dialog from '../models/dialogs';
 import User from '../models/user';
 import { addNewDialog } from '../actions/dialogs';
 import { fetchUsers } from '../actions/users';
+import GlobalContext from '../store';
+import UsersContext from './users-service';
 
-class PushNotificationService {
-  static DEVICE_TOKEN_KEY = 'DEVICE_TOKEN_KEY'
+const PushNotificationContext = React.createContext();
 
-  static Navigation = null
+export default PushNotificationContext;
 
-  init(navigation) {
-    PushNotificationService.Navigation = navigation;
+const PushNotificationProvider = ({ children }) => {
+  const { store, dispatch } = useContext(GlobalContext);
+  const UsersService = useContext(UsersContext);
+
+  const init = (navigation) => {
+    PushNotificationProvider.Navigation = navigation;
     const settings = {
-      onRegister: this.subcribeToPushNotification,
-      onNotification: this.onNotification,
+      onRegister: subcribeToPushNotification,
+      onNotification,
       popInitialNotification: true,
       requestPermissions: true,
     };
@@ -33,9 +38,9 @@ class PushNotificationService {
       };
     }
     PushNotification.configure(settings);
-  }
+  };
 
-  async subcribeToPushNotification(token) {
+  const subcribeToPushNotification = async (token) => {
     const DeviceInfo = require('react-native-device-info').default;
     const params = {
       notification_channels: Platform.OS === 'ios' ? 'apns' : 'gcm',
@@ -48,18 +53,16 @@ class PushNotificationService {
         client_identification_sequence: token.token,
       },
     };
+    try {
+      const result = await ConnectyCube.pushnotifications.subscriptions.create(params);
+      console.log('PushNotificationService - result', result);
+      AsyncStorage.setItem(PushNotificationProvider.DEVICE_TOKEN_KEY, `${result[0].subscription.id}`);
+    } catch (error) {
+      console.log('PushNotificationService - error', error);
+    }
+  };
 
-    ConnectyCube.pushnotifications.subscriptions.create(params)
-      .then(result => {
-        console.log('PushNotificationService - result', result);
-        AsyncStorage.setItem(PushNotificationService.DEVICE_TOKEN_KEY, `${result[0].subscription.id}`);
-      })
-      .catch(error => {
-        console.log('PushNotificationService - error', error);
-      });
-  }
-
-  async onNotification(notification) {
+  const onNotification = async (notification) => {
     console.log('NOTIFICATION:', notification);
     let dialogId = null;
     if (Platform.OS === 'ios') {
@@ -67,14 +70,14 @@ class PushNotificationService {
     } else {
       dialogId = notification.dialog_id;
     }
-    if (notification.userInteraction && dialogId !== PushNotificationService.getSelectedDialog()) {
-      const dialog = await PushNotificationService.getDialogById(dialogId);
-      PushNotificationService.Navigation.push('Chat', { dialog });
+    if (notification.userInteraction && dialogId !== getSelectedDialog()) {
+      const dialog = await getDialogById(dialogId);
+      PushNotificationProvider.Navigation.push('Chat', { dialog, getUsersAvatar: UsersService.getUsersAvatar });
     }
-  }
+  };
 
-  static async getDialogById(dialogId) {
-    const getDialog = store.getState().dialogs.find(elem => elem.id === dialogId);
+  const getDialogById = async (dialogId) => {
+    const getDialog = store.dialogs.find(elem => elem.id === dialogId);
     if (getDialog) {
       return getDialog;
     }
@@ -92,19 +95,28 @@ class PushNotificationService {
     const participantId = dialog.occupants_ids.find(elem => elem.id !== currentUser);
     const responseUser = await ConnectyCube.users.get(participantId);
     const user = new User(responseUser.user);
-    store.dispatch(fetchUsers([user]));
-    store.dispatch(addNewDialog(dialog));
+    dispatch(fetchUsers([user]));
+    dispatch(addNewDialog(dialog));
     return dialog;
-  }
+  };
 
-  static getSelectedDialog() {
-    return store.getState().selectedDialog;
-  }
-}
+  const getSelectedDialog = () => store.selectedDialog;
 
-// create instance
-const pushNotificationService = new PushNotificationService();
+  return (
+    <PushNotificationContext.Provider
+      value={{
+        init,
+        subcribeToPushNotification,
+        onNotification,
+      }}
+    >
+      {children}
+    </PushNotificationContext.Provider>
+  );
+};
 
-Object.freeze(pushNotificationService);
+PushNotificationProvider.DEVICE_TOKEN_KEY = 'DEVICE_TOKEN_KEY';
 
-export default pushNotificationService;
+PushNotificationProvider.Navigation = null;
+
+export { PushNotificationProvider };

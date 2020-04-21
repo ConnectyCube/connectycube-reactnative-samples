@@ -1,17 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { StyleSheet, View, TextInput, Text, TouchableOpacity, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import ImagePicker from 'react-native-image-crop-picker';
 
 import Avatar from '../../components/avatar';
 import { SIZE_SCREEN, BTN_TYPE } from '../../../helpers/constants';
-import ChatService from '../../../services/chat-service';
+import ChatContext from '../../../services/chat-service';
 import CreateBtn from '../../components/createBtn';
 import Indicator from '../../components/indicator';
 import { showAlert } from '../../../helpers/alert';
 import { popToTop } from '../../../routing/init';
+import UsersContext from '../../../services/users-service';
 
 const CreateDialog = ({ navigation }) => {
+  const ChatService = useContext(ChatContext);
+  const UsersService = useContext(UsersContext);
   const [keyword, setKeyword] = useState('');
   const [isPickImage, setIsPickImage] = useState(null);
   const [isLoader, setIsLoader] = useState(false);
@@ -32,7 +35,6 @@ const CreateDialog = ({ navigation }) => {
   );
 
   const createDialog = async () => {
-    const users = navigation.getParam('users');
     const str = keyword.trim();
     if (str.length < 3) {
       return showAlert('Enter more than 4 characters');
@@ -42,7 +44,7 @@ const CreateDialog = ({ navigation }) => {
     const newDialog = await ChatService.createPublicDialog(occupants_ids, str, isPickImage);
     setIsLoader(false);
     navigation.dispatch(popToTop);
-    navigation.push('Chat', { dialog: newDialog, isNeedFetchUsers: true });
+    navigation.push('Chat', { dialog: newDialog, isNeedFetchUsers: true, getUsersAvatar: UsersService.getUsersAvatar });
   };
 
   const onPickImage = async () => {

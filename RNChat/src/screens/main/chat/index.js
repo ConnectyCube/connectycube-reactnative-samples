@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   StyleSheet,
   View,
@@ -10,19 +10,22 @@ import {
   Platform,
   ActivityIndicator,
 } from 'react-native';
-import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import AttachmentIcon from 'react-native-vector-icons/Entypo';
 import { AutoGrowingTextInput } from 'react-native-autogrow-textinput';
-
 import ImagePicker from 'react-native-image-crop-picker';
-import ChatService from '../../../services/chat-service';
-import UsersService from '../../../services/users-service';
+
+import ChatContext from '../../../services/chat-service';
 import Message from './message';
 import Avatar from '../../components/avatar';
 import { DIALOG_TYPE } from '../../../helpers/constants';
+import AuthContext from '../../../services/auth-service';
 
-const Chat = ({ history, navigation, currentUser: { user } }) => {
+const Chat = ({ navigation }) => {
+  const { currentUser } = useContext(AuthContext);
+  const ChatService = useContext(ChatContext);
+  const history = ChatService.messages[navigation.state.params.dialog.id];
+
   const [activIndicator, setActivIndicator] = useState(true);
   const [messageText, setMessageText] = useState('');
   let needToGetMoreMessage = null;
@@ -89,6 +92,7 @@ const Chat = ({ history, navigation, currentUser: { user } }) => {
   const _keyExtractor = (item, index) => index.toString();
 
   const _renderMessageItem = (message) => {
+    const { user } = currentUser;
     const isOtherSender = Number(message.sender_id) !== user.id;
     return (
       <Message otherSender={isOtherSender} message={message} key={message.id} />
@@ -142,32 +146,33 @@ const Chat = ({ history, navigation, currentUser: { user } }) => {
 
 Chat.navigationOptions = ({ navigation }) => {
   const goToDetailsScreen = (props) => {
+    const { dialog } = navigation.state.params;
     const isNeedFetchUsers = props.getParam('isNeedFetchUsers', false);
-    if (props.state.params.dialog.type === DIALOG_TYPE.PRIVATE) {
-      props.push('ContactDetails', { dialog: props.state.params.dialog });
+    if (dialog.type === DIALOG_TYPE.PRIVATE) {
+      props.push('ContactDetails', { dialog });
     } else {
-      props.push('GroupDetails', { dialog: props.state.params.dialog, isNeedFetchUsers });
+      props.push('GroupDetails', { dialog, isNeedFetchUsers });
     }
   };
 
-  const { dialog } = navigation.state.params;
+  const { dialog, getUsersAvatar } = navigation.state.params;
   let dialogPhoto = '';
   if (dialog.type === DIALOG_TYPE.PRIVATE) {
-    dialogPhoto = UsersService.getUsersAvatar(dialog.occupants_ids);
+    dialogPhoto = getUsersAvatar(dialog.occupants_ids);
   } else {
     dialogPhoto = dialog.photo;
   }
   return {
     headerTitle: (
       <Text numberOfLines={3} style={{ fontSize: 22, color: 'black' }}>
-        {navigation.state.params.dialog.name}
+        {dialog.name}
       </Text>
     ),
     headerRight: (
       <TouchableOpacity onPress={() => goToDetailsScreen(navigation)}>
         <Avatar
           photo={dialogPhoto}
-          name={navigation.state.params.dialog.name}
+          name={dialog.name}
           iconSize="small"
         />
       </TouchableOpacity>
@@ -233,9 +238,4 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = (state, props) => ({
-  history: state.messages[props.navigation.state.params.dialog.id],
-  currentUser: state.currentUser,
-});
-
-export default connect(mapStateToProps)(Chat);
+export default Chat;

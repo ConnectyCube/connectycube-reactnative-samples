@@ -1,17 +1,19 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
 
 import Avatar from '../../../components/avatar';
 import DialogTitles from './dialogTitles';
 import DialogLastDate from './dialogLastDate';
 import DialogUnreadCounter from './dialogUnreadCounter';
-import UsersService from '../../../../services/users-service';
+import UsersContext from '../../../../services/users-service';
 import { DIALOG_TYPE } from '../../../../helpers/constants';
 
 const Dialog = ({ dialog, navigation }) => {
+  const UsersService = useContext(UsersContext);
+
   const getOccupants = async () => {
     await UsersService.getOccupants(dialog.occupants_ids);
-    navigation.navigate('Chat', { dialog });
+    navigation.navigate('Chat', { dialog, getUsersAvatar: UsersService.getUsersAvatar });
   };
 
   const getUsersAvatar = (ids) => UsersService.getUsersAvatar(ids);
