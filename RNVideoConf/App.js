@@ -2,10 +2,8 @@ import React from 'react';
 import {
   StyleSheet,
   View,
-  PermissionsAndroid
 } from 'react-native';
-import ConnectyCube from 'react-native-connectycube';
-import {RTCView} from 'react-native-webrtc';
+import ConnectyCube, { RTCView } from 'react-native-connectycube';
 
 const CUBE_CONFIG = [
   {
@@ -28,7 +26,6 @@ class App extends React.PureComponent {
     ConnectyCube.init(...CUBE_CONFIG)
     await ConnectyCube.createSession()
     const session = ConnectyCube.videochatconference.createNewSession()
-    // await PermissionsAndroid.requestMultiple([PermissionsAndroid.PERMISSIONS])
     const localStream = await session.getUserMedia({
       audio: true,
       video: {
