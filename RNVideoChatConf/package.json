@@ -1,0 +1,50 @@
+{
+  "name": "ConnectyCubeVideoChatConfCodeSample",
+  "version": "2.1.6",
+  "private": true,
+  "scripts": {
+    "postinstall": "npx jetify && cd ios && pod install",
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "start:reset": "npm run start --reset-cache",
+    "test": "jest",
+    "ios": "react-native run-ios",
+    "android": "react-native run-android",
+    "android:release": "cd android && ./gradlew app:assembleRelease",
+    "android:clean": "cd android && ./gradlew clean && ./gradlew cleanBuildCache",
+    "reinstall": "rm -rf node_modules && npm install",
+    "clean": "watchman watch-del-all && rm -rf /tmp/metro-bundler-cache-* && rm -rf /tmp/haste-map-react-native-packager-*",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@react-native-community/async-storage": "1.7.1",
+    "@react-native-community/masked-view": "^0.1.6",
+    "react": "16.9.0",
+    "react-native": "0.61.5",
+    "react-native-awesome-alerts": "^1.3.0",
+    "react-native-connectycube": "^2.1.6",
+    "react-native-gesture-handler": "^1.5.5",
+    "react-native-incall-manager": "3.2.7",
+    "react-native-reanimated": "^1.7.0",
+    "react-native-safe-area-context": "^0.6.4",
+    "react-native-screens": "^2.0.0-beta.1",
+    "react-native-simple-toast": "^1.0.0",
+    "react-native-sound": "^0.11.0",
+    "react-native-vector-icons": "6.6.0",
+    "react-navigation": "^4.0.10",
+    "react-navigation-stack": "^2.0.16"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.6.2",
+    "@babel/runtime": "^7.6.2",
+    "@react-native-community/eslint-config": "^0.0.5",
+    "babel-jest": "^24.9.0",
+    "eslint": "^6.4.0",
+    "jetifier": "^1.6.5",
+    "jest": "^24.9.0",
+    "metro-react-native-babel-preset": "^0.56.0",
+    "react-test-renderer": "16.9.0"
+  },
+  "jest": {
+    "preset": "react-native"
+  }
+}
