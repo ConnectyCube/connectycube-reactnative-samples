@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
-import {StyleSheet, SafeAreaView, TouchableOpacity, View} from 'react-native';
-import {CallService} from '../../services';
+import React, { Component } from 'react';
+import { StyleSheet, SafeAreaView, TouchableOpacity, View } from 'react-native';
+import { CallService } from '../../services';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
 export default class ToolBar extends Component {
@@ -31,29 +31,30 @@ export default class ToolBar extends Component {
     } else {
       closeSelect();
       initRemoteStreams(selectedUsersIds);
-      CallService.startCall(selectedUsersIds).then(setLocalStream);
+      // CallService.startCall(selectedUsersIds).then(setLocalStream);
+      CallService.startCall(selectedUsersIds);
     }
   };
 
   stopCall = () => {
-    const {resetState} = this.props;
+    const { resetState } = this.props;
 
     CallService.stopCall();
     resetState();
   };
 
   switchCamera = () => {
-    const {localStream} = this.props;
+    const { localStream } = this.props;
 
     CallService.switchCamera(localStream);
-    this.setState(prevState => ({isFrontCamera: !prevState.isFrontCamera}));
+    this.setState(prevState => ({ isFrontCamera: !prevState.isFrontCamera }));
   };
 
   muteUnmuteAudio = () => {
     this.setState(prevState => {
       const mute = !prevState.isAudioMuted;
       CallService.setAudioMuteState(mute);
-      return {isAudioMuted: mute};
+      return { isAudioMuted: mute };
     });
   };
 
@@ -72,7 +73,7 @@ export default class ToolBar extends Component {
   };
 
   _renderMuteButton = () => {
-    const {isAudioMuted} = this.state;
+    const { isAudioMuted } = this.state;
     const type = isAudioMuted ? 'mic-off' : 'mic';
 
     return (
@@ -85,7 +86,7 @@ export default class ToolBar extends Component {
   };
 
   _renderSwitchVideoSourceButton = () => {
-    const {isFrontCamera} = this.state;
+    const { isFrontCamera } = this.state;
     const type = isFrontCamera ? 'camera-rear' : 'camera-front';
 
     return (
@@ -98,7 +99,7 @@ export default class ToolBar extends Component {
   };
 
   render() {
-    const {isActiveSelect, isActiveCall} = this.props;
+    const { isActiveSelect, isActiveCall } = this.props;
     const isCallInProgress = isActiveCall || !isActiveSelect;
     const isAvailableToSwitch =
       isActiveCall && CallService.mediaDevices.length > 1;
