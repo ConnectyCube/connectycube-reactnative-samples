@@ -9,9 +9,11 @@ export default class CallService {
   participantIds = [];
 
   static MEDIA_OPTIONS = { audio: true, video: { facingMode: 'user' } };
+  static CURRENT_USER = null;
 
   _session = null;
-  // mediaDevices = [];
+  mediaDevices = [];
+
 
   outgoingCall = new Sound(require('../../assets/sounds/dialing.mp3'));
   incomingCall = new Sound(require('../../assets/sounds/calling.mp3'));
@@ -19,19 +21,170 @@ export default class CallService {
 
   showToast = text => {
     const commonToast = Platform.OS === 'android' ? ToastAndroid : Toast;
-
     commonToast.showWithGravity(text, Toast.LONG, Toast.TOP);
   };
 
   getUserById = (userId, key) => {
     const user = users.find(user => user.id == userId);
-
     if (typeof key === 'string') {
       return user[key];
     }
-
     return user;
   };
+
+
+  startCall = (ids) => {
+    const opponents = [];
+
+    ids.forEach(id => {
+      const userInfo = this.getUserById(id)
+      opponents.push(userInfo.id, userInfo.name);
+    })
+    this.participantIds = ids
+    this.janusRoomId = this._getUniqueRoomId()
+    this.sendIncomingCallSystemMessage(ids)
+    this.playSound('outgoing')
+    this.initiatorID = this.currentUserID
+    // this.startNoAnswerTimers(this.participantIds)
+    this.joinConf(this.janusRoomId)
+    // this.startNoAnswerTimers(this.participantIds)
+  };
+
+  joinConf = (janusRoomId, retry) => {
+    this._session = ConnectyCube.videochatconference.createNewSession()
+    return this._session.getUserMedia(CallService.MEDIA_OPTIONS).then(stream => {
+      this._session.join(janusRoomId, this.currentUserID, this.currentUserName);
+    }, error => {
+      console.warn('[Get user media error]', error, this.mediaParam)
+      if (!retry) {
+        this.mediaParams.video = false
+        return this.joinConf(janusRoomId, true)
+      }
+    });
+  }
+
+  onSystemMessage = (msg, showInomingCallModal, hideInomingCallModal) => {
+    console.warn('[onSystemMessage]', msg)
+    const { extension, userId } = msg
+    if (extension.callStart) {
+      const { participantIds, janusRoomId } = extension
+      this.playSound('incoming');
+      const oponentIds = participantIds
+        .split(',')
+        .map(user_id => +user_id)
+        .filter(user_id => user_id != this.currentUserID)
+      if (this.janusRoomId) {
+        return this.sendRejectCallMessage([...oponentIds, userId], janusRoomId, true)
+      }
+      this.janusRoomId = janusRoomId
+      this.initiatorID = userId
+      this.participantIds = oponentIds
+      showInomingCallModal();
+    } else if (extension.callRejected) {
+      const { janusRoomId } = extension
+      if (this.janusRoomId === janusRoomId) {
+        const { busy } = extension
+        this.onRejectCallListener(this._session, userId, { busy })
+      }
+    } else if (extension.callEnd) {
+      const { janusRoomId } = extension
+      if (this.janusRoomId === janusRoomId) {
+        this.onStopCallListener(this._session, userId)
+      }
+    }
+  }
+
+  acceptCall = () => {
+    this.stopSounds();
+    this.setMediaDevices();
+    this._session = ConnectyCube.videochatconference.createNewSession()
+    return this._session.getUserMedia(CallService.MEDIA_OPTIONS).then(stream => {
+      this._session.join(this.janusRoomId, CallService.CURRENT_USER.id, CallService.CURRENT_USER.name);
+      return stream;
+    })
+  };
+
+  setMediaDevices() {
+    return ConnectyCube.videochatconference.getMediaDevices().then(mediaDevices => {
+      this.mediaDevices = mediaDevices;
+    });
+  }
+
+  _getUniqueRoomId() {
+    return ConnectyCube.chat.helpers.getBsonObjectId()
+  }
+
+  sendIncomingCallSystemMessage = (participantIds) => {
+    const msg = {
+      extension: {
+        callStart: '1',
+        janusRoomId: this.janusRoomId,
+        participantIds: participantIds.join(','),
+      }
+    }
+    return participantIds.map(user_id => ConnectyCube.chat.sendSystemMessage(user_id, msg))
+  }
+
+  playSound = type => {
+    switch (type) {
+      case 'outgoing':
+        this.outgoingCall.setNumberOfLoops(-1);
+        this.outgoingCall.play();
+        break;
+      case 'incoming':
+        this.incomingCall.setNumberOfLoops(-1);
+        this.incomingCall.play();
+        break;
+      case 'end':
+        this.endCall.play();
+        break;
+
+      default:
+        break;
+    }
+  };
+
+  stopSounds = () => {
+    if (this.incomingCall.isPlaying()) {
+      this.incomingCall.pause();
+    }
+    if (this.outgoingCall.isPlaying()) {
+      this.outgoingCall.pause();
+    }
+  };
+
+  processOnRemoteStreamListener = () => {
+    return new Promise((resolve, reject) => {
+      if (!this._session) {
+        reject();
+      } else {
+        resolve();
+      }
+    });
+  };
+
+
+  // processOnRejectCallListener(session, userId, extension = {}) {
+  //   return new Promise((resolve, reject) => {
+  //     if (userId === session.currentUserID) {
+  //       this._session = null;
+  //       this.showToast('You have rejected the call on other side');
+
+  //       reject();
+  //     } else {
+  //       const userName = this.getUserById(userId, 'name');
+  //       const message = extension.busy
+  //         ? `${userName} is busy`
+  //         : `${userName} rejected the call request`;
+
+  //       this.showToast(message);
+
+  //       resolve();
+  //     }
+  //   });
+  // }
+
+
 
   // setMediaDevices() {
   //   return ConnectyCube.videochat.getMediaDevices().then(mediaDevices => {
@@ -51,105 +204,6 @@ export default class CallService {
   //       return stream;
   //     });
   // };
-
-  // startCall = ids => {
-  //   const options = {};
-  //   const type = ConnectyCube.videochat.CallType.VIDEO; // AUDIO is also possible
-
-  //   this._session = ConnectyCube.videochat.createNewSession(ids, type, options);
-  //   this.setMediaDevices();
-  //   this.playSound('outgoing');
-
-  //   return this._session
-  //     .getUserMedia(CallService.MEDIA_OPTIONS)
-  //     .then(stream => {
-  //       this._session.call({});
-  //       return stream;
-  //     });
-  // };
-
-  startCall = (ids) => {
-    const opponents = [];
-
-    ids.forEach(id => {
-      const userInfo = this.getUserById(id)
-      opponents.push(userInfo.id, userInfo.name);
-    })
-
-    this.participantIds = ids
-    this.janusRoomId = this._getUniqueRoomId()
-    this.sendIncomingCallSystemMessage(ids)
-    this.playSound('outgoing')
-
-    this.initiatorID = this.currentUserID
-    // this.startNoAnswerTimers(this.participantIds)
-    this.joinConf(this.janusRoomId)
-
-    // this.startNoAnswerTimers(this.participantIds)
-    // this.joinConf(this.janusRoomId)
-
-
-    // return this._session
-    //     .getUserMedia(CallService.MEDIA_OPTIONS)
-    //     .then(stream => {
-    //       this._session.call({});
-    //       return stream;
-    //     });
-
-  };
-
-  // startCall = ids => {
-  //   const options = {};
-  //   const type = ConnectyCube.videochat.CallType.VIDEO; // AUDIO is also possible
-
-  //   this._session = ConnectyCube.videochat.createNewSession(ids, type, options);
-  //   this.setMediaDevices();
-  //   this.playSound('outgoing');
-
-  //   return this._session
-  //     .getUserMedia(CallService.MEDIA_OPTIONS)
-  //     .then(stream => {
-  //       this._session.call({});
-  //       return stream;
-  //     });
-  // };
-
-  joinConf = (janusRoomId, retry) => {
-    this._session = ConnectyCube.videochatconference.createNewSession()
-    console.warn('this._session', this._session)
-
-    // return this._session.getUserMedia(CallService.MEDIA_OPTIONS).then(stream => {
-    //   this._session.call({});
-    //   return stream;
-    //   // this.addStreamElement({ id: this.currentUserID, name: 'Me', local: true })
-    //   // this.removeStreamLoaderByUserId(this.currentUserID)
-    //   // this._session.attachMediaStream(this.getStreamIdByUserId(this.currentUserID), stream, { muted: true });
-    //   // this._prepareVideoElement(this.currentUserID, this.mediaParams.video);
-    //   // this.toggelStreamMirror(this.currentUserID)
-    //   // return this._session.join(janusRoomId, this.currentUserID, this.currentUserName).then(() => this.postJoinActions())
-    // }, error => {
-    //   console.warn('[Get user media error]', error, this.mediaParam)
-    //   if (!retry) {
-    //     this.mediaParams.video = false
-    //     return this.joinConf(janusRoomId, true)
-    //   }
-    // });
-  }
-
-  _getUniqueRoomId() {
-    return ConnectyCube.chat.helpers.getBsonObjectId()
-  }
-
-  sendIncomingCallSystemMessage = (participantIds) => {
-    const msg = {
-      extension: {
-        callStart: '1',
-        janusRoomId: this.janusRoomId,
-        participantIds: participantIds.join(','),
-      }
-    }
-    return participantIds.map(user_id => ConnectyCube.chat.sendSystemMessage(user_id, msg))
-  }
 
   // stopCall = () => {
   //   this.stopSounds();
@@ -272,41 +326,5 @@ export default class CallService {
   //   });
   // }
 
-  // processOnRemoteStreamListener = () => {
-  //   return new Promise((resolve, reject) => {
-  //     if (!this._session) {
-  //       reject();
-  //     } else {
-  //       resolve();
-  //     }
-  //   });
-  // };
 
-  playSound = type => {
-    switch (type) {
-      case 'outgoing':
-        this.outgoingCall.setNumberOfLoops(-1);
-        this.outgoingCall.play();
-        break;
-      case 'incoming':
-        this.incomingCall.setNumberOfLoops(-1);
-        this.incomingCall.play();
-        break;
-      case 'end':
-        this.endCall.play();
-        break;
-
-      default:
-        break;
-    }
-  };
-
-  // stopSounds = () => {
-  //   if (this.incomingCall.isPlaying()) {
-  //     this.incomingCall.pause();
-  //   }
-  //   if (this.outgoingCall.isPlaying()) {
-  //     this.outgoingCall.pause();
-  //   }
-  // };
 }

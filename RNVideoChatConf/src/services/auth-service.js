@@ -1,5 +1,6 @@
 import ConnectyCube from 'react-native-connectycube';
 import { credentials, appConfig } from '../config';
+import CallService from './call-service';
 
 export default class AuthService {
   init = (janusServerEndpoint = null) => {
@@ -9,20 +10,6 @@ export default class AuthService {
     ConnectyCube.init(credentials, appConfig)
   }
 
-  login = user => {
-    return new Promise((resolve, reject) => {
-      ConnectyCube.createSession(user)
-        .then(() =>
-          ConnectyCube.chat.connect({
-            userId: user.id,
-            password: user.password,
-          }),
-        )
-        .then(resolve)
-        .catch(reject);
-    });
-  };
-
   createSession(user) {
     return ConnectyCube.createSession(user)
   }
@@ -30,10 +17,11 @@ export default class AuthService {
   login = user => {
     return new Promise((resolve, reject) => {
       this.createSession(user)
-        .then(() => ConnectyCube.chat.connect({ userId: user.id, password: user.password }))
         .then(() => {
-          resolve();
+          CallService.CURRENT_USER = { name: user.name, id: user.id };
+          return ConnectyCube.chat.connect({ userId: user.id, password: user.password })
         })
+        .then(resolve)
         .catch(reject);
     });
   };

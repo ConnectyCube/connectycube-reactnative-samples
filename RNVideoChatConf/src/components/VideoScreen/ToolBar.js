@@ -31,8 +31,7 @@ export default class ToolBar extends Component {
     } else {
       closeSelect();
       initRemoteStreams(selectedUsersIds);
-      // CallService.startCall(selectedUsersIds).then(setLocalStream);
-      CallService.startCall(selectedUsersIds);
+      CallService.startCall(selectedUsersIds).then(setLocalStream);
     }
   };
 
