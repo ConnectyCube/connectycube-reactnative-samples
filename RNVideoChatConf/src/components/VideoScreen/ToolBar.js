@@ -37,7 +37,6 @@ export default class ToolBar extends Component {
 
   stopCall = () => {
     const { resetState } = this.props;
-
     CallService.stopCall();
     resetState();
   };

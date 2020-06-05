@@ -19,19 +19,6 @@ export default class CallService {
   incomingCall = new Sound(require('../../assets/sounds/calling.mp3'));
   endCall = new Sound(require('../../assets/sounds/end_call.mp3'));
 
-  showToast = text => {
-    const commonToast = Platform.OS === 'android' ? ToastAndroid : Toast;
-    commonToast.showWithGravity(text, Toast.LONG, Toast.TOP);
-  };
-
-  getUserById = (userId, key) => {
-    const user = users.find(user => user.id == userId);
-    if (typeof key === 'string') {
-      return user[key];
-    }
-    return user;
-  };
-
 
   startCall = (ids) => {
     const opponents = [];
@@ -40,59 +27,33 @@ export default class CallService {
       const userInfo = this.getUserById(id)
       opponents.push(userInfo.id, userInfo.name);
     })
+
     this.participantIds = ids
     this.janusRoomId = this._getUniqueRoomId()
     this.sendIncomingCallSystemMessage(ids)
     this.playSound('outgoing')
     this.initiatorID = this.currentUserID
     // this.startNoAnswerTimers(this.participantIds)
-    this.joinConf(this.janusRoomId)
+    return this.joinConf()
     // this.startNoAnswerTimers(this.participantIds)
   };
 
-  joinConf = (janusRoomId, retry) => {
-    this._session = ConnectyCube.videochatconference.createNewSession()
-    return this._session.getUserMedia(CallService.MEDIA_OPTIONS).then(stream => {
-      this._session.join(janusRoomId, this.currentUserID, this.currentUserName);
-    }, error => {
-      console.warn('[Get user media error]', error, this.mediaParam)
-      if (!retry) {
-        this.mediaParams.video = false
-        return this.joinConf(janusRoomId, true)
-      }
-    });
-  }
+  stopCall = () => {
+    console.warn('stopCall-method')
+    this.stopSounds();
 
-  onSystemMessage = (msg, showInomingCallModal, hideInomingCallModal) => {
-    console.warn('[onSystemMessage]', msg)
-    const { extension, userId } = msg
-    if (extension.callStart) {
-      const { participantIds, janusRoomId } = extension
-      this.playSound('incoming');
-      const oponentIds = participantIds
-        .split(',')
-        .map(user_id => +user_id)
-        .filter(user_id => user_id != this.currentUserID)
-      if (this.janusRoomId) {
-        return this.sendRejectCallMessage([...oponentIds, userId], janusRoomId, true)
-      }
-      this.janusRoomId = janusRoomId
-      this.initiatorID = userId
-      this.participantIds = oponentIds
-      showInomingCallModal();
-    } else if (extension.callRejected) {
-      const { janusRoomId } = extension
-      if (this.janusRoomId === janusRoomId) {
-        const { busy } = extension
-        this.onRejectCallListener(this._session, userId, { busy })
-      }
-    } else if (extension.callEnd) {
-      const { janusRoomId } = extension
-      if (this.janusRoomId === janusRoomId) {
-        this.onStopCallListener(this._session, userId)
-      }
+    if (!this.isGuestMode) {
+      console.warn('stopCall', this.participantIds)
+      this.sendEndCallMessage([...this.participantIds, this.initiatorID], this.janusRoomId)
     }
-  }
+
+    if (this._session) {
+      this._session.leave();
+      this.playSound('end');
+      ConnectyCube.videochatconference.clearSession(this._session.id);
+      this.mediaDevices = [];
+    }
+  };
 
   acceptCall = () => {
     this.stopSounds();
@@ -104,14 +65,116 @@ export default class CallService {
     })
   };
 
-  setMediaDevices() {
-    return ConnectyCube.videochatconference.getMediaDevices().then(mediaDevices => {
-      this.mediaDevices = mediaDevices;
+  rejectCall = () => {
+    this.stopSounds();
+    const participantIds = [this.initiatorID, ...this.participantIds]
+    this.sendRejectCallMessage(participantIds, this.janusRoomId, false)
+    this.stopCall()
+  };
+
+  joinConf = (retry) => {
+    this._session = ConnectyCube.videochatconference.createNewSession()
+    return this._session.getUserMedia(CallService.MEDIA_OPTIONS).then(stream => {
+      this._session.join(
+        this.janusRoomId,
+        CallService.CURRENT_USER.id,
+        CallService.CURRENT_USER.name
+      );
+      return stream;
+    }, error => {
+      console.warn('[Get user media error]', error, this.mediaParam)
+      if (!retry) {
+        this.mediaParams.video = false
+        return this.joinConf(this.janusRoomId, true)
+      }
     });
   }
 
-  _getUniqueRoomId() {
-    return ConnectyCube.chat.helpers.getBsonObjectId()
+  onSystemMessage = (msg, showInomingCallModal, hideInomingCallModal) => {
+    console.log('[onSystemMessage]', msg)
+    const { extension, userId } = msg
+    if (extension.callStart) {
+      console.log('onSystemMessage{callStart}')
+      const { participantIds, janusRoomId } = extension
+      this.playSound('incoming');
+      const oponentIds = participantIds
+        .split(',')
+        .map(user_id => +user_id)
+        .filter(user_id => user_id != this.currentUserID)
+      if (this.janusRoomId) {
+        console.log('onSystemMessageRejectCallMessage}')
+        return this.sendRejectCallMessage([...oponentIds, userId], janusRoomId, true)
+      }
+      this.janusRoomId = janusRoomId
+      this.initiatorID = userId
+      this.participantIds = oponentIds
+      showInomingCallModal();
+    } else if (extension.callRejected) {
+      console.log('onSystemMessage{callRejected}')
+      const { janusRoomId } = extension
+      if (this.janusRoomId === janusRoomId) {
+        const { busy } = extension
+        this.processOnRejectCallListener(this._session, userId, { busy })
+      }
+    } else if (extension.callEnd) {
+      const { janusRoomId } = extension
+      if (this.janusRoomId === janusRoomId) {
+        console.log('onSystemMessage{callEnd}')
+        hideInomingCallModal();
+        this.processOnStopCallListener(userId, this.initiatorID)
+      }
+    }
+  }
+
+  processOnRemoteStreamListener = () => {
+    return new Promise((resolve, reject) => {
+      if (!this._session) {
+        reject();
+      } else {
+        resolve();
+      }
+    });
+  };
+
+  processOnStopCallListener(userId, isInitiator) {
+    console.warn('processOnStopCallListener')
+    return new Promise((resolve, reject) => {
+      this.stopSounds();
+
+      if (!this._session) {
+        reject();
+      } else {
+        const userName = this.getUserById(userId, 'name');
+        const message = `${userName} has ${
+          isInitiator ? 'stopped' : 'left'
+          } the call`;
+
+        this.showToast(message);
+
+        resolve();
+      }
+    });
+  }
+
+  processOnRejectCallListener(session, userId, extension = {}) {
+
+    return new Promise((resolve, reject) => {
+      if (userId === session.currentUserID) {
+        this._session = null;
+        this.showToast('You have rejected the call on other side');
+
+        reject();
+      } else {
+        const userName = this.getUserById(userId, 'name');
+        const message = extension.busy
+          ? `${userName} is busy`
+          : `${userName} rejected the call request`;
+
+        this.showToast(message);
+
+        resolve();
+      }
+    });
   }
 
   sendIncomingCallSystemMessage = (participantIds) => {
@@ -124,6 +187,50 @@ export default class CallService {
     }
     return participantIds.map(user_id => ConnectyCube.chat.sendSystemMessage(user_id, msg))
   }
+
+  sendEndCallMessage = (participantIds, janusRoomId) => {
+    const msg = {
+      extension: {
+        callEnd: '1',
+        janusRoomId
+      }
+    }
+    return participantIds.map(user_id => ConnectyCube.chat.sendSystemMessage(user_id, msg))
+  }
+
+  sendRejectCallMessage = (participantIds, janusRoomId, isBusy) => {
+    const msg = {
+      extension: {
+        callRejected: '1',
+        janusRoomId,
+        busy: !!isBusy
+      }
+    }
+    return participantIds.map(user_id => ConnectyCube.chat.sendSystemMessage(user_id, msg))
+  }
+
+  getUserById = (userId, key) => {
+    const user = users.find(user => user.id == userId);
+    if (typeof key === 'string') {
+      return user[key];
+    }
+    return user;
+  };
+
+  showToast = text => {
+    const commonToast = Platform.OS === 'android' ? ToastAndroid : Toast;
+    commonToast.showWithGravity(text, Toast.LONG, Toast.TOP);
+  };
+
+  setMediaDevices() {
+    return ConnectyCube.videochatconference.getMediaDevices().then(mediaDevices => {
+      this.mediaDevices = mediaDevices;
+    });
+  };
+
+  _getUniqueRoomId() {
+    return ConnectyCube.chat.helpers.getBsonObjectId()
+  };
 
   playSound = type => {
     switch (type) {
@@ -153,74 +260,6 @@ export default class CallService {
     }
   };
 
-  processOnRemoteStreamListener = () => {
-    return new Promise((resolve, reject) => {
-      if (!this._session) {
-        reject();
-      } else {
-        resolve();
-      }
-    });
-  };
-
-
-  // processOnRejectCallListener(session, userId, extension = {}) {
-  //   return new Promise((resolve, reject) => {
-  //     if (userId === session.currentUserID) {
-  //       this._session = null;
-  //       this.showToast('You have rejected the call on other side');
-
-  //       reject();
-  //     } else {
-  //       const userName = this.getUserById(userId, 'name');
-  //       const message = extension.busy
-  //         ? `${userName} is busy`
-  //         : `${userName} rejected the call request`;
-
-  //       this.showToast(message);
-
-  //       resolve();
-  //     }
-  //   });
-  // }
-
-
-
-  // setMediaDevices() {
-  //   return ConnectyCube.videochat.getMediaDevices().then(mediaDevices => {
-  //     this.mediaDevices = mediaDevices;
-  //   });
-  // }
-
-  // acceptCall = session => {
-  //   this.stopSounds();
-  //   this._session = session;
-  //   this.setMediaDevices();
-
-  //   return this._session
-  //     .getUserMedia(CallService.MEDIA_OPTIONS)
-  //     .then(stream => {
-  //       this._session.accept({});
-  //       return stream;
-  //     });
-  // };
-
-  // stopCall = () => {
-  //   this.stopSounds();
-
-  //   if (this._session) {
-  //     this.playSound('end');
-  //     this._session.stop({});
-  //     ConnectyCube.videochat.clearSession(this._session.ID);
-  //     this._session = null;
-  //     this.mediaDevices = [];
-  //   }
-  // };
-
-  // rejectCall = (session, extension) => {
-  //   this.stopSounds();
-  //   session.reject(extension);
-  // };
 
   // setAudioMuteState = mute => {
   //   if (mute) {
@@ -250,81 +289,5 @@ export default class CallService {
   //     }
   //   });
   // }
-
-  // processOnCallListener(session) {
-  //   return new Promise((resolve, reject) => {
-  //     if (session.initiatorID === session.currentUserID) {
-  //       reject();
-  //     }
-
-  //     if (this._session) {
-  //       this.rejectCall(session, {busy: true});
-  //       reject();
-  //     }
-
-  //     this.playSound('incoming');
-
-  //     resolve();
-  //   });
-  // }
-
-  // processOnAcceptCallListener(session, userId, extension = {}) {
-  //   return new Promise((resolve, reject) => {
-  //     if (userId === session.currentUserID) {
-  //       this._session = null;
-  //       this.showToast('You have accepted the call on other side');
-
-  //       reject();
-  //     } else {
-  //       const userName = this.getUserById(userId, 'name');
-  //       const message = `${userName} has accepted the call`;
-
-  //       this.showToast(message);
-  //       this.stopSounds();
-
-  //       resolve();
-  //     }
-  //   });
-  // }
-
-  // processOnRejectCallListener(session, userId, extension = {}) {
-  //   return new Promise((resolve, reject) => {
-  //     if (userId === session.currentUserID) {
-  //       this._session = null;
-  //       this.showToast('You have rejected the call on other side');
-
-  //       reject();
-  //     } else {
-  //       const userName = this.getUserById(userId, 'name');
-  //       const message = extension.busy
-  //         ? `${userName} is busy`
-  //         : `${userName} rejected the call request`;
-
-  //       this.showToast(message);
-
-  //       resolve();
-  //     }
-  //   });
-  // }
-
-  // processOnStopCallListener(userId, isInitiator) {
-  //   return new Promise((resolve, reject) => {
-  //     this.stopSounds();
-
-  //     if (!this._session) {
-  //       reject();
-  //     } else {
-  //       const userName = this.getUserById(userId, 'name');
-  //       const message = `${userName} has ${
-  //         isInitiator ? 'stopped' : 'left'
-  //       } the call`;
-
-  //       this.showToast(message);
-
-  //       resolve();
-  //     }
-  //   });
-  // }
-
 
 }
