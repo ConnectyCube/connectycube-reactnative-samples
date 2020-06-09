@@ -1,3 +1,5 @@
+export const NO_ASNWER_TIMER = 30000 // 30 sec
+
 export const messages = {
   login:
     "Login as any user on this computer and another user on another computer.",

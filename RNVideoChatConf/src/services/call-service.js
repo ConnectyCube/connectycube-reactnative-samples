@@ -3,16 +3,17 @@ import Toast from 'react-native-simple-toast';
 import ConnectyCube from 'react-native-connectycube';
 import InCallManager from 'react-native-incall-manager';
 import Sound from 'react-native-sound';
-import { users } from '../config';
+import { users, NO_ASNWER_TIMER } from '../config';
+import customEventEmiter, { CUSTOM_EVENTS } from './customEvents'
 
 export default class CallService {
-  participantIds = [];
-
   static MEDIA_OPTIONS = { audio: true, video: { facingMode: 'user' } };
   static CURRENT_USER = null;
 
   _session = null;
   mediaDevices = [];
+  _answerUserTimers = {}
+  participantIds = [];
 
 
   outgoingCall = new Sound(require('../../assets/sounds/dialing.mp3'));
@@ -33,17 +34,15 @@ export default class CallService {
     this.sendIncomingCallSystemMessage(ids)
     this.playSound('outgoing')
     this.initiatorID = this.currentUserID
-    // this.startNoAnswerTimers(this.participantIds)
+    this.startNoAnswerTimers(this.participantIds)
+    this.setMediaDevices()
     return this.joinConf()
-    // this.startNoAnswerTimers(this.participantIds)
   };
 
   stopCall = () => {
-    console.warn('stopCall-method')
     this.stopSounds();
 
     if (!this.isGuestMode) {
-      console.warn('stopCall', this.participantIds)
       this.sendEndCallMessage([...this.participantIds, this.initiatorID], this.janusRoomId)
     }
 
@@ -52,13 +51,24 @@ export default class CallService {
       this.playSound('end');
       ConnectyCube.videochatconference.clearSession(this._session.id);
       this.mediaDevices = [];
+      customEventEmiter.emit(CUSTOM_EVENTS.STOP_CALL_UI_RESET)
     }
+
+    this.clearNoAnswerTimers();
+    this._session = null;
+    this.videoDevicesIds = [];
+    this.initiatorID = 0;
+    this.participantIds = [];
+    this.janusRoomId = 0;
+    this.currentUserName = 0;
+    this.isGuestMode = 0;
   };
 
   acceptCall = () => {
     this.stopSounds();
     this.setMediaDevices();
     this._session = ConnectyCube.videochatconference.createNewSession()
+    // this.clearNoAnswerTimers(userId)
     return this._session.getUserMedia(CallService.MEDIA_OPTIONS).then(stream => {
       this._session.join(this.janusRoomId, CallService.CURRENT_USER.id, CallService.CURRENT_USER.name);
       return stream;
@@ -82,7 +92,7 @@ export default class CallService {
       );
       return stream;
     }, error => {
-      console.warn('[Get user media error]', error, this.mediaParam)
+      console.log('[Get user media error]', error, this.mediaParam)
       if (!retry) {
         this.mediaParams.video = false
         return this.joinConf(this.janusRoomId, true)
@@ -137,7 +147,6 @@ export default class CallService {
   };
 
   processOnStopCallListener(userId, isInitiator) {
-    console.warn('processOnStopCallListener')
     return new Promise((resolve, reject) => {
       this.stopSounds();
 
@@ -157,12 +166,10 @@ export default class CallService {
   }
 
   processOnRejectCallListener(session, userId, extension = {}) {
-
     return new Promise((resolve, reject) => {
       if (userId === session.currentUserID) {
         this._session = null;
         this.showToast('You have rejected the call on other side');
-
         reject();
       } else {
         const userName = this.getUserById(userId, 'name');
@@ -171,10 +178,23 @@ export default class CallService {
           : `${userName} rejected the call request`;
 
         this.showToast(message);
-
         resolve();
       }
     });
+  }
+
+  processOnAcceptCallListener(session, userId, displayName) {
+    this.stopSounds();
+    const userName = this.isGuestMode ? displayName : this.getUserById(userId, "name");
+    const infoText = `${userName} has ${this.isGuestMode ? 'joined' : 'accepted'} the call`;
+    this.showToast(infoText);
+    // if (this.isGuestMode) {
+    //   const userToAdd = {id: +userId, name: `${displayName || userId}`}
+    //   this.addStreamElement(userToAdd)
+    //   return
+    // }
+    // this.$dialing.pause();
+    this.clearNoAnswerTimers(userId)
   }
 
   sendIncomingCallSystemMessage = (participantIds) => {
@@ -216,6 +236,15 @@ export default class CallService {
     }
     return user;
   };
+
+  getParticipantIds = () => {
+    return this.participantIds
+  }
+
+  getInitiatorName = () => {
+    const user = users.find(user => user.id == this.initiatorID);
+    return user.name
+  }
 
   showToast = text => {
     const commonToast = Platform.OS === 'android' ? ToastAndroid : Toast;
@@ -260,34 +289,46 @@ export default class CallService {
     }
   };
 
+  setAudioMute = () => {
+    if (this._session.isAudioMuted()) {
+      this._session.unmuteAudio()
+    } else {
+      this._session.muteAudio()
+    }
+  };
 
-  // setAudioMuteState = mute => {
-  //   if (mute) {
-  //     this._session.mute('audio');
-  //   } else {
-  //     this._session.unmute('audio');
-  //   }
-  // };
+  setSpeakerphoneOn = flag => InCallManager.setSpeakerphoneOn(flag);
 
-  // switchCamera = localStream => {
-  //   localStream.getVideoTracks().forEach(track => track._switchCamera());
-  // };
+  switchCamera = localStream => {
+    localStream.getVideoTracks().forEach(track => track._switchCamera());
+  };
 
-  // setSpeakerphoneOn = flag => InCallManager.setSpeakerphoneOn(flag);
+  startNoAnswerTimers(participantIds) {
+    participantIds.forEach(user_id => {
+      this._answerUserTimers[user_id] = setTimeout(() => this.onUserNotAnswerListener(user_id), NO_ASNWER_TIMER)
+    })
+  }
 
-  // processOnUserNotAnswerListener(userId) {
-  //   return new Promise((resolve, reject) => {
-  //     if (!this._session) {
-  //       reject();
-  //     } else {
-  //       const userName = this.getUserById(userId, 'name');
-  //       const message = `${userName} did not answer`;
+  clearNoAnswerTimers(user_id) {
+    if (user_id) {
+      clearTimeout(this._answerUserTimers[user_id])
+      return delete this._answerUserTimers[user_id]
+    }
+    Object.values(this._answerUserTimers).forEach(timerId => clearTimeout(timerId))
+    this._answerUserTimers = {}
+  }
 
-  //       this.showToast(message);
+  onUserNotAnswerListener = (userId) => {
+    if (!this._session) {
+      return false;
+    }
 
-  //       resolve();
-  //     }
-  //   });
-  // }
+    const userName = this.getUserById(userId, "name");
+    const infoText = `${userName} did not answer`;
+
+    this.showToast(infoText);
+    this.sendEndCallMessage([userId], this.janusRoomId)
+    this.stopCall(userId)
+  };
 
 }

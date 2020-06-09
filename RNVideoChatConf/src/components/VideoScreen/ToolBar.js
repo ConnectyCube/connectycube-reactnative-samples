@@ -2,8 +2,15 @@ import React, { Component } from 'react';
 import { StyleSheet, SafeAreaView, TouchableOpacity, View } from 'react-native';
 import { CallService } from '../../services';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import customEventEmiter, { CUSTOM_EVENTS } from '../../services/customEvents'
 
 export default class ToolBar extends Component {
+
+  constructor(props) {
+    super(props)
+    this._setUpListeners();
+  }
+
   state = {
     isAudioMuted: false,
     isFrontCamera: true,
@@ -16,6 +23,18 @@ export default class ToolBar extends Component {
         isFrontCamera: true,
       };
     }
+  }
+
+  componentWillUnmount() {
+    customEventEmiter.removeListener(CUSTOM_EVENTS.STOP_CALL_UI_RESET, this._resetUIState)
+  }
+
+  _setUpListeners = () => {
+    customEventEmiter.addListener(CUSTOM_EVENTS.STOP_CALL_UI_RESET, this._resetUIState)
+  }
+
+  _resetUIState = () => {
+    this.props.resetState()
   }
 
   startCall = () => {
@@ -36,9 +55,8 @@ export default class ToolBar extends Component {
   };
 
   stopCall = () => {
-    const { resetState } = this.props;
     CallService.stopCall();
-    resetState();
+    this.props.resetState()
   };
 
   switchCamera = () => {
@@ -51,7 +69,7 @@ export default class ToolBar extends Component {
   muteUnmuteAudio = () => {
     this.setState(prevState => {
       const mute = !prevState.isAudioMuted;
-      CallService.setAudioMuteState(mute);
+      CallService.setAudioMute();
       return { isAudioMuted: mute };
     });
   };
