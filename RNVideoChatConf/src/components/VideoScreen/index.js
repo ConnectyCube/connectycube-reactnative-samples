@@ -108,10 +108,11 @@ export default class VideoScreen extends React.Component {
     ConnectyCube.videochatconference.onParticipantLeftListener = this.onStopCallListener.bind(this);
     ConnectyCube.videochatconference.onRemoteStreamListener = this.onRemoteStreamListener.bind(this);
     ConnectyCube.videochatconference.onParticipantJoinedListener = this.onAcceptCallListener.bind(this);
-    // ConnectyCube.videochatconference.onSlowLinkListener = this.onSlowLinkListener.bind(this);
-    // ConnectyCube.videochatconference.onRemoteConnectionStateChangedListener = this.onRemoteConnectionStateChangedListener.bind(this);
-    // ConnectyCube.videochatconference.onSessionConnectionStateChangedListener = this.onSessionConnectionStateChangedListener.bind(this);
+    ConnectyCube.videochatconference.onSlowLinkListener = this.onSlowLinkListener.bind(this);
+    ConnectyCube.videochatconference.onRemoteConnectionStateChangedListener = this.onRemoteConnectionStateChangedListener.bind(this);
+    ConnectyCube.videochatconference.onSessionConnectionStateChangedListener = this.onSessionConnectionStateChangedListener.bind(this);
   };
+
 
   onSystemMessage = (msg) => {
     CallService.onSystemMessage(
@@ -135,7 +136,6 @@ export default class VideoScreen extends React.Component {
   };
 
   onRemoteStreamListener = (session, userId, stream) => {
-    console.warn('onRemoteStreamListener', stream)
     CallService.processOnRemoteStreamListener(userId)
       .then(() => {
         this.updateRemoteStream(userId, stream);
@@ -146,6 +146,18 @@ export default class VideoScreen extends React.Component {
 
   onAcceptCallListener = (session, userId, displayName) => {
     CallService.processOnAcceptCallListener(session, userId, displayName)
+  }
+
+  onSlowLinkListener = (session, userId, uplink, nacks) => {
+    console.log('[onSlowLinkListener]', userId, uplink, nacks)
+  }
+
+  onRemoteConnectionStateChangedListener = (session, userId, iceState) => {
+    console.log('[onRemoteConnectionStateChangedListener]', userId, iceState)
+  }
+
+  onSessionConnectionStateChangedListener = (session, iceState) => {
+    console.log('[onSessionConnectionStateChangedListener]', iceState)
   }
 
   _onPressAccept = () => {

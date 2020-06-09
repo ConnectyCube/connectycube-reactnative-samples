@@ -20,6 +20,55 @@ export default class CallService {
   incomingCall = new Sound(require('../../assets/sounds/calling.mp3'));
   endCall = new Sound(require('../../assets/sounds/end_call.mp3'));
 
+  onSystemMessage = (msg, showInomingCallModal, hideInomingCallModal) => {
+    const { extension, userId } = msg
+    if (extension.callStart) {
+      const { participantIds, janusRoomId } = extension
+      let oponentIds = participantIds.split(',').map(user_id => +user_id);
+      oponentIds.push(+userId);
+
+      oponentIds = oponentIds.filter(user_id => user_id !== CallService.CURRENT_USER.id);
+      if (this.janusRoomId) {
+        return this.sendRejectCallMessage([...oponentIds, userId], janusRoomId, true)
+      }
+
+      this.participantIds = oponentIds;
+      this.janusRoomId = janusRoomId;
+      this.initiatorID = userId;
+      showInomingCallModal();
+
+    } else if (extension.callRejected) {
+      const { janusRoomId } = extension
+      if (this.janusRoomId === janusRoomId) {
+        const { busy } = extension
+        this.processOnRejectCallListener(this._session, userId, { busy })
+      }
+    } else if (extension.callEnd) {
+      const { janusRoomId } = extension
+      if (this.janusRoomId === janusRoomId) {
+        hideInomingCallModal();
+        this.processOnStopCallListener(userId, this.initiatorID)
+      }
+    }
+  }
+
+  joinConf = (retry) => {
+    this._session = ConnectyCube.videochatconference.createNewSession()
+    return this._session.getUserMedia(CallService.MEDIA_OPTIONS).then(stream => {
+      this._session.join(
+        this.janusRoomId,
+        CallService.CURRENT_USER.id,
+        CallService.CURRENT_USER.name
+      );
+      return stream;
+    }, error => {
+      console.log('[Get user media error]', error, this.mediaParam)
+      if (!retry) {
+        this.mediaParams.video = false
+        return this.joinConf(this.janusRoomId, true)
+      }
+    });
+  }
 
   startCall = (ids) => {
     const opponents = [];
@@ -81,60 +130,6 @@ export default class CallService {
     this.sendRejectCallMessage(participantIds, this.janusRoomId, false)
     this.stopCall()
   };
-
-  joinConf = (retry) => {
-    this._session = ConnectyCube.videochatconference.createNewSession()
-    return this._session.getUserMedia(CallService.MEDIA_OPTIONS).then(stream => {
-      this._session.join(
-        this.janusRoomId,
-        CallService.CURRENT_USER.id,
-        CallService.CURRENT_USER.name
-      );
-      return stream;
-    }, error => {
-      console.log('[Get user media error]', error, this.mediaParam)
-      if (!retry) {
-        this.mediaParams.video = false
-        return this.joinConf(this.janusRoomId, true)
-      }
-    });
-  }
-
-  onSystemMessage = (msg, showInomingCallModal, hideInomingCallModal) => {
-    console.log('[onSystemMessage]', msg)
-    const { extension, userId } = msg
-    if (extension.callStart) {
-      console.log('onSystemMessage{callStart}')
-      const { participantIds, janusRoomId } = extension
-      this.playSound('incoming');
-      const oponentIds = participantIds
-        .split(',')
-        .map(user_id => +user_id)
-        .filter(user_id => user_id != this.currentUserID)
-      if (this.janusRoomId) {
-        console.log('onSystemMessageRejectCallMessage}')
-        return this.sendRejectCallMessage([...oponentIds, userId], janusRoomId, true)
-      }
-      this.janusRoomId = janusRoomId
-      this.initiatorID = userId
-      this.participantIds = oponentIds
-      showInomingCallModal();
-    } else if (extension.callRejected) {
-      console.log('onSystemMessage{callRejected}')
-      const { janusRoomId } = extension
-      if (this.janusRoomId === janusRoomId) {
-        const { busy } = extension
-        this.processOnRejectCallListener(this._session, userId, { busy })
-      }
-    } else if (extension.callEnd) {
-      const { janusRoomId } = extension
-      if (this.janusRoomId === janusRoomId) {
-        console.log('onSystemMessage{callEnd}')
-        hideInomingCallModal();
-        this.processOnStopCallListener(userId, this.initiatorID)
-      }
-    }
-  }
 
   processOnRemoteStreamListener = () => {
     return new Promise((resolve, reject) => {

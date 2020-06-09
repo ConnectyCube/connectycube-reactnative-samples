@@ -40,7 +40,7 @@ export default class AuthScreen extends PureComponent {
   };
 
   createAndJoinGuestRoom = janusRoomId => {
-    return console.warn('createAndJoinGuestRoom')
+    return console.warn('coming soon')
     // AuthService.createSession()
     //   .then(() => {
     //     CallService.init();
