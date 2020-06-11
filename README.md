@@ -26,7 +26,7 @@ All the samples use ConnectyCube SDK. The following tech integration documentati
 - [Authentication and Users](https://developers.connectycube.com/reactnative/authentication-and-users)
 - [Chat API](https://developers.connectycube.com/reactnative/messaging)
 - [P2P calling API](https://developers.connectycube.com/reactnative/videocalling)
-- [Conference calling API](https://developers.connectycube.com/reactnative/push-notifications)
+- [Conference calling API](https://developers.connectycube.com/reactnative/videocalling-conference)
 - [Push Notifications API](https://developers.connectycube.com/reactnative/push-notifications)
 
 ## Have an issue?
