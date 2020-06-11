@@ -11,12 +11,6 @@ Project contains the following features implemented:
 - Switch camera
 - Snack bars to notify users about changes
 
-The sample provides 2 mods:
-  - Calling mode, with call/accept/reject signals
-  - Guest Room modde, where any user can join a call by link. To create a guest room you can click on a 'Guest Room' button and then share an url with other users. 
-  
-There is a live demo working in a 'Guest Room' mode available https://teatalk.connectycube.com
-
 ## Documentation
 
 ConnectyCube React Native SDK getting started - [https://developers.connectycube.com/reactnative](https://developers.connectycube.com/reactnative)
