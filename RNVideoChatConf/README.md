@@ -1,28 +1,31 @@
-# Video Chat code sample for React Native for ConnectyCube platform
+# Conference calling code sample for React Native for ConnectyCube platform
 
-This README introduces [ConnectyCube](https://connectycube.com) Video Chat code sample for React Native
+This README introduces [ConnectyCube](https://connectycube.com) Conference Calling code sample for React Native
 
 Project contains the following features implemented:
 
 - User authorization
-- Group video calls (up to 4 users)
+- Video calls up to 4 users
 - Mute/unmute microphone
-- Switch cameras
+- Mute/unmute video
+- Switch camera
+- Snack bars to notify users about changes
+
+The sample provides 2 mods:
+  - Calling mode, with call/accept/reject signals
+  - Guest Room modde, where any user can join a call by link. To create a guest room you can click on a 'Guest Room' button and then share an url with other users. 
+  
+There is a live demo working in a 'Guest Room' mode available https://teatalk.connectycube.com
 
 ## Documentation
 
-ConnectyCube React Native getting started - [https://developers.connectycube.com/reactnative](https://developers.connectycube.com/reactnative)
+ConnectyCube React Native SDK getting started - [https://developers.connectycube.com/reactnative](https://developers.connectycube.com/reactnative)
 
-ConnectyCube Video Chat API documentation - [https://developers.connectycube.com/reactnative/videocalling](https://developers.connectycube.com/reactnative/videocalling)
+ConnectyCube Conference Calling API documentation - [https://developers.connectycube.com/reactnative/videocalling-conference](https://developers.connectycube.com/reactnative/videocalling-conference)
 
 ## Screenshots
 
 <kbd><img alt="React Native video chat code sample, login" src="https://developers.connectycube.com/docs/_images/code_samples/reactnative/reactnative_codesample_video_login.PNG" width="200" /></kbd> <kbd><img alt="React Native video chat code sample, select users" src="https://developers.connectycube.com/docs/_images/code_samples/reactnative/reactnative_codesample_video_select_users.PNG" width="200" /></kbd> <kbd><img alt="React Native video chat code sample, video chat" src="https://developers.connectycube.com/docs/_images/code_samples/reactnative/reactnative_codesample_video_video.PNG" width="200" /></kbd>
-
-## Roadmap
-
-- Push notifications on incoming call
-- Call Kit
 
 ## Quick start and develop
 
@@ -101,6 +104,7 @@ To make the sample works for your own app, please do the following:
 
 4. Install node modules - `npm install`
 5. Run `npm run ios` or `npm run android`.
+
 
 ## Can't build yourself?
 

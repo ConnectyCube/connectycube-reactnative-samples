@@ -1,12 +1,12 @@
-import {Platform, ToastAndroid} from 'react-native';
+import { Platform, ToastAndroid } from 'react-native';
 import Toast from 'react-native-simple-toast';
 import ConnectyCube from 'react-native-connectycube';
 import InCallManager from 'react-native-incall-manager';
 import Sound from 'react-native-sound';
-import {users} from '../config';
+import { users } from '../config';
 
 export default class CallService {
-  static MEDIA_OPTIONS = {audio: true, video: {facingMode: 'user'}};
+  static MEDIA_OPTIONS = { audio: true, video: { facingMode: 'user' } };
 
   _session = null;
   mediaDevices = [];
@@ -119,7 +119,7 @@ export default class CallService {
       }
 
       if (this._session) {
-        this.rejectCall(session, {busy: true});
+        this.rejectCall(session, { busy: true });
         reject();
       }
 
@@ -178,7 +178,7 @@ export default class CallService {
         const userName = this.getUserById(userId, 'name');
         const message = `${userName} has ${
           isInitiator ? 'stopped' : 'left'
-        } the call`;
+          } the call`;
 
         this.showToast(message);
 
