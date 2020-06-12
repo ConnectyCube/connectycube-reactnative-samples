@@ -193,6 +193,8 @@ export default class VideoScreen extends React.Component {
       : [];
     const streams = [...remoteStreams, ...localStreamItem];
 
+    CallService.setSpeakerphoneOn(remoteStreams.length > 0);
+
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: 'black' }}>
         <StatusBar backgroundColor="black" barStyle="light-content" />
