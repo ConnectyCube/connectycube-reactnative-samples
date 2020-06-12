@@ -39,17 +39,6 @@ export default class AuthScreen extends PureComponent {
       .then(() => this.setIsLogging(false));
   };
 
-  createAndJoinGuestRoom = janusRoomId => {
-    return console.warn('coming soon')
-    // AuthService.createSession()
-    //   .then(() => {
-    //     CallService.init();
-    //     AuthService.hideLoginScreen()
-    //     CallService.initGuestRoom(janusRoomId)
-    //     this.addEventListenersForCallButtons();
-    //   })
-  }
-
   render() {
     const { isLogging } = this.state;
     const logoSrc = require('../../../assets/logo.png');
@@ -80,15 +69,6 @@ export default class AuthScreen extends PureComponent {
               </View>
             </TouchableOpacity>
           ))}
-          <Text style={{ textAlign: 'center', fontSize: 20, marginVertical: 15 }}>Or create and join</Text>
-          <TouchableOpacity onPress={() => this.createAndJoinGuestRoom()}>
-            <View
-              style={[styles.authBtn('#9e0f72'), styles.centeredChildren]}>
-              <Text style={styles.authBtnText}>
-                {`Guest Room`}
-              </Text>
-            </View>
-          </TouchableOpacity>
         </SafeAreaView>
       </View>
     );
