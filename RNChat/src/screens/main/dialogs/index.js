@@ -1,126 +1,115 @@
-import React, { Component } from 'react'
-import { StyleSheet, View, FlatList, Text, StatusBar, TouchableOpacity, Platform } from 'react-native'
-import { connect } from 'react-redux'
-import store from '../../../store'
-import Dialog from './elements/dialog'
-import ChatService from '../../../services/chat-service'
-import Indicator from '../../components/indicator'
-import CreateBtn from '../../components/createBtn'
-import { BTN_TYPE } from '../../../helpers/constants'
-import Avatar from '../../components/avatar'
-import PushNotificationService from '../../../services/push-notification'
+import React, { useState, useContext, useEffect } from 'react';
+import { StyleSheet, View, FlatList, Text, StatusBar, TouchableOpacity, Platform } from 'react-native';
 
-class Dialogs extends Component {
-  static currentUserInfo = ''
-  dialogs = []
+import Dialog from './elements/dialog';
+import ChatContext from '../../../services/chat-service';
+import Indicator from '../../components/indicator';
+import CreateBtn from '../../components/createBtn';
+import { BTN_TYPE } from '../../../helpers/constants';
+import Avatar from '../../components/avatar';
+import PushNotificationContext from '../../../services/push-notification';
+import AuthContext from '../../../services/auth-service';
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      isLoader: props.dialogs.length === 0 && true,
+const Dialogs = ({ navigation }) => {
+  const ChatService = useContext(ChatContext);
+  const { dialogs } = ChatService;
+  const PushNotificationService = useContext(PushNotificationContext);
+  const [isLoader, setIsLoader] = useState(dialogs.length === 0 && true);
+  const { currentUser } = useContext(AuthContext);
+  const [didLoad, setDidLoad] = useState(false);
+  const [dialogsLocal, setDialogsLocal] = useState([]);
+
+  useEffect(() => {
+    init();
+  }, []);
+
+  const init = async () => {
+    ChatService.setUpListeners();
+    await ChatService.fetchDialogsFromServer();
+    PushNotificationService.init(navigation);
+    setDidLoad(true);
+  };
+
+  useEffect(() => {
+    if (currentUser?.user.full_name !== Dialogs.currentUserInfo.full_name) {
+      Dialogs.currentUserInfo = { ...currentUser.user };
     }
-  }
+  }, [currentUser?.user.full_name]);
 
-  static navigationOptions = ({ navigation }) => {
-    Dialogs.currentUserInfo = { ...store.getState().currentUser.user }
-    return {
-      headerTitle: (
-        <Text style={[
-          { fontSize: 22, color: 'black' },
-          Platform.OS === 'android' ?
-            { paddingLeft: 13 } :
-            { paddingLeft: 0 }]}>
-          {Dialogs.currentUserInfo.full_name}
-        </Text>
-      ),
-      headerRight: (
-        <TouchableOpacity onPress={() => this.goToSettingsScreen(navigation)}>
-          <Avatar
-            photo={Dialogs.currentUserInfo.avatar}
-            name={Dialogs.currentUserInfo.full_name}
-            iconSize="small"
-          />
-        </TouchableOpacity>
-      ),
+  useEffect(() => {
+    if (didLoad) {
+      setDialogsLocal(dialogs);
+      setIsLoader(false);
     }
-  }
+  }, [dialogs, didLoad]);
 
-  componentDidMount() {
-    ChatService.fetchDialogsFromServer()
-      .then(() => {
-        PushNotificationService.init(this.props.navigation)
-      })
-  }
+  const keyExtractor = (item, index) => index.toString();
 
-  static getDerivedStateFromProps(props, state) {
-    if (props.currentUser.user.full_name !== Dialogs.currentUserInfo.full_name) {
-      Dialogs.currentUserInfo = { ...props.currentUser.user }
-      return true
-    } return null
-  }
+  const _renderDialog = ({ item }) => (
+    <Dialog dialog={item} navigation={navigation} />
+  );
 
-  static goToSettingsScreen = (props) => {
-    props.push('Settings', { user: Dialogs.currentUserInfo })
-  }
+  const goToContactsScreen = () => {
+    navigation.push('Contacts');
+  };
 
-  componentDidUpdate(prevProps) {
-    const { dialogs } = this.props
-    if (this.props.dialogs !== prevProps.dialogs) {
-      this.dialogs = dialogs
-      this.setState({ isLoader: false })
-    }
-  }
-
-  keyExtractor = (item, index) => index.toString()
-
-  _renderDialog = ({ item }) => {
-    return (
-      <Dialog dialog={item} navigation={this.props.navigation} />
-    )
-  }
-
-  goToContactsScreen = () => {
-    const { navigation } = this.props
-    navigation.push('Contacts')
-  }
-
-  render() {
-    const { isLoader } = this.state
-    return (
-      <View style={styles.container}>
-        <StatusBar barStyle={'dark-content'} />
-        {isLoader ?
-          (
-            <Indicator color={'red'} size={40} />
-          ) : this.dialogs.length === 0 ?
-            (<View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+  return (
+    <View style={styles.container}>
+      <StatusBar barStyle="dark-content" />
+      {isLoader
+        ? (
+          <Indicator color="red" size={40} />
+        ) : dialogsLocal.length === 0
+          ? (
+            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
               <Text style={{ fontSize: 19 }}>No chats yet</Text>
             </View>
-            ) :
-            (
-              <FlatList
-                data={this.dialogs}
-                keyExtractor={this.keyExtractor}
-                renderItem={(item) => this._renderDialog(item)}
-              />
-            )
-        }
-        <CreateBtn goToScreen={this.goToContactsScreen} type={BTN_TYPE.DIALOG} />
-      </View>
-    )
-  }
-}
+          )
+          : (
+            <FlatList
+              data={dialogsLocal}
+              keyExtractor={keyExtractor}
+              renderItem={(item) => _renderDialog(item)}
+            />
+          )}
+      <CreateBtn goToScreen={goToContactsScreen} type={BTN_TYPE.DIALOG} />
+    </View>
+  );
+};
+
+Dialogs.navigationOptions = ({ navigation }) => {
+  Dialogs.currentUserInfo = { ...navigation.state.params.currentUser.user };
+  return {
+    headerTitle: (
+      <Text style={[
+        { fontSize: 22, color: 'black' },
+        Platform.OS === 'android'
+          ? { paddingLeft: 13 }
+          : { paddingLeft: 0 }]}
+      >
+        {Dialogs.currentUserInfo.full_name}
+      </Text>
+    ),
+    headerRight: (
+      <TouchableOpacity onPress={() => goToSettingsScreen(navigation)}>
+        <Avatar
+          photo={Dialogs.currentUserInfo.avatar}
+          name={Dialogs.currentUserInfo.full_name}
+          iconSize="small"
+        />
+      </TouchableOpacity>
+    ),
+  };
+};
+
+const goToSettingsScreen = (props) => {
+  props.push('Settings', { user: Dialogs.currentUserInfo });
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  }
-})
+  },
+});
 
-
-const mapStateToProps = ({ dialogs, currentUser }) => ({
-  dialogs,
-  currentUser
-})
-
-export default connect(mapStateToProps)(Dialogs)
+export default Dialogs;

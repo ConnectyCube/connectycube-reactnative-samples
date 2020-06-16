@@ -1,31 +1,36 @@
-import React, { Component } from 'react'
-import { StyleSheet, View, Image } from 'react-native'
-import AuthService from '../services/auth-service'
-import ChatService from '../services/chat-service'
+import React, { useEffect, useContext } from 'react';
+import { StyleSheet, View, Image } from 'react-native';
 
-export default class AppWrap extends Component {
-  constructor(props) {
-    super(props)
-    this.initUser()
-  }
+import AuthContext from '../services/auth-service';
 
-  initUser = async () => {
-    const { navigation } = this.props
-    const rootStackScreen = await AuthService.init()
-    if (rootStackScreen === 'Dialogs') {
-      ChatService.setUpListeners()
+const AppWrap = ({ navigation }) => {
+  const AuthService = useContext(AuthContext);
+
+  useEffect(() => {
+    initUser();
+  }, []);
+
+  useEffect(() => {
+    if (AuthService.currentUser) {
+      navigation.navigate('Dialogs', { currentUser: AuthService.currentUser });
     }
-    navigation.navigate(rootStackScreen)
-  }
+  }, [AuthService.currentUser]);
 
-  render() {
-    return (
-      <View style={styles.container}>
-        <Image style={styles.imageSize} source={require('../../assets/image/logo_with_text.png')} />
-      </View>
-    )
-  }
-}
+  const initUser = async () => {
+    const rootStackScreen = await AuthService.init();
+    if (rootStackScreen !== 'Dialogs') {
+      navigation.navigate(rootStackScreen);
+    }
+  };
+
+  return (
+    <View style={styles.container}>
+      <Image style={styles.imageSize} source={require('../../assets/image/logo_with_text.png')} />
+    </View>
+  );
+};
+
+export default AppWrap;
 
 const styles = StyleSheet.create({
   container: {
@@ -35,6 +40,6 @@ const styles = StyleSheet.create({
   },
   imageSize: {
     width: 200,
-    height: 150
+    height: 150,
   },
-})
+});

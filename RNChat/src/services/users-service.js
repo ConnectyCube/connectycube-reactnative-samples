@@ -1,26 +1,32 @@
-import ConnectyCube from 'react-native-connectycube'
-import UserModel from '../models/user'
-import store from '../store'
-import { fetchUsers } from '../actions/users'
+import React, { useContext } from 'react';
+import ConnectyCube from 'react-native-connectycube';
 
-class UsersService {
+import UserModel from '../models/user';
+import { fetchUsers } from '../actions/users';
+import GlobalContext from '../store';
 
-  async getUserById(id) {
-    ConnectyCube.users.get(id)
-  }
+const UsersContext = React.createContext();
 
-  async getOccupants(ids) {
-    const users = this.getUsers
-    const currentUser = this.currentUser
-    let idsForFetch = []
+export default UsersContext;
+
+const UsersProvider = ({ children }) => {
+  const { store, dispatch } = useContext(GlobalContext);
+
+  const getUserById = async (id) => {
+    ConnectyCube.users.get(id);
+  };
+
+  const getOccupants = async (ids) => {
+    const users = getUsers;
+    const idsForFetch = [];
 
     ids.forEach(elem => {
       if (elem !== currentUser.id && !users[elem]) {
-        idsForFetch.push(elem)
+        idsForFetch.push(elem);
       }
-    })
+    });
 
-    if (idsForFetch.length === 0) { return }
+    if (idsForFetch.length === 0) { return; }
 
     const usersFromServer = await ConnectyCube.users.get({
       per_page: 100,
@@ -29,64 +35,65 @@ class UsersService {
         param: 'in',
         value: idsForFetch,
       },
-    })
-    const newUsers = usersFromServer.items.map(elem => {
-      return new UserModel(elem.user)
-    })
-    store.dispatch(fetchUsers(newUsers))
-  }
+    });
+    const newUsers = usersFromServer.items.map(elem => new UserModel(elem.user));
+    dispatch(fetchUsers(newUsers));
+  };
 
-  getUsersAvatar(ids) {
-    const currentUserId = this.currentUser
-    let userId = null
+  const getUsersAvatar = (ids) => {
+    const currentUserId = currentUser;
+    let userId = null;
     ids.forEach(elem => {
       if (elem != currentUserId.id) {
-        userId = elem
+        userId = elem;
       }
-    })
-    return store.getState().users[userId].avatar
-  }
+    });
+    return store.users[userId].avatar;
+  };
 
-  async listUsersByFullName(name, usersIdsToIgnore = []) {
+  const listUsersByFullName = async (name, usersIdsToIgnore = []) => {
     if (!usersIdsToIgnore) {
-      usersIdsToIgnore = [this.currentUser.id]
+      usersIdsToIgnore = [currentUser.id];
     }
-    const allUsers = await ConnectyCube.users.get({ per_page: 100, full_name: name })
-    let contacts = []
+    const allUsers = await ConnectyCube.users.get({ per_page: 100, full_name: name });
+    const contacts = [];
     allUsers.items.forEach(elem => {
       if (!usersIdsToIgnore.includes(elem.user.id)) {
-        contacts.push(new UserModel(elem.user))
+        contacts.push(new UserModel(elem.user));
       }
-    })
-    return contacts
-  }
+    });
+    return contacts;
+  };
 
-  getUsersInfoFromRedux(ids) {
-    const currentUser = this.currentUser
-    let usersInfo = []
+  const getUsersInfoFromRedux = (ids) => {
+    const usersInfo = [];
     ids.forEach(elem => {
       if (elem !== currentUser.id) {
-        usersInfo.push(store.getState().users[elem])
+        usersInfo.push(store.users[elem]);
       }
-    })
-    return usersInfo
-  }
+    });
+    return usersInfo;
+  };
 
-  get currentUser() {
-    return store.getState().currentUser.user
-  }
+  const currentUser = store.currentUser?.user;
 
-  get getUsers() {
-    return store.getState().users
-  }
+  const getUsers = store.users;
 
-}
+  return (
+    <UsersContext.Provider
+      value={{
+        getUserById,
+        getOccupants,
+        getUsersAvatar,
+        listUsersByFullName,
+        getUsersInfoFromRedux,
+        getUsers: store.users,
+        users: store.users,
+      }}
+    >
+      {children}
+    </UsersContext.Provider>
+  );
+};
 
-
-// create instance
-const User = new UsersService()
-
-Object.freeze(User)
-
-export default User
-
+export { UsersProvider };

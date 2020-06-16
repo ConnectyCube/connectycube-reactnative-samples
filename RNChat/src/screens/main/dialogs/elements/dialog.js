@@ -1,62 +1,60 @@
-import React, { Component } from 'react'
-import { StyleSheet, View, TouchableOpacity } from 'react-native'
-import Avatar from '../../../components/avatar'
-import DialogTitles from './dialogTitles'
-import DialogLastDate from './dialogLastDate'
-import DialogUnreadCounter from './dialogUnreadCounter'
-import UsersService from '../../../../services/users-service'
-import { DIALOG_TYPE } from '../../../../helpers/constants'
+import React, { useContext } from 'react';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
 
-export default class Dialog extends Component {
-  getOccupants = async () => {
-    const { dialog } = this.props
-    const { navigate } = this.props.navigation
-    await UsersService.getOccupants(dialog.occupants_ids)
-    navigate('Chat', { dialog })
+import Avatar from '../../../components/avatar';
+import DialogTitles from './dialogTitles';
+import DialogLastDate from './dialogLastDate';
+import DialogUnreadCounter from './dialogUnreadCounter';
+import UsersContext from '../../../../services/users-service';
+import { DIALOG_TYPE } from '../../../../helpers/constants';
+
+const Dialog = ({ dialog, navigation }) => {
+  const UsersService = useContext(UsersContext);
+
+  const getOccupants = async () => {
+    await UsersService.getOccupants(dialog.occupants_ids);
+    navigation.navigate('Chat', { dialog, getUsersAvatar: UsersService.getUsersAvatar });
+  };
+
+  const getUsersAvatar = (ids) => UsersService.getUsersAvatar(ids);
+
+  let dialogPhoto = '';
+  if (dialog.type === DIALOG_TYPE.PRIVATE) {
+    dialogPhoto = getUsersAvatar(dialog.occupants_ids);
+  } else {
+    dialogPhoto = dialog.photo;
   }
 
-  getUsersAvatar = (ids) => {
-    return UsersService.getUsersAvatar(ids)
-  }
-
-  render() {
-    const { dialog } = this.props
-    let dialogPhoto = ''
-    if (dialog.type === DIALOG_TYPE.PRIVATE) {
-      dialogPhoto = this.getUsersAvatar(dialog.occupants_ids)
-    } else {
-      dialogPhoto = dialog.photo
-    }
-
-    return (
-      <TouchableOpacity onPress={this.getOccupants}>
-        <View style={styles.container}>
-          <Avatar
-            photo={dialogPhoto}
+  return (
+    <TouchableOpacity onPress={getOccupants}>
+      <View style={styles.container}>
+        <Avatar
+          photo={dialogPhoto}
+          name={dialog.name}
+          iconSize="large"
+        />
+        <View style={styles.border}>
+          <DialogTitles
             name={dialog.name}
-            iconSize="large"
+            message={dialog.last_message}
           />
-          <View style={styles.border} >
-            <DialogTitles
-              name={dialog.name}
-              message={dialog.last_message}
+          <View style={styles.infoContainer}>
+            <DialogLastDate
+              lastDate={dialog.last_message_date_sent}
+              lastMessage={dialog.last_message}
+              updatedDate={dialog.updated_date}
             />
-            <View style={styles.infoContainer}>
-              <DialogLastDate
-                lastDate={dialog.last_message_date_sent}
-                lastMessage={dialog.last_message}
-                updatedDate={dialog.updated_date}
-              />
-              <DialogUnreadCounter
-                unreadMessagesCount={dialog.unread_messages_count}
-              />
-            </View>
+            <DialogUnreadCounter
+              unreadMessagesCount={dialog.unread_messages_count}
+            />
           </View>
         </View>
-      </TouchableOpacity >
-    )
-  }
-}
+      </View>
+    </TouchableOpacity>
+  );
+};
+
+export default Dialog;
 
 const styles = StyleSheet.create({
   container: {
@@ -64,14 +62,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
-    paddingHorizontal: 10
+    paddingHorizontal: 10,
   },
   border: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     borderBottomWidth: 0.5,
-    borderBottomColor: 'lightgrey'
+    borderBottomColor: 'lightgrey',
   },
   infoContainer: {
     maxWidth: 75,
@@ -79,6 +77,6 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'flex-end',
     paddingVertical: 10,
-    marginLeft: 5
-  }
-})
+    marginLeft: 5,
+  },
+});

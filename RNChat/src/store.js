@@ -1,6 +1,23 @@
-import { createStore } from 'redux'
-import rootReducer from './reducers'
+import React, { useReducer } from 'react';
 
-const store = createStore(rootReducer)
+import rootReducer from './reducers';
 
-export default store
+const GlobalContext = React.createContext();
+
+export default GlobalContext;
+
+const Provider = ({ children }) => {
+  const [store, dispatch] = useReducer(rootReducer, {});
+  return (
+    <GlobalContext.Provider
+      value={{
+        store,
+        dispatch,
+      }}
+    >
+      {children}
+    </GlobalContext.Provider>
+  );
+};
+
+export { Provider };

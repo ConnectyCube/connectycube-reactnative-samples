@@ -1,14 +1,24 @@
-import React from 'react'
-import { Provider, connect } from 'react-redux'
-import store from './src/store'
-import Navigation from './src/routing/init'
+import React from 'react';
 
-export default class App extends React.Component {
-  render() {
-    return (
-      <Provider store={store}>
-        <Navigation />
-      </Provider>
-    );
-  }
-}
+import Navigation from './src/routing/init';
+import { Provider } from './src/store';
+import { AuthProvider } from './src/services/auth-service';
+import { ChatProvider } from './src/services/chat-service';
+import { PushNotificationProvider } from './src/services/push-notification';
+import { UsersProvider } from './src/services/users-service';
+
+const App = () => (
+  <Provider>
+    <AuthProvider>
+      <ChatProvider>
+        <PushNotificationProvider>
+          <UsersProvider>
+            <Navigation />
+          </UsersProvider>
+        </PushNotificationProvider>
+      </ChatProvider>
+    </AuthProvider>
+  </Provider>
+);
+
+export default App;
