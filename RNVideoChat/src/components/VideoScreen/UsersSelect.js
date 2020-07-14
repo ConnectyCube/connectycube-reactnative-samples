@@ -27,6 +27,7 @@ export default ({
 
         return (
           <TouchableOpacity
+            key={id}
             style={styles.userLabel(user.color)}
             onPress={() => onPress(id)}>
             <Text style={styles.userName}>{user.name}</Text>
