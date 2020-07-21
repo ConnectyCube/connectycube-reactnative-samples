@@ -1,25 +1,44 @@
+import React from 'react';
 import ConnectyCube from 'react-native-connectycube';
 import config from '../config';
 
-export default class AuthService {
-  init = () => ConnectyCube.init(...config);
+const AuthContext = React.createContext();
 
-  login = user => {
-    return new Promise((resolve, reject) => {
-      ConnectyCube.createSession(user)
-        .then(() =>
-          ConnectyCube.chat.connect({
-            userId: user.id,
-            password: user.password,
-          }),
-        )
-        .then(resolve)
-        .catch(reject);
+export default AuthContext;
+
+const AuthProvider = ({ children }) => {
+  const init = () => ConnectyCube.init(...config);
+
+  const login = user =>
+    new Promise(async (resolve, reject) => {
+      try {
+        await ConnectyCube.createSession(user);
+        const result = await ConnectyCube.chat.connect({
+          userId: user.id,
+          password: user.password,
+        });
+        resolve(result);
+      } catch (error) {
+        reject(error);
+      }
     });
-  };
 
-  logout = () => {
+  const logout = () => {
     ConnectyCube.chat.disconnect();
     ConnectyCube.destroySession();
   };
-}
+
+  return (
+    <AuthContext.Provider
+      value={{
+        init,
+        login,
+        logout,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+export { AuthProvider };

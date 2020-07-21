@@ -1,13 +1,14 @@
-import React, {Component} from 'react';
+import React from 'react';
 import Navigator from './src/navigator';
-import {AuthService} from './src/services';
+import { AuthProvider } from './src/services/auth-service';
+import { CallProvider } from './src/services/call-service';
 
-export default class App extends Component {
-  constructor(props) {
-    super(props);
+const App = () => (
+  <AuthProvider>
+    <CallProvider>
+      <Navigator />
+    </CallProvider>
+  </AuthProvider>
+);
 
-    AuthService.init();
-  }
-
-  render = () => <Navigator />;
-}
+export default App;

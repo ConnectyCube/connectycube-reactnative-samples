@@ -1,27 +1,29 @@
-import {Platform, ToastAndroid} from 'react-native';
+import React, { useRef } from 'react';
+import { Platform, ToastAndroid } from 'react-native';
 import Toast from 'react-native-simple-toast';
 import ConnectyCube from 'react-native-connectycube';
 import InCallManager from 'react-native-incall-manager';
 import Sound from 'react-native-sound';
-import {users} from '../config';
+import { users } from '../config';
 
-export default class CallService {
-  static MEDIA_OPTIONS = {audio: true, video: {facingMode: 'user'}};
+const CallContext = React.createContext();
 
-  _session = null;
-  mediaDevices = [];
+export default CallContext;
 
-  outgoingCall = new Sound(require('../../assets/sounds/dialing.mp3'));
-  incomingCall = new Sound(require('../../assets/sounds/calling.mp3'));
-  endCall = new Sound(require('../../assets/sounds/end_call.mp3'));
+const CallProvider = ({ children }) => {
+  const _session = useRef(null);
+  const mediaDevices = useRef([]);
 
-  showToast = text => {
+  const outgoingCall = useRef(new Sound(require('../../assets/sounds/dialing.mp3')));
+  const incomingCall = useRef(new Sound(require('../../assets/sounds/calling.mp3')));
+  const endCall = useRef(new Sound(require('../../assets/sounds/end_call.mp3')));
+
+  const showToast = text => {
     const commonToast = Platform.OS === 'android' ? ToastAndroid : Toast;
-
     commonToast.showWithGravity(text, Toast.LONG, Toast.TOP);
   };
 
-  getUserById = (userId, key) => {
+  const getUserById = (userId, key) => {
     const user = users.find(user => user.id == userId);
 
     if (typeof key === 'string') {
@@ -31,197 +33,212 @@ export default class CallService {
     return user;
   };
 
-  setMediaDevices() {
-    return ConnectyCube.videochat.getMediaDevices().then(mediaDevices => {
-      this.mediaDevices = mediaDevices;
-    });
-  }
-
-  acceptCall = session => {
-    this.stopSounds();
-    this._session = session;
-    this.setMediaDevices();
-
-    return this._session
-      .getUserMedia(CallService.MEDIA_OPTIONS)
-      .then(stream => {
-        this._session.accept({});
-        return stream;
-      });
+  const setMediaDevices = async () => {
+    const mediaDevicesResult = await ConnectyCube.videochat.getMediaDevices();
+    mediaDevices.current = mediaDevicesResult;
   };
 
-  startCall = ids => {
+  const acceptCall = async (session) => {
+    stopSounds();
+    _session.current = session;
+    setMediaDevices();
+
+    const stream = await _session.current.getUserMedia(CallProvider.MEDIA_OPTIONS);
+    _session.current.accept({});
+    return stream;
+  };
+
+  const startCall = async (ids) => {
     const options = {};
     const type = ConnectyCube.videochat.CallType.VIDEO; // AUDIO is also possible
 
-    this._session = ConnectyCube.videochat.createNewSession(ids, type, options);
-    this.setMediaDevices();
-    this.playSound('outgoing');
+    _session.current = ConnectyCube.videochat.createNewSession(ids, type, options);
+    setMediaDevices();
+    playSound('outgoing');
 
-    return this._session
-      .getUserMedia(CallService.MEDIA_OPTIONS)
-      .then(stream => {
-        this._session.call({});
-        return stream;
-      });
+    const stream = await _session.current.getUserMedia(CallProvider.MEDIA_OPTIONS);
+    _session.current.call({});
+    return stream;
   };
 
-  stopCall = () => {
-    this.stopSounds();
+  const stopCall = () => {
+    stopSounds();
 
-    if (this._session) {
-      this.playSound('end');
-      this._session.stop({});
-      ConnectyCube.videochat.clearSession(this._session.ID);
-      this._session = null;
-      this.mediaDevices = [];
+    if (_session.current) {
+      playSound('end');
+      _session.current.stop({});
+      ConnectyCube.videochat.clearSession(_session.current.ID);
+      _session.current = null;
+      mediaDevices.current = [];
     }
   };
 
-  rejectCall = (session, extension) => {
-    this.stopSounds();
+  const rejectCall = (session, extension) => {
+    stopSounds();
     session.reject(extension);
   };
 
-  setAudioMuteState = mute => {
+  const setAudioMuteState = mute => {
     if (mute) {
-      this._session.mute('audio');
+      _session.current.mute('audio');
     } else {
-      this._session.unmute('audio');
+      _session.current.unmute('audio');
     }
   };
 
-  switchCamera = localStream => {
-    localStream.getVideoTracks().forEach(track => track._switchCamera());
-  };
+  const switchCamera = localStream =>
+    localStream.getVideoTracks()
+      .forEach(track => track._switchCamera());
 
-  setSpeakerphoneOn = flag => InCallManager.setSpeakerphoneOn(flag);
+  const setSpeakerphoneOn = flag =>
+    InCallManager.setSpeakerphoneOn(flag);
 
-  processOnUserNotAnswerListener(userId) {
-    return new Promise((resolve, reject) => {
-      if (!this._session) {
+  const processOnUserNotAnswerListener = (userId) =>
+    new Promise((resolve, reject) => {
+      if (!_session.current) {
         reject();
       } else {
-        const userName = this.getUserById(userId, 'name');
+        const userName = getUserById(userId, 'name');
         const message = `${userName} did not answer`;
 
-        this.showToast(message);
-
+        showToast(message);
         resolve();
       }
     });
-  }
 
-  processOnCallListener(session) {
-    return new Promise((resolve, reject) => {
+  const processOnCallListener = (session) =>
+    new Promise((resolve, reject) => {
       if (session.initiatorID === session.currentUserID) {
         reject();
       }
 
-      if (this._session) {
-        this.rejectCall(session, {busy: true});
+      if (_session.current) {
+        rejectCall(session, { busy: true });
         reject();
       }
 
-      this.playSound('incoming');
-
+      playSound('incoming');
       resolve();
     });
-  }
 
-  processOnAcceptCallListener(session, userId, extension = {}) {
-    return new Promise((resolve, reject) => {
+  const processOnAcceptCallListener = (session, userId, extension = {}) =>
+    new Promise((resolve, reject) => {
       if (userId === session.currentUserID) {
-        this._session = null;
-        this.showToast('You have accepted the call on other side');
+        _session.current = null;
 
+        showToast('You have accepted the call on other side');
         reject();
       } else {
-        const userName = this.getUserById(userId, 'name');
+        const userName = getUserById(userId, 'name');
         const message = `${userName} has accepted the call`;
 
-        this.showToast(message);
-        this.stopSounds();
-
+        showToast(message);
+        stopSounds();
         resolve();
       }
     });
-  }
 
-  processOnRejectCallListener(session, userId, extension = {}) {
-    return new Promise((resolve, reject) => {
+  const processOnRejectCallListener = (session, userId, extension = {}) =>
+    new Promise((resolve, reject) => {
       if (userId === session.currentUserID) {
-        this._session = null;
-        this.showToast('You have rejected the call on other side');
+        _session.current = null;
 
+        showToast('You have rejected the call on other side');
         reject();
       } else {
-        const userName = this.getUserById(userId, 'name');
+        const userName = getUserById(userId, 'name');
         const message = extension.busy
           ? `${userName} is busy`
           : `${userName} rejected the call request`;
 
-        this.showToast(message);
-
+        showToast(message);
         resolve();
       }
     });
-  }
 
-  processOnStopCallListener(userId, isInitiator) {
-    return new Promise((resolve, reject) => {
-      this.stopSounds();
+  const processOnStopCallListener = (userId, isInitiator) =>
+    new Promise((resolve, reject) => {
+      stopSounds();
 
-      if (!this._session) {
+      if (!_session.current) {
         reject();
       } else {
-        const userName = this.getUserById(userId, 'name');
+        const userName = getUserById(userId, 'name');
         const message = `${userName} has ${
-          isInitiator ? 'stopped' : 'left'
+          isInitiator
+            ? 'stopped'
+            : 'left'
         } the call`;
 
-        this.showToast(message);
-
+        showToast(message);
         resolve();
       }
     });
-  }
 
-  processOnRemoteStreamListener = () => {
-    return new Promise((resolve, reject) => {
-      if (!this._session) {
+  const processOnRemoteStreamListener = () =>
+    new Promise((resolve, reject) => {
+      if (!_session.current) {
         reject();
       } else {
         resolve();
       }
     });
-  };
 
-  playSound = type => {
+  const playSound = type => {
     switch (type) {
-      case 'outgoing':
-        this.outgoingCall.setNumberOfLoops(-1);
-        this.outgoingCall.play();
-        break;
-      case 'incoming':
-        this.incomingCall.setNumberOfLoops(-1);
-        this.incomingCall.play();
-        break;
-      case 'end':
-        this.endCall.play();
-        break;
-
-      default:
-        break;
+    case 'outgoing':
+      outgoingCall.current.setNumberOfLoops(-1);
+      outgoingCall.current.play();
+      break;
+    case 'incoming':
+      incomingCall.current.setNumberOfLoops(-1);
+      incomingCall.current.play();
+      break;
+    case 'end':
+      endCall.current.play();
+      break;
+    default:
+      break;
     }
   };
 
-  stopSounds = () => {
-    if (this.incomingCall.isPlaying()) {
-      this.incomingCall.pause();
+  const stopSounds = () => {
+    if (incomingCall.current.isPlaying()) {
+      incomingCall.current.pause();
     }
-    if (this.outgoingCall.isPlaying()) {
-      this.outgoingCall.pause();
+    if (outgoingCall.current.isPlaying()) {
+      outgoingCall.current.pause();
     }
   };
-}
+
+  return (
+    <CallContext.Provider
+      value={{
+        showToast,
+        getUserById,
+        setMediaDevices,
+        acceptCall,
+        startCall,
+        stopCall,
+        rejectCall,
+        setAudioMuteState,
+        switchCamera,
+        setSpeakerphoneOn,
+        processOnUserNotAnswerListener,
+        processOnCallListener,
+        processOnAcceptCallListener,
+        processOnRejectCallListener,
+        processOnStopCallListener,
+        processOnRemoteStreamListener,
+        playSound,
+        stopSounds,
+      }}
+    >
+      {children}
+    </CallContext.Provider>
+  );
+};
+
+CallProvider.MEDIA_OPTIONS = { audio: true, video: { facingMode: 'user' } };
+
+export { CallProvider };

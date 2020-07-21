@@ -5,7 +5,7 @@ export default [
     authSecret: 'SkCW-ThdnmRg9Za',
   },
   {
-    debug: {mode: 1},
+    debug: { mode: 1 },
   },
 ];
 

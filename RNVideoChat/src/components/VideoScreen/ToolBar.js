@@ -1,123 +1,128 @@
-import React, {Component} from 'react';
-import {StyleSheet, SafeAreaView, TouchableOpacity, View} from 'react-native';
-import {CallService} from '../../services';
+import React, { useState, useContext } from 'react';
+import { StyleSheet, SafeAreaView, TouchableOpacity, View } from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import CallContext from '../../services/call-service';
 
-export default class ToolBar extends Component {
-  state = {
-    isAudioMuted: false,
-    isFrontCamera: true,
-  };
+const ToolBar = ({
+  resetState,
+  isActiveCall,
+  isActiveSelect,
+  selectedUsersIds,
+  closeSelect,
+  initRemoteStreams,
+  localStream,
+  setLocalStream,
+}) => {
+  const [isAudioMuted, setIsAudioMuted] = useState(false);
+  const [isFrontCamera, setIsFrontCamera] = useState(true);
+  const CallService = useContext(CallContext);
 
-  static getDerivedStateFromProps(props, state) {
-    if (!props.isActiveCall) {
-      return {
-        isAudioMuted: false,
-        isFrontCamera: true,
-      };
-    }
-  }
+  const isCallInProgress = isActiveCall || !isActiveSelect;
+  const isAvailableToSwitch = isActiveCall && CallService.mediaDevices.length > 1;
 
-  startCall = () => {
-    const {
-      selectedUsersIds,
-      closeSelect,
-      initRemoteStreams,
-      setLocalStream,
-    } = this.props;
-
+  const startCall = async () => {
     if (selectedUsersIds.length === 0) {
       CallService.showToast('Select at less one user to start Videocall');
     } else {
       closeSelect();
       initRemoteStreams(selectedUsersIds);
-      CallService.startCall(selectedUsersIds).then(setLocalStream);
+      const result = await CallService.startCall(selectedUsersIds);
+      setLocalStream(result);
     }
   };
 
-  stopCall = () => {
-    const {resetState} = this.props;
-
+  const stopCall = () => {
     CallService.stopCall();
     resetState();
   };
 
-  switchCamera = () => {
-    const {localStream} = this.props;
-
+  const switchCamera = () => {
     CallService.switchCamera(localStream);
-    this.setState(prevState => ({isFrontCamera: !prevState.isFrontCamera}));
+    setIsFrontCamera(!isFrontCamera);
   };
 
-  muteUnmuteAudio = () => {
-    this.setState(prevState => {
-      const mute = !prevState.isAudioMuted;
-      CallService.setAudioMuteState(mute);
-      return {isAudioMuted: mute};
-    });
+  const muteUnmuteAudio = () => {
+    const mute = !isAudioMuted;
+    CallService.setAudioMuteState(mute);
+    return { isAudioMuted: mute };
   };
 
-  _renderCallStartStopButton = isCallInProgress => {
-    const style = isCallInProgress ? styles.buttonCallEnd : styles.buttonCall;
-    const onPress = isCallInProgress ? this.stopCall : this.startCall;
-    const type = isCallInProgress ? 'call-end' : 'call';
+  const _renderCallStartStopButton = isCallInProgress => (
+    <TouchableOpacity
+      style={[
+        styles.buttonContainer,
+        isCallInProgress
+          ? styles.buttonCallEnd
+          : styles.buttonCall,
+      ]}
+      onPress={
+        isCallInProgress
+          ? stopCall
+          : startCall
+      }
+    >
+      <MaterialIcon
+        name={
+          isCallInProgress
+            ? 'call-end'
+            : 'call'
+        }
+        size={32}
+        color="white"
+      />
+    </TouchableOpacity>
+  );
 
-    return (
-      <TouchableOpacity
-        style={[styles.buttonContainer, style]}
-        onPress={onPress}>
-        <MaterialIcon name={type} size={32} color="white" />
-      </TouchableOpacity>
-    );
-  };
+  const _renderMuteButton = () => (
+    <TouchableOpacity
+      style={[styles.buttonContainer, styles.buttonMute]}
+      onPress={muteUnmuteAudio}
+    >
+      <MaterialIcon
+        name={
+          isAudioMuted
+            ? 'mic-off'
+            : 'mic'
+        }
+        size={32}
+        color="white"
+      />
+    </TouchableOpacity>
+  );
 
-  _renderMuteButton = () => {
-    const {isAudioMuted} = this.state;
-    const type = isAudioMuted ? 'mic-off' : 'mic';
+  const _renderSwitchVideoSourceButton = () => (
+    <TouchableOpacity
+      style={[styles.buttonContainer, styles.buttonSwitch]}
+      onPress={switchCamera}
+    >
+      <MaterialIcon
+        name={
+          isFrontCamera
+            ? 'camera-rear'
+            : 'camera-front'
+        }
+        size={32}
+        color="white"
+      />
+    </TouchableOpacity>
+  );
 
-    return (
-      <TouchableOpacity
-        style={[styles.buttonContainer, styles.buttonMute]}
-        onPress={this.muteUnmuteAudio}>
-        <MaterialIcon name={type} size={32} color="white" />
-      </TouchableOpacity>
-    );
-  };
+  return (
+    <SafeAreaView style={styles.container}>
+      <View style={styles.toolBarItem}>
+        {isActiveCall && _renderMuteButton()}
+      </View>
+      <View style={styles.toolBarItem}>
+        {_renderCallStartStopButton(isCallInProgress)}
+      </View>
+      <View style={styles.toolBarItem}>
+        {isAvailableToSwitch && _renderSwitchVideoSourceButton()}
+      </View>
+    </SafeAreaView>
+  );
+};
 
-  _renderSwitchVideoSourceButton = () => {
-    const {isFrontCamera} = this.state;
-    const type = isFrontCamera ? 'camera-rear' : 'camera-front';
-
-    return (
-      <TouchableOpacity
-        style={[styles.buttonContainer, styles.buttonSwitch]}
-        onPress={this.switchCamera}>
-        <MaterialIcon name={type} size={32} color="white" />
-      </TouchableOpacity>
-    );
-  };
-
-  render() {
-    const {isActiveSelect, isActiveCall} = this.props;
-    const isCallInProgress = isActiveCall || !isActiveSelect;
-    const isAvailableToSwitch =
-      isActiveCall && CallService.mediaDevices.length > 1;
-
-    return (
-      <SafeAreaView style={styles.container}>
-        <View style={styles.toolBarItem}>
-          {isActiveCall && this._renderMuteButton()}
-        </View>
-        <View style={styles.toolBarItem}>
-          {this._renderCallStartStopButton(isCallInProgress)}
-        </View>
-        <View style={styles.toolBarItem}>
-          {isAvailableToSwitch && this._renderSwitchVideoSourceButton()}
-        </View>
-      </SafeAreaView>
-    );
-  }
-}
+export default ToolBar;
 
 const styles = StyleSheet.create({
   container: {
