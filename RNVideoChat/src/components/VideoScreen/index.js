@@ -15,6 +15,7 @@ const VideoScreen = ({ navigation }) => {
   const { logout } = useContext(AuthContext);
   const [localStream, setLocalStream] = useState(null);
   const [remoteStreams, setRemoteStreams] = useState([]);
+  const prevRemoteStreams = useRef(remoteStreams);
   const [selectedUsersIds, setSelectedUsersIds] = useState([]);
   const [isActiveSelect, setIsActiveSelect] = useState(true);
   const [isActiveCall, setIsActiveCall] = useState(false);
@@ -37,18 +38,12 @@ const VideoScreen = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
-    /*
-    const currState = this.state;
-
-    if (
-      prevState.remoteStreams.length === 1
-      && currState.remoteStreams.length === 0
-    ) {
-      stopCall();
+    if (prevRemoteStreams.current.length === 1
+      && remoteStreams.length === 0) {
+      CallService.stopCall();
       resetState();
     }
-    */
-   CallService.setSpeakerphoneOn(remoteStreams.length > 0);
+    CallService.setSpeakerphoneOn(remoteStreams.length > 0);
   }, [remoteStreams.length]);
 
   const showInomingCallModal = session => {
@@ -82,12 +77,7 @@ const VideoScreen = ({ navigation }) => {
   };
 
   const updateRemoteStream = (userId, stream) => {
-    setRemoteStreams(
-      remoteStreams.map((item) =>
-        ((item.userId === userId)
-          ? ({ userId, stream })
-          : ({ userId: item.userId, stream: item.stream }))),
-    );
+    setRemoteStreams([...remoteStreams, { userId, stream }]);
   };
 
   const removeRemoteStream = userId => {

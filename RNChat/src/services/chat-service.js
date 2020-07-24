@@ -32,12 +32,6 @@ const ChatProvider = ({ children }) => {
     ConnectyCube.chat.onSentMessageCallback = onSentMessageListener;
     ConnectyCube.chat.onDeliveredStatusListener = onDeliveredStatus;
     ConnectyCube.chat.onReadStatusListener = onReadStatus;
-    /* OR
-    ConnectyCube.chat.onMessageListener.bind(onMessageListener);
-    ConnectyCube.chat.onSentMessageCallback.bind(onSentMessageListener);
-    ConnectyCube.chat.onDeliveredStatusListener.bind(onDeliveredStatus);
-    ConnectyCube.chat.onReadStatusListener.bind(onReadStatus);
-    */
     AppState.addEventListener('change', handleAppStateChange);
   };
 

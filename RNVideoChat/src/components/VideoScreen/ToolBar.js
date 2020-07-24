@@ -18,7 +18,7 @@ const ToolBar = ({
   const CallService = useContext(CallContext);
 
   const isCallInProgress = isActiveCall || !isActiveSelect;
-  const isAvailableToSwitch = isActiveCall && CallService.mediaDevices.length > 1;
+  const isAvailableToSwitch = isActiveCall && CallService.mediaDevices.current.length > 1;
 
   const startCall = async () => {
     if (selectedUsersIds.length === 0) {

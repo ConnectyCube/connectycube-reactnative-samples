@@ -41,7 +41,7 @@ const CallProvider = ({ children }) => {
   const acceptCall = async (session) => {
     stopSounds();
     _session.current = session;
-    setMediaDevices();
+    await setMediaDevices();
 
     const stream = await _session.current.getUserMedia(CallProvider.MEDIA_OPTIONS);
     _session.current.accept({});
@@ -93,7 +93,7 @@ const CallProvider = ({ children }) => {
   const setSpeakerphoneOn = flag =>
     InCallManager.setSpeakerphoneOn(flag);
 
-  const processOnUserNotAnswerListener = (userId) =>
+  const processOnUserNotAnswerListener = async (userId) =>
     new Promise((resolve, reject) => {
       if (!_session.current) {
         reject();
@@ -106,7 +106,7 @@ const CallProvider = ({ children }) => {
       }
     });
 
-  const processOnCallListener = (session) =>
+  const processOnCallListener = async (session) =>
     new Promise((resolve, reject) => {
       if (session.initiatorID === session.currentUserID) {
         reject();
@@ -121,7 +121,7 @@ const CallProvider = ({ children }) => {
       resolve();
     });
 
-  const processOnAcceptCallListener = (session, userId, extension = {}) =>
+  const processOnAcceptCallListener = async (session, userId, extension = {}) =>
     new Promise((resolve, reject) => {
       if (userId === session.currentUserID) {
         _session.current = null;
@@ -138,7 +138,7 @@ const CallProvider = ({ children }) => {
       }
     });
 
-  const processOnRejectCallListener = (session, userId, extension = {}) =>
+  const processOnRejectCallListener = async (session, userId, extension = {}) =>
     new Promise((resolve, reject) => {
       if (userId === session.currentUserID) {
         _session.current = null;
@@ -156,7 +156,7 @@ const CallProvider = ({ children }) => {
       }
     });
 
-  const processOnStopCallListener = (userId, isInitiator) =>
+  const processOnStopCallListener = async (userId, isInitiator) =>
     new Promise((resolve, reject) => {
       stopSounds();
 
@@ -175,7 +175,7 @@ const CallProvider = ({ children }) => {
       }
     });
 
-  const processOnRemoteStreamListener = () =>
+  const processOnRemoteStreamListener = async () =>
     new Promise((resolve, reject) => {
       if (!_session.current) {
         reject();
@@ -232,6 +232,7 @@ const CallProvider = ({ children }) => {
         processOnRemoteStreamListener,
         playSound,
         stopSounds,
+        mediaDevices,
       }}
     >
       {children}
