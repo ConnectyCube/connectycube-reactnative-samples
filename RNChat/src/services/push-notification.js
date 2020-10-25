@@ -10,7 +10,7 @@ import { addNewDialog } from '../actions/dialogs'
 import { fetchUsers } from '../actions/users'
 
 class PushNotificationService {
-  static DEVICE_TOKEN_KEY = 'DEVICE_TOKEN_KEY'
+  static DEVICE_SUBSCRIPTION_ID = 'DEVICE_SUBSCRIPTION_ID'
   static Navigation = null
 
   init(navigation) {
@@ -50,7 +50,7 @@ class PushNotificationService {
     ConnectyCube.pushnotifications.subscriptions.create(params)
       .then(result => {
         console.log('PushNotificationService - result', result)
-        AsyncStorage.setItem(PushNotificationService.DEVICE_TOKEN_KEY, `${result[0].subscription.id}`)
+        AsyncStorage.setItem(PushNotificationService.DEVICE_SUBSCRIPTION_ID, `${result[0].subscription.id}`)
       })
       .catch(error => {
         console.log('PushNotificationService - error', error)

@@ -9,7 +9,7 @@ import { preparationUploadImg, getImageLinkFromUID } from '../helpers/file'
 
 class AuthService {
   static CURRENT_USER_SESSION_KEY = 'CURRENT_USER_SESSION_KEY'
-  static DEVICE_TOKEN_KEY = 'DEVICE_TOKEN_KEY'
+  static DEVICE_SUBSCRIPTION_ID = 'DEVICE_SUBSCRIPTION_ID'
 
   async init() {
     await ConnectyCube.init(...appConfig.connectyCubeConfig)
@@ -71,12 +71,12 @@ class AuthService {
   }
 
   async unsubscribePushNotifications() {
-    const token = await this.getStoreToken()
-    ConnectyCube.pushnotifications.subscriptions.delete(token)
+    const subscriptionIdToDelete = await this.getStoreDeviceSubscriptionId()
+    ConnectyCube.pushnotifications.subscriptions.delete(subscriptionIdToDelete);
   }
 
-  async getStoreToken() {
-    return await AsyncStorage.getItem(AuthService.DEVICE_TOKEN_KEY)
+  async getStoreDeviceSubscriptionId() {
+    return await AsyncStorage.getItem(AuthService.DEVICE_SUBSCRIPTION_ID)
   }
 
   async logout() {
