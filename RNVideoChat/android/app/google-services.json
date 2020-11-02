@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "507727738768",
+    "firebase_url": "https://rnconnectycubevideosample.firebaseio.com",
+    "project_id": "rnconnectycubevideosample",
+    "storage_bucket": "rnconnectycubevideosample.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:507727738768:android:e72cbf4bcdb5300f08e515",
+        "android_client_info": {
+          "package_name": "com.rnvideochat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "507727738768-4i4gnor1s15307t056dnfof1hae3t292.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJ2RqS8KHQ7tTF-JeBtUseJaOUaLz7U40"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "507727738768-4i4gnor1s15307t056dnfof1hae3t292.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

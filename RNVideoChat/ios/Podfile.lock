@@ -254,10 +254,14 @@ PODS:
     - React-jsi (= 0.63.0)
   - ReactNativeIncallManager (3.2.7):
     - React
+  - RNCallKeep (3.1.1):
+    - React
   - RNCAsyncStorage (1.7.1):
     - React
   - RNCMaskedView (0.1.6):
     - React
+  - RNDeviceInfo (7.0.1):
+    - React-Core
   - RNGestureHandler (1.6.0):
     - React
   - RNReanimated (1.7.0):
@@ -306,8 +310,10 @@ DEPENDENCIES:
   - React-RCTVibration (from `../node_modules/react-native/Libraries/Vibration`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - ReactNativeIncallManager (from `../node_modules/react-native-incall-manager`)
+  - RNCallKeep (from `../node_modules/react-native-callkeep`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
+  - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
@@ -379,10 +385,14 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   ReactNativeIncallManager:
     :path: "../node_modules/react-native-incall-manager"
+  RNCallKeep:
+    :path: "../node_modules/react-native-callkeep"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-community/async-storage"
   RNCMaskedView:
     :path: "../node_modules/@react-native-community/masked-view"
+  RNDeviceInfo:
+    :path: "../node_modules/react-native-device-info"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
   RNReanimated:
@@ -427,8 +437,10 @@ SPEC CHECKSUMS:
   React-RCTVibration: 77ab1cf4a5eb854b88ad5ed3e9d8509ed124525e
   ReactCommon: f63556ee9e41e9802257228237e5e660451a03cf
   ReactNativeIncallManager: 35e387f58d3fc6e8cc042f47a2256b5f50134a67
+  RNCallKeep: ea9f0cec0e5d30de94eb571f37f7423c445d14f9
   RNCAsyncStorage: 8539fc80a0075fcc9c8e2dff84cd22dc5bf1dacf
   RNCMaskedView: e5b99bc191945f157adeede68da9d424462de177
+  RNDeviceInfo: 3fe22aaf354abcd5dac4690412455e79db6db019
   RNGestureHandler: dde546180bf24af0b5f737c8ad04b6f3fa51609a
   RNReanimated: 031fe8d9ea93c2bd689a40f05320ef9d96f74d7f
   RNScreens: 2a9cd603bcebc34319c92e595283d760dd1f55f5

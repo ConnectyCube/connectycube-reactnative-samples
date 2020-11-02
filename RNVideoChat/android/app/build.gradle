@@ -194,6 +194,7 @@ dependencies {
     implementation "com.android.support:support-v4:+"
     implementation project(':WebRTCModule')
     implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation 'com.google.firebase:firebase-analytics:17.3.0'
     
     if (enableHermes) {
         def hermesPath = "../../node_modules/hermes-engine/android/";
@@ -211,4 +212,5 @@ task copyDownloadableDepsToLibs(type: Copy) {
     into 'libs'
 }
 
+apply plugin: 'com.google.gms.google-services'
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)

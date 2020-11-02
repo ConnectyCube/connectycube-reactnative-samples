@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import {AuthService} from '../../services';
 import {users} from '../../config';
+import PushNotificationService from '../../services/push-notification-services';
 
 export default class AuthScreen extends PureComponent {
   state = {isLogging: false};
@@ -18,11 +19,16 @@ export default class AuthScreen extends PureComponent {
   setIsLogging = isLogging => this.setState({isLogging});
 
   login = currentUser => {
-    const _onSuccessLogin = () => {
+    const _onSuccessLogin = async () => {
       const {navigation} = this.props;
       const opponentsIds = users
         .filter(opponent => opponent.id !== currentUser.id)
         .map(opponent => opponent.id);
+
+      console.warn('PushNotificationService-before')
+      await PushNotificationService.init()
+      console.warn('PushNotificationService-after')
+
 
       navigation.push('VideoScreen', {opponentsIds});
     };
