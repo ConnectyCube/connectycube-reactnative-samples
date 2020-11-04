@@ -195,6 +195,8 @@ dependencies {
     implementation project(':WebRTCModule')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'com.google.firebase:firebase-analytics:17.3.0'
+
+    implementation project(':react-native-callkeep')
     
     if (enableHermes) {
         def hermesPath = "../../node_modules/hermes-engine/android/";

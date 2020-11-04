@@ -57,27 +57,28 @@ class PushNotificationService {
 
   async onNotification(notification) {
 
-    // await RNCallKeep.displayIncomingCall('uuid', 'handle', 'localizedCallerName');
-    
-    console.warn('onNotification')
+    console.warn('onNotification-push')
+    await RNCallKeep.displayIncomingCall('uuid', 'handle', 'localizedCallerName');
 
-    // const options = {
-    //   ios: {
-    //     appName: 'My app name',
-    //   },
-    //   android: {
-    //     alertTitle: 'Permissions required',
-    //     alertDescription: 'This application needs to access your phone accounts',
-    //     cancelButton: 'Cancel',
-    //     okButton: 'ok',
-    //     imageName: 'phone_account_icon',
-    //     additionalPermissions: [PermissionsAndroid.PERMISSIONS.CALL_PHONE]
-    //   }
-    // };
+    // onMessageReceived - Java
     
-    // RNCallKeep.setup(options).then(accepted => {
-    //   console.warn('RNCallKeep.setup')
-    // });
+    const options = {
+      ios: {
+        appName: 'My app name',
+      },
+      android: {
+        alertTitle: 'Permissions required',
+        alertDescription: 'This application needs to access your phone accounts',
+        cancelButton: 'Cancel',
+        okButton: 'ok',
+        imageName: 'phone_account_icon',
+        additionalPermissions: [PermissionsAndroid.PERMISSIONS.CALL_PHONE]
+      }
+    };
+    
+    RNCallKeep.setup(options).then(accepted => {
+      console.warn('RNCallKeep.setup')
+    });
   }
 
 }
