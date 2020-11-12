@@ -10,12 +10,14 @@ export default class ToolBar extends Component {
   };
 
   static getDerivedStateFromProps(props, state) {
+    let derivedState = {};
+
     if (!props.isActiveCall) {
-      return {
-        isAudioMuted: false,
-        isFrontCamera: true,
-      };
+      derivedState.isAudioMuted = false;
+      derivedState.isFrontCamera = true;
     }
+
+    return derivedState;
   }
 
   startCall = () => {

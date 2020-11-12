@@ -1,13 +1,12 @@
-import React, { Component } from 'react';
-import { StyleSheet, SafeAreaView, TouchableOpacity, View } from 'react-native';
-import { CallService } from '../../services';
+import React, {Component} from 'react';
+import {StyleSheet, SafeAreaView, TouchableOpacity, View} from 'react-native';
+import {CallService} from '../../services';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
-import customEventEmiter, { CUSTOM_EVENTS } from '../../services/customEvents'
+import customEventEmiter, {CUSTOM_EVENTS} from '../../services/customEvents';
 
 export default class ToolBar extends Component {
-
   constructor(props) {
-    super(props)
+    super(props);
     this._setUpListeners();
   }
 
@@ -17,25 +16,33 @@ export default class ToolBar extends Component {
   };
 
   static getDerivedStateFromProps(props, state) {
+    let derivedState = {};
+
     if (!props.isActiveCall) {
-      return {
-        isAudioMuted: false,
-        isFrontCamera: true,
-      };
+      derivedState.isAudioMuted = false;
+      derivedState.isFrontCamera = true;
     }
+
+    return derivedState;
   }
 
   componentWillUnmount() {
-    customEventEmiter.removeListener(CUSTOM_EVENTS.STOP_CALL_UI_RESET, this._resetUIState)
+    customEventEmiter.removeListener(
+      CUSTOM_EVENTS.STOP_CALL_UI_RESET,
+      this._resetUIState,
+    );
   }
 
   _setUpListeners = () => {
-    customEventEmiter.addListener(CUSTOM_EVENTS.STOP_CALL_UI_RESET, this._resetUIState)
-  }
+    customEventEmiter.addListener(
+      CUSTOM_EVENTS.STOP_CALL_UI_RESET,
+      this._resetUIState,
+    );
+  };
 
   _resetUIState = () => {
-    this.props.resetState()
-  }
+    this.props.resetState();
+  };
 
   startCall = () => {
     const {
@@ -56,25 +63,25 @@ export default class ToolBar extends Component {
 
   stopCall = () => {
     CallService.stopCall();
-    this.props.resetState()
+    this.props.resetState();
   };
 
   switchCamera = () => {
-    const { localStream } = this.props;
+    const {localStream} = this.props;
 
     CallService.switchCamera(localStream);
-    this.setState(prevState => ({ isFrontCamera: !prevState.isFrontCamera }));
+    this.setState((prevState) => ({isFrontCamera: !prevState.isFrontCamera}));
   };
 
   muteUnmuteAudio = () => {
-    this.setState(prevState => {
+    this.setState((prevState) => {
       const mute = !prevState.isAudioMuted;
       CallService.setAudioMute();
-      return { isAudioMuted: mute };
+      return {isAudioMuted: mute};
     });
   };
 
-  _renderCallStartStopButton = isCallInProgress => {
+  _renderCallStartStopButton = (isCallInProgress) => {
     const style = isCallInProgress ? styles.buttonCallEnd : styles.buttonCall;
     const onPress = isCallInProgress ? this.stopCall : this.startCall;
     const type = isCallInProgress ? 'call-end' : 'call';
@@ -89,7 +96,7 @@ export default class ToolBar extends Component {
   };
 
   _renderMuteButton = () => {
-    const { isAudioMuted } = this.state;
+    const {isAudioMuted} = this.state;
     const type = isAudioMuted ? 'mic-off' : 'mic';
 
     return (
@@ -102,7 +109,7 @@ export default class ToolBar extends Component {
   };
 
   _renderSwitchVideoSourceButton = () => {
-    const { isFrontCamera } = this.state;
+    const {isFrontCamera} = this.state;
     const type = isFrontCamera ? 'camera-rear' : 'camera-front';
 
     return (
@@ -115,7 +122,7 @@ export default class ToolBar extends Component {
   };
 
   render() {
-    const { isActiveSelect, isActiveCall } = this.props;
+    const {isActiveSelect, isActiveCall} = this.props;
     const isCallInProgress = isActiveCall || !isActiveSelect;
     const isAvailableToSwitch =
       isActiveCall && CallService.mediaDevices.length > 1;
