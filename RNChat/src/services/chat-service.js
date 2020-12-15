@@ -177,6 +177,7 @@ class ChatService {
 
   onMessageListener(senderId, msg) {
     const message = new Message(msg)
+    message.sender_id = senderId
     const user = this.currentUser
     const dialog = this.getSelectedDialog()
     if (senderId !== user.id) {
