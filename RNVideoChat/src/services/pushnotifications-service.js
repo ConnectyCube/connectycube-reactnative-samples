@@ -155,6 +155,23 @@ export default class PushNotificationsService {
        });
   }
 
+  deleteSubscription(deviceUdid) {
+    ConnectyCube.pushnotifications.subscriptions.list().then(result => {
+      for (let item of result) {
+        const subscription = item.subscription;
+        if (subscription.device.platform === Platform.OS && subscription.device.udid === deviceUdid) {
+          ConnectyCube.pushnotifications.subscriptions.delete(subscription.id).then(result => {
+            console.log("[PushNotificationsService][deleteSubscription] Ok", subscription.id);
+          }).catch(error => {
+            console.warn("[PushNotificationsService][deleteSubscription] Error1", error);
+          });
+        }
+      }
+    }).catch(error => {
+      console.warn("[PushNotificationsService][deleteSubscription] Error2", error);
+    });
+  };
+
   sendPushNotification(recipientsUsersIds, params) {
     const payload = JSON.stringify(params);
     const pushParameters = {
