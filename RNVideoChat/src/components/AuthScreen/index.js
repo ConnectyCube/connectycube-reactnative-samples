@@ -9,38 +9,55 @@ import {
   ActivityIndicator,
   TouchableOpacity,
 } from 'react-native';
-import {AuthService} from '../../services';
-import {users} from '../../config';
+import { AuthService, PushNotificationsService } from '../../services';
+import { users } from '../../config';
 
 export default class AuthScreen extends PureComponent {
-  state = {isLogging: false};
+  state = {isLogging: false, user: null};
 
-  setIsLogging = isLogging => this.setState({isLogging});
+  setIsLogging = isLogging => this.setState({...this.state, isLogging});
+  setUser = user => this.setState({...this.state, user});
 
-  login = currentUser => {
-    const _onSuccessLogin = () => {
-      const {navigation} = this.props;
-      const opponentsIds = users
-        .filter(opponent => opponent.id !== currentUser.id)
-        .map(opponent => opponent.id);
-
-      navigation.push('VideoScreen', {opponentsIds});
-    };
-
-    const _onFailLogin = (error = {}) => {
-      alert(`Error.\n\n${JSON.stringify(error)}`);
-    };
+  login = user => {
+    console.log("[AuthScreen][login] user", user);
 
     this.setIsLogging(true);
+    this.setUser(user)
 
-    AuthService.login(currentUser)
-      .then(_onSuccessLogin)
-      .catch(_onFailLogin)
+    AuthService.login(user)
+      .then(this._onSuccessLogin)
+      .catch(this._onFailLogin)
       .then(() => this.setIsLogging(false));
   };
 
+  _onSuccessLogin = () => {
+    // init push notifications service and subscribe for push notifications
+    this._initPushNotificationsAndSubscribe()
+
+    const { navigation } = this.props;
+    const opponentsIds = users
+      .filter(opponent => opponent.id !== this.state.user.id)
+      .map(opponent => opponent.id);
+
+    navigation.push('VideoScreen', {opponentsIds});
+  };
+
+  _onFailLogin = (error = {}) => {
+    console.error("[AuthScreen][_onFailLogin] error", error);
+
+    alert(`Error.\n\n${JSON.stringify(error)}`);
+  };
+
+  _initPushNotificationsAndSubscribe() {
+    PushNotificationsService.init();
+
+    if (Platform.OS === 'ios') {
+      PushNotificationsService.initVoIP();
+    }
+  }
+
   render() {
-    const {isLogging} = this.state;
+    const { isLogging } = this.state;
     const logoSrc = require('../../../assets/logo.png');
 
     return (
@@ -54,7 +71,7 @@ export default class AuthScreen extends PureComponent {
               styles.centeredChildren,
               {flexDirection: 'row'},
             ]}>
-            <Text>{isLogging ? 'Connecting... ' : 'Video Chat'}</Text>
+            <Text style={styles.logoText}>{isLogging ? 'Connecting... ' : 'P2P Video Chat'}</Text>
             {isLogging && <ActivityIndicator size="small" color="#1198d4" />}
           </View>
         </SafeAreaView>
@@ -89,6 +106,9 @@ const styles = StyleSheet.create({
   logoImg: {
     width: '90%',
     height: '80%',
+  },
+  logoText: {
+    fontSize: 30
   },
   authBtns: {
     justifyContent: 'flex-end',

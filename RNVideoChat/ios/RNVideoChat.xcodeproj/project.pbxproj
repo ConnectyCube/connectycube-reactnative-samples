@@ -77,6 +77,7 @@
 		2D02E4901E0B4A5D006451C7 /* RNVideoChat-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "RNVideoChat-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A04B0584D52E19FC7EB1647F /* Pods-RNVideoChatTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNVideoChatTests.debug.xcconfig"; path = "Target Support Files/Pods-RNVideoChatTests/Pods-RNVideoChatTests.debug.xcconfig"; sourceTree = "<group>"; };
 		BB5BC59A9C9EB8B3E3D6BD74 /* Pods-RNVideoChat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNVideoChat.release.xcconfig"; path = "Target Support Files/Pods-RNVideoChat/Pods-RNVideoChat.release.xcconfig"; sourceTree = "<group>"; };
+		BF72CC0225C1684700E316F2 /* RNVideoChat.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = RNVideoChat.entitlements; path = RNVideoChat/RNVideoChat.entitlements; sourceTree = "<group>"; };
 		CE3B2045DDD0D124634AAE49 /* libPods-RNVideoChatTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RNVideoChatTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
@@ -137,6 +138,7 @@
 		13B07FAE1A68108700A75B9A /* RNVideoChat */ = {
 			isa = PBXGroup;
 			children = (
+				BF72CC0225C1684700E316F2 /* RNVideoChat.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -686,6 +688,7 @@
 			baseConfigurationReference = 1431D6FE501AC59B3FF4503D /* Pods-RNVideoChat.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = RNVideoChat/RNVideoChat.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = 7FN8T8KP47;
@@ -700,7 +703,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.connectycube.RNVideoChat;
 				PRODUCT_NAME = RNVideoChat;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -712,6 +715,7 @@
 			baseConfigurationReference = BB5BC59A9C9EB8B3E3D6BD74 /* Pods-RNVideoChat.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = RNVideoChat/RNVideoChat.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 7FN8T8KP47;
 				ENABLE_BITCODE = NO;
@@ -725,7 +729,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.connectycube.RNVideoChat;
 				PRODUCT_NAME = RNVideoChat;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
