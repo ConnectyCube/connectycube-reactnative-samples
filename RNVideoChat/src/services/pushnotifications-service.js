@@ -130,7 +130,7 @@ export default class PushNotificationsService {
        .then(result => {
          console.log("[PushNotificationsService][subscribeToPushNotifications] Ok");
        }).catch(error => {
-         console.error("[PushNotificationsService][subscribeToPushNotifications] Error", error);
+         console.warn("[PushNotificationsService][subscribeToPushNotifications] Error", error);
        });
   }
 
@@ -151,19 +151,12 @@ export default class PushNotificationsService {
        .then(result => {
          console.log("[PushNotificationsService][subscribeToVOIPPushNotifications] Ok");
        }).catch(error => {
-         console.error("[PushNotificationsService][subscribeToVOIPPushNotifications] Error", error);
+         console.warn("[PushNotificationsService][subscribeToVOIPPushNotifications] Error", error);
        });
   }
 
-  sendPushNotification(recipientsUsersIds, message, isVoIP) {
-    const payload = JSON.stringify({
-      message
-    });
-
-    if (isVoIP) {
-      payload.ios_badge = 1;
-    }
-
+  sendPushNotification(recipientsUsersIds, params) {
+    const payload = JSON.stringify(params);
     const pushParameters = {
       notification_type: "push",
       user: { ids: recipientsUsersIds },
@@ -175,7 +168,7 @@ export default class PushNotificationsService {
       .then(result => {
         console.log("[PushNotificationsService][sendPushNotification] Ok");
       }).catch(error => {
-        console.error("[PushNotificationsService][sendPushNotification] Error", error);
+        console.warn("[PushNotificationsService][sendPushNotification] Error", error);
       });
   }
 }

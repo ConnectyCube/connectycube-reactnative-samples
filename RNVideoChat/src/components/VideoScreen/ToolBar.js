@@ -20,30 +20,6 @@ export default class ToolBar extends Component {
     return derivedState;
   }
 
-  startCall = () => {
-    const {
-      selectedUsersIds,
-      closeSelect,
-      initRemoteStreams,
-      setLocalStream,
-    } = this.props;
-
-    if (selectedUsersIds.length === 0) {
-      CallService.showToast('Select at less one user to start Videocall');
-    } else {
-      closeSelect();
-      initRemoteStreams(selectedUsersIds);
-      CallService.startCall(selectedUsersIds).then(setLocalStream);
-    }
-  };
-
-  stopCall = () => {
-    const {resetState} = this.props;
-
-    CallService.stopCall();
-    resetState();
-  };
-
   switchCamera = () => {
     const {localStream} = this.props;
 
@@ -61,7 +37,7 @@ export default class ToolBar extends Component {
 
   _renderCallStartStopButton = isCallInProgress => {
     const style = isCallInProgress ? styles.buttonCallEnd : styles.buttonCall;
-    const onPress = isCallInProgress ? this.stopCall : this.startCall;
+    const onPress = isCallInProgress ? this.props.stopCall : this.props.startCall;
     const type = isCallInProgress ? 'call-end' : 'call';
 
     return (

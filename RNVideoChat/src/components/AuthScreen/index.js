@@ -39,7 +39,7 @@ export default class AuthScreen extends PureComponent {
       .filter(opponent => opponent.id !== this.state.user.id)
       .map(opponent => opponent.id);
 
-    navigation.push('VideoScreen', {opponentsIds});
+    navigation.push('VideoScreen', { opponentsIds, currentUser: this.state.user });
   };
 
   _onFailLogin = (error = {}) => {

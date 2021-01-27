@@ -1,9 +1,9 @@
 import React from 'react';
-import {SafeAreaView, StatusBar} from 'react-native';
+import { SafeAreaView, StatusBar } from 'react-native';
 import ConnectyCube from 'react-native-connectycube';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import RTCViewGrid from './RTCViewGrid';
-import {CallService, AuthService} from '../../services';
+import { CallService, AuthService, PushNotificationsService, UtilsService } from '../../services';
 import ToolBar from './ToolBar';
 import UsersSelect from './UsersSelect';
 
@@ -13,6 +13,7 @@ export default class VideoScreen extends React.Component {
 
     this._session = null;
     this.opponentsIds = props.navigation.getParam('opponentsIds');
+    this.currentUser = props.navigation.getParam('currentUser');
 
     this.state = {
       localStream: null,
@@ -125,6 +126,35 @@ export default class VideoScreen extends React.Component {
     ConnectyCube.videochat.onRemoteStreamListener = this._onRemoteStreamListener;
   }
 
+  _startCall = () => {
+    const {
+      selectedUsersIds,
+    } = this.state;
+
+    if (selectedUsersIds.length === 0) {
+      CallService.showToast('Select at less one user to start a call');
+    } else {
+      this.closeSelect();
+      this.initRemoteStreams(selectedUsersIds);
+
+      CallService.startCall(selectedUsersIds).then(this.setLocalStream);
+
+      const pushParams = {
+        message: `Incoming call from ${this.currentUser.name}`,
+        ios_voip: 1,
+        callerName: this.currentUser.name,
+        uuid: UtilsService.uuidv4()
+      };
+      PushNotificationsService.sendPushNotification(selectedUsersIds, pushParams);
+    }
+  };
+
+  _stopCall = () => {
+    CallService.stopCall();
+
+    this.resetState();
+  };
+
   _onPressAccept = () => {
     CallService.acceptCall(this._session).then(stream => {
       const {opponentsIDs, initiatorID, currentUserID} = this._session;
@@ -223,14 +253,11 @@ export default class VideoScreen extends React.Component {
           unselectUser={this.unselectUser}
         />
         <ToolBar
-          selectedUsersIds={selectedUsersIds}
           localStream={localStream}
           isActiveSelect={isActiveSelect}
           isActiveCall={isActiveCall}
-          closeSelect={this.closeSelect}
-          initRemoteStreams={this.initRemoteStreams}
-          setLocalStream={this.setLocalStream}
-          resetState={this.resetState}
+          startCall={this._startCall}
+          stopCall={this._stopCall}
         />
         <AwesomeAlert
           show={isIncomingCall}
