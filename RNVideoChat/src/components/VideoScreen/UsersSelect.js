@@ -16,7 +16,7 @@ export default ({
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Select users to start Videocall</Text>
+      <Text style={styles.title}>Select users to start a video call</Text>
       {opponentsIds.map(id => {
         const user = CallService.getUserById(id);
         const selected = selectedUsersIds.some(userId => id === userId);

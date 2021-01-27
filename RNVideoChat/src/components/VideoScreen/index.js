@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView, StatusBar } from 'react-native';
+import { SafeAreaView, StatusBar, Text, StyleSheet } from 'react-native';
 import ConnectyCube from 'react-native-connectycube';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import RTCViewGrid from './RTCViewGrid';
@@ -143,6 +143,7 @@ export default class VideoScreen extends React.Component {
         message: `Incoming call from ${this.currentUser.name}`,
         ios_voip: 1,
         callerName: this.currentUser.name,
+        handle: this.currentUser.id,
         uuid: UtilsService.uuidv4()
       };
       PushNotificationsService.sendPushNotification(selectedUsersIds, pushParams);

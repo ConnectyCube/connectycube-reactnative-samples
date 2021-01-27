@@ -17,6 +17,8 @@
 #import <UserNotifications/UserNotifications.h>
 #import <RNCPushNotificationIOS.h>
 
+#import "RNCallKeep.h"
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -87,6 +89,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
   completionHandler(UNNotificationPresentationOptionSound | UNNotificationPresentationOptionAlert | UNNotificationPresentationOptionBadge);
 }
 
+
 ///
 /// Add PushKit delegate methods
 ///
@@ -104,6 +107,8 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 
 // --- Handle incoming pushes
 - (void)pushRegistry:(PKPushRegistry *)registry didReceiveIncomingPushWithPayload:(PKPushPayload *)payload forType:(PKPushType)type withCompletionHandler:(void (^)(void))completion {
+  
+  NSLog(@"didReceiveIncomingPushWithPayload: %@", payload);
 
 
   // --- NOTE: apple forced us to invoke callkit ASAP when we receive voip push
@@ -113,6 +118,9 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
   NSString *uuid = payload.dictionaryPayload[@"uuid"];
   NSString *callerName = [NSString stringWithFormat:@"%@ (Connecting...)", payload.dictionaryPayload[@"callerName"]];
   NSString *handle = payload.dictionaryPayload[@"handle"];
+  
+  // TODO: adjust it
+  BOOL hasVideo = NO;
 
   // --- this is optional, only required if you want to call `completion()` on the js side
   [RNVoipPushNotificationManager addCompletionHandler:uuid completionHandler:completion];
@@ -120,11 +128,36 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
   // --- Process the received push
   [RNVoipPushNotificationManager didReceiveIncomingPushWithPayload:payload forType:(NSString *)type];
 
-//  // --- You should make sure to report to callkit BEFORE execute `completion()`
-//  [RNCallKeep reportNewIncomingCall:uuid handle:handle handleType:@"generic" hasVideo:false localizedCallerName:callerName fromPushKit: YES payload:nil];
+  // --- You should make sure to report to callkit BEFORE execute `completion()`
+  [RNCallKeep reportNewIncomingCall:uuid
+                             handle:handle
+                         handleType:@"generic"
+                           hasVideo:hasVideo
+                localizedCallerName:callerName
+                    supportsHolding: YES
+                       supportsDTMF: YES
+                   supportsGrouping: YES
+                 supportsUngrouping: YES
+                        fromPushKit: YES
+                            payload: nil
+              withCompletionHandler: completion];
 
   // --- You don't need to call it if you stored `completion()` and will call it on the js side.
   completion();
+}
+
+
+///
+/// CallKit delegate methods
+///
+
+- (BOOL)application:(UIApplication *)application
+ continueUserActivity:(NSUserActivity *)userActivity
+   restorationHandler:(void(^)(NSArray * __nullable restorableObjects))restorationHandler
+ {
+   return [RNCallKeep application:application
+            continueUserActivity:userActivity
+              restorationHandler:restorationHandler];
 }
 
 @end

@@ -9,14 +9,14 @@ import {
   ActivityIndicator,
   TouchableOpacity,
 } from 'react-native';
-import { AuthService, PushNotificationsService } from '../../services';
+import { AuthService, PushNotificationsService, CallKitService } from '../../services';
 import { users } from '../../config';
 
 export default class AuthScreen extends PureComponent {
   state = {isLogging: false, user: null};
 
-  setIsLogging = isLogging => this.setState({...this.state, isLogging});
-  setUser = user => this.setState({...this.state, user});
+  setIsLogging = isLogging => this.setState({ isLogging });
+  setUser = user => this.setState({ user });
 
   login = user => {
     console.log("[AuthScreen][login] user", user);
@@ -33,6 +33,8 @@ export default class AuthScreen extends PureComponent {
   _onSuccessLogin = () => {
     // init push notifications service and subscribe for push notifications
     this._initPushNotificationsAndSubscribe()
+
+    this._initCallKit()
 
     const { navigation } = this.props;
     const opponentsIds = users
@@ -56,9 +58,16 @@ export default class AuthScreen extends PureComponent {
     }
   }
 
+  _initCallKit() {
+    CallKitService.init();
+  }
+
+
   render() {
     const { isLogging } = this.state;
     const logoSrc = require('../../../assets/logo.png');
+
+    console.log("isLogging", isLogging)
 
     return (
       <View style={[styles.container, styles.f1]}>
