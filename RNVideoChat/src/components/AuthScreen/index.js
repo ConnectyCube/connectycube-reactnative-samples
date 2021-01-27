@@ -37,11 +37,9 @@ export default class AuthScreen extends PureComponent {
     this._initCallKit()
 
     const { navigation } = this.props;
-    const opponentsIds = users
-      .filter(opponent => opponent.id !== this.state.user.id)
-      .map(opponent => opponent.id);
+    const opponents = users.filter(opponent => opponent.id !== this.state.user.id)
 
-    navigation.push('VideoScreen', { opponentsIds, currentUser: this.state.user });
+    navigation.push('VideoScreen', { opponents, currentUser: this.state.user });
   };
 
   _onFailLogin = (error = {}) => {

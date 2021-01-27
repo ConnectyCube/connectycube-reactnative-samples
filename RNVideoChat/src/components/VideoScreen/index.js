@@ -3,7 +3,7 @@ import { SafeAreaView, StatusBar, Text, StyleSheet } from 'react-native';
 import ConnectyCube from 'react-native-connectycube';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import RTCViewGrid from './RTCViewGrid';
-import { CallService, AuthService, PushNotificationsService, UtilsService } from '../../services';
+import { CallService, AuthService, PushNotificationsService, UtilsService, CallKitService } from '../../services';
 import ToolBar from './ToolBar';
 import UsersSelect from './UsersSelect';
 
@@ -12,7 +12,9 @@ export default class VideoScreen extends React.Component {
     super(props);
 
     this._session = null;
-    this.opponentsIds = props.navigation.getParam('opponentsIds');
+
+    this.opponents = props.navigation.getParam('opponents');
+    this.opponentsIds = this.opponents.map(o => o.id);
     this.currentUser = props.navigation.getParam('currentUser');
 
     this.state = {
@@ -137,16 +139,39 @@ export default class VideoScreen extends React.Component {
       this.closeSelect();
       this.initRemoteStreams(selectedUsersIds);
 
+      // initiate a call
       CallService.startCall(selectedUsersIds).then(this.setLocalStream);
 
+      const callUDID = UtilsService.uuidv4()
+      const callType = "video" // "voice"
+
+      // sendd push notitification
       const pushParams = {
         message: `Incoming call from ${this.currentUser.name}`,
         ios_voip: 1,
         callerName: this.currentUser.name,
-        handle: this.currentUser.id,
-        uuid: UtilsService.uuidv4()
+        handle: this.currentUser.name,
+        uuid: callUDID,
+        callType
       };
       PushNotificationsService.sendPushNotification(selectedUsersIds, pushParams);
+
+      // report to CallKit
+      let opponentsNamesString = ""
+      for (let i = 0; i < selectedUsersIds.length; ++i) {
+        opponentsNamesString += CallService.getUserById(selectedUsersIds[i]).name
+        if (i !== (selectedUsersIds.length - 1)) {
+          opponentsNamesString += ", "
+        }
+      }
+      //
+      CallKitService.reportStartCall(
+        callUDID,
+        this.currentUser.name,
+        opponentsNamesString,
+        "generic",
+        callType === "video"
+      );
     }
   };
 

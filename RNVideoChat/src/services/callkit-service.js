@@ -41,9 +41,11 @@ export default class CallKitService {
   }
 
   // Use startCall to ask the system to start a call - Initiate an outgoing call from this point
-  startCall = ({ handle, localizedCallerName }) => {
+  reportStartCall = (callUUID, handle, contactIdentifier, handleType, hasVideo) => {
+    console.log('[CallKitService][reportStartCall]', callUUID, handle, contactIdentifier, handleType, hasVideo);
+
     // Your normal start call action
-    RNCallKeep.startCall(this.getCurrentCallId(), handle, localizedCallerName);
+    RNCallKeep.startCall(callUUID, handle, contactIdentifier, handleType, hasVideo);
   };
 
   reportEndCallWithUUID = (callUUID, reason) => {
@@ -71,7 +73,7 @@ export default class CallKitService {
     console.log('[CallKitService][onEndCallAction]', data);
 
     let { callUUID } = data;
-    RNCallKeep.endCall(this.getCurrentCallId());
+    RNCallKeep.endCall(callUUID);
 
     this.currentCallId = null;
   };
@@ -105,13 +107,5 @@ export default class CallKitService {
 
     // you might want to do following things when receiving this event:
     // - Start playing ringback if it is an outgoing call
-  };
-
-  getCurrentCallId = () => {
-    if (!this.currentCallId) {
-      this.currentCallId = uuid.v4();
-    }
-
-    return this.currentCallId;
   };
 }

@@ -116,11 +116,11 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 
   // --- Retrieve information from your voip push payload
   NSString *uuid = payload.dictionaryPayload[@"uuid"];
-  NSString *callerName = [NSString stringWithFormat:@"%@ (Connecting...)", payload.dictionaryPayload[@"callerName"]];
+  NSString *callerName = payload.dictionaryPayload[@"callerName"];
   NSString *handle = payload.dictionaryPayload[@"handle"];
+  NSString *callType = payload.dictionaryPayload[@"callType"];
   
-  // TODO: adjust it
-  BOOL hasVideo = NO;
+  BOOL hasVideo = [callType isEqualToString:@"video"];
 
   // --- this is optional, only required if you want to call `completion()` on the js side
   [RNVoipPushNotificationManager addCompletionHandler:uuid completionHandler:completion];
@@ -134,10 +134,10 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
                          handleType:@"generic"
                            hasVideo:hasVideo
                 localizedCallerName:callerName
-                    supportsHolding: YES
-                       supportsDTMF: YES
-                   supportsGrouping: YES
-                 supportsUngrouping: YES
+                    supportsHolding: NO
+                       supportsDTMF: NO
+                   supportsGrouping: NO
+                 supportsUngrouping: NO
                         fromPushKit: YES
                             payload: nil
               withCompletionHandler: completion];
