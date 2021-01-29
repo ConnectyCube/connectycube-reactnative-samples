@@ -30,7 +30,7 @@ export default class ToolBar extends Component {
   muteUnmuteAudio = () => {
     this.setState(prevState => {
       const mute = !prevState.isAudioMuted;
-      CallService.setAudioMuteState(mute);
+      CallService.muteMicrophone(mute);
       return {isAudioMuted: mute};
     });
   };

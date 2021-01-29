@@ -24,10 +24,28 @@ export default class CallService {
     });
   }
 
-  acceptCall = session => {
-    this.stopSounds();
-    this._session = session;
+  startCall(usersIds, type, options = {}) {
     this._retrieveAndSetAvailableMediaDevices();
+
+    this._session = ConnectyCube.videochat.createNewSession(usersIds, type, options);
+
+    return this._session
+      .getUserMedia(CallService.MEDIA_OPTIONS)
+      .then(stream => {
+        this.playSound('outgoing');
+
+        this._session.call({});
+
+        return stream;
+      });
+  }
+
+  acceptCall(session) {
+    this._retrieveAndSetAvailableMediaDevices();
+
+    this._session = session;
+
+    this.stopSounds();
 
     return this._session
       .getUserMedia(CallService.MEDIA_OPTIONS)
@@ -35,25 +53,9 @@ export default class CallService {
         this._session.accept({});
         return stream;
       });
-  };
+  }
 
-  startCall = ids => {
-    const options = {};
-    const type = ConnectyCube.videochat.CallType.VIDEO; // AUDIO is also possible
-
-    this._session = ConnectyCube.videochat.createNewSession(ids, type, options);
-    this._retrieveAndSetAvailableMediaDevices();
-    this.playSound('outgoing');
-
-    return this._session
-      .getUserMedia(CallService.MEDIA_OPTIONS)
-      .then(stream => {
-        this._session.call({});
-        return stream;
-      });
-  };
-
-  stopCall = () => {
+  stopCall() {
     this.stopSounds();
 
     if (this._session) {
@@ -63,24 +65,24 @@ export default class CallService {
       this._session = null;
       this.mediaDevices = [];
     }
-  };
+  }
 
-  rejectCall = (session, extension) => {
+  rejectCall(session, extension) {
     this.stopSounds();
     session.reject(extension);
-  };
+  }
 
-  setAudioMuteState = mute => {
-    if (mute) {
+  muteMicrophone(isMute) {
+    if (isMute) {
       this._session.mute('audio');
     } else {
       this._session.unmute('audio');
     }
   };
 
-  switchCamera = localStream => {
+  switchCamera(localStream) {
     localStream.getVideoTracks().forEach(track => track._switchCamera());
-  };
+  }
 
   setSpeakerphoneOn = flag => InCallManager.setSpeakerphoneOn(flag);
 
@@ -147,7 +149,7 @@ export default class CallService {
     });
   }
 
-  processOnRemoteStreamListener = () => {
+  processOnRemoteStreamListener() {
     return new Promise((resolve, reject) => {
       if (!this._session) {
         reject();
@@ -155,9 +157,9 @@ export default class CallService {
         resolve();
       }
     });
-  };
+  }
 
-  playSound = type => {
+  playSound(type) {
     switch (type) {
       case 'outgoing':
         this._outgoingCallSound.setNumberOfLoops(-1);
@@ -174,14 +176,14 @@ export default class CallService {
       default:
         break;
     }
-  };
+  }
 
-  stopSounds = () => {
+  stopSounds() {
     if (this._incomingCallSound.isPlaying()) {
       this._incomingCallSound.pause();
     }
     if (this._outgoingCallSound.isPlaying()) {
       this._outgoingCallSound.pause();
     }
-  };
+  }
 }

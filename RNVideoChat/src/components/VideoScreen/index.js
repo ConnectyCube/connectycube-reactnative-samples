@@ -141,7 +141,7 @@ export default class VideoScreen extends React.Component {
       this.initRemoteStreams(selectedUsersIds);
 
       // initiate a call
-      CallService.startCall(selectedUsersIds).then(this.setLocalStream);
+      CallService.startCall(selectedUsersIds, ConnectyCube.videochat.CallType.VIDEO).then(this.setLocalStream);
 
       const callUDID = UtilsService.uuidv4()
       const callType = "video" // "voice"
