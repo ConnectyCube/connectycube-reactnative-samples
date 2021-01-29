@@ -6,6 +6,7 @@ import RTCViewGrid from './RTCViewGrid';
 import { CallService, AuthService, PushNotificationsService, UtilsService, CallKitService } from '../../services';
 import ToolBar from './ToolBar';
 import UsersSelect from './UsersSelect';
+import getUserById from '../../utils'
 
 export default class VideoScreen extends React.Component {
   constructor(props) {
@@ -134,7 +135,7 @@ export default class VideoScreen extends React.Component {
     } = this.state;
 
     if (selectedUsersIds.length === 0) {
-      CallService.showToast('Select at less one user to start a call');
+      UtilsService.showToast('Select at less one user to start a call');
     } else {
       this.closeSelect();
       this.initRemoteStreams(selectedUsersIds);
@@ -159,7 +160,7 @@ export default class VideoScreen extends React.Component {
       // report to CallKit
       let opponentsNamesString = ""
       for (let i = 0; i < selectedUsersIds.length; ++i) {
-        opponentsNamesString += CallService.getUserById(selectedUsersIds[i]).name
+        opponentsNamesString += getUserById(selectedUsersIds[i]).name
         if (i !== (selectedUsersIds.length - 1)) {
           opponentsNamesString += ", "
         }
@@ -208,21 +209,46 @@ export default class VideoScreen extends React.Component {
 
   _onAcceptCallListener = (session, userId, extension) => {
     CallService.processOnAcceptCallListener(session, userId, extension)
-      .then(this.setOnCall)
-      .catch(this.hideInomingCallModal);
+      .then(res => {
+        UtilsService.showToast(`${getUserById(userId, 'name')} has accepted the call`);
+
+        this.setOnCall()
+      })
+      .catch(err => {
+        UtilsService.showToast('You have accepted the call on other side');
+
+        this.hideInomingCallModal()
+      });
   };
 
   _onRejectCallListener = (session, userId, extension) => {
     CallService.processOnRejectCallListener(session, userId, extension)
-      .then(() => this.removeRemoteStream(userId))
-      .catch(this.hideInomingCallModal);
+      .then(() => {
+        this.removeRemoteStream(userId)
+
+        const userName = getUserById(userId, 'name');
+        const message = extension.busy
+          ? `${userName} is busy`
+          : `${userName} rejected the call request`;
+
+        UtilsService.showToast(message);
+      }).catch(e => {
+        UtilsService.showToast('You have rejected the call on other side');
+
+        this.hideInomingCallModal()
+      });
   };
 
   _onStopCallListener = (session, userId, extension) => {
     const isStoppedByInitiator = session.initiatorID === userId;
 
-    CallService.processOnStopCallListener(userId, isStoppedByInitiator)
+    CallService.processOnStopCallListener()
       .then(() => {
+        const userName = getUserById(userId, 'name');
+        const message = `${userName} has ${isStoppedByInitiator ? 'stopped' : 'left'} the call`;
+
+        UtilsService.showToast(message);
+
         if (isStoppedByInitiator) {
           this.resetState();
         } else {
@@ -234,8 +260,11 @@ export default class VideoScreen extends React.Component {
 
   _onUserNotAnswerListener = (session, userId) => {
     CallService.processOnUserNotAnswerListener(userId)
-      .then(() => this.removeRemoteStream(userId))
-      .catch(this.hideInomingCallModal);
+      .then(() => {
+        UtilsService.showToast(`${getUserById(userId, 'name')} did not answer`);
+
+        this.removeRemoteStream(userId)
+      }).catch(this.hideInomingCallModal);
   };
 
   _onRemoteStreamListener = (session, userId, stream) => {
@@ -243,8 +272,7 @@ export default class VideoScreen extends React.Component {
       .then(() => {
         this.updateRemoteStream(userId, stream);
         this.setOnCall();
-      })
-      .catch(this.hideInomingCallModal);
+      }).catch(this.hideInomingCallModal);
   };
 
   render() {
@@ -258,7 +286,7 @@ export default class VideoScreen extends React.Component {
     } = this.state;
 
     const initiatorName = isIncomingCall
-      ? CallService.getUserById(this._session.initiatorID, 'name')
+      ? getUserById(this._session.initiatorID, 'name')
       : '';
     const localStreamItem = localStream
       ? [{userId: 'localStream', stream: localStream}]

@@ -2,6 +2,7 @@ import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import {CallService} from '../../services';
+import getUserById from '../../utils'
 
 export default ({
   isActiveSelect,
@@ -18,7 +19,7 @@ export default ({
     <View style={styles.container}>
       <Text style={styles.title}>Select users to start a video call</Text>
       {opponentsIds.map(id => {
-        const user = CallService.getUserById(id);
+        const user = getUserById(id);
         const selected = selectedUsersIds.some(userId => id === userId);
         const type = selected
           ? 'radio-button-checked'

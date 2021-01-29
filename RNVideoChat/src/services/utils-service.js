@@ -1,3 +1,6 @@
+import { Platform, ToastAndroid } from 'react-native';
+import Toast from 'react-native-simple-toast';
+
 export default class UtilsService {
   uuidv4() {
     // return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
@@ -8,4 +11,10 @@ export default class UtilsService {
       return v.toString(16);
     });
   }
+
+  showToast(text) {
+    const commonToast = Platform.OS === 'android' ? ToastAndroid : Toast;
+
+    commonToast.showWithGravity(text, Toast.LONG, Toast.TOP);
+  };
 }

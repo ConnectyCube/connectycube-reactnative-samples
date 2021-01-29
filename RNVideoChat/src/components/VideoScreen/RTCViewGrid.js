@@ -3,6 +3,7 @@ import {View, StyleSheet} from 'react-native';
 import {RTCView} from 'react-native-connectycube';
 import {CallService} from '../../services';
 import CallingLoader from './CallingLoader';
+import getUserById from '../../utils'
 
 export default ({streams}) => {
   const RTCViewRendered = ({userId, stream}) => {
@@ -19,7 +20,7 @@ export default ({streams}) => {
 
     return (
       <View style={styles.blackView}>
-        <CallingLoader name={CallService.getUserById(userId, 'name')} />
+        <CallingLoader name={getUserById(userId, 'name')} />
       </View>
     );
   };

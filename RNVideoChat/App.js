@@ -1,12 +1,19 @@
 import React, {Component} from 'react';
 import Navigator from './src/navigator';
-import {AuthService} from './src/services';
+import { CallService } from './src/services';
+import config from 'src/config';
 
 export default class App extends Component {
   constructor(props) {
     super(props);
 
-    AuthService.init();
+    ConnectyCube.init(...config);
+
+    CallService.init(
+      require('./assets/sounds/dialing.mp3'),
+      require('./assets/sounds/calling.mp3'),
+      require('./assets/sounds/end_call.mp3')
+    )
   }
 
   render = () => <Navigator />;

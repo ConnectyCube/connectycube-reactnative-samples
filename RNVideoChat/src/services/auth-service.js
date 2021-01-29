@@ -1,9 +1,6 @@
 import ConnectyCube from 'react-native-connectycube';
-import config from '../config';
 
 export default class AuthService {
-  init = () => ConnectyCube.init(...config);
-
   login = user => {
     return new Promise((resolve, reject) => {
       ConnectyCube.createSession(user)
