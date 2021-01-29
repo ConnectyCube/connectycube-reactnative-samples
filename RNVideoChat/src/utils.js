@@ -1,6 +1,6 @@
-import { users } from '../config';
+import { users } from './config';
 
-export getUserById = (userId, key) => {
+export function getUserById(userId, key) {
   const user = users.find(user => user.id == userId);
 
   if (typeof key === 'string') {

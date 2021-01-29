@@ -6,7 +6,7 @@ import RTCViewGrid from './RTCViewGrid';
 import { CallService, AuthService, PushNotificationsService, UtilsService, CallKitService } from '../../services';
 import ToolBar from './ToolBar';
 import UsersSelect from './UsersSelect';
-import getUserById from '../../utils'
+import { getUserById } from '../../utils'
 
 export default class VideoScreen extends React.Component {
   constructor(props) {

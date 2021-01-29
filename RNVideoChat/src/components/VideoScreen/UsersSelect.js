@@ -1,8 +1,8 @@
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
-import {CallService} from '../../services';
-import getUserById from '../../utils'
+import { CallService } from '../../services';
+import { getUserById } from '../../utils'
 
 export default ({
   isActiveSelect,

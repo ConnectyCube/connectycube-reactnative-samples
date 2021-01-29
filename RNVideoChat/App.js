@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import Navigator from './src/navigator';
 import { CallService } from './src/services';
-import config from 'src/config';
+import config from './src/config';
+import ConnectyCube from 'react-native-connectycube';
 
 export default class App extends Component {
   constructor(props) {

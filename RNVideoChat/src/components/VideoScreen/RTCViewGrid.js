@@ -1,9 +1,9 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
-import {RTCView} from 'react-native-connectycube';
-import {CallService} from '../../services';
+import { View, StyleSheet } from 'react-native';
+import { RTCView } from 'react-native-connectycube';
+import { CallService } from '../../services';
 import CallingLoader from './CallingLoader';
-import getUserById from '../../utils'
+import { getUserById } from '../../utils'
 
 export default ({streams}) => {
   const RTCViewRendered = ({userId, stream}) => {
