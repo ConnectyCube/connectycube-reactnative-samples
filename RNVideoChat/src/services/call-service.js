@@ -1,9 +1,6 @@
-import { Platform, ToastAndroid } from 'react-native';
-import Toast from 'react-native-simple-toast';
 import ConnectyCube from 'react-native-connectycube';
 import InCallManager from 'react-native-incall-manager';
 import Sound from 'react-native-sound';
-import { users } from '../config';
 
 export default class CallService {
   static MEDIA_OPTIONS = { audio: true, video: { facingMode: 'user' } };
@@ -11,36 +8,44 @@ export default class CallService {
   _session = null;
   mediaDevices = [];
 
-  outgoingCall = new Sound(require('../../assets/sounds/dialing.mp3'));
-  incomingCall = new Sound(require('../../assets/sounds/calling.mp3'));
-  endCall = new Sound(require('../../assets/sounds/end_call.mp3'));
+  _outgoingCallSound = null
+  _incomingCallSound = null
+  _endCallSound = null
 
-  showToast = text => {
-    const commonToast = Platform.OS === 'android' ? ToastAndroid : Toast;
+  init(outgoingCallSound, incomingCallSound, endCallSound) {
+    this._outgoingCallSound = new Sound(outgoingCallSound)
+    this._incomingCallSound = new Sound(incomingCallSound)
+    this._endCallSound = new Sound(endCallSound)
+  }
 
-    commonToast.showWithGravity(text, Toast.LONG, Toast.TOP);
-  };
-
-  getUserById = (userId, key) => {
-    const user = users.find(user => user.id == userId);
-
-    if (typeof key === 'string') {
-      return user[key];
-    }
-
-    return user;
-  };
-
-  setMediaDevices() {
+  _retrieveAndSetAvailableMediaDevices() {
     return ConnectyCube.videochat.getMediaDevices().then(mediaDevices => {
       this.mediaDevices = mediaDevices;
     });
   }
 
-  acceptCall = session => {
-    this.stopSounds();
+  startCall(usersIds, type, options = {}) {
+    this._retrieveAndSetAvailableMediaDevices();
+
+    this._session = ConnectyCube.videochat.createNewSession(usersIds, type, options);
+
+    return this._session
+      .getUserMedia(CallService.MEDIA_OPTIONS)
+      .then(stream => {
+        this.playSound('outgoing');
+
+        this._session.call({});
+
+        return stream;
+      });
+  }
+
+  acceptCall(session) {
+    this._retrieveAndSetAvailableMediaDevices();
+
     this._session = session;
-    this.setMediaDevices();
+
+    this.stopSounds();
 
     return this._session
       .getUserMedia(CallService.MEDIA_OPTIONS)
@@ -48,25 +53,9 @@ export default class CallService {
         this._session.accept({});
         return stream;
       });
-  };
+  }
 
-  startCall = ids => {
-    const options = {};
-    const type = ConnectyCube.videochat.CallType.VIDEO; // AUDIO is also possible
-
-    this._session = ConnectyCube.videochat.createNewSession(ids, type, options);
-    this.setMediaDevices();
-    this.playSound('outgoing');
-
-    return this._session
-      .getUserMedia(CallService.MEDIA_OPTIONS)
-      .then(stream => {
-        this._session.call({});
-        return stream;
-      });
-  };
-
-  stopCall = () => {
+  stopCall() {
     this.stopSounds();
 
     if (this._session) {
@@ -76,24 +65,24 @@ export default class CallService {
       this._session = null;
       this.mediaDevices = [];
     }
-  };
+  }
 
-  rejectCall = (session, extension) => {
+  rejectCall(session, extension) {
     this.stopSounds();
     session.reject(extension);
-  };
+  }
 
-  setAudioMuteState = mute => {
-    if (mute) {
+  muteMicrophone(isMute) {
+    if (isMute) {
       this._session.mute('audio');
     } else {
       this._session.unmute('audio');
     }
   };
 
-  switchCamera = localStream => {
+  switchCamera(localStream) {
     localStream.getVideoTracks().forEach(track => track._switchCamera());
-  };
+  }
 
   setSpeakerphoneOn = flag => InCallManager.setSpeakerphoneOn(flag);
 
@@ -102,11 +91,6 @@ export default class CallService {
       if (!this._session) {
         reject();
       } else {
-        const userName = this.getUserById(userId, 'name');
-        const message = `${userName} did not answer`;
-
-        this.showToast(message);
-
         resolve();
       }
     });
@@ -116,11 +100,13 @@ export default class CallService {
     return new Promise((resolve, reject) => {
       if (session.initiatorID === session.currentUserID) {
         reject();
+        return;
       }
 
       if (this._session) {
         this.rejectCall(session, { busy: true });
         reject();
+        return;
       }
 
       this.playSound('incoming');
@@ -133,16 +119,9 @@ export default class CallService {
     return new Promise((resolve, reject) => {
       if (userId === session.currentUserID) {
         this._session = null;
-        this.showToast('You have accepted the call on other side');
-
         reject();
       } else {
-        const userName = this.getUserById(userId, 'name');
-        const message = `${userName} has accepted the call`;
-
-        this.showToast(message);
         this.stopSounds();
-
         resolve();
       }
     });
@@ -152,42 +131,25 @@ export default class CallService {
     return new Promise((resolve, reject) => {
       if (userId === session.currentUserID) {
         this._session = null;
-        this.showToast('You have rejected the call on other side');
-
         reject();
       } else {
-        const userName = this.getUserById(userId, 'name');
-        const message = extension.busy
-          ? `${userName} is busy`
-          : `${userName} rejected the call request`;
-
-        this.showToast(message);
-
         resolve();
       }
     });
   }
 
-  processOnStopCallListener(userId, isInitiator) {
+  processOnStopCallListener() {
     return new Promise((resolve, reject) => {
       this.stopSounds();
-
       if (!this._session) {
         reject();
       } else {
-        const userName = this.getUserById(userId, 'name');
-        const message = `${userName} has ${
-          isInitiator ? 'stopped' : 'left'
-          } the call`;
-
-        this.showToast(message);
-
         resolve();
       }
     });
   }
 
-  processOnRemoteStreamListener = () => {
+  processOnRemoteStreamListener() {
     return new Promise((resolve, reject) => {
       if (!this._session) {
         reject();
@@ -195,33 +157,33 @@ export default class CallService {
         resolve();
       }
     });
-  };
+  }
 
-  playSound = type => {
+  playSound(type) {
     switch (type) {
       case 'outgoing':
-        this.outgoingCall.setNumberOfLoops(-1);
-        this.outgoingCall.play();
+        this._outgoingCallSound.setNumberOfLoops(-1);
+        this._outgoingCallSound.play();
         break;
       case 'incoming':
-        this.incomingCall.setNumberOfLoops(-1);
-        this.incomingCall.play();
+        this._incomingCallSound.setNumberOfLoops(-1);
+        this._incomingCallSound.play();
         break;
       case 'end':
-        this.endCall.play();
+        this._endCallSound.play();
         break;
 
       default:
         break;
     }
-  };
+  }
 
-  stopSounds = () => {
-    if (this.incomingCall.isPlaying()) {
-      this.incomingCall.pause();
+  stopSounds() {
+    if (this._incomingCallSound.isPlaying()) {
+      this._incomingCallSound.pause();
     }
-    if (this.outgoingCall.isPlaying()) {
-      this.outgoingCall.pause();
+    if (this._outgoingCallSound.isPlaying()) {
+      this._outgoingCallSound.pause();
     }
-  };
+  }
 }

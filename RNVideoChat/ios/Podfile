@@ -37,6 +37,8 @@ target 'RNVideoChat' do
   pod 'react-native-webrtc', :path => '../node_modules/react-native-webrtc'
 
 
+  pod 'RNCallKeep', :path => '../node_modules/react-native-callkeep'
+
   target 'RNVideoChatTests' do
     inherit! :search_paths
     # Pods for testing

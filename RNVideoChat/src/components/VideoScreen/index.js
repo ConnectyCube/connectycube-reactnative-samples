@@ -1,18 +1,22 @@
 import React from 'react';
-import {SafeAreaView, StatusBar} from 'react-native';
+import { SafeAreaView, StatusBar, Text, StyleSheet } from 'react-native';
 import ConnectyCube from 'react-native-connectycube';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import RTCViewGrid from './RTCViewGrid';
-import {CallService, AuthService} from '../../services';
+import { CallService, AuthService, PushNotificationsService, UtilsService, CallKitService } from '../../services';
 import ToolBar from './ToolBar';
 import UsersSelect from './UsersSelect';
+import { getUserById } from '../../utils'
 
 export default class VideoScreen extends React.Component {
   constructor(props) {
     super(props);
 
     this._session = null;
-    this.opponentsIds = props.navigation.getParam('opponentsIds');
+
+    this.opponents = props.navigation.getParam('opponents');
+    this.opponentsIds = this.opponents.map(o => o.id);
+    this.currentUser = props.navigation.getParam('currentUser');
 
     this.state = {
       localStream: null,
@@ -125,6 +129,59 @@ export default class VideoScreen extends React.Component {
     ConnectyCube.videochat.onRemoteStreamListener = this._onRemoteStreamListener;
   }
 
+  _startCall = () => {
+    const {
+      selectedUsersIds,
+    } = this.state;
+
+    if (selectedUsersIds.length === 0) {
+      UtilsService.showToast('Select at less one user to start a call');
+    } else {
+      this.closeSelect();
+      this.initRemoteStreams(selectedUsersIds);
+
+      // initiate a call
+      CallService.startCall(selectedUsersIds, ConnectyCube.videochat.CallType.VIDEO).then(this.setLocalStream);
+
+      const callUDID = UtilsService.uuidv4()
+      const callType = "video" // "voice"
+
+      // sendd push notitification
+      const pushParams = {
+        message: `Incoming call from ${this.currentUser.name}`,
+        ios_voip: 1,
+        callerName: this.currentUser.name,
+        handle: this.currentUser.name,
+        uuid: callUDID,
+        callType
+      };
+      PushNotificationsService.sendPushNotification(selectedUsersIds, pushParams);
+
+      // report to CallKit
+      let opponentsNamesString = ""
+      for (let i = 0; i < selectedUsersIds.length; ++i) {
+        opponentsNamesString += getUserById(selectedUsersIds[i]).name
+        if (i !== (selectedUsersIds.length - 1)) {
+          opponentsNamesString += ", "
+        }
+      }
+      //
+      CallKitService.reportStartCall(
+        callUDID,
+        this.currentUser.name,
+        opponentsNamesString,
+        "generic",
+        callType === "video"
+      );
+    }
+  };
+
+  _stopCall = () => {
+    CallService.stopCall();
+
+    this.resetState();
+  };
+
   _onPressAccept = () => {
     CallService.acceptCall(this._session).then(stream => {
       const {opponentsIDs, initiatorID, currentUserID} = this._session;
@@ -152,21 +209,46 @@ export default class VideoScreen extends React.Component {
 
   _onAcceptCallListener = (session, userId, extension) => {
     CallService.processOnAcceptCallListener(session, userId, extension)
-      .then(this.setOnCall)
-      .catch(this.hideInomingCallModal);
+      .then(res => {
+        UtilsService.showToast(`${getUserById(userId, 'name')} has accepted the call`);
+
+        this.setOnCall()
+      })
+      .catch(err => {
+        UtilsService.showToast('You have accepted the call on other side');
+
+        this.hideInomingCallModal()
+      });
   };
 
   _onRejectCallListener = (session, userId, extension) => {
     CallService.processOnRejectCallListener(session, userId, extension)
-      .then(() => this.removeRemoteStream(userId))
-      .catch(this.hideInomingCallModal);
+      .then(() => {
+        this.removeRemoteStream(userId)
+
+        const userName = getUserById(userId, 'name');
+        const message = extension.busy
+          ? `${userName} is busy`
+          : `${userName} rejected the call request`;
+
+        UtilsService.showToast(message);
+      }).catch(e => {
+        UtilsService.showToast('You have rejected the call on other side');
+
+        this.hideInomingCallModal()
+      });
   };
 
   _onStopCallListener = (session, userId, extension) => {
     const isStoppedByInitiator = session.initiatorID === userId;
 
-    CallService.processOnStopCallListener(userId, isStoppedByInitiator)
+    CallService.processOnStopCallListener()
       .then(() => {
+        const userName = getUserById(userId, 'name');
+        const message = `${userName} has ${isStoppedByInitiator ? 'stopped' : 'left'} the call`;
+
+        UtilsService.showToast(message);
+
         if (isStoppedByInitiator) {
           this.resetState();
         } else {
@@ -178,8 +260,11 @@ export default class VideoScreen extends React.Component {
 
   _onUserNotAnswerListener = (session, userId) => {
     CallService.processOnUserNotAnswerListener(userId)
-      .then(() => this.removeRemoteStream(userId))
-      .catch(this.hideInomingCallModal);
+      .then(() => {
+        UtilsService.showToast(`${getUserById(userId, 'name')} did not answer`);
+
+        this.removeRemoteStream(userId)
+      }).catch(this.hideInomingCallModal);
   };
 
   _onRemoteStreamListener = (session, userId, stream) => {
@@ -187,8 +272,7 @@ export default class VideoScreen extends React.Component {
       .then(() => {
         this.updateRemoteStream(userId, stream);
         this.setOnCall();
-      })
-      .catch(this.hideInomingCallModal);
+      }).catch(this.hideInomingCallModal);
   };
 
   render() {
@@ -202,7 +286,7 @@ export default class VideoScreen extends React.Component {
     } = this.state;
 
     const initiatorName = isIncomingCall
-      ? CallService.getUserById(this._session.initiatorID, 'name')
+      ? getUserById(this._session.initiatorID, 'name')
       : '';
     const localStreamItem = localStream
       ? [{userId: 'localStream', stream: localStream}]
@@ -223,14 +307,11 @@ export default class VideoScreen extends React.Component {
           unselectUser={this.unselectUser}
         />
         <ToolBar
-          selectedUsersIds={selectedUsersIds}
           localStream={localStream}
           isActiveSelect={isActiveSelect}
           isActiveCall={isActiveCall}
-          closeSelect={this.closeSelect}
-          initRemoteStreams={this.initRemoteStreams}
-          setLocalStream={this.setLocalStream}
-          resetState={this.resetState}
+          startCall={this._startCall}
+          stopCall={this._stopCall}
         />
         <AwesomeAlert
           show={isIncomingCall}
