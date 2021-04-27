@@ -43,10 +43,11 @@ class PushNotificationService {
       },
       push_token: {
         environment: __DEV__ ? 'development' : 'production',
-        client_identification_sequence: token.token
+        client_identification_sequence: token.token,
+        bundle_identifier: DeviceInfo.getBundleId(),
       }
     }
-
+    console.log('[subcribeToPushNotification]', params)
     ConnectyCube.pushnotifications.subscriptions.create(params)
       .then(result => {
         console.log('PushNotificationService - result', result)
