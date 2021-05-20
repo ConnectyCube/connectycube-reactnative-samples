@@ -123,6 +123,7 @@ export default class VideoScreen extends React.Component {
     ConnectyCube.videochat.onStopCallListener = this._onStopCallListener;
     ConnectyCube.videochat.onUserNotAnswerListener = this._onUserNotAnswerListener;
     ConnectyCube.videochat.onRemoteStreamListener = this._onRemoteStreamListener;
+    ConnectyCube.videochat.onSessionConnectionStateChangedListener = this._onSessionConnectionStateChangedListener;
   }
 
   _onPressAccept = () => {
@@ -140,11 +141,12 @@ export default class VideoScreen extends React.Component {
   };
 
   _onPressReject = () => {
-    CallService.rejectCall(this._session);
+    CallService.rejectCall(this._session, {});
     this.hideInomingCallModal();
   };
 
   _onCallListener = (session, extension) => {
+    console.warn('_onCallListener');
     CallService.processOnCallListener(session)
       .then(() => this.showInomingCallModal(session))
       .catch(this.hideInomingCallModal);
@@ -189,6 +191,37 @@ export default class VideoScreen extends React.Component {
         this.setOnCall();
       })
       .catch(this.hideInomingCallModal);
+  };
+
+  _onSessionConnectionStateChangedListener = (
+    session,
+    userID,
+    connectionState,
+  ) => {
+    const connectionStateName = () => {
+      switch (connectionState) {
+        case ConnectyCube.videochat.SessionConnectionState.UNDEFINED:
+          return 'UNDEFINED';
+        case ConnectyCube.videochat.SessionConnectionState.CONNECTING:
+          return 'CONNECTING';
+        case ConnectyCube.videochat.SessionConnectionState.CONNECTED:
+          return 'CONNECTED';
+        case ConnectyCube.videochat.SessionConnectionState.FAILED:
+          return 'FAILED';
+        case ConnectyCube.videochat.SessionConnectionState.DISCONNECTED:
+          return 'DISCONNECTED';
+        case ConnectyCube.videochat.SessionConnectionState.CLOSED:
+          return 'CLOSED';
+        case ConnectyCube.videochat.SessionConnectionState.COMPLETED:
+          return 'COMPLETED';
+        default:
+          return 'UNKNOWN';
+      }
+    };
+
+    console.log(
+      `\n[onSessionConnectionStateChangedListener]:\nsession >>> {${session}}\nuserID >>> {${userID}}\nconnectionState >>> {${connectionStateName()}}`,
+    );
   };
 
   render() {
