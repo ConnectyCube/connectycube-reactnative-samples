@@ -12,6 +12,7 @@ export default class ToolBar extends Component {
 
   state = {
     isAudioMuted: false,
+    isVideoMuted: false,
     isFrontCamera: true,
   };
 
@@ -20,7 +21,11 @@ export default class ToolBar extends Component {
 
     if (!props.isActiveCall) {
       derivedState.isAudioMuted = false;
+      derivedState.isVideoMuted = false;
       derivedState.isFrontCamera = true;
+    } else {
+      derivedState.isAudioMuted = CallService.isAudioMuted();
+      derivedState.isVideoMuted = CallService.isVideoMuted();
     }
 
     return derivedState;
@@ -70,18 +75,22 @@ export default class ToolBar extends Component {
     const {localStream} = this.props;
 
     CallService.switchCamera(localStream);
-    this.setState((prevState) => ({isFrontCamera: !prevState.isFrontCamera}));
+    this.setState(prevState => ({isFrontCamera: !prevState.isFrontCamera}));
   };
 
   muteUnmuteAudio = () => {
-    this.setState((prevState) => {
-      const mute = !prevState.isAudioMuted;
-      CallService.setAudioMute();
-      return {isAudioMuted: mute};
-    });
+    const isAudioMuted = CallService.setAudioMute();
+
+    this.setState({isAudioMuted});
   };
 
-  _renderCallStartStopButton = (isCallInProgress) => {
+  muteUnmuteVideo = () => {
+    const isVideoMuted = CallService.setVideoMute();
+
+    this.setState({isVideoMuted});
+  };
+
+  _renderCallStartStopButton = isCallInProgress => {
     const style = isCallInProgress ? styles.buttonCallEnd : styles.buttonCall;
     const onPress = isCallInProgress ? this.stopCall : this.startCall;
     const type = isCallInProgress ? 'call-end' : 'call';
@@ -95,14 +104,27 @@ export default class ToolBar extends Component {
     );
   };
 
-  _renderMuteButton = () => {
+  _renderMuteMicButton = () => {
     const {isAudioMuted} = this.state;
     const type = isAudioMuted ? 'mic-off' : 'mic';
 
     return (
       <TouchableOpacity
-        style={[styles.buttonContainer, styles.buttonMute]}
+        style={[styles.buttonContainer, styles.buttonMuteMic]}
         onPress={this.muteUnmuteAudio}>
+        <MaterialIcon name={type} size={32} color="white" />
+      </TouchableOpacity>
+    );
+  };
+
+  _renderMuteCamButton = () => {
+    const {isVideoMuted} = this.state;
+    const type = isVideoMuted ? 'videocam-off' : 'videocam';
+
+    return (
+      <TouchableOpacity
+        style={[styles.buttonContainer, styles.buttonMuteCam]}
+        onPress={this.muteUnmuteVideo}>
         <MaterialIcon name={type} size={32} color="white" />
       </TouchableOpacity>
     );
@@ -122,19 +144,24 @@ export default class ToolBar extends Component {
   };
 
   render() {
+    const {isVideoMuted} = this.state;
     const {isActiveSelect, isActiveCall} = this.props;
     const isCallInProgress = isActiveCall || !isActiveSelect;
     const isAvailableToSwitch =
-      isActiveCall && CallService.mediaDevices.length > 1;
+      isActiveCall && CallService.mediaDevices.length > 1 && !isVideoMuted;
 
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.toolBarItem}>
-          {isActiveCall && this._renderMuteButton()}
+          {isActiveCall && this._renderMuteMicButton()}
+        </View>
+        <View style={styles.toolBarItem}>
+          {isActiveCall && this._renderMuteCamButton()}
         </View>
         <View style={styles.toolBarItem}>
           {this._renderCallStartStopButton(isCallInProgress)}
         </View>
+        <View style={styles.toolBarItem} />
         <View style={styles.toolBarItem}>
           {isAvailableToSwitch && this._renderSwitchVideoSourceButton()}
         </View>
@@ -174,8 +201,11 @@ const styles = StyleSheet.create({
   buttonCallEnd: {
     backgroundColor: 'red',
   },
-  buttonMute: {
+  buttonMuteMic: {
     backgroundColor: 'blue',
+  },
+  buttonMuteCam: {
+    backgroundColor: 'green',
   },
   buttonSwitch: {
     backgroundColor: 'orange',

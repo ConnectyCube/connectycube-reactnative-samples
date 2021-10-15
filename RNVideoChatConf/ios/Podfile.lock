@@ -190,8 +190,8 @@ PODS:
   - react-native-simple-toast (1.0.0):
     - React
     - Toast (~> 4.0.0)
-  - react-native-webrtc (1.84.0):
-    - React
+  - react-native-webrtc (1.92.0):
+    - React-Core
   - React-RCTActionSheet (0.63.0):
     - React-Core/RCTActionSheetHeaders (= 0.63.0)
   - React-RCTAnimation (0.63.0):
@@ -415,7 +415,7 @@ SPEC CHECKSUMS:
   React-jsinspector: fc661eff8edbfb7e22119382c13f33bcadde0f3c
   react-native-safe-area-context: 042dfc9d4db17196841df962ba9497f6e7a5bd02
   react-native-simple-toast: 9c2f5979dfe555d0aa7b084348a06fd6ef7a6f55
-  react-native-webrtc: 9268ae9a2bc9730796b0968d012327e92c392adf
+  react-native-webrtc: bbb644859dcc37ccb7edaec860ca62ed47bf996c
   React-RCTActionSheet: aadd91a1d6cbfae50dd41f140004f816e9e47ade
   React-RCTAnimation: 7fa2ef6c0ef1e3f0b7d2261c827ec94412deb5e6
   React-RCTBlob: ccbbc70295aee3a76a70323b48f63fb7a7fcffd6
@@ -439,4 +439,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 9e479a72c0cc1fdfff17b18ed91f7e2972b600dd
 
-COCOAPODS: 1.9.3
+COCOAPODS: 1.11.2
