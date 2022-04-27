@@ -1,4 +1,4 @@
-import PushNotification from 'react-native-push-notification'
+import { Notifications } from 'react-native-notifications';
 import ConnectyCube from 'react-native-connectycube'
 import store from '../store'
 import { Platform } from 'react-native'
@@ -15,22 +15,46 @@ class PushNotificationService {
 
   init(navigation) {
     PushNotificationService.Navigation = navigation
-    const settings = {
-      onRegister: this.subcribeToPushNotification,
-      onNotification: this.onNotification,
-      popInitialNotification: true,
-      requestPermissions: true
-    }
-    if (Platform.OS !== 'ios') {
-      settings.senderID = appConfig.senderID
-    } else {
-      settings.permissions = {
-        alert: true,
-        badge: true,
-        sound: true
-      }
-    }
-    PushNotification.configure(settings)
+
+    Notifications.ios.checkPermissions().then((currentPermissions) => {
+        console.log('Badges enabled: ' + !!currentPermissions.badge);
+        console.log('Sounds enabled: ' + !!currentPermissions.sound);
+        console.log('Alerts enabled: ' + !!currentPermissions.alert);
+        console.log('Car Play enabled: ' + !!currentPermissions.carPlay);
+        console.log('Critical Alerts enabled: ' + !!currentPermissions.criticalAlert);
+        console.log('Provisional enabled: ' + !!currentPermissions.provisional);
+        console.log('Provides App Notification Settings enabled: ' + !!currentPermissions.providesAppNotificationSettings);
+        console.log('Announcement enabled: ' + !!currentPermissions.announcement);
+    });
+
+    Notifications.registerRemoteNotifications();
+
+    Notifications.events().registerRemoteNotificationsRegistered((event) => {
+      // TODO: Send the token to my server so it could send back push notifications...
+      console.log("Device Token Received", event.deviceToken);
+
+      this.subcribeToPushNotification(event.deviceToken)
+    });
+    Notifications.events().registerRemoteNotificationsRegistrationFailed((event) => {
+      console.error("Failed to get Device Token", event);
+    });
+
+    Notifications.events().registerNotificationReceivedForeground((notification, completion) => {
+      console.log(`Notification received in foreground: ${notification.title} : ${notification.body}`);
+      completion({alert: false, sound: false, badge: false});
+    });
+
+    Notifications.events().registerNotificationReceivedBackground((notification, completion) => {
+      console.log("Notification Received - Background", notification.payload);
+
+      // Calling completion on iOS with `alert: true` will present the native iOS inApp notification.
+      completion({alert: true, sound: true, badge: false});
+    });
+
+    Notifications.events().registerNotificationOpened((notification, completion) => {
+      console.log(`Notification opened: ${notification.payload}`);
+      completion();
+    });
   }
 
   async subcribeToPushNotification(token) {
@@ -57,19 +81,19 @@ class PushNotificationService {
       })
   }
 
-  async onNotification(notification) {
-    console.log("NOTIFICATION:", notification)
-    let dialogId = null
-    if (Platform.OS === 'ios') {
-      dialogId = notification.data.dialog_id
-    } else {
-      dialogId = notification.dialog_id
-    }
-    if (notification.userInteraction && dialogId !== PushNotificationService.getSelectedDialog()) {
-      const dialog = await PushNotificationService.getDialogById(dialogId)
-      PushNotificationService.Navigation.push('Chat', { dialog })
-    }
-  }
+  // async onNotification(notification) {
+  //   console.log("NOTIFICATION:", notification)
+  //   let dialogId = null
+  //   if (Platform.OS === 'ios') {
+  //     dialogId = notification.data.dialog_id
+  //   } else {
+  //     dialogId = notification.dialog_id
+  //   }
+  //   if (notification.userInteraction && dialogId !== PushNotificationService.getSelectedDialog()) {
+  //     const dialog = await PushNotificationService.getDialogById(dialogId)
+  //     PushNotificationService.Navigation.push('Chat', { dialog })
+  //   }
+  // }
 
   static async getDialogById(dialogId) {
     const getDialog = store.getState().dialogs.find(elem => elem.id === dialogId)
