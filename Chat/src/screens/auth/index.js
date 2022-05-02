@@ -4,7 +4,6 @@ import { Header } from 'react-navigation-stack'
 import AuthLogo from './AuthLogo'
 import AuthForm from './AuthForm'
 import AuthLinks from './AuthLinks'
-import { STATUS_BAR_COLOR } from '../../helpers/constants'
 
 export default class Auth extends Component {
   state = {

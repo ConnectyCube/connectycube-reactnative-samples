@@ -63,3 +63,5 @@ typings/
 .DS_Store
 
 google-services.json
+
+index.android.bundle

@@ -12,6 +12,11 @@ class PushNotificationService {
   static DEVICE_SUBSCRIPTION_ID = 'DEVICE_SUBSCRIPTION_ID'
   static Navigation = null
 
+  constructor() {
+    console.log("[PushNotificationService][constructor]");
+    this._registerBackgroundTasks();
+  }
+
   init(navigation) {
     PushNotificationService.Navigation = navigation
 
@@ -28,8 +33,12 @@ class PushNotificationService {
       });
     }
 
-    console.log(`[PushNotificationService]`);
-    Notifications.registerRemoteNotifications();
+    Notifications.getInitialNotification().then((notification) => {
+      console.log("Initial notification was:", (notification ? notification.payload : 'N/A'));
+
+      // this.displayNotification({message: "hello"});
+    })      
+    .catch((err) => console.error("getInitialNotifiation() failed", err));
 
     Notifications.events().registerRemoteNotificationsRegistered((event) => {
       // TODO: Send the token to my server so it could send back push notifications...
@@ -44,7 +53,7 @@ class PushNotificationService {
     Notifications.events().registerNotificationReceivedForeground((notification, completion) => {
       console.log(`[PushNotificationService] Notification received in foreground`, notification.payload, notification?.payload?.message);
 
-      this.displayNotification(notification.payload);
+      PushNotificationService.displayNotification(notification.payload);
 
       completion({alert: false, sound: false, badge: false});
     });
@@ -52,7 +61,7 @@ class PushNotificationService {
     Notifications.events().registerNotificationReceivedBackground((notification, completion) => {
       console.log("[PushNotificationService] Notification Received - Background", notification.payload, notification?.payload?.message);
 
-      this.displayNotification(notification.payload);
+      PushNotificationService.displayNotification(notification.payload);
 
       // Calling completion on iOS with `alert: true` will present the native iOS inApp notification.
       completion({alert: true, sound: true, badge: false});
@@ -65,6 +74,31 @@ class PushNotificationService {
 
       completion();
     });
+
+    console.log(`[PushNotificationService]`);
+    Notifications.registerRemoteNotifications();
+
+  }
+
+  _registerBackgroundTasks() {
+    if (Platform.OS === 'ios') {
+      return;
+    }
+
+    const { AppRegistry } = require("react-native");
+
+    // https://reactnative.dev/docs/headless-js-android
+    //
+    AppRegistry.registerHeadlessTask(
+      "JSNotifyWhenKilledTask",
+      () => {
+        return async (notificationBundle) => {
+          console.log('[JSNotifyWhenKilledTask] notificationBundle', notificationBundle);
+
+          PushNotificationService.displayNotification(notificationBundle);
+        }
+      },
+    );
   }
 
   subcribeToPushNotification(token) {
@@ -91,7 +125,7 @@ class PushNotificationService {
       })
   }
 
-  displayNotification(payload) {
+  static displayNotification(payload) {
     const localNotification = Notifications.postLocalNotification({
       body: payload.message,
       title: "New message", // TODO: to use here chat name/sender name

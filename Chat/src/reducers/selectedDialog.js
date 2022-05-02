@@ -3,7 +3,6 @@ import {
   UNSELECT_DIALOG
 } from '../actions/selectedDialog'
 
-
 export default (selectedDialog = null, action) => {
   switch (action.type) {
     case SELECT_DIALOG: {

@@ -12,7 +12,7 @@ class AuthService {
   static DEVICE_SUBSCRIPTION_ID = 'DEVICE_SUBSCRIPTION_ID'
 
   async init() {
-    await ConnectyCube.init(...appConfig.connectyCubeConfig)
+    ConnectyCube.init(...appConfig.connectyCubeConfig)
     return this.autologin()
   }
 

@@ -368,7 +368,7 @@ PODS:
     - React
   - RNCAsyncStorage (1.12.1):
     - React-Core
-  - RNDeviceInfo (8.7.0):
+  - RNDeviceInfo (8.7.1):
     - React-Core
   - RNFastImage (8.5.11):
     - React-Core
@@ -618,7 +618,7 @@ SPEC CHECKSUMS:
   ReactCommon: bf2888a826ceedf54b99ad1b6182d1bc4a8a3984
   ReactNativeAutogrowTextinput: 571f3260e200d91ea22fab160452f26d2fd5d55b
   RNCAsyncStorage: b03032fdbdb725bea0bd9e5ec5a7272865ae7398
-  RNDeviceInfo: 36286df381fcaf1933ff9d2d3c34ba2abeb2d8d8
+  RNDeviceInfo: aad3c663b25752a52bf8fce93f2354001dd185aa
   RNFastImage: 1f2cab428712a4baaf78d6169eaec7f622556dd7
   RNGestureHandler: 4f4986408310a43f1606c391f38f76e0d6e790d5
   RNImageCropPicker: 44e2807bc410741f35d4c45b6586aedfe3da39d2
