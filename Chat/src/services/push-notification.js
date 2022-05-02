@@ -2,7 +2,6 @@ import { Notifications } from 'react-native-notifications';
 import ConnectyCube from 'react-native-connectycube'
 import store from '../store'
 import { Platform } from 'react-native'
-import appConfig from '../../connectycube_config.json'
 import AsyncStorage from '@react-native-community/async-storage'
 import Dialog from '../models/dialogs'
 import User from '../models/user'
@@ -16,48 +15,59 @@ class PushNotificationService {
   init(navigation) {
     PushNotificationService.Navigation = navigation
 
-    Notifications.ios.checkPermissions().then((currentPermissions) => {
-        console.log('Badges enabled: ' + !!currentPermissions.badge);
-        console.log('Sounds enabled: ' + !!currentPermissions.sound);
-        console.log('Alerts enabled: ' + !!currentPermissions.alert);
-        console.log('Car Play enabled: ' + !!currentPermissions.carPlay);
-        console.log('Critical Alerts enabled: ' + !!currentPermissions.criticalAlert);
-        console.log('Provisional enabled: ' + !!currentPermissions.provisional);
-        console.log('Provides App Notification Settings enabled: ' + !!currentPermissions.providesAppNotificationSettings);
-        console.log('Announcement enabled: ' + !!currentPermissions.announcement);
-    });
+    if (Platform.OS === 'ios') {
+      Notifications.ios.checkPermissions().then((currentPermissions) => {
+          console.log('Badges enabled: ' + !!currentPermissions.badge);
+          console.log('Sounds enabled: ' + !!currentPermissions.sound);
+          console.log('Alerts enabled: ' + !!currentPermissions.alert);
+          console.log('Car Play enabled: ' + !!currentPermissions.carPlay);
+          console.log('Critical Alerts enabled: ' + !!currentPermissions.criticalAlert);
+          console.log('Provisional enabled: ' + !!currentPermissions.provisional);
+          console.log('Provides App Notification Settings enabled: ' + !!currentPermissions.providesAppNotificationSettings);
+          console.log('Announcement enabled: ' + !!currentPermissions.announcement);
+      });
+    }
 
+    console.log(`[PushNotificationService]`);
     Notifications.registerRemoteNotifications();
 
     Notifications.events().registerRemoteNotificationsRegistered((event) => {
       // TODO: Send the token to my server so it could send back push notifications...
-      console.log("Device Token Received", event.deviceToken);
+      console.log("[PushNotificationService] Device Token Received", event.deviceToken);
 
       this.subcribeToPushNotification(event.deviceToken)
     });
     Notifications.events().registerRemoteNotificationsRegistrationFailed((event) => {
-      console.error("Failed to get Device Token", event);
+      console.error("[PushNotificationService] Failed to get Device Token", event);
     });
 
     Notifications.events().registerNotificationReceivedForeground((notification, completion) => {
-      console.log(`Notification received in foreground: ${notification.title} : ${notification.body}`);
+      console.log(`[PushNotificationService] Notification received in foreground`, notification.payload, notification?.payload?.message);
+
+      this.displayNotification(notification.payload);
+
       completion({alert: false, sound: false, badge: false});
     });
 
     Notifications.events().registerNotificationReceivedBackground((notification, completion) => {
-      console.log("Notification Received - Background", notification.payload);
+      console.log("[PushNotificationService] Notification Received - Background", notification.payload, notification?.payload?.message);
+
+      this.displayNotification(notification.payload);
 
       // Calling completion on iOS with `alert: true` will present the native iOS inApp notification.
       completion({alert: true, sound: true, badge: false});
     });
 
-    Notifications.events().registerNotificationOpened((notification, completion) => {
-      console.log(`Notification opened: ${notification.payload}`);
+    Notifications.events().registerNotificationOpened(async (notification, completion) => {
+      console.log(`[PushNotificationService] Notification opened`, notification.payload);
+
+      await this.onNotificationOpened(notification.payload)
+
       completion();
     });
   }
 
-  async subcribeToPushNotification(token) {
+  subcribeToPushNotification(token) {
     const DeviceInfo = require('react-native-device-info').default
     const params = {
       notification_channels: Platform.OS === 'ios' ? 'apns' : 'gcm',
@@ -67,7 +77,7 @@ class PushNotificationService {
       },
       push_token: {
         environment: __DEV__ ? 'development' : 'production',
-        client_identification_sequence: token.token
+        client_identification_sequence: token
       }
     }
 
@@ -81,19 +91,26 @@ class PushNotificationService {
       })
   }
 
-  // async onNotification(notification) {
-  //   console.log("NOTIFICATION:", notification)
-  //   let dialogId = null
-  //   if (Platform.OS === 'ios') {
-  //     dialogId = notification.data.dialog_id
-  //   } else {
-  //     dialogId = notification.dialog_id
-  //   }
-  //   if (notification.userInteraction && dialogId !== PushNotificationService.getSelectedDialog()) {
-  //     const dialog = await PushNotificationService.getDialogById(dialogId)
-  //     PushNotificationService.Navigation.push('Chat', { dialog })
-  //   }
-  // }
+  displayNotification(payload) {
+    const localNotification = Notifications.postLocalNotification({
+      body: payload.message,
+      title: "New message", // TODO: to use here chat name/sender name
+      // sound: "chime.aiff",
+      silent: false,
+      category: "SOME_CATEGORY",
+      userInfo: { },
+      extra: {dialog_id: 123},
+      fireDate: new Date(),
+    });
+  }
+
+  async onNotificationOpened(payload) {
+    const dialogId = (Platform.OS === 'ios') ? payload.userInfo.dialog_id : payload.extra.dialog_id;
+    if (dialogId !== store.getState().selectedDialog) {
+      const dialog = await PushNotificationService.getDialogById(dialogId)
+      PushNotificationService.Navigation.push('Chat', { dialog })
+    }
+  }
 
   static async getDialogById(dialogId) {
     const getDialog = store.getState().dialogs.find(elem => elem.id === dialogId)
@@ -118,10 +135,6 @@ class PushNotificationService {
       store.dispatch(addNewDialog(dialog))
       return dialog
     }
-  }
-
-  static getSelectedDialog() {
-    return store.getState().selectedDialog
   }
 
 }
