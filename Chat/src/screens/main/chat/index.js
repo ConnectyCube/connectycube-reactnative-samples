@@ -41,12 +41,12 @@ export class Chat extends PureComponent {
       dialogPhoto = dialog.photo
     }
     return {
-      headerTitle: (
+      headerTitle: () => (
         <Text numberOfLines={3} style={{ fontSize: 22, color: 'black' }}>
           {navigation.state.params.dialog.name}
         </Text>
       ),
-      headerRight: (
+      headerRight: () => (
         <TouchableOpacity onPress={() => this.goToDetailsScreen(navigation)}>
           <Avatar
             photo={dialogPhoto}

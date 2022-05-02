@@ -24,7 +24,7 @@ class Dialogs extends Component {
   static navigationOptions = ({ navigation }) => {
     Dialogs.currentUserInfo = { ...store.getState().currentUser.user }
     return {
-      headerTitle: (
+      headerTitle: () => (
         <Text style={[
           { fontSize: 22, color: 'black' },
           Platform.OS === 'android' ?
@@ -33,7 +33,7 @@ class Dialogs extends Component {
           {Dialogs.currentUserInfo.full_name}
         </Text>
       ),
-      headerRight: (
+      headerRight: () => (
         <TouchableOpacity onPress={() => this.goToSettingsScreen(navigation)}>
           <Avatar
             photo={Dialogs.currentUserInfo.avatar}

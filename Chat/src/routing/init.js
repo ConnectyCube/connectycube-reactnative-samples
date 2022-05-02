@@ -1,6 +1,9 @@
 import React from 'react'
 import { createStackNavigator } from 'react-navigation-stack'
 import { createSwitchNavigator, createAppContainer, StackActions } from 'react-navigation'
+import {
+  Text
+} from 'react-native'
 import Auth from '../screens/auth'
 import Dialogs from '../screens/main/dialogs'
 import AppWrap from '../screens/appWrap'
@@ -29,7 +32,11 @@ export default createAppContainer(createSwitchNavigator(
       Settings: {
         screen: Settings,
         navigationOptions: {
-          headerTitle: 'Settings',
+          headerTitle: () => (
+            <Text numberOfLines={1} style={{ fontSize: 22, color: 'black' }}>
+              Settings
+            </Text>
+          ),
         }
       },
       Chat: {
@@ -38,25 +45,41 @@ export default createAppContainer(createSwitchNavigator(
       Contacts: {
         screen: Contacts,
         navigationOptions: {
-          headerTitle: 'Contacts'
+          headerTitle: () => (
+            <Text numberOfLines={1} style={{ fontSize: 22, color: 'black' }}>
+              Contacts
+            </Text>
+          ),
         }
       },
       CreateDialog: {
         screen: CreateDialog,
         navigationOptions: {
-          headerTitle: 'New Group'
+          headerTitle: () => (
+            <Text numberOfLines={1} style={{ fontSize: 22, color: 'black' }}>
+              New group
+            </Text>
+          ),
         }
       },
       GroupDetails: {
         screen: GroupDetails,
         navigationOptions: {
-          headerTitle: 'Group details'
+          headerTitle: () => (
+            <Text numberOfLines={1} style={{ fontSize: 22, color: 'black' }}>
+              Group details
+            </Text>
+          ),
         }
       },
       ContactDetails: {
         screen: ContactDetails,
         navigationOptions: {
-          headerTitle: 'Contact details'
+          headerTitle: () => (
+            <Text numberOfLines={1} style={{ fontSize: 22, color: 'black' }}>
+              Contact details
+            </Text>
+          ),
         }
       }
     }),
