@@ -1,5 +1,7 @@
 #import "AppDelegate.h"
 
+#import "RNNotifications.h"
+
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
@@ -16,7 +18,7 @@
 
 #import <react/config/ReactNativeConfig.h>
 
-#import "RNNotifications.h"
+
 
 @interface AppDelegate () <RCTCxxBridgeDelegate, RCTTurboModuleManagerDelegate> {
   RCTTurboModuleManager *_turboModuleManager;

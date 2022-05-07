@@ -53,6 +53,10 @@ class PushNotificationService {
     Notifications.events().registerNotificationReceivedForeground((notification, completion) => {
       console.log(`[PushNotificationService] Notification received in foreground`, notification.payload, notification?.payload?.message);
 
+      if (Platform.OS === 'ios') {
+        return;
+      }
+
       PushNotificationService.displayNotification(notification.payload);
 
       completion({alert: false, sound: false, badge: false});
@@ -126,15 +130,16 @@ class PushNotificationService {
   }
 
   static displayNotification(payload) {
+    const extra = {dialog_id: 123, isLocal: true}
+
     const localNotification = Notifications.postLocalNotification({
       body: payload.message,
       title: "New message", // TODO: to use here chat name/sender name
       // sound: "chime.aiff",
       silent: false,
       category: "SOME_CATEGORY",
-      userInfo: { },
-      extra: {dialog_id: 123},
-      fireDate: new Date(),
+      userInfo: extra,
+      extra,
     });
   }
 
