@@ -1,25 +1,18 @@
 import { Notifications } from 'react-native-notifications';
 import ConnectyCube from 'react-native-connectycube'
-import store from '../store'
 import { Platform } from 'react-native'
 import AsyncStorage from '@react-native-community/async-storage'
-import Dialog from '../models/dialogs'
-import User from '../models/user'
-import { addNewDialog } from '../actions/dialogs'
-import { fetchUsers } from '../actions/users'
+import customEventEmitter, { CUSTOM_EVENTS } from '../routing/events';
 
 class PushNotificationService {
   static DEVICE_SUBSCRIPTION_ID = 'DEVICE_SUBSCRIPTION_ID'
-  static Navigation = null
 
   constructor() {
     console.log("[PushNotificationService][constructor]");
     this._registerBackgroundTasks();
   }
 
-  init(navigation) {
-    PushNotificationService.Navigation = navigation
-
+  init() {
     if (Platform.OS === 'ios') {
       Notifications.ios.checkPermissions().then((currentPermissions) => {
           console.log('Badges enabled: ' + !!currentPermissions.badge);
@@ -145,37 +138,8 @@ class PushNotificationService {
 
   async onNotificationOpened(payload) {
     const dialogId = (Platform.OS === 'ios') ? payload.userInfo.dialog_id : payload.extra.dialog_id;
-    if (dialogId !== store.getState().selectedDialog) {
-      const dialog = await PushNotificationService.getDialogById(dialogId)
-      PushNotificationService.Navigation.push('Chat', { dialog })
-    }
+    customEventEmitter.emit(CUSTOM_EVENTS.ON_NOTIFICATION_OPEN, dialogId);
   }
-
-  static async getDialogById(dialogId) {
-    const getDialog = store.getState().dialogs.find(elem => elem.id === dialogId)
-    if (getDialog) {
-      return getDialog
-    } else {
-      const filters = {
-        _id: {
-          in: dialogId
-        }
-      }
-      // get Dialog from server
-      const dialogsFromServer = await ConnectyCube.chat.dialog.list(filters)
-      const dialog = new Dialog(dialogsFromServer.items[0])
-
-      // get User from server
-      const currentUser = dialog.user_id
-      const participantId = dialog.occupants_ids.find(elem => elem.id !== currentUser)
-      const responseUser = await ConnectyCube.users.get(participantId)
-      const user = new User(responseUser.user)
-      store.dispatch(fetchUsers([user]))
-      store.dispatch(addNewDialog(dialog))
-      return dialog
-    }
-  }
-
 }
 
 // create instance

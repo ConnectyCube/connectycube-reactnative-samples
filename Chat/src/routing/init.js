@@ -14,7 +14,7 @@ import CreateDialog from '../screens/main/contacts/createDialog'
 import GroupDetails from '../screens/main/chat/groupDetails'
 import ContactDetails from '../screens/main/chat/contactDetails'
 
-export default createAppContainer(createSwitchNavigator(
+const Navigation = createAppContainer(createSwitchNavigator(
   {
     AppWrap,
     Auth: createStackNavigator({
@@ -88,5 +88,6 @@ export default createAppContainer(createSwitchNavigator(
     initialRouteName: 'AppWrap',
   }
 ))
+export default Navigation;
 
 export const popToTop = StackActions.popToTop()

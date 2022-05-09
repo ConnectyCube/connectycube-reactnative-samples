@@ -20,12 +20,14 @@ const styles = StyleSheet.create({
   name: {
     height: 30,
     lineHeight: 30,
+    color: 'grey',
     fontSize: 18,
     fontWeight: '700'
   },
   message: {
     height: 15,
     lineHeight: 15,
+    color: 'grey',
     fontSize: 15,
     fontWeight: '400'
   }

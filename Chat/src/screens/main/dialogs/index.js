@@ -9,6 +9,7 @@ import CreateBtn from '../../components/createBtn'
 import { BTN_TYPE } from '../../../helpers/constants'
 import Avatar from '../../components/avatar'
 import PushNotificationService from '../../../services/push-notification'
+import customEventEmitter, { CUSTOM_EVENTS } from '../../../routing/events';
 
 class Dialogs extends Component {
   static currentUserInfo = ''
@@ -19,6 +20,11 @@ class Dialogs extends Component {
     this.state = {
       isLoader: props.dialogs.length === 0 && true,
     }
+
+    customEventEmitter.addListener(
+      CUSTOM_EVENTS.ON_NOTIFICATION_OPEN,
+      this.onNotificationOpen,
+    );
   }
 
   static navigationOptions = ({ navigation }) => {
@@ -48,9 +54,16 @@ class Dialogs extends Component {
   componentDidMount() {
     ChatService.fetchDialogsFromServer()
       .then(() => {
-        PushNotificationService.init(this.props.navigation)
+        PushNotificationService.init()
       })
   }
+
+  onNotificationOpen = async (dialogId) => {
+    if (dialogId !== store.getState().selectedDialog) {
+      const dialog = await ChatService.getDialogById(dialogId)
+      this.props.navigation.push('Chat', { dialog })
+    }
+  };
 
   static getDerivedStateFromProps(props, state) {
     if (props.currentUser.user.full_name !== Dialogs.currentUserInfo.full_name) {

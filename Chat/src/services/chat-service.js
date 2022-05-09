@@ -344,8 +344,29 @@ class ChatService {
     store.dispatch(pushMessage(dialogId, messages.map(message => new Message(message))))
   }
 
-  getDialogById(dialogId) {
-    return store.getState().dialogs.find(elem => elem.id === dialogId)
+  async getDialogById(dialogId) {
+    const getDialog = store.getState().dialogs.find(elem => elem.id === dialogId)
+    if (getDialog) {
+      return getDialog
+    } else {
+      const filters = {
+        _id: {
+          in: dialogId
+        }
+      }
+      // get Dialog from server
+      const dialogsFromServer = await ConnectyCube.chat.dialog.list(filters)
+      const dialog = new Dialog(dialogsFromServer.items[0])
+
+      // get User from server
+      const currentUser = dialog.user_id
+      const participantId = dialog.occupants_ids.find(elem => elem.id !== currentUser)
+      const responseUser = await ConnectyCube.users.get(participantId)
+      const user = new UserModel(responseUser.user)
+      store.dispatch(fetchUsers([user]))
+      store.dispatch(addNewDialog(dialog))
+      return dialog
+    }
   }
 
   getMessagesByDialogId(dialogId) {
