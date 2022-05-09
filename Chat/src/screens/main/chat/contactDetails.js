@@ -78,7 +78,8 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 18,
     textAlign: 'center',
-    padding: 5
+    padding: 5,
+    color: 'grey',
   },
   buttonContainer: {
     height: 50,

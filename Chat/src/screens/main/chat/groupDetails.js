@@ -309,7 +309,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   nameTitle: {
-    fontSize: 17
+    fontSize: 17,
+    color: 'grey'
   },
   dialogName: {
     fontSize: 17,

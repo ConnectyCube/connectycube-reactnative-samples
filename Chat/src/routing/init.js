@@ -47,7 +47,7 @@ const Navigation = createAppContainer(createSwitchNavigator(
         navigationOptions: {
           headerTitle: () => (
             <Text numberOfLines={1} style={{ fontSize: 22, color: 'black' }}>
-              Contacts
+              Users
             </Text>
           ),
         }
@@ -77,7 +77,7 @@ const Navigation = createAppContainer(createSwitchNavigator(
         navigationOptions: {
           headerTitle: () => (
             <Text numberOfLines={1} style={{ fontSize: 22, color: 'black' }}>
-              Contact details
+              User profile
             </Text>
           ),
         }

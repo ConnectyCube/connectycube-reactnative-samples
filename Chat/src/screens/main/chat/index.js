@@ -117,6 +117,8 @@ export class Chat extends PureComponent {
       cropping: true
     }).then(image => {
       return image
+    }).catch(e => {
+      
     })
   }
 

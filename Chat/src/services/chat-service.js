@@ -248,7 +248,7 @@ class ChatService {
     }
   }
 
-  async createPublicDialog(occupants_ids, groupName, img) {
+  async createGroupDialog(occupants_ids, groupName, img) {
     const currentUser = this.currentUser
     occupants_ids.unshift(currentUser.id)
 
