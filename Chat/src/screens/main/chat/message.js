@@ -4,7 +4,7 @@ import ImageViewer from 'react-native-image-zoom-viewer'
 import store from '../../../store'
 import Avatar from '../../components/avatar'
 import { getTime } from '../../../helpers/getTime'
-import MessageStatus from '../../components/MessageStatus'
+import MessageStatus from '../../components/messageStatus'
 import ChatImage from '../../components/chatImage'
 import Icon from 'react-native-vector-icons/AntDesign'
 

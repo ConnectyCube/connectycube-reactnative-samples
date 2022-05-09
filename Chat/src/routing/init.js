@@ -6,7 +6,7 @@ import {
 } from 'react-native'
 import Auth from '../screens/auth'
 import Dialogs from '../screens/main/dialogs'
-import AppWrap from '../screens/appWrap'
+import Splash from '../screens/splash'
 import Settings from '../screens/main/settings/index'
 import Chat from '../screens/main/chat/index'
 import Contacts from '../screens/main/contacts/index'
@@ -16,7 +16,7 @@ import ContactDetails from '../screens/main/chat/contactDetails'
 
 const Navigation = createAppContainer(createSwitchNavigator(
   {
-    AppWrap,
+    Splash,
     Auth: createStackNavigator({
       Auth: {
         screen: Auth,
@@ -85,7 +85,7 @@ const Navigation = createAppContainer(createSwitchNavigator(
     }),
   },
   {
-    initialRouteName: 'AppWrap',
+    initialRouteName: 'Splash',
   }
 ))
 export default Navigation;
