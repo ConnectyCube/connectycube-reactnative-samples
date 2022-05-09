@@ -4,7 +4,7 @@ import ImageViewer from 'react-native-image-zoom-viewer'
 import store from '../../../store'
 import Avatar from '../../components/avatar'
 import { getTime } from '../../../helpers/getTime'
-import MessageSendState from '../../components/messageSendState'
+import MessageStatus from '../../components/MessageStatus'
 import ChatImage from '../../components/chatImage'
 import Icon from 'react-native-vector-icons/AntDesign'
 
@@ -116,7 +116,7 @@ export default class Message extends Component {
                   <Text style={styles.dateSent}>
                     {getTime(message.date_sent)}
                   </Text>
-                  <MessageSendState send_state={message.send_state} />
+                  <MessageStatus send_state={message.send_state} />
                 </View>
               </View>
             </View>
