@@ -200,7 +200,7 @@ export default class GroupDetails extends Component {
         {isLoader &&
           <Indicator color={'blue'} size={40} />
         }
-        <ImgPicker name={dialogName} photo={dialogPhoto} pickPhoto={this.pickPhoto} isDidabled={!this.isGroupCreator()} />
+        <ImgPicker name={dialogName} photo={dialogPhoto} onPickPhoto={this.pickPhoto} disabled={!this.isGroupCreator()} />
         {this.isGroupCreator() ?
           (<View>
             <TextInput
