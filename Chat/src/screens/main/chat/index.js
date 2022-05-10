@@ -128,7 +128,12 @@ export class Chat extends PureComponent {
     const { user } = this.props.currentUser
     const isOtherSender = message.sender_id !== user.id ? true : false
     return (
-      <Message otherSender={isOtherSender} message={message} key={message.id} />
+      <Message 
+        message={message} 
+        messageSendState={message.send_state} 
+        messageAttachments={message.attachment}
+        otherSender={isOtherSender} 
+        key={message.id} />
     )
   }
 

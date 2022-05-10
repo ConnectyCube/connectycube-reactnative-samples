@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import { StyleSheet, View, Text, TouchableOpacity, } from 'react-native'
 import Avatar from '../../components/avatar'
 import ChatService from '../../../services/chat-service'
@@ -6,61 +6,49 @@ import UsersService from '../../../services/users-service'
 import Indicator from '../../components/indicator'
 import { popToTop } from '../../../routing/init'
 
-export default class ContactDetails extends Component {
-  state = {
-    isLoader: false
-  }
+export default function ContactDetails ({navigation}) {
+  const [isLoader, setIsLoader] = useState(false);
 
-  gotToChat = () => {
-    const user = this.props.navigation.getParam('dialog', false)
-    const { goBack } = this.props.navigation
-    if (user.name) {
-      goBack()
+  const dialog = navigation.getParam('dialog', false)
+
+  const gotToChat = () => {
+    if (dialog.name) {
+      navigation.goBack()
     } else {
-      this.setState({ isLoader: true })
-      ChatService.createPrivateDialog(user.id)
+      setIsLoader(true)
+
+      ChatService.createPrivateDialog(dialog.id)
         .then((newDialog) => {
-          this.setState({ isLoader: false })
-          this.props.navigation.dispatch(popToTop)
-          this.props.navigation.push('Chat', { dialog: newDialog })
+          setIsLoader(false)
+
+          navigation.dispatch(popToTop)
+          navigation.push('Chat', { dialog: newDialog })
         })
     }
   }
 
-  render() {
-    const dialog = this.props.navigation.getParam('dialog', false)
-    let dialogPhoto
+  const dialogPhoto = dialog?.type ? UsersService.getUsersAvatar(dialog.occupants_ids) : dialog.avatar
 
-    if (dialog?.type) {
-      // if group chat
-      dialogPhoto = UsersService.getUsersAvatar(dialog.occupants_ids)
-    } else {
-      // if private chat
-      dialogPhoto = dialog.avatar
-    }
-
-    const { isLoader } = this.state
-    return (
-      <View style={styles.container}>
-        {isLoader && (
-          <Indicator color={'red'} size={40} />
-        )}
-        <Avatar
-          photo={dialogPhoto}
-          name={dialog.name || dialog.full_name}
-          iconSize="extra-large"
-        />
-        <View style={styles.nameContainer}>
-          <Text style={styles.name}>{dialog.name || dialog.full_name}</Text>
-        </View>
-        <TouchableOpacity onPress={this.gotToChat}>
-          <View style={styles.buttonContainer}>
-            <Text style={styles.buttonLabel}>Start a dialog</Text>
-          </View>
-        </TouchableOpacity>
+  return (
+    <View style={styles.container}>
+      {isLoader && (
+        <Indicator color={'red'} size={40} />
+      )}
+      <Avatar
+        photo={dialogPhoto}
+        name={dialog.name || dialog.full_name}
+        iconSize="extra-large"
+      />
+      <View style={styles.nameContainer}>
+        <Text style={styles.name}>{dialog.name || dialog.full_name}</Text>
       </View>
-    )
-  }
+      <TouchableOpacity onPress={gotToChat}>
+        <View style={styles.buttonContainer}>
+          <Text style={styles.buttonLabel}>Start a chat</Text>
+        </View>
+      </TouchableOpacity>
+    </View>
+  )
 }
 
 const styles = StyleSheet.create({

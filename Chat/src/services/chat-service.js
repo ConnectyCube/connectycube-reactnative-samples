@@ -274,9 +274,9 @@ class ChatService {
     return ConnectyCube.storage.createAndUpload({ file })
   }
 
-  async updateDialogInfo({ img, name, dialogId }) {
+  async updateDialog({ photo, name, dialogId }) {
     const params = {}
-    const image = img ? await this.uploadPhoto(img) : null
+    const image = photo ? await this.uploadPhoto(photo) : null
     if (image) {
       params.photo = image.uid
     }

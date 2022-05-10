@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   StyleSheet,
   View,
@@ -22,68 +22,60 @@ import Indicator from '../../components/indicator'
 import { showAlert } from '../../../helpers/alert'
 import { popToTop } from '../../../routing/init'
 
-export default class GroupDetails extends Component {
+export default function GroupDetails ({navigation}) {
+  const dialog = navigation.getParam('dialog', false)
+  const isNeedFetchUsers = navigation.getParam('isNeedFetchUsers', false)
 
-  constructor(props) {
-    super(props)
-    const dialog = this.props.navigation.getParam('dialog', false)
-    const isNeedFetchUsers = this.props.navigation.getParam('isNeedFetchUsers', false)
-    this.state = {
-      isPickImage: null,
-      dialogName: dialog.name,
-      dialogPhoto: dialog.photo,
-      isLoader: false,
-      occupantsInfo: isNeedFetchUsers ? [] : UsersService.getUsersInfoFromRedux(dialog.occupants_ids)
-    }
-  }
+  const [dialogName, setDialogName] = useState(dialog.name);
+  const [isLoader, setIsLoader] = useState(false);
+  const [pickedImage, setPickedImage] = useState(false);
+  const [occupantsInfo, setOccupantsInfo] = useState(isNeedFetchUsers ? [] : UsersService.getUsersInfoFromRedux(dialog.occupants_ids));
 
-  componentDidMount() {
-    const dialog = this.props.navigation.getParam('dialog', false)
-    const isNeedFetchUsers = this.props.navigation.getParam('isNeedFetchUsers', false)
+  useEffect(() => {
     if (isNeedFetchUsers) {
-      this.fetchMoreUsers(dialog.occupants_ids)
+      fetchMoreUsers(dialog.occupants_ids)
     }
-  }
+  }, []);
 
-  fetchMoreUsers = async (occupants_ids) => {
+  const fetchMoreUsers = async (occupants_ids) => {
     await UsersService.getOccupants(occupants_ids)
     const users = UsersService.getUsersInfoFromRedux(occupants_ids)
-    this.setState({ occupantsInfo: users })
+    setOccupantsInfo(users)
   }
 
-  pickPhoto = (image) => {
-    this.setState({ isPickImage: image })
+  const onPickPhoto = (image) => {
+    setPickedImage(image)
   }
 
-  updateDialog = () => {
-    const dialog = this.props.navigation.getParam('dialog', false)
-    const { dialogName, isPickImage } = this.state
+  const updateDialog = () => {
     const updateInfo = {}
     if (dialogName !== dialog.name) {
       updateInfo.name = dialogName
     }
-    if (isPickImage) {
-      updateInfo.img = isPickImage
+    if (pickedImage) {
+      updateInfo.photo = pickedImage
     }
     if (Object.keys(updateInfo).length === 0) {
       return false
     }
     updateInfo.dialogId = dialog.id
-    this.setState({ isLoader: true })
-    ChatService.updateDialogInfo(updateInfo)
+
+    setIsLoader(true)
+
+    ChatService.updateDialog(updateInfo)
       .then(() => {
-        this.setState({ isLoader: false })
+        setIsLoader(false)
+
         showAlert('Dialog info is updated successfully')
       })
       .catch((error) => {
-        this.setState({ isLoader: false })
+        setIsLoader(false)
+
         showAlert(error)
       })
   }
 
-  leaveGroup = () => {
-    const { navigation } = this.props
-    const dialog = navigation.getParam('dialog', false)
+  const leaveGroup = () => {
     Alert.alert(
       'Are you sure you want to leave the group chat?',
       '',
@@ -91,15 +83,18 @@ export default class GroupDetails extends Component {
         {
           text: 'Yes',
           onPress: () => {
-            this.setState({ isLoader: true })
+            setIsLoader(true)
+
             ChatService.deleteDialog(dialog.id)
               .then(() => {
-                this.setState({ isLoader: false })
-                this.props.navigation.dispatch(popToTop)
+                setIsLoader(false)
+
+                navigation.dispatch(popToTop)
               })
               .catch((error) => {
-                this.setState({ isLoader: false })
-                this.props.navigation.dispatch(popToTop)
+                setIsLoader(false)
+
+                navigation.dispatch(popToTop)
               })
           }
         },
@@ -111,48 +106,45 @@ export default class GroupDetails extends Component {
     )
   }
 
-  isGroupCreator = () => {
-    const dialog = this.props.navigation.getParam('dialog', false)
+  const isGroupCreator = () => {
     return ChatService.isGroupCreator(dialog.user_id)
   }
 
-  goToContactDeteailsScreen = (dialog) => {
-    const { navigation } = this.props
+  const goToContactDeteailsScreen = (dialog) => {
     navigation.push('ContactDetails', { dialog })
   }
 
-  goToContactsScreen = () => {
-    if (this.state.occupantsInfo.length === 8) {
+  const goToContactsScreen = () => {
+    if (occupantsInfo.length >= 8) {
       showAlert('Maximum 9 participants')
       return
     }
-    const { navigation } = this.props
-    const dialog = navigation.getParam('dialog', false)
-    navigation.push('Contacts', { isGroupDetails: true, dialog, addParticipant: this.addParticipant })
+
+    navigation.push('Contacts', { isGroupDetails: true, dialog, addParticipant: addParticipantAction })
   }
 
-  addParticipant = (participants) => {
-    const dialog = this.props.navigation.getParam('dialog', false)
-    this.setState({ isLoader: true })
+  const addParticipantAction = (participants) => {
+    setIsLoader(true)
+
     ChatService.addOccupantsToDialog(dialog.id, participants)
       .then(dialog => {
-        const updateArrUsers = UsersService.getUsersInfoFromRedux(dialog.occupants_ids)
         showAlert('Participants added')
-        this.setState({ isLoader: false, occupantsInfo: updateArrUsers })
+
+        setIsLoader(false)
+
+        const updateArrUsers = UsersService.getUsersInfoFromRedux(dialog.occupants_ids)
+        setOccupantsInfo(updateArrUsers)
       })
       .catch(error => {
-        console.warn('addParticipant', error)
-        this.setState({ isLoader: false })
+        setIsLoader(false)
       })
   }
 
-  updateName = dialogName => this.setState({ dialogName })
+  const keyExtractor = (item, index) => index.toString()
 
-  keyExtractor = (item, index) => index.toString()
-
-  _renderUser = ({ item }) => {
+  const _renderUser = ({ item }) => {
     return (
-      <TouchableOpacity style={styles.renderContainer} onPress={() => this.goToContactDeteailsScreen(item)}>
+      <TouchableOpacity style={styles.renderContainer} onPress={() => goToContactDeteailsScreen(item)}>
         <View style={styles.renderAvatar}>
           <Avatar
             photo={item.avatar}
@@ -168,10 +160,10 @@ export default class GroupDetails extends Component {
     )
   }
 
-  _renderFlatListHeader = () => {
-    return this.isGroupCreator() ?
+  const _renderFlatListHeader = () => {
+    return isGroupCreator() ?
       (
-        <TouchableOpacity style={styles.renderHeaderContainer} onPress={this.goToContactsScreen}>
+        <TouchableOpacity style={styles.renderHeaderContainer} onPress={goToContactsScreen}>
           <View style={styles.renderAvatar}>
             <Icon name="person-add" size={35} color='#48A6E3' style={{ marginRight: 15 }} />
           </View>
@@ -182,8 +174,8 @@ export default class GroupDetails extends Component {
       ) : false
   }
 
-  _renderFlatListFooter = () => {
-    return <TouchableOpacity style={styles.renderHeaderContainer} onPress={this.leaveGroup}>
+  const _renderFlatListFooter = () => {
+    return <TouchableOpacity style={styles.renderHeaderContainer} onPress={leaveGroup}>
       <View style={styles.renderAvatar}>
         <Icon name="exit-to-app" size={35} color='#48A6E3' style={{ marginRight: 15 }} />
       </View>
@@ -193,47 +185,43 @@ export default class GroupDetails extends Component {
     </TouchableOpacity>
   }
 
-  render() {
-    const { dialogName, dialogPhoto, isLoader, occupantsInfo } = this.state
-    return (
-      <KeyboardAvoidingView style={styles.container}>
-        {isLoader &&
-          <Indicator color={'blue'} size={40} />
-        }
-        <ImgPicker name={dialogName} photo={dialogPhoto} onPickPhoto={this.pickPhoto} disabled={!this.isGroupCreator()} />
-        {this.isGroupCreator() ?
-          (<View>
-            <TextInput
-              style={styles.input}
-              ref="input"
-              autoCapitalize="none"
-              placeholder="Change group name ..."
-              placeholderTextColor="grey"
-              onChangeText={this.updateName}
-              value={dialogName}
-              maxLength={100}
-            />
-            <View style={styles.subtitleWrap}>
-              <Text style={styles.subtitleInpu}>Change group name</Text>
-            </View>
-          </View>) :
-          <Text style={styles.dialogName}>{dialogName}</Text>
-        }
-        <SafeAreaView style={styles.listUsers}>
-          <FlatList
-            data={occupantsInfo}
-            ListHeaderComponent={this._renderFlatListHeader}
-            ListFooterComponent={this._renderFlatListFooter}
-            renderItem={this._renderUser}
-            keyExtractor={this.keyExtractor}
+  return (
+    <KeyboardAvoidingView style={styles.container}>
+      {isLoader &&
+        <Indicator color={'blue'} size={40} />
+      }
+      <ImgPicker name={dialogName} photo={dialog.photo} onPickPhoto={onPickPhoto} disabled={!isGroupCreator()} />
+      {isGroupCreator() ?
+        (<View>
+          <TextInput
+            style={styles.input}
+            autoCapitalize="none"
+            placeholder="Change group name ..."
+            placeholderTextColor="grey"
+            onChangeText={setDialogName}
+            value={dialogName}
+            maxLength={100}
           />
-        </SafeAreaView>
-        {this.isGroupCreator() &&
-          <CreateBtn goToScreen={this.updateDialog} type={BTN_TYPE.CREATE_GROUP} />
-        }
-      </KeyboardAvoidingView>
-    )
-  }
+          <View style={styles.subtitleWrap}>
+            <Text style={styles.subtitleInpu}>Change group name</Text>
+          </View>
+        </View>) :
+        <Text style={styles.dialogName}>{dialogName}</Text>
+      }
+      <SafeAreaView style={styles.listUsers}>
+        <FlatList
+          data={occupantsInfo}
+          ListHeaderComponent={_renderFlatListHeader}
+          ListFooterComponent={_renderFlatListFooter}
+          renderItem={_renderUser}
+          keyExtractor={keyExtractor}
+        />
+      </SafeAreaView>
+      {isGroupCreator() &&
+        <CreateBtn goToScreen={updateDialog} type={BTN_TYPE.CREATE_GROUP} />
+      }
+    </KeyboardAvoidingView>
+  )
 }
 
 const styles = StyleSheet.create({
