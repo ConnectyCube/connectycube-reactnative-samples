@@ -2,7 +2,7 @@ import { Notifications } from 'react-native-notifications';
 import ConnectyCube from 'react-native-connectycube'
 import { Platform } from 'react-native'
 import AsyncStorage from '@react-native-community/async-storage'
-import customEventEmitter, { CUSTOM_EVENTS } from '../routing/events';
+import customEventEmitter, { CUSTOM_EVENTS } from '../events';
 
 class PushNotificationService {
   static DEVICE_SUBSCRIPTION_ID = 'DEVICE_SUBSCRIPTION_ID'

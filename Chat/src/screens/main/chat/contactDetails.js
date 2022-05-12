@@ -4,13 +4,13 @@ import Avatar from '../../components/avatar'
 import ChatService from '../../../services/chat-service'
 import UsersService from '../../../services/users-service'
 import Indicator from '../../components/indicator'
-import { popToTop } from '../../../routing/init'
+import {  StackActions } from '@react-navigation/compat'
 import { DIALOG_TYPE } from '../../../helpers/constants'
 
-export default function ContactDetails ({navigation}) {
-  const [isLoader, setIsLoader] = useState(false);
+export default function ContactDetails ({route, navigation}) {
+  const { dialog } = route.params;
 
-  const dialog = navigation.getParam('dialog', false)
+  const [isLoader, setIsLoader] = useState(false);
 
   const gotToChat = () => {
     if (dialog.name) {
@@ -22,7 +22,7 @@ export default function ContactDetails ({navigation}) {
         .then((newDialog) => {
           setIsLoader(false)
 
-          navigation.dispatch(popToTop)
+          navigation.dispatch(StackActions.popToTop())
           navigation.push('Chat', { dialog: newDialog })
         })
     }

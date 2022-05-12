@@ -9,14 +9,14 @@ import CreateBtn from '../../components/createBtn'
 import { BTN_TYPE } from '../../../helpers/constants'
 import Indicator from '../../components/indicator'
 import { showAlert } from '../../../helpers/alert'
-import { popToTop } from '../../../routing/init'
+import {  StackActions } from '@react-navigation/compat'
 
-export default function CreateDialog ({navigation}) {
+export default function CreateDialog ({route, navigation}) {
+  const users = route.params.users
+
   const [keyword, setKeyword] = useState('');
   const [pickedImage, setPickedImage] = useState(null);
   const [isLoader, setIsLoader] = useState(false);
-
-  const users = navigation.getParam('users')
 
   const renderParticipant = (item) => {
     return (
@@ -47,7 +47,7 @@ export default function CreateDialog ({navigation}) {
       .then((newDialog) => {
         setIsLoader(false)
 
-        navigation.dispatch(popToTop)
+        navigation.dispatch(StackActions.popToTop())
         navigation.push('Chat', { dialog: newDialog, isNeedFetchUsers: true })
       })
   }

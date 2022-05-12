@@ -9,7 +9,7 @@ import CreateBtn from '../../components/createBtn'
 import { BTN_TYPE } from '../../../helpers/constants'
 import Avatar from '../../components/avatar'
 import PushNotificationService from '../../../services/push-notification'
-import customEventEmitter, { CUSTOM_EVENTS } from '../../../routing/events';
+import customEventEmitter, { CUSTOM_EVENTS } from '../../../events';
 
 export default function Dialogs ({ navigation }) {
   const dialogs = useSelector((state) => state.dialogs);
@@ -83,7 +83,7 @@ export default function Dialogs ({ navigation }) {
           <Indicator color={'red'} size={40} />
         ) : dialogs.length === 0 ?
           (<View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <Text style={{ fontSize: 19 }}>No chats yet</Text>
+            <Text style={{ fontSize: 19, color: 'grey' }}>No chats yet</Text>
           </View>
           ) :
           (

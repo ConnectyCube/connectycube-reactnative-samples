@@ -5,9 +5,8 @@ import Indicator from '../../components/indicator'
 import { showAlert } from '../../../helpers/alert'
 import ImgPicker from '../../components/imgPicker'
 
-export default function Settings ({navigation}) {
-
-  const user = navigation.getParam('user')
+export default function Settings ({route}) {
+  const { user } = route.params;
 
   const [isLoader, setIsLoader] = useState(false);
   const [login, setLogin] = useState(user.login);
@@ -25,7 +24,6 @@ export default function Settings ({navigation}) {
   }
 
   const onSaveProfile = () => {
-    const user = navigation.getParam('user')
 
     inputRef.current.blur()
 

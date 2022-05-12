@@ -10,11 +10,11 @@ import { showAlert } from '../../../helpers/alert'
 import CreateBtn from '../../components/createBtn'
 import { BTN_TYPE } from '../../../helpers/constants'
 import ChatService from '../../../services/chat-service'
-import { popToTop } from '../../../routing/init'
+import {  StackActions } from '@react-navigation/compat'
 
-export default function Contacts ({ navigation }) {
-  const isGroupDetails = navigation.getParam('isGroupDetails', false)
-  const dialog = navigation.getParam('dialog', false)
+export default function Contacts ({ route, navigation }) {
+  const dialog = route.params?.dialog
+  const isGroupDetails = !!dialog
 
   const [keyword, setKeyword] = useState('');
   const [isLoader, setIsLoader] = useState(false);
@@ -78,7 +78,7 @@ export default function Contacts ({ navigation }) {
     if (!isGroupDialog) {
       return ChatService.createPrivateDialog(user.id)
         .then((newDialog) => {
-          navigation.dispatch(popToTop)
+          navigation.dispatch(StackActions.popToTop())
           navigation.push('Chat', { dialog: newDialog })
         })
     }
@@ -119,7 +119,7 @@ export default function Contacts ({ navigation }) {
 
   const goToCreateDialogScreen = () => {
     if (isGroupDetails) {
-      const addParticipantAction = navigation.getParam('addParticipant', false)
+      const addParticipantAction = route.params?.addParticipant || false
       navigation.goBack()
       addParticipantAction(selectedUsers)
       return
@@ -138,7 +138,7 @@ export default function Contacts ({ navigation }) {
             {!isGroupDialog ? <IconGroup name="group" size={25} color='#48A6E3' /> :
               <IconGroup name="user" size={25} color='#48A6E3' />
             }
-            <Text style={styles.dialogTypeText}>{!isGroupDialog ? `Switch to private chat creation` : `Switch to group chat creation`}</Text>
+            <Text style={styles.dialogTypeText}>{isGroupDialog ? `Switch to private chat creation` : `Switch to group chat creation`}</Text>
           </TouchableOpacity>
         }
       </View>

@@ -21,8 +21,8 @@ import Avatar from '../../components/avatar'
 import ImagePicker from 'react-native-image-crop-picker'
 import { DIALOG_TYPE } from '../../../helpers/constants'
 
-export default function Chat ({ navigation }) {
-  const dialog = navigation.state.params.dialog
+export default function Chat ({ route, navigation }) {
+  const { dialog } = route.params;
 
   const history = useSelector((state) => state.messages[dialog.id]);
   const currentUser = useSelector((state) => state.currentUser);
@@ -83,7 +83,7 @@ export default function Chat ({ navigation }) {
   }
 
   const goToDetailsScreen = () => {
-    const isNeedFetchUsers = navigation.getParam('isNeedFetchUsers', false)
+    const isNeedFetchUsers = route.params?.isNeedFetchUsers || false;
     if (dialog.type === DIALOG_TYPE.PRIVATE) {
       navigation.push('ContactDetails', { dialog })
     } else {

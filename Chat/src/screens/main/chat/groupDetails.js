@@ -20,11 +20,10 @@ import Avatar from '../../components/avatar'
 import { SIZE_SCREEN } from '../../../helpers/constants'
 import Indicator from '../../components/indicator'
 import { showAlert } from '../../../helpers/alert'
-import { popToTop } from '../../../routing/init'
+import {  StackActions } from '@react-navigation/compat'
 
-export default function GroupDetails ({navigation}) {
-  const dialog = navigation.getParam('dialog', false)
-  const isNeedFetchUsers = navigation.getParam('isNeedFetchUsers', false)
+export default function GroupDetails ({route, navigation}) {
+  const { dialog, isNeedFetchUsers } = route.params;
 
   const [dialogName, setDialogName] = useState(dialog.name);
   const [isLoader, setIsLoader] = useState(false);
@@ -89,12 +88,12 @@ export default function GroupDetails ({navigation}) {
               .then(() => {
                 setIsLoader(false)
 
-                navigation.dispatch(popToTop)
+                navigation.dispatch(StackActions.popToTop())
               })
               .catch((error) => {
                 setIsLoader(false)
 
-                navigation.dispatch(popToTop)
+                navigation.dispatch(StackActions.popToTop())
               })
           }
         },
@@ -120,7 +119,7 @@ export default function GroupDetails ({navigation}) {
       return
     }
 
-    navigation.push('Contacts', { isGroupDetails: true, dialog, addParticipant: addParticipantAction })
+    navigation.push('Contacts', { dialog, addParticipant: addParticipantAction })
   }
 
   const addParticipantAction = (participants) => {
