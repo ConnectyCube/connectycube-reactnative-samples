@@ -5,7 +5,7 @@ import AuthService from '../../services/auth-service'
 import Indicator from '../components/indicator'
 import ChatService from '../../services/chat-service'
 
-export default function AuthForm ({isLogin, navigation}) {
+export default function AuthForm ({isLogin}) {
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [isLoader, setIsLoader] = useState(false);
@@ -26,9 +26,7 @@ export default function AuthForm ({isLogin, navigation}) {
 		if (isLogin) {
 			AuthService.signIn(dataUser)
 				.then(() => {
-					ChatService.setUpListeners()
-					setIsLoader(false)
-					navigation.navigate('Dialogs')
+		
 				})
 				.catch(error => {
 					setIsLoader(false)
@@ -37,17 +35,14 @@ export default function AuthForm ({isLogin, navigation}) {
 		} else {
 			AuthService.signUp(dataUser)
 				.then(() => {
-					this.setState({ isLoader: false })
-					ChatService.setUpListeners()
+				
 					showAlert('Account successfully registered')
-					navigation.navigate('Dialogs')
 				})
 				.catch(error => {
-					this.setState({ isLoader: false })
+					setIsLoader(false)
 					showAlert(`Error.\n\n${JSON.stringify(error)}`)
 				}
-				)
-		}
+			)}
 	}
 
   return (

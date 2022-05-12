@@ -25,6 +25,11 @@ class ChatService {
     AppState.addEventListener('change', this.handleAppStateChange)
   }
 
+  async connect(userId, password) {
+    this.setUpListeners()
+    await ConnectyCube.chat.connect({ userId, password })
+  }
+
   async fetchDialogsFromServer() {
     const dialogsFromServer = await ConnectyCube.chat.dialog.list()
     const currentUserId = this.currentUser
@@ -115,7 +120,7 @@ class ChatService {
     return true
   }
 
-  async getMessages(dialog) {
+  async getMessagesAndStore(dialog) {
     this.setSelectedDialog(dialog.id)
     const user = this.currentUser
     const isAlredyUpdate = this.getMessagesByDialogId(dialog.id)

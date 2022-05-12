@@ -5,11 +5,7 @@ import ChatService from '../services/chat-service'
 
 export default function Splash ({ navigation }) {
   const initSDK = async () => {
-    const rootStackScreen = await AuthService.init()
-    if (rootStackScreen === 'Dialogs') {
-      ChatService.setUpListeners()
-    }
-    navigation.navigate(rootStackScreen)
+    await AuthService.init()
   }
 
   useEffect(() => {

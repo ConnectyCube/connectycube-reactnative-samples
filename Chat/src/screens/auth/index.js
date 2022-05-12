@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import { KeyboardAvoidingView, StatusBar, Platform } from 'react-native'
-import { useHeaderHeight } from 'react-navigation-stack'
+import { useHeaderHeight } from '@react-navigation/elements'
 import AuthLogo from './AuthLogo'
 import AuthForm from './AuthForm'
 import AuthLinks from './AuthLinks'
 
-export default function Auth({ navigation }) {
+export default function Auth() {
 
   const [isLogin, setIsLogin] = useState(false);
 
@@ -21,7 +21,6 @@ export default function Auth({ navigation }) {
       <StatusBar barStyle={'dark-content'} />
       <AuthLogo />
       <AuthForm
-        navigation={navigation}
         isLogin={isLogin}
       />
       <AuthLinks

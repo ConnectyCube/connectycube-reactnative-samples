@@ -3,7 +3,7 @@ import { StyleSheet, View, TouchableOpacity, Text } from 'react-native'
 import Avatar from '../../components/avatar'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 
-export default function Participant ({isSelected, onSelectUser, user, dialogType}) {
+export default function Participant ({isSelected, onSelectUser, user, isGroupDialog}) {
   const toggleUserSelect = () => {
     onSelectUser(user)
   }
@@ -20,7 +20,7 @@ export default function Participant ({isSelected, onSelectUser, user, dialogType
           <Text style={styles.nameTitle}>{user.full_name}</Text>
         </View>
         <>
-          {dialogType ? 
+          {isGroupDialog ? 
             isSelected ? (
                 <Icon name="radio-button-checked" size={24} color="green" />
               ) : (

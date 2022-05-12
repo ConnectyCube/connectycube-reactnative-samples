@@ -4,16 +4,20 @@ import AsyncStorage from '@react-native-community/async-storage'
 import User from '../models/user'
 import store from '../store'
 import { LogOut } from '../reducers/index'
-import { setCurrentUser, updateCurrentUser } from '../actions/currentUser'
+import { setCurrentUser, updateCurrentUser} from '../actions/currentUser'
+import { setAppIsLoading} from '../actions/app'
 import { preparationUploadImg, getImageLinkFromUID } from '../helpers/file'
+import ChatService from './chat-service'
 
 class AuthService {
   static CURRENT_USER_SESSION_KEY = 'CURRENT_USER_SESSION_KEY'
   static DEVICE_SUBSCRIPTION_ID = 'DEVICE_SUBSCRIPTION_ID'
 
   async init() {
+    store.dispatch(setAppIsLoading(true))
+
     ConnectyCube.init(...appConfig.connectyCubeConfig)
-    return this.autologin()
+    this.tryAutoLogin()
   }
 
   async updateCurrentUser({ image, full_name, login }) {
@@ -37,13 +41,14 @@ class AuthService {
     store.dispatch(updateCurrentUser(responseUpdateUser.user))
   }
 
-  async autologin() {
+  async tryAutoLogin() {
     const checkUserSessionFromStore = await this.getUserSession()
     if (checkUserSessionFromStore) {
       const data = JSON.parse(checkUserSessionFromStore)
       await this.signIn({ login: data.login, password: data.password })
-      return 'Dialogs'
-    } else { return 'Auth' }
+    }
+
+    store.dispatch(setAppIsLoading(false))
   }
 
   async signIn(params) {
@@ -53,7 +58,8 @@ class AuthService {
     store.dispatch(setCurrentUser(session))
     const customSession = Object.assign({}, currentUser, { password: params.password })
     this.setUserSession(customSession)
-    this.connect(customSession.id, customSession.password)
+
+    ChatService.connect(customSession.id, customSession.password)
   }
 
   async signUp(params) {
@@ -84,10 +90,6 @@ class AuthService {
     await AsyncStorage.clear()
     await ConnectyCube.logout()
     store.dispatch(LogOut())
-  }
-
-  async connect(userId, password) {
-    await ConnectyCube.chat.connect({ userId, password })
   }
 
   get currentUser() {

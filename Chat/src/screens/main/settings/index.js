@@ -64,7 +64,6 @@ export default function Settings ({navigation}) {
         {
           text: 'Yes',
           onPress: () => {
-            navigation.navigate('Auth')
             AuthService.logout()
           }
         },

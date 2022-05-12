@@ -5,6 +5,7 @@ import ChatService from '../../../services/chat-service'
 import UsersService from '../../../services/users-service'
 import Indicator from '../../components/indicator'
 import { popToTop } from '../../../routing/init'
+import { DIALOG_TYPE } from '../../../helpers/constants'
 
 export default function ContactDetails ({navigation}) {
   const [isLoader, setIsLoader] = useState(false);
@@ -27,7 +28,7 @@ export default function ContactDetails ({navigation}) {
     }
   }
 
-  const dialogPhoto = dialog?.type ? UsersService.getUsersAvatar(dialog.occupants_ids) : dialog.avatar
+  const dialogPhoto = dialog?.type === DIALOG_TYPE.PRIVATE ? UsersService.getUsersAvatar(dialog.occupants_ids) : dialog.avatar
 
   return (
     <View style={styles.container}>
