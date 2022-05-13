@@ -36,7 +36,8 @@ Prepare environment for React Native and:
 1. Clone the project;
 2. Install node_modules: `cd connectycube-js-samples/RNChat && npm install`
 3. In order to use push notifications on Android, you need to create `google-services.json` file and copy it into project's `android/app` folder. Also, you need to update the `applicationId` in `android/app/build.gradle` to the one which is specified in `google-services.json`, so they must match. If you have no existing API project yet, the easiest way to go about in creating one is using this [step-by-step installation process](https://firebase.google.com/docs/android/setup)
-4. Run `npm run ios` or `npm run android`.
+4. In order for push notifications to work properly - it requires to do create a key/certificate and upload to ConnectyCube admin panel. The complete guide is available here https://developers.connectycube.com/reactnative/push-notifications
+5. Run `npm run ios` or `npm run android`.
 
 ## Can't build yourself?
 
