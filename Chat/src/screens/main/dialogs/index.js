@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useLayoutEffect } from 'react'
+import React, { useEffect, useState, useLayoutEffect, useCallback } from 'react'
 import { StyleSheet, View, FlatList, Text, StatusBar, TouchableOpacity, Platform } from 'react-native'
 import { useSelector } from 'react-redux'
 import store from '../../../store'
@@ -10,6 +10,7 @@ import { BTN_TYPE } from '../../../helpers/constants'
 import Avatar from '../../components/avatar'
 import PushNotificationService from '../../../services/push-notification'
 import customEventEmitter, { CUSTOM_EVENTS } from '../../../events';
+import {  StackActions } from '@react-navigation/compat'
 
 export default function Dialogs ({ navigation }) {
   const dialogs = useSelector((state) => state.dialogs);
@@ -27,6 +28,19 @@ export default function Dialogs ({ navigation }) {
       CUSTOM_EVENTS.ON_NOTIFICATION_OPEN,
       onNotificationOpen,
     );
+  }, []);
+
+  const onNotificationOpen = useCallback(dialogId => {
+    console.log('Dialogs - PRESS', dialogId);
+
+    if (dialogId !== store.getState().selectedDialog) {
+      ChatService.getDialogById(dialogId).then(dialog => {
+        if (navigation.canGoBack()) {
+          navigation.dispatch(StackActions.popToTop())
+        }
+        onDialogClick(dialog)
+      })
+    }
   }, []);
 
   useLayoutEffect(() => {
@@ -52,13 +66,6 @@ export default function Dialogs ({ navigation }) {
     });
   }, [navigation]);
 
-  const onNotificationOpen = async (dialogId) => {
-    if (dialogId !== store.getState().selectedDialog) {
-      const dialog = await ChatService.getDialogById(dialogId)
-      navigation.push('Chat', { dialog })
-    }
-  };
-
   const goToSettingsScreen = () => {
     navigation.push('Settings', { user: currentUser })
   }
@@ -67,8 +74,12 @@ export default function Dialogs ({ navigation }) {
 
   const _renderDialog = ({ item }) => {
     return (
-      <Dialog dialog={item} navigation={navigation} />
+      <Dialog dialog={item} onDialogClick={onDialogClick} />
     )
+  }
+
+  const onDialogClick = (dialog) => {
+    navigation.push('Chat', { dialog })
   }
 
   const goToContactsScreen = () => {

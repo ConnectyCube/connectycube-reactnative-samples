@@ -7,12 +7,10 @@ import DialogUnreadCounter from './dialogUnreadCounter'
 import UsersService from '../../../../services/users-service'
 import { DIALOG_TYPE } from '../../../../helpers/constants'
 
-export default function Dialog ({dialog, navigation}) {
+export default function Dialog ({dialog, onDialogClick}) {
 
   const onPress = async () => {
-    const { navigate } = navigation
-    await UsersService.getOccupants(dialog.occupants_ids)
-    navigate('Chat', { dialog })
+    onDialogClick(dialog)
   }
 
   const dialogPhoto = dialog.type === DIALOG_TYPE.PRIVATE 

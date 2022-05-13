@@ -80,8 +80,7 @@ class ChatService {
         dialog_id: dialog.id,
         sender_id: user.id,
         date_sent: date,
-      },
-      markable: 1
+      }
     }
 
     msg.id = this.messageUniqueId
@@ -350,15 +349,21 @@ class ChatService {
   }
 
   async getDialogById(dialogId) {
-    const getDialog = store.getState().dialogs.find(elem => elem.id === dialogId)
-    if (getDialog) {
-      return getDialog
+    // console.log('getDialogById',  dialogId, store.getState().dialogs)
+
+    const dialogInRedux = store.getState().dialogs.find(elem => elem.id === dialogId)
+    // console.log('dialogInRedux',  dialogInRedux)
+
+    if (dialogInRedux) {
+      return dialogInRedux
     } else {
       const filters = {
         _id: {
           in: dialogId
         }
       }
+      // console.log('filters',  filters)
+
       // get Dialog from server
       const dialogsFromServer = await ConnectyCube.chat.dialog.list(filters)
       const dialog = new Dialog(dialogsFromServer.items[0])

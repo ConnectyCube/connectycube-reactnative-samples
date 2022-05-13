@@ -46,19 +46,20 @@ class PushNotificationService {
     Notifications.events().registerNotificationReceivedForeground((notification, completion) => {
       console.log(`[PushNotificationService] Notification received in foreground`, notification.payload, notification?.payload?.message);
 
-      if (Platform.OS === 'ios') {
-        return;
+      if (Platform.OS === 'android') {
+        PushNotificationService.displayNotification(notification.payload);
       }
 
-      PushNotificationService.displayNotification(notification.payload);
-
+   
       completion({alert: false, sound: false, badge: false});
     });
 
     Notifications.events().registerNotificationReceivedBackground((notification, completion) => {
       console.log("[PushNotificationService] Notification Received - Background", notification.payload, notification?.payload?.message);
 
-      PushNotificationService.displayNotification(notification.payload);
+      if (Platform.OS === 'android') {
+        PushNotificationService.displayNotification(notification.payload);
+      }
 
       // Calling completion on iOS with `alert: true` will present the native iOS inApp notification.
       completion({alert: true, sound: true, badge: false});
@@ -123,7 +124,7 @@ class PushNotificationService {
   }
 
   static displayNotification(payload) {
-    const extra = {dialog_id: 123, isLocal: true}
+    const extra = {dialog_id: payload.dialog_id, isLocal: true}
 
     const localNotification = Notifications.postLocalNotification({
       body: payload.message,
@@ -137,7 +138,8 @@ class PushNotificationService {
   }
 
   async onNotificationOpened(payload) {
-    const dialogId = (Platform.OS === 'ios') ? payload.userInfo.dialog_id : payload.extra.dialog_id;
+    const dialogId = (Platform.OS === 'ios') ? payload.dialog_id : payload.extra.dialog_id;
+    console.log('PushNotificationService - onNotificationOpened - dialogId',  dialogId, payload)
     customEventEmitter.emit(CUSTOM_EVENTS.ON_NOTIFICATION_OPEN, dialogId);
   }
 }

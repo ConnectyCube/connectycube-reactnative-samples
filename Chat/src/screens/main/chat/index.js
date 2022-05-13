@@ -22,7 +22,7 @@ import ImagePicker from 'react-native-image-crop-picker'
 import { DIALOG_TYPE } from '../../../helpers/constants'
 
 export default function Chat ({ route, navigation }) {
-  const { dialog } = route.params;
+  const dialog = route.params.dialog;
 
   const history = useSelector((state) => state.messages[dialog.id]);
   const currentUser = useSelector((state) => state.currentUser);
