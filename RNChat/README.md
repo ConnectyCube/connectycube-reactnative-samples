@@ -27,13 +27,7 @@ ConnectyCube Chat API documentation - [https://developers.connectycube.com/react
 
 <kbd><img alt="React Native chat code sample, list of chats" src="https://developers.connectycube.com/docs/_images/code_samples/reactnative/reactnative_codesample_chat_chats.jpg" width="200" /></kbd> <kbd><img alt="React Native chat code sample, chat history" src="https://developers.connectycube.com/docs/_images/code_samples/reactnative/reactnative_codesample_chat_chat.jpg" width="200" /></kbd> <kbd><img alt="React Native chat code sample, profile" src="https://developers.connectycube.com/docs/_images/code_samples/reactnative/reactnative_codesample_chat_profile.jpg" width="200" /></kbd>
 
-## Roadmap
-
-- Delete chat functionality
-- Edit messages
-- Delete messages
-
-## Quick start and develop
+## Getting started
 
 Quick start [React Native](https://facebook.github.io/react-native/docs/getting-started.html) app.
 
@@ -41,8 +35,9 @@ Prepare environment for React Native and:
 
 1. Clone the project;
 2. Install node_modules: `cd connectycube-js-samples/RNChat && npm install`
-3. Run `npm run ios` or `npm run android`.
+3. In order to use push notifications on Android, you need to create `google-services.json` file and copy it into project's `android/app` folder. Also, you need to update the `applicationId` in `android/app/build.gradle` to the one which is specified in `google-services.json`, so they must match. If you have no existing API project yet, the easiest way to go about in creating one is using this [step-by-step installation process](https://firebase.google.com/docs/android/setup)
+4. Run `npm run ios` or `npm run android`.
 
 ## Can't build yourself?
 
-Got troubles with building React Native code sample? Just create an issue at [Issues page](https://github.com/ConnectyCube/connectycube-reactnative-samples/issues) - we will create the sample for you. For FREE!
+Got troubles with building React Native code sample? Just create an issue at [Issues page](https://github.com/ConnectyCube/connectycube-reactnative-samples/issues)

@@ -1,8 +1,8 @@
-import React from 'react'
+import React, {useMemo} from 'react'
 import { Text, StyleSheet } from 'react-native'
 
 export default function DialogLastDate({ lastDate, lastMessage, updatedDate }) {
-  function getTime() {
+  const timeValue = useMemo(() => {
     const monthes = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
     const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
     const msgLastDate = lastMessage ? new Date(lastDate * 1000) : new Date(updatedDate)
@@ -29,9 +29,9 @@ export default function DialogLastDate({ lastDate, lastMessage, updatedDate }) {
     } else {
       return `${(msgHours > 9) ? msgHours : ('0' + msgHours)}:${(msgMinutes > 9) ? msgMinutes : ('0' + msgMinutes)}`
     }
-  }
+  }, [lastDate, lastMessage, updatedDate]);
 
-  return <Text style={styles.time} numberOfLines={1}>{getTime()}</Text>
+  return <Text style={styles.time} numberOfLines={1}>{timeValue}</Text>
 }
 
 const styles = StyleSheet.create({

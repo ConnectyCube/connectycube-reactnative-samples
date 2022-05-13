@@ -1,4 +1,5 @@
 import { getImageLinkFromUID } from '../helpers/file'
+
 export default class User {
   constructor(user) {
     this.id = user.id

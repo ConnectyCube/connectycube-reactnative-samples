@@ -1,33 +1,32 @@
-import React, { Component } from 'react'
+import React, { useState, useRef } from 'react'
 import { StyleSheet, View, Text, TouchableOpacity, TextInput, KeyboardAvoidingView, Alert } from 'react-native'
 import AuthService from '../../../services/auth-service'
 import Indicator from '../../components/indicator'
 import { showAlert } from '../../../helpers/alert'
 import ImgPicker from '../../components/imgPicker'
 
-export default class Settings extends Component {
+export default function Settings ({route}) {
+  const { user } = route.params;
 
-  constructor(props) {
-    super(props)
-    const user = props.navigation.getParam('user')
-    this.state = {
-      isLoader: false,
-      login: user.login,
-      name: user.full_name
-    }
+  const [isLoader, setIsLoader] = useState(false);
+  const [login, setLogin] = useState(user.login);
+  const [name, setName] = useState(user.full_name);
+  const [photo, setPhoto] = useState(null);
+
+  const inputRef = useRef(null);
+
+  const onPickPhoto = (image) => {
+    setPhoto(image)
   }
 
-  isPickImage = null
+  const onCancelPickPhoto = () => {
 
-  pickPhoto = (image) => {
-    this.isPickImage = image
   }
 
+  const onSaveProfile = () => {
 
-  onSaveProfile = () => {
-    const user = this.props.navigation.getParam('user')
-    const { login, name } = this.state
-    this.refs.input.blur()
+    inputRef.current.blur()
+
     const newData = {}
     if (user.full_name !== name) {
       newData.full_name = name
@@ -35,26 +34,27 @@ export default class Settings extends Component {
     if (user.login !== login) {
       newData.login = login
     }
-    if (this.isPickImage) {
-      newData.image = this.isPickImage
+    if (photo) {
+      newData.image = photo
     }
     if (Object.keys(newData).length === 0) {
       return
     }
-    this.setState({ isLoader: true })
+
+    setIsLoader(true)
+
     AuthService.updateCurrentUser(newData)
       .then(() => {
-        this.setState({ isLoader: false })
+        setIsLoader(false)
         showAlert('User profile is updated successfully')
       })
       .catch((error) => {
-        this.setState({ isLoader: false })
+        setIsLoader(false)
         showAlert(error)
       })
   }
 
-  userLogout = () => {
-    const { navigation } = this.props
+  const onUserLogout = () => {
     Alert.alert(
       'Are you sure you want to logout?',
       '',
@@ -62,7 +62,6 @@ export default class Settings extends Component {
         {
           text: 'Yes',
           onPress: () => {
-            navigation.navigate('Auth')
             AuthService.logout()
           }
         },
@@ -74,68 +73,60 @@ export default class Settings extends Component {
     )
   }
 
-  updateLogin = login => this.setState({ login })
-
-  updateName = name => this.setState({ name })
-
-  render() {
-    const { isLoader, name, login, } = this.state
-    const user = this.props.navigation.getParam('user')
-    return (
-      <KeyboardAvoidingView style={styles.container}>
-        {isLoader &&
-          <Indicator size={40} color={'blue'} />
-        }
-        <ImgPicker name={user.full_name} photo={user.avatar} pickPhoto={this.pickPhoto} />
-        <View style={styles.inputWrap}>
-          <View>
-            <TextInput
-              style={styles.input}
-              ref="input"
-              autoCapitalize="none"
-              placeholder="Change name ..."
-              placeholderTextColor="grey"
-              onChangeText={this.updateName}
-              value={name}
-              maxLength={100}
-            />
-            <View style={styles.subtitleWrap}>
-              <Text style={styles.subtitleInpu}>Change name</Text>
-            </View>
-          </View>
-          <View>
-            <TextInput
-              style={styles.input}
-              ref="input"
-              autoCapitalize="none"
-              placeholder="Change login ..."
-              placeholderTextColor="grey"
-              onChangeText={this.updateLogin}
-              value={login}
-              maxLength={100}
-            />
-            <View style={styles.subtitleWrap}>
-              <Text style={styles.subtitleInpu}>Change login</Text>
-            </View>
+  return (
+    <KeyboardAvoidingView style={styles.container}>
+      {isLoader &&
+        <Indicator size={40} color={'blue'} />
+      }
+      <ImgPicker name={user.full_name} photo={user.avatar} onPickPhoto={onPickPhoto} onCancelPickPhoto={onCancelPickPhoto} />
+      <View style={styles.inputWrap}>
+        <View>
+          <TextInput
+            style={styles.input}
+            ref={inputRef}
+            autoCapitalize="none"
+            placeholder="Change name ..."
+            placeholderTextColor="grey"
+            onChangeText={setName}
+            value={name}
+            maxLength={100}
+          />
+          <View style={styles.subtitleWrap}>
+            <Text style={styles.subtitleInpu}>Change name</Text>
           </View>
         </View>
         <View>
-          <TouchableOpacity onPress={this.onSaveProfile}>
-            <View style={styles.buttonContainerSave}>
-              <Text style={styles.buttonLabelSave}>Save</Text>
-            </View>
-          </TouchableOpacity>
+          <TextInput
+            style={styles.input}
+            ref={inputRef}
+            autoCapitalize="none"
+            placeholder="Change login ..."
+            placeholderTextColor="grey"
+            onChangeText={setLogin}
+            value={login}
+            maxLength={100}
+          />
+          <View style={styles.subtitleWrap}>
+            <Text style={styles.subtitleInpu}>Change login</Text>
+          </View>
         </View>
-        <View>
-          <TouchableOpacity onPress={this.userLogout}>
-            <View style={styles.buttonContainer}>
-              <Text style={styles.buttonLabel}>logout</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-      </KeyboardAvoidingView>
-    )
-  }
+      </View>
+      <View>
+        <TouchableOpacity onPress={onSaveProfile}>
+          <View style={styles.buttonContainerSave}>
+            <Text style={styles.buttonLabelSave}>Save</Text>
+          </View>
+        </TouchableOpacity>
+      </View>
+      <View>
+        <TouchableOpacity onPress={onUserLogout}>
+          <View style={styles.buttonContainer}>
+            <Text style={styles.buttonLabel}>logout</Text>
+          </View>
+        </TouchableOpacity>
+      </View>
+    </KeyboardAvoidingView>
+  )
 }
 
 const styles = StyleSheet.create({

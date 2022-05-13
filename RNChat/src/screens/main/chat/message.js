@@ -1,130 +1,102 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import { StyleSheet, View, Text, Dimensions, TouchableOpacity, Modal, Platform } from 'react-native'
 import ImageViewer from 'react-native-image-zoom-viewer'
 import store from '../../../store'
 import Avatar from '../../components/avatar'
 import { getTime } from '../../../helpers/getTime'
-import MessageSendState from '../../components/messageSendState'
+import MessageStatus from '../../components/messageStatus'
 import ChatImage from '../../components/chatImage'
 import Icon from 'react-native-vector-icons/AntDesign'
 
 const fullWidth = Dimensions.get('window').width
 const fullHeight = Dimensions.get('window').height
 
-export default class Message extends Component {
-  isAtachment = null
+export default function Message ({message, messageSendState, messageAttachments, otherSender}) {
+  const [isModal, setIsModal] = useState(false);
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      isModal: false,
-      send_state: props.message.send_state
-    }
-    this.isAtachment = props.message.attachment
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    if (nextProps.message.send_state != nextState.send_state ||
-      nextState.isModal !== this.state.isModal
-    ) {
-      return true
-    } else {
-      return false
-    }
-  }
-
-
-  renderAttachment = () => {
-    const { message } = this.props
+  const renderAttachment = () => {
     return (
-      <TouchableOpacity style={{ marginBottom: 3 }} onPress={this.handleModalState}>
-        <ChatImage photo={message.attachment[0].url} width={200} height={150} />
+      <TouchableOpacity style={{ marginBottom: 3 }} onPress={handleModalState}>
+        <ChatImage photo={messageAttachments[0].url} width={200} height={150} />
       </TouchableOpacity>
     )
   }
 
-  handleModalState = () => {
-    this.setState({ isModal: !this.state.isModal })
+  const handleModalState = () => {
+    setIsModal(!isModal)
   }
 
-  renderHeader = () => {
+  const renderHeader = () => {
     return <View style={[{ margin: Platform.OS === 'ios' ? 35 : 15 }, { position: 'absolute', zIndex: 10 }]}>
-      <Icon name="close" size={30} color='white' onPress={this.handleModalState} />
+      <Icon name="close" size={30} color='white' onPress={handleModalState} />
     </View>
   }
 
-  render() {
-    const { message, otherSender } = this.props
-    const { isModal } = this.state
-    const user = otherSender ? store.getState().users[message.sender_id] : '.'
-    return (
-      <View>
-        {this.isAtachment &&
-          <Modal visible={isModal} transparent={false} style={{ backgroundColor: 'black' }}>
-            <View style={{
-              width: fullWidth,
-              height: fullHeight,
-            }}>
-              <ImageViewer
-                imageUrls={[{ url: message.attachment[0].url }]}
-                onCancel={() => this.handleModalState()}
-                enableSwipeDown
-                renderIndicator={() => null}
-                renderHeader={this.renderHeader}
-                renderImage={props => (
-                  <ChatImage
-                    photo={props.source.uri}
-                    width={+message.attachment[0].width}
-                    height={+message.attachment[0].height}
-                  />
-                )}
-              />
+  const user = otherSender ? store.getState().users[message.sender_id] : '.'
+
+  return (
+    <View>
+      {messageAttachments &&
+        <Modal visible={isModal} transparent={false} style={{ backgroundColor: 'black' }}>
+          <View style={{
+            width: fullWidth,
+            height: fullHeight,
+          }}>
+            <ImageViewer
+              imageUrls={[{ url: messageAttachments[0].url }]}
+              onCancel={handleModalState}
+              enableSwipeDown
+              renderIndicator={() => null}
+              renderHeader={renderHeader}
+              renderImage={props => (
+                <ChatImage
+                  photo={props.source.uri}
+                  width={+messageAttachments[0].width}
+                  height={+messageAttachments[0].height}
+                />
+              )}
+            />
+          </View>
+        </Modal>
+      }
+      {otherSender ?
+        (
+          <View style={[styles.container, styles.positionToLeft]}>
+            <Avatar
+              photo={user.avatar}
+              name={user.full_name}
+              iconSize="small"
+            />
+            <View style={[styles.message, styles.messageToLeft]}>
+              { messageAttachments && renderAttachment() }
+              <Text style={[styles.messageText, (otherSender ? styles.selfToLeft : styles.selfToRight)]}>
+                {message.body || ' '}
+              </Text>
+              <Text style={styles.dateSent}>
+                {getTime(message.date_sent)}
+              </Text>
             </View>
-          </Modal>
-        }
-        {otherSender ?
-          (
-            <View style={[styles.container, styles.positionToLeft]}>
-              <Avatar
-                photo={user.avatar}
-                name={user.full_name}
-                iconSize="small"
-              />
-              <View style={[styles.message, styles.messageToLeft]}>
-                {this.isAtachment &&
-                  this.renderAttachment()
-                }
-                <Text style={[styles.messageText, (otherSender ? styles.selfToLeft : styles.selfToRight)]}>
-                  {message.body || ' '}
-                </Text>
+          </View>
+        ) :
+        (
+          <View style={[styles.container, styles.positionToRight]}>
+            <View style={[styles.message, styles.messageToRight]}>
+              { messageAttachments && renderAttachment() }
+              <Text style={[styles.messageText, styles.selfToRight]}>
+                {message.body || ' '}
+              </Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end' }}>
                 <Text style={styles.dateSent}>
                   {getTime(message.date_sent)}
                 </Text>
+                <MessageStatus send_state={messageSendState} />
               </View>
             </View>
-          ) :
-          (
-            <View style={[styles.container, styles.positionToRight]}>
-              <View style={[styles.message, styles.messageToRight]}>
-                {this.isAtachment &&
-                  this.renderAttachment()
-                }
-                <Text style={[styles.messageText, styles.selfToRight]}>
-                  {message.body || ' '}
-                </Text>
-                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end' }}>
-                  <Text style={styles.dateSent}>
-                    {getTime(message.date_sent)}
-                  </Text>
-                  <MessageSendState send_state={message.send_state} />
-                </View>
-              </View>
-            </View>
-          )
-        }
-      </View>
-    )
-  }
+          </View>
+        )
+      }
+    </View>
+  )
 }
 
 const styles = StyleSheet.create({

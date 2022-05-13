@@ -1,7 +1,7 @@
 import { getImageLinkFromUID } from '../helpers/file'
 
 export default class Dialog {
-  constructor(dialog = defaultDialog) {
+  constructor(dialog) {
     this.id = dialog._id || dialog.id
     this.type = dialog.type
     this.xmpp_room_jid = dialog.xmpp_room_jid

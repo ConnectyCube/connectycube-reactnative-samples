@@ -2,7 +2,8 @@ import {
   PUSH_MESSAGE,
   FETCH_MESSAGES,
   DELETE_ALL_MESSAGES,
-  LAZY_FETCH_MESSAGES
+  LAZY_FETCH_MESSAGES,
+  UPDATE_MESSAGES
 } from '../actions/messages'
 
 import { lazyFetchMessages, updateStatusMessages } from './reducer-function'

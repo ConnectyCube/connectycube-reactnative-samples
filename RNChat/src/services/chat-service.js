@@ -25,6 +25,11 @@ class ChatService {
     AppState.addEventListener('change', this.handleAppStateChange)
   }
 
+  async connect(userId, password) {
+    this.setUpListeners()
+    await ConnectyCube.chat.connect({ userId, password })
+  }
+
   async fetchDialogsFromServer() {
     const dialogsFromServer = await ConnectyCube.chat.dialog.list()
     const currentUserId = this.currentUser
@@ -75,8 +80,7 @@ class ChatService {
         dialog_id: dialog.id,
         sender_id: user.id,
         date_sent: date,
-      },
-      markable: 1
+      }
     }
 
     msg.id = this.messageUniqueId
@@ -115,7 +119,7 @@ class ChatService {
     return true
   }
 
-  async getMessages(dialog) {
+  async getMessagesAndStore(dialog) {
     this.setSelectedDialog(dialog.id)
     const user = this.currentUser
     const isAlredyUpdate = this.getMessagesByDialogId(dialog.id)
@@ -248,7 +252,7 @@ class ChatService {
     }
   }
 
-  async createPublicDialog(occupants_ids, groupName, img) {
+  async createGroupDialog(occupants_ids, groupName, img) {
     const currentUser = this.currentUser
     occupants_ids.unshift(currentUser.id)
 
@@ -274,9 +278,9 @@ class ChatService {
     return ConnectyCube.storage.createAndUpload({ file })
   }
 
-  async updateDialogInfo({ img, name, dialogId }) {
+  async updateDialog({ photo, name, dialogId }) {
     const params = {}
-    const image = img ? await this.uploadPhoto(img) : null
+    const image = photo ? await this.uploadPhoto(photo) : null
     if (image) {
       params.photo = image.uid
     }
@@ -344,8 +348,35 @@ class ChatService {
     store.dispatch(pushMessage(dialogId, messages.map(message => new Message(message))))
   }
 
-  getDialogById(dialogId) {
-    return store.getState().dialogs.find(elem => elem.id === dialogId)
+  async getDialogById(dialogId) {
+    // console.log('getDialogById',  dialogId, store.getState().dialogs)
+
+    const dialogInRedux = store.getState().dialogs.find(elem => elem.id === dialogId)
+    // console.log('dialogInRedux',  dialogInRedux)
+
+    if (dialogInRedux) {
+      return dialogInRedux
+    } else {
+      const filters = {
+        _id: {
+          in: dialogId
+        }
+      }
+      // console.log('filters',  filters)
+
+      // get Dialog from server
+      const dialogsFromServer = await ConnectyCube.chat.dialog.list(filters)
+      const dialog = new Dialog(dialogsFromServer.items[0])
+
+      // get User from server
+      const currentUser = dialog.user_id
+      const participantId = dialog.occupants_ids.find(elem => elem.id !== currentUser)
+      const responseUser = await ConnectyCube.users.get(participantId)
+      const user = new UserModel(responseUser.user)
+      store.dispatch(fetchUsers([user]))
+      store.dispatch(addNewDialog(dialog))
+      return dialog
+    }
   }
 
   getMessagesByDialogId(dialogId) {

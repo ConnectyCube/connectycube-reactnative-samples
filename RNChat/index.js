@@ -1,10 +1,9 @@
-import { AppRegistry, LogBox } from 'react-native'
-import { name as appName } from './config.json'
-import App from './App'
+/**
+ * @format
+ */
 
-LogBox.ignoreLogs([
-    'currentlyFocusedField is deprecated and will be removed in a future release.',
-    'Calling `getNode()` on the ref of an Animated component is no longer necessary.'
-]);
+import {AppRegistry} from 'react-native';
+import App from './App';
+import {name as appName} from './app.json';
 
-AppRegistry.registerComponent(appName, () => App)
+AppRegistry.registerComponent(appName, () => App);
