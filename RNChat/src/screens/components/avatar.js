@@ -1,7 +1,20 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { View, Text, StyleSheet, Platform } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { getCbToken } from '../../helpers/file'
+
+const COLORS = [
+  'blue',
+  'darkmagenta',
+  'fuchsia',
+  'gold',
+  'green',
+  'limegreen',
+  'navy',
+  'purple',
+  'red',
+  'skyblue'
+]
 
 export default function ProfileIcon({ photo, name, iconSize }) {
   let styles
@@ -24,35 +37,22 @@ export default function ProfileIcon({ photo, name, iconSize }) {
     }
   }
 
-  function randomizeColor() {
-    const colors = [
-      'blue',
-      'darkmagenta',
-      'fuchsia',
-      'gold',
-      'green',
-      'limegreen',
-      'navy',
-      'purple',
-      'red',
-      'skyblue'
-    ]
+  const randomizeColor = useMemo(() => {
+    return COLORS[name.length % COLORS.length]
+  }, [name])
 
-    return colors[name.length % colors.length]
-  }
-
-  function getIconLabel() {
+  const iconLabel = useMemo(() => {
     const words = name.split(' ')
 
-    return (
-      words.length > 1
-        ? label = `${words[0].slice(0, 1)}${words[1].slice(0, 1)}`
+    const lbl = words.length > 1
+        ? `${words[0].slice(0, 1)}${words[1].slice(0, 1)}`
         : name.slice(0, 2)
-    )
-  }
 
-  fastImageWrap = () => {
-    let source = getCbToken(photo)
+    return lbl.toUpperCase().trim();
+  }, [name])
+
+  const renderFastImageWrap = () => {
+    const source = getCbToken(photo)
     source.priority = FastImage.priority.high
     return (
       <FastImage
@@ -64,11 +64,11 @@ export default function ProfileIcon({ photo, name, iconSize }) {
   }
 
   return (
-    photo ?
-      fastImageWrap()
+    photo 
+      ? renderFastImageWrap()
       : (
-        <View style={[styles.photo, { backgroundColor: randomizeColor() }]}>
-          <Text style={styles.randomIcon}> {getIconLabel().toUpperCase().trim()}</Text >
+        <View style={[styles.photo, { backgroundColor: randomizeColor }]}>
+          <Text style={styles.randomIcon}> {iconLabel}</Text >
         </View >
       )
   )

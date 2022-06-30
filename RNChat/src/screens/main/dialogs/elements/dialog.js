@@ -1,61 +1,49 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import Avatar from '../../../components/avatar'
-import DialogTitles from './dialogTitles'
+import DialogTitle from './dialogTitle'
 import DialogLastDate from './dialogLastDate'
 import DialogUnreadCounter from './dialogUnreadCounter'
 import UsersService from '../../../../services/users-service'
 import { DIALOG_TYPE } from '../../../../helpers/constants'
 
-export default class Dialog extends Component {
-  getOccupants = async () => {
-    const { dialog } = this.props
-    const { navigate } = this.props.navigation
-    await UsersService.getOccupants(dialog.occupants_ids)
-    navigate('Chat', { dialog })
+export default function Dialog ({dialog, onDialogClick}) {
+
+  const onPress = async () => {
+    onDialogClick(dialog)
   }
 
-  getUsersAvatar = (ids) => {
-    return UsersService.getUsersAvatar(ids)
-  }
+  const dialogPhoto = dialog.type === DIALOG_TYPE.PRIVATE 
+      ? UsersService.getUsersAvatar(dialog.occupants_ids)
+      : dialog.photo;
 
-  render() {
-    const { dialog } = this.props
-    let dialogPhoto = ''
-    if (dialog.type === DIALOG_TYPE.PRIVATE) {
-      dialogPhoto = this.getUsersAvatar(dialog.occupants_ids)
-    } else {
-      dialogPhoto = dialog.photo
-    }
-
-    return (
-      <TouchableOpacity onPress={this.getOccupants}>
-        <View style={styles.container}>
-          <Avatar
-            photo={dialogPhoto}
+  return (
+    <TouchableOpacity onPress={onPress}>
+      <View style={styles.container}>
+        <Avatar
+          photo={dialogPhoto}
+          name={dialog.name}
+          iconSize="large"
+        />
+        <View style={styles.border} >
+          <DialogTitle
             name={dialog.name}
-            iconSize="large"
+            message={dialog.last_message}
           />
-          <View style={styles.border} >
-            <DialogTitles
-              name={dialog.name}
-              message={dialog.last_message}
+          <View style={styles.infoContainer}>
+            <DialogLastDate
+              lastDate={dialog.last_message_date_sent}
+              lastMessage={dialog.last_message}
+              updatedDate={dialog.updated_date}
             />
-            <View style={styles.infoContainer}>
-              <DialogLastDate
-                lastDate={dialog.last_message_date_sent}
-                lastMessage={dialog.last_message}
-                updatedDate={dialog.updated_date}
-              />
-              <DialogUnreadCounter
-                unreadMessagesCount={dialog.unread_messages_count}
-              />
-            </View>
+            <DialogUnreadCounter
+              unreadMessagesCount={dialog.unread_messages_count}
+            />
           </View>
         </View>
-      </TouchableOpacity >
-    )
-  }
+      </View>
+    </TouchableOpacity >
+  ) 
 }
 
 const styles = StyleSheet.create({

@@ -1,6 +1,6 @@
-import React, { Component } from 'react'
+import React, { useEffect, useState, useLayoutEffect, useCallback } from 'react'
 import { StyleSheet, View, FlatList, Text, StatusBar, TouchableOpacity, Platform } from 'react-native'
-import { connect } from 'react-redux'
+import { useSelector } from 'react-redux'
 import store from '../../../store'
 import Dialog from './elements/dialog'
 import ChatService from '../../../services/chat-service'
@@ -9,106 +9,105 @@ import CreateBtn from '../../components/createBtn'
 import { BTN_TYPE } from '../../../helpers/constants'
 import Avatar from '../../components/avatar'
 import PushNotificationService from '../../../services/push-notification'
+import customEventEmitter, { CUSTOM_EVENTS } from '../../../events';
+import {  StackActions } from '@react-navigation/compat'
 
-class Dialogs extends Component {
-  static currentUserInfo = ''
-  dialogs = []
+export default function Dialogs ({ navigation }) {
+  const dialogs = useSelector((state) => state.dialogs);
+  const currentUser = useSelector((state) => state.currentUser.user);
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      isLoader: props.dialogs.length === 0 && true,
+  const [isLoader, setIsLoader] = useState(false);
+
+  useEffect(() => {
+    ChatService.fetchDialogsFromServer()
+      .then(() => {
+        PushNotificationService.init()
+      })
+
+    customEventEmitter.addListener(
+      CUSTOM_EVENTS.ON_NOTIFICATION_OPEN,
+      onNotificationOpen,
+    );
+  }, []);
+
+  const onNotificationOpen = useCallback(dialogId => {
+    console.log('Dialogs - PRESS', dialogId);
+
+    if (dialogId !== store.getState().selectedDialog) {
+      ChatService.getDialogById(dialogId).then(dialog => {
+        if (navigation.canGoBack()) {
+          navigation.dispatch(StackActions.popToTop())
+        }
+        onDialogClick(dialog)
+      })
     }
-  }
+  }, []);
 
-  static navigationOptions = ({ navigation }) => {
-    Dialogs.currentUserInfo = { ...store.getState().currentUser.user }
-    return {
-      headerTitle: (
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitle: () => (
         <Text style={[
           { fontSize: 22, color: 'black' },
           Platform.OS === 'android' ?
             { paddingLeft: 13 } :
             { paddingLeft: 0 }]}>
-          {Dialogs.currentUserInfo.full_name}
+          {currentUser.full_name}
         </Text>
       ),
-      headerRight: (
-        <TouchableOpacity onPress={() => this.goToSettingsScreen(navigation)}>
+      headerRight: () => (
+        <TouchableOpacity onPress={() => goToSettingsScreen()}>
           <Avatar
-            photo={Dialogs.currentUserInfo.avatar}
-            name={Dialogs.currentUserInfo.full_name}
+            photo={currentUser.avatar}
+            name={currentUser.full_name}
             iconSize="small"
           />
         </TouchableOpacity>
       ),
-    }
+    });
+  }, [navigation]);
+
+  const goToSettingsScreen = () => {
+    navigation.push('Settings', { user: currentUser })
   }
 
-  componentDidMount() {
-    ChatService.fetchDialogsFromServer()
-      .then(() => {
-        PushNotificationService.init(this.props.navigation)
-      })
-  }
+  const keyExtractor = (item, index) => index.toString()
 
-  static getDerivedStateFromProps(props, state) {
-    if (props.currentUser.user.full_name !== Dialogs.currentUserInfo.full_name) {
-      Dialogs.currentUserInfo = { ...props.currentUser.user }
-      return true
-    } return null
-  }
-
-  static goToSettingsScreen = (props) => {
-    props.push('Settings', { user: Dialogs.currentUserInfo })
-  }
-
-  componentDidUpdate(prevProps) {
-    const { dialogs } = this.props
-    if (this.props.dialogs !== prevProps.dialogs) {
-      this.dialogs = dialogs
-      this.setState({ isLoader: false })
-    }
-  }
-
-  keyExtractor = (item, index) => index.toString()
-
-  _renderDialog = ({ item }) => {
+  const _renderDialog = ({ item }) => {
     return (
-      <Dialog dialog={item} navigation={this.props.navigation} />
+      <Dialog dialog={item} onDialogClick={onDialogClick} />
     )
   }
 
-  goToContactsScreen = () => {
-    const { navigation } = this.props
+  const onDialogClick = (dialog) => {
+    navigation.push('Chat', { dialog })
+  }
+
+  const goToContactsScreen = () => {
     navigation.push('Contacts')
   }
 
-  render() {
-    const { isLoader } = this.state
-    return (
-      <View style={styles.container}>
-        <StatusBar barStyle={'dark-content'} />
-        {isLoader ?
+  return (
+    <View style={styles.container}>
+      <StatusBar barStyle={'dark-content'} />
+      {isLoader ?
+        (
+          <Indicator color={'red'} size={40} />
+        ) : dialogs.length === 0 ?
+          (<View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+            <Text style={{ fontSize: 19, color: 'grey' }}>No chats yet</Text>
+          </View>
+          ) :
           (
-            <Indicator color={'red'} size={40} />
-          ) : this.dialogs.length === 0 ?
-            (<View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-              <Text style={{ fontSize: 19 }}>No chats yet</Text>
-            </View>
-            ) :
-            (
-              <FlatList
-                data={this.dialogs}
-                keyExtractor={this.keyExtractor}
-                renderItem={(item) => this._renderDialog(item)}
-              />
-            )
-        }
-        <CreateBtn goToScreen={this.goToContactsScreen} type={BTN_TYPE.DIALOG} />
-      </View>
-    )
-  }
+            <FlatList
+              data={dialogs}
+              keyExtractor={keyExtractor}
+              renderItem={(item) => _renderDialog(item)}
+            />
+          )
+      }
+      <CreateBtn goToScreen={goToContactsScreen} type={BTN_TYPE.DIALOG} />
+    </View>
+  )
 }
 
 const styles = StyleSheet.create({
@@ -116,11 +115,3 @@ const styles = StyleSheet.create({
     flex: 1,
   }
 })
-
-
-const mapStateToProps = ({ dialogs, currentUser }) => ({
-  dialogs,
-  currentUser
-})
-
-export default connect(mapStateToProps)(Dialogs)

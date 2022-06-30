@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux'
 import currentUser from './currentUser'
+import app from './app'
 import dialogs from './dialogs'
 import messages from './messages'
 import connection from './connection'
@@ -8,6 +9,7 @@ import selectedDialog from './selectedDialog'
 
 const appReducer = combineReducers({
   currentUser,
+  appIsLoading: app,
   dialogs,
   messages,
   connection,
