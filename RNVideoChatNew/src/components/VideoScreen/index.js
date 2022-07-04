@@ -3,7 +3,7 @@ import { SafeAreaView, StatusBar } from 'react-native';
 import ConnectyCube from 'react-native-connectycube';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import RTCViewGrid from './RTCViewGrid';
-import { CallService, AuthService, PushNotificationsService, UtilsService, CallKitService } from '../../services';
+import { CallService, AuthService, PushNotificationsService, CallKitService } from '../../services';
 import ToolBar from './ToolBar';
 import UsersSelect from './UsersSelect';
 import { getUserById, uuidv4, showToast } from '../../utils'

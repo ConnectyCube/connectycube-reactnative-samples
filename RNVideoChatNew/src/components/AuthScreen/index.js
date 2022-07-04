@@ -26,7 +26,7 @@ export default function AuthScreen({navigation}){
     try {
       await AuthService.login(user)
 
-      // _initPushNotificationsAndSubscribe()
+      _initPushNotificationsAndSubscribe()
 
       // CallKitService.init();
 
@@ -42,9 +42,9 @@ export default function AuthScreen({navigation}){
   function _initPushNotificationsAndSubscribe() {
     PushNotificationsService.init();
 
-    if (Platform.OS === 'ios') {
-      PushNotificationsService.initVoIP();
-    }
+    // if (Platform.OS === 'ios') {
+    //   PushNotificationsService.initVoIP();
+    // }
   }
 
   return (
