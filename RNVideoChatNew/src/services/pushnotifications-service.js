@@ -47,6 +47,8 @@ export default class PushNotificationsService {
   
       if (Platform.OS === 'android') {
         PushNotificationsService.displayNotification(notification.payload);
+
+        CallKitService.displayIncomingCall("123", "111", "bob");
       }
   
       completion({alert: false, sound: false, badge: false});

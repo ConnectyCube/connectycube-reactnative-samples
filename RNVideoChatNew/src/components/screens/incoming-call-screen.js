@@ -1,14 +1,10 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { SafeAreaView, StatusBar } from 'react-native';
 import ConnectyCube from 'react-native-connectycube';
-import AwesomeAlert from 'react-native-awesome-alerts';
-import RTCViewGrid from './RTCViewGrid';
 import { CallService, AuthService, PushNotificationsService, CallKitService } from '../../services';
-import ToolBar from './ToolBar';
-import UsersSelect from './UsersSelect';
 import { getUserById, uuidv4, showToast } from '../../utils'
 
-export default function VideoScreen ({ route }) {
+export default function IncomingCallScreen ({ route }) {
   const opponents = route.params.opponents;
   const opponentsIds = opponents.map(o => o.id);
   const currentUser = route.params.currentUser;
@@ -275,42 +271,7 @@ export default function VideoScreen ({ route }) {
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: 'black'}}>
       <StatusBar backgroundColor="black" barStyle="light-content" />
-      <RTCViewGrid streams={streams} />
-      {isSelectUsersViewDisplayed && 
-        <UsersSelect
-          opponentsIds={opponentsIds}
-          selectedUsersIds={selectedUsersIds}
-          selectUser={selectUser}
-          unselectUser={unselectUser}
-        />
-      }
-      <ToolBar
-        localStream={localStream}
-        isSelectUsersViewDisplayed={isSelectUsersViewDisplayed}
-        isActiveCall={isActiveCall}
-        startCall={_startCall}
-        stopCall={_stopCall}
-      />
-      <AwesomeAlert
-        show={isIncomingCall}
-        showProgress={false}
-        title={`Incoming call from ${initiatorName}`}
-        closeOnTouchOutside={false}
-        closeOnHardwareBackPress={true}
-        showCancelButton={true}
-        showConfirmButton={true}
-        cancelText="Reject"
-        confirmText="Accept"
-        cancelButtonColor="red"
-        confirmButtonColor="green"
-        onCancelPressed={_onPressReject}
-        onConfirmPressed={_onPressAccept}
-        onDismiss={clearCall}
-        alertContainerStyle={{zIndex: 1}}
-        titleStyle={{fontSize: 21}}
-        cancelButtonTextStyle={{fontSize: 18}}
-        confirmButtonTextStyle={{fontSize: 18}}
-      />
+
     </SafeAreaView>
   );
 }

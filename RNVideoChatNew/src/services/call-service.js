@@ -2,10 +2,15 @@ import ConnectyCube from 'react-native-connectycube';
 import InCallManager from 'react-native-incall-manager';
 import Sound from 'react-native-sound';
 
+import { showToast } from '../utils'
+import store from '../store'
+import { addStream, removeStream, resetActiveCall, setCallSession } from '../actions/activeCall'
+
 export default class CallService {
   static MEDIA_OPTIONS = { audio: true, video: { facingMode: 'user' } };
 
-  _session = null;
+  static LOCAL_STREAM_USER_ID = 'localStream';
+
   mediaDevices = [];
 
   _outgoingCallSound = null
@@ -16,148 +21,144 @@ export default class CallService {
     this._outgoingCallSound = new Sound(require('../../assets/sounds/dialing.mp3'))
     this._incomingCallSound = new Sound(require('../../assets/sounds/calling.mp3'))
     this._endCallSound = new Sound(require('../../assets/sounds/end_call.mp3'))
+
+    ConnectyCube.videochat.onCallListener = _onCallListener;
+    ConnectyCube.videochat.onAcceptCallListener = _onAcceptCallListener;
+    ConnectyCube.videochat.onRejectCallListener = _onRejectCallListener;
+    ConnectyCube.videochat.onStopCallListener = _onStopCallListener;
+    ConnectyCube.videochat.onUserNotAnswerListener = _onUserNotAnswerListener;
+    ConnectyCube.videochat.onRemoteStreamListener = _onRemoteStreamListener;
   }
 
-  _retrieveAndSetAvailableMediaDevices() {
-    return ConnectyCube.videochat.getMediaDevices().then(mediaDevices => {
-      this.mediaDevices = mediaDevices;
-    });
+  get callSession() {
+    return store.getState().activeCall.session;
   }
 
-  startCall(usersIds, type, options = {}) {
-    this._retrieveAndSetAvailableMediaDevices();
-
-    this._session = ConnectyCube.videochat.createNewSession(usersIds, type, options);
-
-    return this._session
-      .getUserMedia(CallService.MEDIA_OPTIONS)
-      .then(stream => {
-        this.playSound('outgoing');
-
-        this._session.call({});
-
-        return stream;
-      });
+  get streams() {
+    return store.getState().activeCall.streams;
   }
 
-  acceptCall(session) {
-    this._retrieveAndSetAvailableMediaDevices();
+  // callbacks
+  //
 
-    this._session = session;
+  async _onCallListener(session, extension){
+    // if already on a call
+    if (this.callSession) {
+      this.rejectCall(session, { already_on_call: true });
+      return;
+    }
 
+    this.playSound('incoming');
+
+    store.dispatch(setCallSession(session));
+  };
+
+  async _onAcceptCallListener(session, userId, extension){
+    if (this.callSession) {
+      this.stopSounds();
+    }
+    
+    showToast(`${getUserById(userId, 'name')} has accepted the call`);
+  };
+
+  async _onRejectCallListener(session, userId, extension){
+    store.dispatch(removeStream({userId}))
+
+    const userName = getUserById(userId, 'name');
+    const message = extension.already_on_call
+      ? `${userName} is busy (already on a call)`
+      : `${userName} rejected the call request`;
+
+    showToast(message);
+  };
+
+  async _onStopCallListener (session, userId, extension){
     this.stopSounds();
 
-    return this._session
-      .getUserMedia(CallService.MEDIA_OPTIONS)
-      .then(stream => {
-        this._session.accept({});
-        return stream;
-      });
+    const userName = getUserById(userId, 'name');
+    const message = `${userName} has left the call`;
+
+    showToast(message);
+
+    store.dispatch(removeStream({userId}));
+  };
+
+  async _onUserNotAnswerListener(session, userId){
+    showToast(`${getUserById(userId, 'name')} did not answer`);
+
+    store.dispatch(removeStream({userId}));
+  };
+
+  async _onRemoteStreamListener(session, userId, stream){
+    store.dispatch(addStream({userId, stream}));
+  };
+
+
+  // API
+  //
+
+  async startCall(usersIds, type, options = {}) {
+    const session = ConnectyCube.videochat.createNewSession(usersIds, type, options);
+    store.dispatch(setCallSession(session));
+
+    await this.setMediaDevices();
+
+    const stream = await this.callSession.getUserMedia(CallService.MEDIA_OPTIONS)
+    store.dispatch(addStream({userId: LOCAL_STREAM_USER_ID, stream: stream}));
+
+    this.callSession.call({});
+
+    this.playSound('outgoing');
+  }
+
+  async acceptCall(session) {
+    store.dispatch(setCallSession(session));
+
+    await this.setMediaDevices();
+
+    const stream = await this.callSession.getUserMedia(CallService.MEDIA_OPTIONS)
+    store.dispatch(addStream({userId: LOCAL_STREAM_USER_ID, stream: stream}));
+
+    this.callSession.accept({});
+
+    this.stopSounds();
   }
 
   stopCall() {
-    this.stopSounds();
-
-    if (this._session) {
-      this.playSound('end');
-      this._session.stop({});
+    if (this.callSession) {
+      this.callSession.stop({});
       ConnectyCube.videochat.clearSession(this._session.ID);
+
+      this.playSound('end');
+
       this._session = null;
-      this.mediaDevices = [];
+
+      store.dispatch(resetActiveCall());
     }
+
+    this.stopSounds();
   }
 
   rejectCall(session, extension) {
-    this.stopSounds();
     session.reject(extension);
+
+    this.stopSounds();
   }
 
   muteMicrophone(isMute) {
     if (isMute) {
-      this._session.mute('audio');
+      this.callSession.mute('audio');
     } else {
-      this._session.unmute('audio');
+      this.callSession.unmute('audio');
     }
   };
 
-  switchCamera(localStream) {
+  switchCamera() {
+    const localStream = this.streams.filter(s => s.userId === LOCAL_STREAM_USER_ID);
     localStream.getVideoTracks().forEach(track => track._switchCamera());
   }
 
   setSpeakerphoneOn = flag => InCallManager.setSpeakerphoneOn(flag);
-
-  processOnUserNotAnswerListener(userId) {
-    return new Promise((resolve, reject) => {
-      if (!this._session) {
-        reject();
-      } else {
-        resolve();
-      }
-    });
-  }
-
-  processOnCallListener(session) {
-    return new Promise((resolve, reject) => {
-      if (session.initiatorID === session.currentUserID) {
-        reject();
-        return;
-      }
-
-      if (this._session) {
-        this.rejectCall(session, { busy: true });
-        reject();
-        return;
-      }
-
-      this.playSound('incoming');
-
-      resolve();
-    });
-  }
-
-  processOnAcceptCallListener(session, userId, extension = {}) {
-    return new Promise((resolve, reject) => {
-      if (userId === session.currentUserID) {
-        this._session = null;
-        reject();
-      } else {
-        this.stopSounds();
-        resolve();
-      }
-    });
-  }
-
-  processOnRejectCallListener(session, userId, extension = {}) {
-    return new Promise((resolve, reject) => {
-      if (userId === session.currentUserID) {
-        this._session = null;
-        reject();
-      } else {
-        resolve();
-      }
-    });
-  }
-
-  processOnStopCallListener() {
-    return new Promise((resolve, reject) => {
-      this.stopSounds();
-      if (!this._session) {
-        reject();
-      } else {
-        resolve();
-      }
-    });
-  }
-
-  processOnRemoteStreamListener() {
-    return new Promise((resolve, reject) => {
-      if (!this._session) {
-        reject();
-      } else {
-        resolve();
-      }
-    });
-  }
 
   playSound(type) {
     // switch (type) {
@@ -185,5 +186,10 @@ export default class CallService {
     if (this._outgoingCallSound.isPlaying()) {
       this._outgoingCallSound.pause();
     }
+  }
+
+  async setMediaDevices() {
+    const mediaDevices = await ConnectyCube.videochat.getMediaDevices();
+    this.mediaDevices = mediaDevices;
   }
 }

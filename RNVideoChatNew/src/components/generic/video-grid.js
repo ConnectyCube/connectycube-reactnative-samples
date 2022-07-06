@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { RTCView } from 'react-native-connectycube';
-import CallingLoader from './CallingLoader';
+import Loader from './loader';
 import { getUserById } from '../../utils'
 
 export default ({streams}) => {
@@ -19,7 +19,7 @@ export default ({streams}) => {
 
     return (
       <View style={styles.blackView}>
-        <CallingLoader name={getUserById(userId, 'name')} />
+        <Loader name={getUserById(userId, 'name')} />
       </View>
     );
   };

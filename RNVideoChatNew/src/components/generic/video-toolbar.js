@@ -1,18 +1,18 @@
 import React, {useState} from 'react';
-import {StyleSheet, SafeAreaView, TouchableOpacity, View} from 'react-native';
-import {CallService} from '../../services';
+import { StyleSheet, SafeAreaView, TouchableOpacity, View } from 'react-native';
+import { CallService } from '../../services';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
-export default function ToolBar({isSelectUsersViewDisplayed, isActiveCall, localStream, stopCall, startCall}) {
+export default function VideoToolBar({switchCamera, stopCall}) {
 
   const [isAudioMuted, setIsAudioMuted] = useState(false);
   const [isFrontCamera, setIsFrontCamera] = useState(true);
 
-  const isCallInProgress = isActiveCall || !isSelectUsersViewDisplayed;
-  const canSwitchCamera = isActiveCall && CallService.mediaDevices.length > 1;
+  const canSwitchCamera = CallService.mediaDevices.length > 1;
 
   function switchCamera() {
-    CallService.switchCamera(localStream);
+    switchCamera();
+    
     setIsFrontCamera(!isFrontCamera)
   };
 
@@ -21,16 +21,12 @@ export default function ToolBar({isSelectUsersViewDisplayed, isActiveCall, local
     setIsAudioMuted(!isAudioMuted)
   };
 
-  function _renderCallStartStopButton() {
-    const style = isCallInProgress ? styles.buttonCallEnd : styles.buttonCall;
-    const onPress = isCallInProgress ? stopCall : startCall;
-    const type = isCallInProgress ? 'call-end' : 'call';
-
+  function _renderStopButton() {
     return (
       <TouchableOpacity
-        style={[styles.buttonContainer, style]}
-        onPress={onPress}>
-        <MaterialIcon name={type} size={32} color="white" />
+        style={[styles.buttonContainer, styles.buttonCallEnd]}
+        onPress={stopCall}>
+        <MaterialIcon name={'call-end'} size={32} color="white" />
       </TouchableOpacity>
     );
   };
@@ -62,10 +58,10 @@ export default function ToolBar({isSelectUsersViewDisplayed, isActiveCall, local
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.toolBarItem}>
-        {isActiveCall && _renderMuteButton()}
+        {_renderMuteButton()}
       </View>
       <View style={styles.toolBarItem}>
-        {_renderCallStartStopButton()}
+        {_renderStopButton()}
       </View>
       <View style={styles.toolBarItem}>
         {canSwitchCamera && _renderSwitchVideoSourceButton()}
@@ -98,9 +94,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 25,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  buttonCall: {
-    backgroundColor: 'green',
   },
   buttonCallEnd: {
     backgroundColor: 'red',

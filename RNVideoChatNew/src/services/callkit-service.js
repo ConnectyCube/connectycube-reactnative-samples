@@ -14,12 +14,20 @@ export default class CallKitService {
         appName: getApplicationName(),
       },
       android: {
+        selfManaged: true,
         alertTitle: 'Permissions required',
         alertDescription: 'This application needs to access your phone accounts',
         cancelButton: 'Cancel',
         okButton: 'ok',
         imageName: 'phone_account_icon',
-        additionalPermissions: [/*PermissionsAndroid.PERMISSIONS.example*/]
+        additionalPermissions: [/*PermissionsAndroid.PERMISSIONS.example*/],
+        // Required to get audio in background when using Android 11
+        foregroundService: {
+          channelId: 'com.company.my',
+          channelName: 'Foreground service for my app',
+          notificationTitle: 'My app is running on background',
+          notificationIcon: 'Path to the resource icon of the notification',
+        }, 
       }
     };
 
@@ -38,21 +46,36 @@ export default class CallKitService {
     RNCallKeep.addEventListener('didToggleHoldCallAction', this.onToggleHold);
     RNCallKeep.addEventListener('didPerformDTMFAction', this.onDTMFAction);
     RNCallKeep.addEventListener('didActivateAudioSession', this.audioSessionActivated);
+    RNCallKeep.addEventListener('showIncomingCallUi', this.showIncomingCallUi);
+  }
+
+  // API
+  //
+
+  displayIncomingCall(callUUID, handle, localizedCallerName = '', handleType = 'number', hasVideo = false, options = null){
+    console.log('[CallKitService][displayIncomingCall]', {callUUID, handle, localizedCallerName, handleType, hasVideo, options});
+
+    RNCallKeep.displayIncomingCall(callUUID, handle, localizedCallerName, handleType, hasVideo, options);
   }
 
   // Use startCall to ask the system to start a call - Initiate an outgoing call from this point
-  reportStartCall = (callUUID, handle, contactIdentifier, handleType, hasVideo) => {
+  reportStartCall(callUUID, handle, contactIdentifier, handleType, hasVideo){
     console.log('[CallKitService][reportStartCall]', callUUID, handle, contactIdentifier, handleType, hasVideo);
 
     // Your normal start call action
     RNCallKeep.startCall(callUUID, handle, contactIdentifier, handleType, hasVideo);
   };
 
-  reportEndCallWithUUID = (callUUID, reason) => {
+  reportEndCallWithUUID(callUUID, reason){
     RNCallKeep.reportEndCallWithUUID(callUUID, reason);
   }
 
   // Event Listener Callbacks
+  //
+
+  showIncomingCallUi = ({ handle, callUUID, name }) => {
+    console.log('[CallKitService][showIncomingCallUi]', {handle, callUUID, name});
+  }
 
   didReceiveStartCallAction = (data) => {
     console.log('[CallKitService][didReceiveStartCallAction]', data);

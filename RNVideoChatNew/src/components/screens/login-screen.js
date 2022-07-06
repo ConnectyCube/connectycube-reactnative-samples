@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   SafeAreaView,
@@ -12,9 +12,12 @@ import {
 import { AuthService, PushNotificationsService, CallKitService } from '../../services';
 import { users } from '../../config-users';
 
+import store from '../../store'
+import { setCurrentUser } from '../../actions/currentUser'
+
 const logoSrc = require('../../../assets/logo.png');
 
-export default function AuthScreen({navigation}){
+export default function LoginScreen({navigation}){
 
   const [isLogging, setIsLogging] = useState(false);
 
@@ -26,26 +29,21 @@ export default function AuthScreen({navigation}){
     try {
       await AuthService.login(user)
 
-      _initPushNotificationsAndSubscribe()
+      store.dispatch(setCurrentUser(user))
 
-      // CallKitService.init();
+      PushNotificationsService.init();
+      if (Platform.OS === 'ios') {
+        CallKitService.init();
+      //   PushNotificationsService.initVoIP();
+      }
 
       const opponents = users.filter(opponent => opponent.id !== user.id)
-
-      navigation.push('VideoScreen', { opponents, currentUser: user });
+      navigation.push('InitiateCallScreen', { opponents });
 
     } catch (e) {
       alert(`Error.\n\n${JSON.stringify(error)}`);
     }
   };
-
-  function _initPushNotificationsAndSubscribe() {
-    PushNotificationsService.init();
-
-    // if (Platform.OS === 'ios') {
-    //   PushNotificationsService.initVoIP();
-    // }
-  }
 
   return (
     <View style={[styles.container, styles.f1]}>
