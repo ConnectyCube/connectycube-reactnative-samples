@@ -3,7 +3,7 @@ import { StyleSheet, SafeAreaView, TouchableOpacity, View } from 'react-native';
 import { CallService } from '../../services';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
-export default function VideoToolBar({switchCamera, stopCall}) {
+export default function VideoToolBar({onSwitchCamera, onStopCall, onMute}) {
 
   const [isAudioMuted, setIsAudioMuted] = useState(false);
   const [isFrontCamera, setIsFrontCamera] = useState(true);
@@ -11,13 +11,14 @@ export default function VideoToolBar({switchCamera, stopCall}) {
   const canSwitchCamera = CallService.mediaDevices.length > 1;
 
   function switchCamera() {
-    switchCamera();
+    onSwitchCamera();
     
     setIsFrontCamera(!isFrontCamera)
   };
 
   function muteUnmuteAudio() {
-    CallService.muteMicrophone(!isAudioMuted);
+    onMute(!isAudioMuted)
+    
     setIsAudioMuted(!isAudioMuted)
   };
 
@@ -25,7 +26,7 @@ export default function VideoToolBar({switchCamera, stopCall}) {
     return (
       <TouchableOpacity
         style={[styles.buttonContainer, styles.buttonCallEnd]}
-        onPress={stopCall}>
+        onPress={onStopCall}>
         <MaterialIcon name={'call-end'} size={32} color="white" />
       </TouchableOpacity>
     );

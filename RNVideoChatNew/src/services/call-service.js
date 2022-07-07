@@ -2,14 +2,14 @@ import ConnectyCube from 'react-native-connectycube';
 import InCallManager from 'react-native-incall-manager';
 import Sound from 'react-native-sound';
 
-import { showToast } from '../utils'
+import { showToast, getUserById } from '../utils'
 import store from '../store'
-import { addStream, removeStream, resetActiveCall, setCallSession } from '../actions/activeCall'
+import { addOrUpdateStream, removeStream, resetActiveCall, setCallSession } from '../actions/activeCall'
+
+const LOCAL_STREAM_USER_ID = 'localStream';
 
 export default class CallService {
   static MEDIA_OPTIONS = { audio: true, video: { facingMode: 'user' } };
-
-  static LOCAL_STREAM_USER_ID = 'localStream';
 
   mediaDevices = [];
 
@@ -22,12 +22,12 @@ export default class CallService {
     this._incomingCallSound = new Sound(require('../../assets/sounds/calling.mp3'))
     this._endCallSound = new Sound(require('../../assets/sounds/end_call.mp3'))
 
-    ConnectyCube.videochat.onCallListener = _onCallListener;
-    ConnectyCube.videochat.onAcceptCallListener = _onAcceptCallListener;
-    ConnectyCube.videochat.onRejectCallListener = _onRejectCallListener;
-    ConnectyCube.videochat.onStopCallListener = _onStopCallListener;
-    ConnectyCube.videochat.onUserNotAnswerListener = _onUserNotAnswerListener;
-    ConnectyCube.videochat.onRemoteStreamListener = _onRemoteStreamListener;
+    ConnectyCube.videochat.onCallListener = this._onCallListener.bind(this);
+    ConnectyCube.videochat.onAcceptCallListener = this._onAcceptCallListener.bind(this);
+    ConnectyCube.videochat.onRejectCallListener = this._onRejectCallListener.bind(this);
+    ConnectyCube.videochat.onStopCallListener = this._onStopCallListener.bind(this);
+    ConnectyCube.videochat.onUserNotAnswerListener = this._onUserNotAnswerListener.bind(this);
+    ConnectyCube.videochat.onRemoteStreamListener = this._onRemoteStreamListener.bind(this);
   }
 
   get callSession() {
@@ -54,6 +54,8 @@ export default class CallService {
   };
 
   async _onAcceptCallListener(session, userId, extension){
+    console.log("_onAcceptCallListener", userId);
+
     if (this.callSession) {
       this.stopSounds();
     }
@@ -90,7 +92,7 @@ export default class CallService {
   };
 
   async _onRemoteStreamListener(session, userId, stream){
-    store.dispatch(addStream({userId, stream}));
+    store.dispatch(addOrUpdateStream({userId, stream}));
   };
 
 
@@ -103,8 +105,14 @@ export default class CallService {
 
     await this.setMediaDevices();
 
+    // create and store local streams
     const stream = await this.callSession.getUserMedia(CallService.MEDIA_OPTIONS)
-    store.dispatch(addStream({userId: LOCAL_STREAM_USER_ID, stream: stream}));
+    store.dispatch(addOrUpdateStream({userId: LOCAL_STREAM_USER_ID, stream: stream}));
+
+    // store dummy remote streams  
+    for (uId of usersIds) {
+      store.dispatch(addOrUpdateStream({userId: uId, stream: null}));
+    }
 
     this.callSession.call({});
 
@@ -117,7 +125,7 @@ export default class CallService {
     await this.setMediaDevices();
 
     const stream = await this.callSession.getUserMedia(CallService.MEDIA_OPTIONS)
-    store.dispatch(addStream({userId: LOCAL_STREAM_USER_ID, stream: stream}));
+    store.dispatch(addOrUpdateStream({userId: LOCAL_STREAM_USER_ID, stream: stream}));
 
     this.callSession.accept({});
 
@@ -127,11 +135,9 @@ export default class CallService {
   stopCall() {
     if (this.callSession) {
       this.callSession.stop({});
-      ConnectyCube.videochat.clearSession(this._session.ID);
+      ConnectyCube.videochat.clearSession(this.callSession.ID);
 
       this.playSound('end');
-
-      this._session = null;
 
       store.dispatch(resetActiveCall());
     }
@@ -154,8 +160,8 @@ export default class CallService {
   };
 
   switchCamera() {
-    const localStream = this.streams.filter(s => s.userId === LOCAL_STREAM_USER_ID);
-    localStream.getVideoTracks().forEach(track => track._switchCamera());
+    const localStream = this.streams.filter(s => s.userId === LOCAL_STREAM_USER_ID)[0];
+    localStream.stream.getVideoTracks().forEach(track => track._switchCamera());
   }
 
   setSpeakerphoneOn = flag => InCallManager.setSpeakerphoneOn(flag);

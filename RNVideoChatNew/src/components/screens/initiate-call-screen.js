@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { SafeAreaView, StatusBar, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import ConnectyCube from 'react-native-connectycube';
 
 import { CallService } from '../../services';
 import { getUserById, showToast } from '../../utils'
@@ -58,7 +59,7 @@ export default function VideoIncomingCallScreen ({ route, navigation }) {
     //   callType === "video"
     // );
 
-    navigation.push('VideoScreen', { selectedOpponents });
+    navigation.push('VideoScreen', { });
   }
 
   return (
