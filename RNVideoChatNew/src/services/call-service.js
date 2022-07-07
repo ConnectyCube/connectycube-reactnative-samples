@@ -50,7 +50,7 @@ export default class CallService {
 
     this.playSound('incoming');
 
-    store.dispatch(setCallSession(session));
+    store.dispatch(setCallSession(session, true));
   };
 
   async _onAcceptCallListener(session, userId, extension){
@@ -83,6 +83,10 @@ export default class CallService {
     showToast(message);
 
     store.dispatch(removeStream({userId}));
+    console.log("_onStopCallListener", this.streams.length)
+    if (this.streams.length <= 1) {
+      store.dispatch(resetActiveCall());
+    }
   };
 
   async _onUserNotAnswerListener(session, userId){
@@ -119,22 +123,30 @@ export default class CallService {
     this.playSound('outgoing');
   }
 
-  async acceptCall(session) {
-    store.dispatch(setCallSession(session));
-
+  async acceptCall(options = {}) {
     await this.setMediaDevices();
 
+    // create and store local streams
     const stream = await this.callSession.getUserMedia(CallService.MEDIA_OPTIONS)
     store.dispatch(addOrUpdateStream({userId: LOCAL_STREAM_USER_ID, stream: stream}));
 
-    this.callSession.accept({});
+    // store dummy remote streams  
+    const opponentsIds = [this.callSession.initiatorID, 
+                          ...this.callSession.opponentsIDs.filter(oid => oid !== this.callSession.currentUserID)]
+    for (uId of opponentsIds) {
+      store.dispatch(addOrUpdateStream({userId: uId, stream: null}));
+    }
+
+    console.log("this.callSession", opponentsIds, store.getState().activeCall)
+
+    this.callSession.accept(options);
 
     this.stopSounds();
   }
 
-  stopCall() {
+  stopCall(options = {}) {
     if (this.callSession) {
-      this.callSession.stop({});
+      this.callSession.stop(options);
       ConnectyCube.videochat.clearSession(this.callSession.ID);
 
       this.playSound('end');
@@ -145,8 +157,10 @@ export default class CallService {
     this.stopSounds();
   }
 
-  rejectCall(session, extension) {
-    session.reject(extension);
+  rejectCall(options = {}) {
+    if (this.callSession) {
+      this.callSession.reject(options);
+    }
 
     this.stopSounds();
   }

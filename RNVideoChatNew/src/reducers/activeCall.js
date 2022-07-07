@@ -7,16 +7,18 @@ import {
 
 const initialState = {
   session: null,
-  streams: []
+  isIcoming: false,
+  streams: [],
 }
 
 export default (state = initialState, action) => {
   switch (action.type) {
     case SET_CALL_SESSION:
-      const { session } = action;
+      const { session, isIcoming } = action;
       return {
         ...state,
         session,
+        isIcoming
       };
     case ADD_OR_UPDATE_STREAM:
       const { stream } = action;

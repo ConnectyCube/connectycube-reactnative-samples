@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { SafeAreaView, StatusBar, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import ConnectyCube from 'react-native-connectycube';
+import { useSelector } from 'react-redux'
 
 import { CallService } from '../../services';
 import { getUserById, showToast } from '../../utils'
@@ -11,6 +12,17 @@ export default function VideoIncomingCallScreen ({ route, navigation }) {
   const opponents = route.params?.opponents
 
   const [selectedOpponents, setSelectedOpponents] = useState([])
+
+  const callSession = useSelector(store => store.activeCall.session);
+  const isIcoming = useSelector(store => store.activeCall.isIcoming);
+
+  useEffect(() => {
+    if (isIcoming) {
+      // incoming call
+      console.log("callSession", callSession);
+      navigation.push('IncomingCallScreen', { });
+    }
+  }, [callSession, isIcoming]);
 
   const selectUser = opponent => {
     setSelectedOpponents([...selectedOpponents, opponent]);

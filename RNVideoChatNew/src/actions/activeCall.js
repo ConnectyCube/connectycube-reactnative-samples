@@ -3,7 +3,7 @@ export const ADD_OR_UPDATE_STREAM = 'ADD_OR_UPDATE_STREAM'
 export const REMOVE_STREAM = 'REMOVE_STREAM'
 export const RESET_ACTIVE_CALL = 'RESET_ACTIVE_CALL'
 
-export const setCallSession = (session) => ({ type: SET_CALL_SESSION, session })
+export const setCallSession = (session, isIcoming = false) => ({ type: SET_CALL_SESSION, session, isIcoming })
 export const resetActiveCall = () => ({ type: RESET_ACTIVE_CALL })
 
 export const addOrUpdateStream = (stream) => ({ type: ADD_OR_UPDATE_STREAM, stream })
