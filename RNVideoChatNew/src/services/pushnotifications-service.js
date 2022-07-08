@@ -2,6 +2,7 @@ import ConnectyCube from 'react-native-connectycube';
 import { Notifications } from 'react-native-notifications';
 import VoipPushNotification from 'react-native-voip-push-notification';
 import { getUniqueId } from 'react-native-device-info';
+import invokeApp from 'react-native-invoke-app';
 
 export default class PushNotificationsService {
   constructor() {
@@ -47,8 +48,6 @@ export default class PushNotificationsService {
   
       if (Platform.OS === 'android') {
         PushNotificationsService.displayNotification(notification.payload);
-
-        CallKitService.displayIncomingCall("123", "111", "bob");
       }
   
       completion({alert: false, sound: false, badge: false});
@@ -59,6 +58,9 @@ export default class PushNotificationsService {
   
       if (Platform.OS === 'android') {
         PushNotificationsService.displayNotification(notification.payload);
+
+        console.log("INVOKE APP2")
+        invokeApp();
       }
   
       // Calling completion on iOS with `alert: true` will present the native iOS inApp notification.
@@ -155,6 +157,9 @@ export default class PushNotificationsService {
           console.log('[JSNotifyWhenKilledTask] notificationBundle', notificationBundle);
 
           PushNotificationsService.displayNotification(notificationBundle);
+
+          console.log("INVOKE APP1")
+          invokeApp();
         }
       },
     );

@@ -43,7 +43,13 @@ export default function App () {
             name="InitiateCallScreen" 
             component={InitiateCallScreen} 
             options={{
-              headerShown: false
+              headerStyle: {
+                backgroundColor: 'grey',
+              },
+              headerTintColor: '#fff',
+              headerShown: true,
+              headerLeft: () => <></>,
+              gestureEnabled: false,
             }}
           />
           <Stack.Screen 

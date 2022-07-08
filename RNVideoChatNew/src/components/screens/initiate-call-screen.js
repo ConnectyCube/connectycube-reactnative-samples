@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { SafeAreaView, StatusBar, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import ConnectyCube from 'react-native-connectycube';
 import { useSelector } from 'react-redux'
 
-import { CallService } from '../../services';
+import { CallService, AuthService } from '../../services';
 import { getUserById, showToast } from '../../utils'
+import LogoutButton from '../../components/generic/logout-button'
+import store from '../../store'
+import { setCurrentUser } from '../../actions/currentUser'
 
 export default function VideoIncomingCallScreen ({ route, navigation }) {
 
@@ -15,6 +18,14 @@ export default function VideoIncomingCallScreen ({ route, navigation }) {
 
   const callSession = useSelector(store => store.activeCall.session);
   const isIcoming = useSelector(store => store.activeCall.isIcoming);
+  const currentUser = useSelector(store => store.currentUser);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: currentUser.name,
+      headerRight: () =>  <LogoutButton onPress={logout} />,
+    });
+  }, [navigation]);
 
   useEffect(() => {
     if (isIcoming) {
@@ -31,6 +42,12 @@ export default function VideoIncomingCallScreen ({ route, navigation }) {
   const unselectUser = opponent => {
     setSelectedOpponents(selectedOpponents.filter(op => op.id !== opponent.id));
   };
+
+  const logout = () => {
+    AuthService.logout();
+    store.dispatch(setCurrentUser(null))
+    navigation.popToTop();
+  }
 
   const startCall = async () => {
     if (selectedOpponents.length === 0) {

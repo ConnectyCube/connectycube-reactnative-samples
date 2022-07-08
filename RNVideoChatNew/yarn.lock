@@ -6015,15 +6015,14 @@ react-native-incall-manager@^4.0.0:
   resolved "https://registry.yarnpkg.com/react-native-incall-manager/-/react-native-incall-manager-4.0.0.tgz#b67f1bda82e70f287c118816bb6bffb89f5d6284"
   integrity sha512-hsiNh5hYmhLjrMfULUTKiA+LQdpflPQzVUfwHynvg6jfZ/M8SHbj8gsdubE0uO5r5GEqAYeBb9h5N8m9gAzZlQ==
 
+"react-native-invoke-app@github:ConnectyCube/react-native-invoke-app#master":
+  version "1.0.6"
+  resolved "https://codeload.github.com/ConnectyCube/react-native-invoke-app/tar.gz/3f96db124bf1ddacb90b4fe96e86da7c3e735421"
+
 react-native-notifications@4.3.1:
   version "4.3.1"
   resolved "https://registry.yarnpkg.com/react-native-notifications/-/react-native-notifications-4.3.1.tgz#ad9a8e6881bc17cf03ef16d4dfdaee9ec8bb721d"
   integrity sha512-A668d+Q0/VQRjmrh+LvDpc/REA8GXgwCijXDCIlDHGMK8enmrtdxY5OANQf1VM3hecf+fD0wYFw2uqL/ZR8jgg==
-
-react-native-push-notification@^8.1.1:
-  version "8.1.1"
-  resolved "https://registry.yarnpkg.com/react-native-push-notification/-/react-native-push-notification-8.1.1.tgz#a41d20c70ea5a7709417e96261b225461f8dc73a"
-  integrity sha512-XpBtG/w+a6WXTxu6l1dNYyTiHnbgnvjoc3KxPTxYkaIABRmvuJZkFxqruyGvfCw7ELAlZEAJO+dthdTabCe1XA==
 
 react-native-safe-area-context@^4.3.1:
   version "4.3.1"

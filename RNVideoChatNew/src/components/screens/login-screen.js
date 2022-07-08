@@ -37,10 +37,12 @@ export default function LoginScreen({navigation}){
       //   PushNotificationsService.initVoIP();
       }
 
+      setIsLogging(false);
+
       const opponents = users.filter(opponent => opponent.id !== user.id)
       navigation.push('InitiateCallScreen', { opponents });
 
-    } catch (e) {
+    } catch (error) {
       alert(`Error.\n\n${JSON.stringify(error)}`);
     }
   };
