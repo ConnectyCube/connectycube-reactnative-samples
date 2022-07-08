@@ -5979,6 +5979,11 @@ react-native-callkeep@^4.3.3:
   resolved "https://registry.yarnpkg.com/react-native-callkeep/-/react-native-callkeep-4.3.3.tgz#0dd7f7964e27bc1c015d186cb336638a22a66a91"
   integrity sha512-XfzVBB577qQpjhkdrqLgyyvRFqdvjzR+yamtl7hf0aSSiuIdMNTNJFj5wBoXp0Tffm11Jwl0myKXfxrRy+c45w==
 
+react-native-can-draw-overlays@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-can-draw-overlays/-/react-native-can-draw-overlays-1.0.0.tgz#077410a3a27748c4b70e94fb8073ebbb5ab51155"
+  integrity sha512-7G2E76YfMB23hB6G4Dgu/vHTkYVehZEQb8RqirsUEg7ehmCPoPUAAhtK1EYddy1DV4mCuZGUTE/Hq+1YHz0wlg==
+
 react-native-codegen@^0.0.17:
   version "0.0.17"
   resolved "https://registry.yarnpkg.com/react-native-codegen/-/react-native-codegen-0.0.17.tgz#83fb814d94061cbd46667f510d2ddba35ffb50ac"

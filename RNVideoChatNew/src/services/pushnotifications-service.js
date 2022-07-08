@@ -4,6 +4,8 @@ import VoipPushNotification from 'react-native-voip-push-notification';
 import { getUniqueId } from 'react-native-device-info';
 import invokeApp from 'react-native-invoke-app';
 
+import PermissionsService from './permissions-service';
+
 class PushNotificationsService {
   constructor() {
     console.log("[PushNotificationsService][constructor]");
@@ -46,21 +48,22 @@ class PushNotificationsService {
     Notifications.events().registerNotificationReceivedForeground((notification, completion) => {
       console.log(`[PushNotificationService] Notification received in foreground`, notification.payload, notification?.payload?.message);
   
-      if (Platform.OS === 'android') {
-        PushNotificationsService.displayNotification(notification.payload);
-      }
+      // if (Platform.OS === 'android') {
+      //   PushNotificationsService.displayNotification(notification.payload);
+      // }
   
       completion({alert: false, sound: false, badge: false});
     });
   
-    Notifications.events().registerNotificationReceivedBackground((notification, completion) => {
+    Notifications.events().registerNotificationReceivedBackground(async (notification, completion) => {
       console.log("[PushNotificationService] Notification Received - Background", notification.payload, notification?.payload?.message);
   
       if (Platform.OS === 'android') {
-        PushNotificationsService.displayNotification(notification.payload);
-
-        console.log("INVOKE APP2")
-        invokeApp();
+        if (await PermissionsService.isDrawOverlaysPermisisonGranted()) {
+          invokeApp();
+        } else {
+          PushNotificationsService.displayNotification(notification.payload);
+        }
       }
   
       // Calling completion on iOS with `alert: true` will present the native iOS inApp notification.
@@ -156,10 +159,11 @@ class PushNotificationsService {
         return async (notificationBundle) => {
           console.log('[JSNotifyWhenKilledTask] notificationBundle', notificationBundle);
 
-          PushNotificationsService.displayNotification(notificationBundle);
-
-          console.log("INVOKE APP1")
-          invokeApp();
+          if (await PermissionsService.isDrawOverlaysPermisisonGranted()) {
+            invokeApp();
+          } else {
+            PushNotificationsService.displayNotification(notificationBundle);
+          }
         }
       },
     );

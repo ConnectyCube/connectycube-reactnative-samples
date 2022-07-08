@@ -14,6 +14,7 @@ import AuthService from '../../services/auth-service';
 import CallService from '../../services/call-service';
 import PushNotificationsService from '../../services/pushnotifications-service';
 import CallKitService from '../../services/callkit-service';
+import PermissionsService from '../../services/permissions-service';
 import { users } from '../../config-users';
 import store from '../../store'
 import { setCurrentUser } from '../../actions/currentUser'
@@ -31,6 +32,9 @@ export default function LoginScreen({navigation}){
         login(storedUser)
       }
     })
+
+    // Android: for accepting calls in background you should provide access to show System Alerts from the background
+    PermissionsService.checkAndRequestDrawOverlaysPermission();
   }, []);
 
   async function login(user){
