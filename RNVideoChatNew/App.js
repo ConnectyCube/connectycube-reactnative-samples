@@ -5,9 +5,9 @@ import ConnectyCube from 'react-native-connectycube';
 import { Provider } from 'react-redux'
 
 import config from './connectycube_config.json';
+ConnectyCube.init(...config.connectyCubeConfig);
 
 import store from './src/store'
-
 import LoginScreen from './src/components/screens/login-screen';
 import VideoScreen from './src/components/screens/video-screen';
 import InitiateCallScreen from './src/components/screens/initiate-call-screen';
@@ -16,11 +16,6 @@ import IncomingCallScreen from './src/components/screens/incoming-call-screen';
 const Stack = createNativeStackNavigator();
 
 export default function App () {
-
-  useEffect(() => {
-    ConnectyCube.init(...config.connectyCubeConfig);
-  }, []);
-
   return (
     <Provider store={store}>
       <NavigationContainer>

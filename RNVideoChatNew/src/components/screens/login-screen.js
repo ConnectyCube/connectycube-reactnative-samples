@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   SafeAreaView,
@@ -9,9 +9,12 @@ import {
   ActivityIndicator,
   TouchableOpacity,
 } from 'react-native';
-import { AuthService, PushNotificationsService, CallKitService } from '../../services';
-import { users } from '../../config-users';
 
+import AuthService from '../../services/auth-service';
+import CallService from '../../services/call-service';
+import PushNotificationsService from '../../services/pushnotifications-service';
+import CallKitService from '../../services/callkit-service';
+import { users } from '../../config-users';
 import store from '../../store'
 import { setCurrentUser } from '../../actions/currentUser'
 
@@ -21,20 +24,29 @@ export default function LoginScreen({navigation}){
 
   const [isLogging, setIsLogging] = useState(false);
 
+  useEffect(() => {
+    AuthService.getStoredUser().then(storedUser => {
+      if (storedUser) {
+        // auto login
+        login(storedUser)
+      }
+    })
+  }, []);
+
   async function login(user){
-    console.log("Login", user);
+    console.log("Login", user, AuthService);
 
     setIsLogging(true);
 
     try {
       await AuthService.login(user)
-
       store.dispatch(setCurrentUser(user))
 
+      CallService.init();
       PushNotificationsService.init();
       if (Platform.OS === 'ios') {
         CallKitService.init();
-      //   PushNotificationsService.initVoIP();
+        PushNotificationsService.initVoIP();
       }
 
       setIsLogging(false);

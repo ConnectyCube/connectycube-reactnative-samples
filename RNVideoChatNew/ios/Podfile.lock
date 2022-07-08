@@ -364,7 +364,7 @@ PODS:
     - React-Core
   - RNCallKeep (4.3.3):
     - React
-  - RNCAsyncStorage (1.12.1):
+  - RNCAsyncStorage (1.17.7):
     - React-Core
   - RNDeviceInfo (9.0.2):
     - React-Core
@@ -447,7 +447,7 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - ReactNativeIncallManager (from `../node_modules/react-native-incall-manager`)
   - RNCallKeep (from `../node_modules/react-native-callkeep`)
-  - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
+  - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSound (from `../node_modules/react-native-sound`)
@@ -548,7 +548,7 @@ EXTERNAL SOURCES:
   RNCallKeep:
     :path: "../node_modules/react-native-callkeep"
   RNCAsyncStorage:
-    :path: "../node_modules/@react-native-community/async-storage"
+    :path: "../node_modules/@react-native-async-storage/async-storage"
   RNDeviceInfo:
     :path: "../node_modules/react-native-device-info"
   RNScreens:
@@ -612,7 +612,7 @@ SPEC CHECKSUMS:
   ReactCommon: 095366164a276d91ea704ce53cb03825c487a3f2
   ReactNativeIncallManager: b169b57d3064d8f62478f8fc3c485da6c75045d1
   RNCallKeep: 0654c8913d1bd24a3441c588b22503828793ad63
-  RNCAsyncStorage: b03032fdbdb725bea0bd9e5ec5a7272865ae7398
+  RNCAsyncStorage: d81ee5c3db1060afd49ea7045ad460eff82d2b7d
   RNDeviceInfo: 1e3f62b9ec32f7754fac60bd06b8f8a27124e7f0
   RNScreens: 4830eb40e0793b38849965cd27f4f3a7d7bc65c1
   RNSound: 6c156f925295bdc83e8e422e7d8b38d33bc71852

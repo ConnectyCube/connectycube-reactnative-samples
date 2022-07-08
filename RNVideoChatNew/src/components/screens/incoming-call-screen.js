@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import { SafeAreaView, StatusBar, StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux'
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
-import { CallService } from '../../services';
 
+import CallService from '../../services/call-service';
 import { getUserById, showToast } from '../../utils'
 
 export default function IncomingCallScreen ({ navigation }) {

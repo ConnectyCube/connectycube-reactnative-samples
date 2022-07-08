@@ -8,7 +8,7 @@ import { addOrUpdateStream, removeStream, resetActiveCall, setCallSession } from
 
 const LOCAL_STREAM_USER_ID = 'localStream';
 
-export default class CallService {
+class CallService {
   static MEDIA_OPTIONS = { audio: true, video: { facingMode: 'user' } };
 
   mediaDevices = [];
@@ -21,7 +21,9 @@ export default class CallService {
     this._outgoingCallSound = new Sound(require('../../assets/sounds/dialing.mp3'))
     this._incomingCallSound = new Sound(require('../../assets/sounds/calling.mp3'))
     this._endCallSound = new Sound(require('../../assets/sounds/end_call.mp3'))
+  }
 
+  init() {
     ConnectyCube.videochat.onCallListener = this._onCallListener.bind(this);
     ConnectyCube.videochat.onAcceptCallListener = this._onAcceptCallListener.bind(this);
     ConnectyCube.videochat.onRejectCallListener = this._onRejectCallListener.bind(this);
@@ -213,3 +215,6 @@ export default class CallService {
     this.mediaDevices = mediaDevices;
   }
 }
+
+const callService = new CallService()
+export default callService

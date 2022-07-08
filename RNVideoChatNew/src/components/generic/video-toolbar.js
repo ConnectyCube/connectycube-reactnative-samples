@@ -1,14 +1,11 @@
 import React, {useState} from 'react';
 import { StyleSheet, SafeAreaView, TouchableOpacity, View } from 'react-native';
-import { CallService } from '../../services';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
-export default function VideoToolBar({onSwitchCamera, onStopCall, onMute}) {
+export default function VideoToolBar({onSwitchCamera, onStopCall, onMute, canSwitchCamera}) {
 
   const [isAudioMuted, setIsAudioMuted] = useState(false);
   const [isFrontCamera, setIsFrontCamera] = useState(true);
-
-  const canSwitchCamera = CallService.mediaDevices.length > 1;
 
   function switchCamera() {
     onSwitchCamera();

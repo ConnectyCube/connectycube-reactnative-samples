@@ -1,7 +1,7 @@
 import { getApplicationName } from 'react-native-device-info';
 import RNCallKeep from 'react-native-callkeep';
 
-export default class CallKitService {
+class CallKitService {
   constructor() {
     this.currentCallId = null;
   }
@@ -132,3 +132,6 @@ export default class CallKitService {
     // - Start playing ringback if it is an outgoing call
   };
 }
+
+const callKitService = new CallKitService();
+export default callKitService;

@@ -4,7 +4,8 @@ import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import ConnectyCube from 'react-native-connectycube';
 import { useSelector } from 'react-redux'
 
-import { CallService, AuthService } from '../../services';
+import CallService from '../../services/call-service';
+import AuthService from '../../services/auth-service';
 import { getUserById, showToast } from '../../utils'
 import LogoutButton from '../../components/generic/logout-button'
 import store from '../../store'
@@ -43,8 +44,8 @@ export default function VideoIncomingCallScreen ({ route, navigation }) {
     setSelectedOpponents(selectedOpponents.filter(op => op.id !== opponent.id));
   };
 
-  const logout = () => {
-    AuthService.logout();
+  const logout = async () => {
+    await AuthService.logout();
     store.dispatch(setCurrentUser(null))
     navigation.popToTop();
   }

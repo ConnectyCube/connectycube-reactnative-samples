@@ -3,7 +3,7 @@ import { SafeAreaView, StatusBar } from 'react-native';
 import { useSelector } from 'react-redux'
 
 import VideoGrid from '../generic/video-grid';
-import { CallService } from '../../services';
+import CallService from '../../services/call-service';
 import VideoToolBar from '../generic/video-toolbar';
 import { showToast } from '../../utils'
 
@@ -45,6 +45,7 @@ export default function VideoScreen ({ navigation }) {
         onSwitchCamera={switchCamera}
         onStopCall={stopCall}
         onMute={muteCall}
+        canSwitchCamera={CallService.mediaDevices.length > 1}
       />
     </SafeAreaView>
   );

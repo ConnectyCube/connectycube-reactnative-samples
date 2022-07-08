@@ -4,7 +4,7 @@ import VoipPushNotification from 'react-native-voip-push-notification';
 import { getUniqueId } from 'react-native-device-info';
 import invokeApp from 'react-native-invoke-app';
 
-export default class PushNotificationsService {
+class PushNotificationsService {
   constructor() {
     console.log("[PushNotificationsService][constructor]");
     this._registerBackgroundTasks();
@@ -92,7 +92,7 @@ export default class PushNotificationsService {
     });
   }
 
-  // initVoIP() {
+  initVoIP() {
   //   console.log("[PushNotificationsService][initVoIP]");
 
   //   // ===== Step 1: subscribe `register` event =====
@@ -139,7 +139,7 @@ export default class PushNotificationsService {
   //   // --- it will be no-op if you have subscribed before (like in native side)
   //   // --- but will fire `register` event if we have latest cahced voip token ( it may be empty if no token at all )
   //   VoipPushNotification.registerVoipToken(); // --- register token
-  // }
+  }
 
   _registerBackgroundTasks() {
     if (Platform.OS === 'ios') {
@@ -241,3 +241,6 @@ export default class PushNotificationsService {
       });
   }
 }
+
+const pushNotificationsService = new PushNotificationsService();
+export default pushNotificationsService;
