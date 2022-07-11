@@ -1,10 +1,11 @@
 import ConnectyCube from 'react-native-connectycube';
 import { Notifications } from 'react-native-notifications';
-import VoipPushNotification from 'react-native-voip-push-notification';
 import { getUniqueId } from 'react-native-device-info';
 import invokeApp from 'react-native-invoke-app';
+import { AppState } from "react-native";
 
 import PermissionsService from './permissions-service';
+import CallKitService from './callkit-service';
 
 class PushNotificationsService {
   constructor() {
@@ -51,8 +52,19 @@ class PushNotificationsService {
         console.log("[PushNotificationService] Push Kit received", event.pushKitToken);
         this.subscribeToVOIPPushNotifications(event.pushKitToken);
       });
-      Notifications.ios.events().registerPushKitNotificationReceived(payload => {
-        console.log("[PushNotificationService] Push Kit notification received", JSON.stringify(payload));
+      Notifications.ios.events().registerPushKitNotificationReceived((payload, complete) => {
+        console.log("[PushNotificationService] Push Kit notification received", JSON.stringify(payload), payload["uuid"]);
+
+        if (AppState.currentState !== "active") {
+          CallKitService.displayIncomingCall(
+            payload["uuid"],
+            payload["handle"]
+          );
+        }
+
+        // Important: This tells PushKit we are done and have shown the Incoming Call. So make sure to
+        // show the call screen before calling complete
+        complete();
       });
     }
   
@@ -178,7 +190,8 @@ class PushNotificationsService {
        });
   }
 
-  deleteSubscription(deviceUdid) {
+  deleteSubscription() {
+    const deviceUdid = getUniqueId();
     ConnectyCube.pushnotifications.subscriptions.list().then(result => {
       for (let item of result) {
         const subscription = item.subscription;

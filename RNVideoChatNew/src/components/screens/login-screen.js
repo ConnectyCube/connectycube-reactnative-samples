@@ -13,8 +13,8 @@ import {
 import AuthService from '../../services/auth-service';
 import CallService from '../../services/call-service';
 import PushNotificationsService from '../../services/pushnotifications-service';
-import CallKitService from '../../services/callkit-service';
 import PermissionsService from '../../services/permissions-service';
+import CallKitService from '../../services/callkit-service';
 import { users } from '../../config-users';
 import store from '../../store'
 import { setCurrentUser } from '../../actions/currentUser'
@@ -38,28 +38,19 @@ export default function LoginScreen({navigation}){
   }, []);
 
   async function login(user){
-    console.log("Login", user, AuthService);
-
     setIsLogging(true);
 
-    try {
-      await AuthService.login(user)
-      store.dispatch(setCurrentUser(user))
+    await AuthService.login(user)
+    store.dispatch(setCurrentUser(user))
 
-      CallService.init();
-      PushNotificationsService.init();
-      if (Platform.OS === 'ios') {
-        // CallKitService.init();
-      }
+    CallService.init();
+    PushNotificationsService.init();
+    CallKitService.init();
 
-      setIsLogging(false);
+    setIsLogging(false);
 
-      const opponents = users.filter(opponent => opponent.id !== user.id)
-      navigation.push('InitiateCallScreen', { opponents });
-
-    } catch (error) {
-      alert(`Error.\n\n${JSON.stringify(error)}`);
-    }
+    const opponents = users.filter(opponent => opponent.id !== user.id)
+    navigation.push('InitiateCallScreen', { opponents });
   };
 
   return (

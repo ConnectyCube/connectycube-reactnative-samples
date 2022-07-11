@@ -2,9 +2,10 @@ import ConnectyCube from 'react-native-connectycube';
 import InCallManager from 'react-native-incall-manager';
 import Sound from 'react-native-sound';
 
-import { showToast, getUserById } from '../utils'
+import { showToast, getUserById, getCallRecipientString } from '../utils'
 import store from '../store'
 import { addOrUpdateStream, removeStream, resetActiveCall, setCallSession } from '../actions/activeCall'
+import CallKitService, { END_CALL_REASONS } from './callkit-service';
 
 const LOCAL_STREAM_USER_ID = 'localStream';
 
@@ -38,6 +39,10 @@ class CallService {
 
   get streams() {
     return store.getState().activeCall.streams;
+  }
+
+  get currentUser() {
+    return store.getState().currentUser;
   }
 
   // callbacks
@@ -85,9 +90,12 @@ class CallService {
     showToast(message);
 
     store.dispatch(removeStream({userId}));
-    console.log("_onStopCallListener", this.streams.length)
     if (this.streams.length <= 1) {
       store.dispatch(resetActiveCall());
+
+      // report to CallKit (iOS only)
+      //
+      CallKitService.reportEndCallWithoutUserInitiating(session.ID, END_CALL_REASONS.REMOTE_ENDED);
     }
   };
 
@@ -122,7 +130,19 @@ class CallService {
 
     this.callSession.call({});
 
+    // report to CallKit (iOS only)
+    CallKitService.reportStartCall(
+      this.callSession.ID,
+      this.currentUser.name,
+      getCallRecipientString(usersIds),
+      "generic",
+      type === "video"
+    );
+
+
     this.playSound('outgoing');
+
+    return session;
   }
 
   async acceptCall(options = {}) {
@@ -143,6 +163,9 @@ class CallService {
 
     this.callSession.accept(options);
 
+    // report to Call Kit (iOS only)
+    CallKitService.reportAcceptCall(this.callSession.ID);
+
     this.stopSounds();
   }
 
@@ -154,6 +177,9 @@ class CallService {
       this.playSound('end');
 
       store.dispatch(resetActiveCall());
+
+      // report to Call Kit (iOS only)
+      CallKitService.reportEndCall(this.callSession.ID);
     }
 
     this.stopSounds();
@@ -162,6 +188,10 @@ class CallService {
   rejectCall(options = {}) {
     if (this.callSession) {
       this.callSession.reject(options);
+
+      // report to CallKit (iOS only)
+      //
+      CallKitService.reportRejectCall(this.callSession.ID);
     }
 
     this.stopSounds();

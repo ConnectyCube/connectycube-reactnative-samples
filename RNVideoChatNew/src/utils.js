@@ -12,6 +12,18 @@ export function getUserById(userId, key) {
   return user;
 };
 
+export function getCallRecipientString(usersIds) {
+  let opponentsNamesString = ""
+  for (let i = 0; i < usersIds.length; ++i) {
+    opponentsNamesString += getUserById(usersIds[i]).name
+    if (i !== (usersIds.length - 1)) {
+      opponentsNamesString += ", "
+    }
+  }
+
+  return opponentsNamesString;
+}
+
 export function uuidv4() {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
     const r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);

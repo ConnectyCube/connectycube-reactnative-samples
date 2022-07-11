@@ -10,6 +10,7 @@ import { getUserById, showToast } from '../../utils'
 import LogoutButton from '../../components/generic/logout-button'
 import store from '../../store'
 import { setCurrentUser } from '../../actions/currentUser'
+import PushNotificationsService from '../../services/pushnotifications-service';
 
 export default function VideoIncomingCallScreen ({ route, navigation }) {
 
@@ -46,7 +47,10 @@ export default function VideoIncomingCallScreen ({ route, navigation }) {
 
   const logout = async () => {
     await AuthService.logout();
+    PushNotificationsService.deleteSubscription()
+
     store.dispatch(setCurrentUser(null))
+    
     navigation.popToTop();
   }
 
@@ -55,39 +59,25 @@ export default function VideoIncomingCallScreen ({ route, navigation }) {
       showToast("Please select at least one user")
       return;
     }
-    
-    await CallService.startCall(selectedOpponents.map(op => op.id), ConnectyCube.videochat.CallType.VIDEO)
 
-    // const callUDID = uuidv4()
-    // const callType = "video" // "voice"
+    const selectedOpponentsIds = selectedOpponents.map(op => op.id);
 
-    // // sendd push notitification
-    // const pushParams = {
-    //   message: `Incoming call from ${currentUser.name}`,
-    //   ios_voip: 1,
-    //   callerName: currentUser.name,
-    //   handle: currentUser.name,
-    //   uuid: callUDID,
-    //   callType
-    // };
-    // PushNotificationsService.sendPushNotification(selectedUsersIds, pushParams);
+    // 1. initiate a call
+    //
+    const callSession = await CallService.startCall(selectedOpponentsIds, ConnectyCube.videochat.CallType.VIDEO)
 
-    // // report to CallKit
-    // let opponentsNamesString = ""
-    // for (let i = 0; i < selectedUsersIds.length; ++i) {
-    //   opponentsNamesString += getUserById(selectedUsersIds[i]).name
-    //   if (i !== (selectedUsersIds.length - 1)) {
-    //     opponentsNamesString += ", "
-    //   }
-    // }
-    // //
-    // CallKitService.reportStartCall(
-    //   callUDID,
-    //   currentUser.name,
-    //   opponentsNamesString,
-    //   "generic",
-    //   callType === "video"
-    // );
+    const callType = "video" // "voice"
+
+    // 2. send push notitification to opponents
+    //
+    const pushParams = {
+      message: `Incoming call from ${currentUser.name}`,
+      ios_voip: 1,
+      callerHandle: currentUser.name,
+      uuid: callSession.ID,
+      callType
+    };
+    PushNotificationsService.sendPushNotification(selectedOpponentsIds, pushParams);
 
     navigation.push('VideoScreen', { });
   }

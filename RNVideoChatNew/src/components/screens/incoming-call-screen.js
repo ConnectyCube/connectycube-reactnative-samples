@@ -15,6 +15,7 @@ export default function IncomingCallScreen ({ navigation }) {
   useEffect(() => {
     // hide screen if call rejected/canceled
     if (!callSession) {
+      // 
       navigateBack()
       showToast("Call is ended")
     }

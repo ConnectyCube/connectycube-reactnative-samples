@@ -1,5 +1,5 @@
 import { getApplicationName } from 'react-native-device-info';
-import RNCallKeep from 'react-native-callkeep';
+import RNCallKeep, { CONSTANTS as CK_CONSTANTS } from 'react-native-callkeep';
 
 class CallKitService {
   constructor() {
@@ -7,27 +7,16 @@ class CallKitService {
   }
 
   init() {
+    if (Platform.OS !== 'ios') {
+      return;
+    }
+
     console.log('[CallKitService][init]', !!RNCallKeep);
 
     const options = {
       ios: {
         appName: getApplicationName(),
-      },
-      android: {
-        selfManaged: true,
-        alertTitle: 'Permissions required',
-        alertDescription: 'This application needs to access your phone accounts',
-        cancelButton: 'Cancel',
-        okButton: 'ok',
-        imageName: 'phone_account_icon',
-        additionalPermissions: [/*PermissionsAndroid.PERMISSIONS.example*/],
-        // Required to get audio in background when using Android 11
-        foregroundService: {
-          channelId: 'com.company.my',
-          channelName: 'Foreground service for my app',
-          notificationTitle: 'My app is running on background',
-          notificationIcon: 'Path to the resource icon of the notification',
-        }, 
+        includesCallsInRecents: true,
       }
     };
 
@@ -46,13 +35,19 @@ class CallKitService {
     RNCallKeep.addEventListener('didToggleHoldCallAction', this.onToggleHold);
     RNCallKeep.addEventListener('didPerformDTMFAction', this.onDTMFAction);
     RNCallKeep.addEventListener('didActivateAudioSession', this.audioSessionActivated);
-    RNCallKeep.addEventListener('showIncomingCallUi', this.showIncomingCallUi);
+
+    const initialEvents = RNCallKeep.getInitialEvents();
+    console.log("[CallKitService] initialEvents", initialEvents);
   }
 
   // API
   //
 
   displayIncomingCall(callUUID, handle, localizedCallerName = '', handleType = 'number', hasVideo = false, options = null){
+    if (Platform.OS !== 'ios') {
+      return;
+    }
+
     console.log('[CallKitService][displayIncomingCall]', {callUUID, handle, localizedCallerName, handleType, hasVideo, options});
 
     RNCallKeep.displayIncomingCall(callUUID, handle, localizedCallerName, handleType, hasVideo, options);
@@ -60,22 +55,70 @@ class CallKitService {
 
   // Use startCall to ask the system to start a call - Initiate an outgoing call from this point
   reportStartCall(callUUID, handle, contactIdentifier, handleType, hasVideo){
+    if (Platform.OS !== 'ios') {
+      return;
+    }
+
     console.log('[CallKitService][reportStartCall]', callUUID, handle, contactIdentifier, handleType, hasVideo);
 
     // Your normal start call action
     RNCallKeep.startCall(callUUID, handle, contactIdentifier, handleType, hasVideo);
   };
 
-  reportEndCallWithUUID(callUUID, reason){
+  reportAcceptCall(callUUID){
+    if (Platform.OS !== 'ios') {
+      return;
+    }
+
+    console.log('[CallKitService][reportAcceptCall]', callUUID);
+
+    // Your normal start call action
+    RNCallKeep.answerIncomingCall(callUUID);
+  }
+
+  reportRejectCall(callUUID){
+    if (Platform.OS !== 'ios') {
+      return;
+    }
+
+    console.log('[CallKitService][reportRejectCall]', callUUID);
+
+    RNCallKeep.rejectCall(callUUID);
+  }
+
+  reportEndCall(callUUID){
+    if (Platform.OS !== 'ios') {
+      return;
+    }
+
+    console.log('[CallKitService][reportEndCall]', callUUID);
+
+    RNCallKeep.endCall(callUUID);
+  }
+
+  // Report that the call ended without the user initiating.
+  // https://github.com/react-native-webrtc/react-native-callkeep#reportEndCallWithUUID
+  //
+  // END_CALL_REASONS: {
+  //   FAILED: 1,
+  //   REMOTE_ENDED: 2,
+  //   UNANSWERED: 3,
+  //   ANSWERED_ELSEWHERE: 4,
+  //   DECLINED_ELSEWHERE: 5 | 2,
+  //   MISSED: 2 | 6
+  // }
+  reportEndCallWithoutUserInitiating(callUUID, reason){
+    if (Platform.OS !== 'ios') {
+      return;
+    }
+
+    console.log('[CallKitService][reportEndCallWithoutUserInitiating]', callUUID, reason);
+
     RNCallKeep.reportEndCallWithUUID(callUUID, reason);
   }
 
   // Event Listener Callbacks
   //
-
-  showIncomingCallUi = ({ handle, callUUID, name }) => {
-    console.log('[CallKitService][showIncomingCallUi]', {handle, callUUID, name});
-  }
 
   didReceiveStartCallAction = (data) => {
     console.log('[CallKitService][didReceiveStartCallAction]', data);
@@ -135,3 +178,5 @@ class CallKitService {
 
 const callKitService = new CallKitService();
 export default callKitService;
+
+export const END_CALL_REASONS = CK_CONSTANTS.END_CALL_REASONS;

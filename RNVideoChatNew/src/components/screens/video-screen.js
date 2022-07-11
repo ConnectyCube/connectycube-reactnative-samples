@@ -9,6 +9,7 @@ import { showToast } from '../../utils'
 
 export default function VideoScreen ({ navigation }) {
   const streams = useSelector(store => store.activeCall.streams);
+  const callSession = useSelector(store => store.activeCall.session);
 
   useEffect(() => {
     // stop call if all opponents are left
@@ -24,7 +25,7 @@ export default function VideoScreen ({ navigation }) {
   }
 
   function stopCall(){
-    CallService.stopCall();
+    CallService.stopCall(callSession.ID);
 
     navigateBack()
   }
