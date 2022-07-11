@@ -49,8 +49,7 @@ export default function LoginScreen({navigation}){
       CallService.init();
       PushNotificationsService.init();
       if (Platform.OS === 'ios') {
-        CallKitService.init();
-        PushNotificationsService.initVoIP();
+        // CallKitService.init();
       }
 
       setIsLogging(false);

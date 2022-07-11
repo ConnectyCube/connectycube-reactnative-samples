@@ -44,6 +44,17 @@ class PushNotificationsService {
     Notifications.events().registerRemoteNotificationsRegistrationFailed((event) => {
       console.error("[PushNotificationService] Failed to get Device Token", event);
     });
+
+    // VoIP
+    if (Platform.OS === 'ios') {
+      Notifications.ios.events().registerPushKitRegistered(event => {
+        console.log("[PushNotificationService] Push Kit received", event.pushKitToken);
+        this.subscribeToVOIPPushNotifications(event.pushKitToken);
+      });
+      Notifications.ios.events().registerPushKitNotificationReceived(payload => {
+        console.log("[PushNotificationService] Push Kit notification received", JSON.stringify(payload));
+      });
+    }
   
     Notifications.events().registerNotificationReceivedForeground((notification, completion) => {
       console.log(`[PushNotificationService] Notification received in foreground`, notification.payload, notification?.payload?.message);
@@ -79,6 +90,11 @@ class PushNotificationsService {
     });
   
     Notifications.registerRemoteNotifications();
+
+    if (Platform.OS === 'ios') {
+      console.log("registerPushKit")
+      Notifications.ios.registerPushKit();
+    }
   }
 
   static displayNotification(payload) {
@@ -93,55 +109,6 @@ class PushNotificationsService {
       userInfo: extra,
       extra,
     });
-  }
-
-  initVoIP() {
-  //   console.log("[PushNotificationsService][initVoIP]");
-
-  //   // ===== Step 1: subscribe `register` event =====
-  //   // --- this.onVoipPushNotificationRegistered
-  //   VoipPushNotification.addEventListener('register', (token) => {
-  //     console.log("[PushNotificationsService][initVoIP][register]", token);
-
-  //     // --- send token to your apn provider server
-  //     this.subscribeToVOIPPushNotifications(token);
-  //   });
-
-  //   // ===== Step 2: subscribe `notification` event =====
-  //   // --- this.onVoipPushNotificationiReceived
-  //   VoipPushNotification.addEventListener('notification', (notification) => {
-  //     console.log("[PushNotificationsService][initVoIP][notification]", notification);
-
-  //     // --- when receive remote voip push, register your VoIP client, show local notification ... etc
-  //     // this.doSomething();
-
-  //     // --- optionally, if you `addCompletionHandler` from the native side, once you have done the js jobs to initiate a call, call `completion()`
-  //     VoipPushNotification.onVoipNotificationCompleted(notification.uuid);
-  //   });
-
-  //   // ===== Step 3: subscribe `didLoadWithEvents` event =====
-  //   VoipPushNotification.addEventListener('didLoadWithEvents', (events) => {
-  //     console.log("[PushNotificationsService][initVoIP][didLoadWithEvents]", events);
-
-  //     // --- this will fire when there are events occured before js bridge initialized
-  //     // --- use this event to execute your event handler manually by event type
-  //     if (!events || !Array.isArray(events) || events.length < 1) {
-  //       return;
-  //     }
-  //     for (let voipPushEvent of events) {
-  //       let { name, data } = voipPushEvent;
-  //       if (name === VoipPushNotification.RNVoipPushRemoteNotificationsRegisteredEvent) {
-  //         this.onVoipPushNotificationRegistered(data);
-  //       } else if (name === VoipPushNotification.RNVoipPushRemoteNotificationReceivedEvent) {
-  //         this.onVoipPushNotificationiReceived(data);
-  //       }
-  //     }
-  //   });
-
-  //   // ===== Step 4: register =====
-  //   // --- it will be no-op if you have subscribed before (like in native side)
-  //   // --- but will fire `register` event if we have latest cahced voip token ( it may be empty if no token at all )
-  //   VoipPushNotification.registerVoipToken(); // --- register token
   }
 
   _registerBackgroundTasks() {
