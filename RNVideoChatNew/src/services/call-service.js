@@ -192,6 +192,8 @@ class CallService {
       // report to CallKit (iOS only)
       //
       CallKitService.reportRejectCall(this.callSession.ID);
+
+      store.dispatch(resetActiveCall());
     }
 
     this.stopSounds();
