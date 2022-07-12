@@ -32,7 +32,6 @@ export default function VideoIncomingCallScreen ({ route, navigation }) {
   useEffect(() => {
     if (isIcoming) {
       // incoming call
-      console.log("callSession", callSession);
       navigation.push('IncomingCallScreen', { });
     }
   }, [callSession, isIcoming]);
@@ -73,7 +72,7 @@ export default function VideoIncomingCallScreen ({ route, navigation }) {
     const pushParams = {
       message: `Incoming call from ${currentUser.name}`,
       ios_voip: 1,
-      callerHandle: currentUser.name,
+      handle: currentUser.name,
       uuid: callSession.ID,
       callType
     };

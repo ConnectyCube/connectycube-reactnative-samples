@@ -52,20 +52,11 @@ class PushNotificationsService {
         console.log("[PushNotificationService] Push Kit received", event.pushKitToken);
         this.subscribeToVOIPPushNotifications(event.pushKitToken);
       });
-      Notifications.ios.events().registerPushKitNotificationReceived((payload, complete) => {
-        console.log("[PushNotificationService] Push Kit notification received", JSON.stringify(payload), payload["uuid"]);
-
-        if (AppState.currentState !== "active") {
-          CallKitService.displayIncomingCall(
-            payload["uuid"],
-            payload["handle"]
-          );
-        }
-
-        // Important: This tells PushKit we are done and have shown the Incoming Call. So make sure to
-        // show the call screen before calling complete
-        complete();
-      });
+      // This is handled via iOS native code AppDelegate.m file
+      //
+      // Notifications.ios.events().registerPushKitNotificationReceived((payload, complete) => {
+      //   complete();
+      // });
     }
   
     Notifications.events().registerNotificationReceivedForeground((notification, completion) => {

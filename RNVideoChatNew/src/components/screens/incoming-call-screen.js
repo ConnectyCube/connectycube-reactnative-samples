@@ -9,6 +9,7 @@ import { getUserById, showToast } from '../../utils'
 export default function IncomingCallScreen ({ navigation }) {
 
   const callSession = useSelector(store => store.activeCall.session);
+  const isCallAccepted = useSelector(store => store.activeCall.isAccepted); 
   const initiatorName = getUserById(callSession?.initiatorID)?.name;
   const icomingCallText = `${initiatorName} is calling`
 
@@ -21,11 +22,16 @@ export default function IncomingCallScreen ({ navigation }) {
     }
   }, [callSession]);
 
+  useEffect(() => {
+    console.log("ACCEPTED")
+    if (isCallAccepted) {
+      navigateBack();
+      navigation.push('VideoScreen', { });
+    }
+  }, [isCallAccepted]);
+
   const acceptCall = async () => {
     await CallService.acceptCall();
-
-    navigateBack();
-    navigation.push('VideoScreen', { });
   }
 
   const rejectCall = () => {

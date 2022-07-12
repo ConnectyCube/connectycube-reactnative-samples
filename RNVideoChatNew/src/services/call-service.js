@@ -4,7 +4,7 @@ import Sound from 'react-native-sound';
 
 import { showToast, getUserById, getCallRecipientString } from '../utils'
 import store from '../store'
-import { addOrUpdateStream, removeStream, resetActiveCall, setCallSession } from '../actions/activeCall'
+import { addOrUpdateStream, removeStream, resetActiveCall, setCallSession, acceptCall } from '../actions/activeCall'
 import CallKitService, { END_CALL_REASONS } from './callkit-service';
 
 const LOCAL_STREAM_USER_ID = 'localStream';
@@ -145,12 +145,15 @@ class CallService {
     return session;
   }
 
-  async acceptCall(options = {}) {
+  async acceptCall(options = {}) {  
+    console.log("[acceptCall]")
+
     await this.setMediaDevices();
 
     // create and store local streams
     const stream = await this.callSession.getUserMedia(CallService.MEDIA_OPTIONS)
     store.dispatch(addOrUpdateStream({userId: LOCAL_STREAM_USER_ID, stream: stream}));
+
 
     // store dummy remote streams  
     const opponentsIds = [this.callSession.initiatorID, 
@@ -159,27 +162,28 @@ class CallService {
       store.dispatch(addOrUpdateStream({userId: uId, stream: null}));
     }
 
-    console.log("this.callSession", opponentsIds, store.getState().activeCall)
-
     this.callSession.accept(options);
 
     // report to Call Kit (iOS only)
     CallKitService.reportAcceptCall(this.callSession.ID);
 
     this.stopSounds();
+
+    store.dispatch(acceptCall());
   }
 
   stopCall(options = {}) {
+    console.log("[stopCall]", this.callSession?.ID)
     if (this.callSession) {
       this.callSession.stop(options);
       ConnectyCube.videochat.clearSession(this.callSession.ID);
 
       this.playSound('end');
 
-      store.dispatch(resetActiveCall());
-
       // report to Call Kit (iOS only)
       CallKitService.reportEndCall(this.callSession.ID);
+
+      store.dispatch(resetActiveCall());
     }
 
     this.stopSounds();

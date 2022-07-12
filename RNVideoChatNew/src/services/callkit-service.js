@@ -1,11 +1,11 @@
 import { getApplicationName } from 'react-native-device-info';
 import RNCallKeep, { CONSTANTS as CK_CONSTANTS } from 'react-native-callkeep';
 
-class CallKitService {
-  constructor() {
-    this.currentCallId = null;
-  }
+import store from '../store'
+import { resetActiveCall } from '../actions/activeCall'
+import CallService from './call-service';
 
+class CallKitService {
   init() {
     if (Platform.OS !== 'ios') {
       return;
@@ -131,17 +131,21 @@ class CallKitService {
   onAnswerCallAction = (data) => {
     console.log('[CallKitService][onAnswerCallAction]', data);
 
-    let { callUUID } = data;
-    // Called when the user answers an incoming call
+    // let { callUUID } = data;
+
+    // Called when the user answers an incoming call via Call Kit
+    CallService.acceptCall();
   };
 
   onEndCallAction = (data) => {
     console.log('[CallKitService][onEndCallAction]', data);
 
-    let { callUUID } = data;
-    RNCallKeep.endCall(callUUID);
+    // let { callUUID } = data;
 
-    this.currentCallId = null;
+    // TODO:
+    // it could be either reject or stop here
+
+    CallService.stopCall()
   };
 
   // Currently iOS only

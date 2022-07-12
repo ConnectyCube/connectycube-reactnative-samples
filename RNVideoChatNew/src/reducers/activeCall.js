@@ -2,12 +2,14 @@ import {
   SET_CALL_SESSION,
   RESET_ACTIVE_CALL,
   ADD_OR_UPDATE_STREAM,
-  REMOVE_STREAM
+  REMOVE_STREAM,
+  ACCEPT_CALL
 } from '../actions/activeCall'
 
 const initialState = {
   session: null,
   isIcoming: false,
+  isAccepted: false,
   streams: [],
 }
 
@@ -19,6 +21,11 @@ export default (state = initialState, action) => {
         ...state,
         session,
         isIcoming
+      };
+    case ACCEPT_CALL:
+      return {
+        ...state,
+        isAccepted: true,
       };
     case ADD_OR_UPDATE_STREAM:
       const { stream } = action;

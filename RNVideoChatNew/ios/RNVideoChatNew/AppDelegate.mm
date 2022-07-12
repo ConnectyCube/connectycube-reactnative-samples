@@ -1,6 +1,9 @@
 #import "AppDelegate.h"
 
 #import "RNNotifications.h"
+#import "RNEventEmitter.h"
+
+#import "RNCallKeep.h"
 
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
@@ -57,7 +60,12 @@
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
 
-  [RNNotifications startMonitorNotifications]; 
+  [RNNotifications startMonitorNotifications];
+  
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(handlePushKitNotificationReceived:)
+                                               name:RNPushKitNotificationReceived
+                                             object:nil];
 
   return YES;
 }
@@ -79,6 +87,29 @@
 }
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult result))completionHandler {
   [RNNotifications didReceiveBackgroundNotification:userInfo withCompletionHandler:completionHandler];
+}
+
+- (void)handlePushKitNotificationReceived:(NSNotification *)notification {
+  UIApplicationState state = [[UIApplication sharedApplication] applicationState];
+  
+  if (state == UIApplicationStateBackground || state == UIApplicationStateInactive) {
+    NSLog(@"uuid: %@", notification.userInfo[@"uuid"]);
+    
+    [RNCallKeep reportNewIncomingCall: notification.userInfo[@"uuid"]
+                               handle: notification.userInfo[@"handle"]
+                           handleType: @"generic"
+                             hasVideo: [notification.userInfo[@"callType"] isEqual: @"video"]
+                  localizedCallerName: notification.userInfo[@"handle"]
+                      supportsHolding: YES
+                         supportsDTMF: YES
+                     supportsGrouping: YES
+                   supportsUngrouping: YES
+                          fromPushKit: YES
+                              payload: notification.userInfo
+                withCompletionHandler: nil];
+  } else {
+    // when an app is in foreground -> will show the in-app UI for incoming call
+  }
 }
 
 #if RCT_NEW_ARCH_ENABLED
