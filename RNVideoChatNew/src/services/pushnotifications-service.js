@@ -2,10 +2,8 @@ import ConnectyCube from 'react-native-connectycube';
 import { Notifications } from 'react-native-notifications';
 import { getUniqueId } from 'react-native-device-info';
 import invokeApp from 'react-native-invoke-app';
-import { AppState } from "react-native";
 
 import PermissionsService from './permissions-service';
-import CallKitService from './callkit-service';
 
 class PushNotificationsService {
   constructor() {

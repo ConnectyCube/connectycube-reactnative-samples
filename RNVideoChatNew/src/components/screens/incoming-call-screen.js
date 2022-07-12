@@ -23,8 +23,9 @@ export default function IncomingCallScreen ({ navigation }) {
   }, [callSession]);
 
   useEffect(() => {
-    console.log("ACCEPTED")
     if (isCallAccepted) {
+      console.log("[IncomingCallScreen] call accepted")
+      
       navigateBack();
       navigation.push('VideoScreen', { });
     }
@@ -48,7 +49,7 @@ export default function IncomingCallScreen ({ navigation }) {
     <SafeAreaView style={{flex: 1, backgroundColor: 'black'}}>
       <StatusBar backgroundColor="black" barStyle="light-content" />
       <View style={styles.container}>
-        <Text style={styles.incomingCallText}>{icomingCallText}</Text>
+        {initiatorName && <Text style={styles.incomingCallText}>{icomingCallText}</Text>}
         <View style={styles.containerButtons}>
           <TouchableOpacity
             style={[styles.buttonAcceptCall]}
