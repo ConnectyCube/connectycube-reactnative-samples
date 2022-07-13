@@ -3,13 +3,15 @@ import {
   RESET_ACTIVE_CALL,
   ADD_OR_UPDATE_STREAM,
   REMOVE_STREAM,
-  ACCEPT_CALL
+  ACCEPT_CALL,
+  MUTE_MICROPHONE
 } from '../actions/activeCall'
 
 const initialState = {
   session: null,
   isIcoming: false,
   isAccepted: false,
+  isMicrophoneMuted: false,
   streams: [],
 }
 
@@ -21,6 +23,11 @@ export default (state = initialState, action) => {
         ...state,
         session,
         isIcoming
+      };
+    case MUTE_MICROPHONE:
+      return {
+        ...state,
+        isMicrophoneMuted: action.isMuted,
       };
     case ACCEPT_CALL:
       return {

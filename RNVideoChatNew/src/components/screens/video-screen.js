@@ -7,6 +7,7 @@ import CallService from '../../services/call-service';
 import VideoToolBar from '../generic/video-toolbar';
 import { showToast } from '../../utils'
 
+
 export default function VideoScreen ({ navigation }) {
   const streams = useSelector(store => store.activeCall.streams);
   const callSession = useSelector(store => store.activeCall.session);

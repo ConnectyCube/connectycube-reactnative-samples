@@ -1,11 +1,12 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, SafeAreaView, TouchableOpacity, View } from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import { useSelector } from 'react-redux'
 
 export default function VideoToolBar({onSwitchCamera, onStopCall, onMute, canSwitchCamera}) {
-
-  const [isAudioMuted, setIsAudioMuted] = useState(false);
   const [isFrontCamera, setIsFrontCamera] = useState(true);
+
+  const isMicrophoneMuted = useSelector(store => store.activeCall.isMicrophoneMuted);
 
   function switchCamera() {
     onSwitchCamera();
@@ -14,9 +15,7 @@ export default function VideoToolBar({onSwitchCamera, onStopCall, onMute, canSwi
   };
 
   function muteUnmuteAudio() {
-    onMute(!isAudioMuted)
-    
-    setIsAudioMuted(!isAudioMuted)
+    onMute(!isMicrophoneMuted)
   };
 
   function _renderStopButton() {
@@ -30,7 +29,7 @@ export default function VideoToolBar({onSwitchCamera, onStopCall, onMute, canSwi
   };
 
   function _renderMuteButton() {
-    const type = isAudioMuted ? 'mic-off' : 'mic';
+    const type = isMicrophoneMuted ? 'mic-off' : 'mic';
 
     return (
       <TouchableOpacity

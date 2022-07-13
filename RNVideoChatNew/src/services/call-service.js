@@ -7,7 +7,7 @@ import RNCallKeep, { CONSTANTS as CK_CONSTANTS } from 'react-native-callkeep';
 
 import { showToast, getUserById, getCallRecipientString } from '../utils'
 import store from '../store'
-import { addOrUpdateStream, removeStream, resetActiveCall, setCallSession, acceptCall } from '../actions/activeCall'
+import { addOrUpdateStream, removeStream, resetActiveCall, setCallSession, acceptCall, muteMicrophone } from '../actions/activeCall'
 
 const LOCAL_STREAM_USER_ID = 'localStream';
 
@@ -60,6 +60,8 @@ class CallService {
     RNCallKeep.addEventListener('answerCall', this.onAnswerCallAction);
     RNCallKeep.addEventListener('endCall', this.onEndCallAction);
     RNCallKeep.addEventListener('didPerformSetMutedCallAction', this.onToggleMute);
+    RNCallKeep.addEventListener('didChangeAudioRoute', this.onChangeAudioRoute);
+    RNCallKeep.addEventListener('didLoadWithEvents', this.onLoadWithEvents);
   }
 
   get callSession() {
@@ -178,6 +180,8 @@ class CallService {
       this.callSession.unmute('audio');
     }
 
+    store.dispatch(muteMicrophone(isMute));
+    
     if (!skipCallKit) {
       this.reportMutedCall(this.callSession.ID, isMute);    
     }
@@ -404,6 +408,20 @@ class CallService {
     // Called when the system or user mutes a call
 
     this.muteMicrophone(muted, true)
+  };
+
+  onChangeAudioRoute = (data) => {
+    console.log('[CallKitService][onChangeAudioRoute]', data);
+
+    const output = data.output;
+    // could be Speaker or Receiver
+  };
+
+  onLoadWithEvents = (events) => {
+    console.log('[CallKitService][onLoadWithEvents]', events);
+
+    // `events` is passed as an Array chronologically, handle or ignore events based on the app's logic
+    // see example usage in https://github.com/react-native-webrtc/react-native-callkeep/pull/169 or https://github.com/react-native-webrtc/react-native-callkeep/pull/20
   };
 }
 
