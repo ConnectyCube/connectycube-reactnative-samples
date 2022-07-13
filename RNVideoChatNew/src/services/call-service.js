@@ -4,10 +4,16 @@ import Sound from 'react-native-sound';
 import { getApplicationName } from 'react-native-device-info';
 import RNCallKeep, { CONSTANTS as CK_CONSTANTS } from 'react-native-callkeep';
 
-
 import { showToast, getUserById, getCallRecipientString } from '../utils'
 import store from '../store'
-import { addOrUpdateStream, removeStream, resetActiveCall, setCallSession, acceptCall, muteMicrophone } from '../actions/activeCall'
+import { 
+  addOrUpdateStreams, 
+  removeStream, 
+  resetActiveCall, 
+  setCallSession, 
+  acceptCall, 
+  delayedAcceptCall, 
+  muteMicrophone } from '../actions/activeCall'
 
 const LOCAL_STREAM_USER_ID = 'localStream';
 
@@ -76,6 +82,14 @@ class CallService {
     return store.getState().currentUser;
   }
 
+  get isEarlyAccepted() {
+    return store.getState().activeCall.isEarlyAccepted;
+  }
+
+  get isAccepted() {
+    return store.getState().activeCall.isAccepted;
+  }
+
   // Call API
   //
 
@@ -85,14 +99,15 @@ class CallService {
 
     await this.setMediaDevices();
 
-    // create and store local streams
+    // create local stream
     const stream = await this.callSession.getUserMedia(CallService.MEDIA_OPTIONS)
-    store.dispatch(addOrUpdateStream({userId: LOCAL_STREAM_USER_ID, stream: stream}));
 
-    // store dummy remote streams  
+    // store streams
+    const streams = [{userId: LOCAL_STREAM_USER_ID, stream: stream}]
     for (uId of usersIds) {
-      store.dispatch(addOrUpdateStream({userId: uId, stream: null}));
+      streams.push({userId: uId, stream: null})
     }
+    store.dispatch(addOrUpdateStreams(streams));
 
     this.callSession.call({});
 
@@ -116,17 +131,17 @@ class CallService {
 
     await this.setMediaDevices();
 
-    // create and store local streams
+     // create local stream
     const stream = await this.callSession.getUserMedia(CallService.MEDIA_OPTIONS)
-    store.dispatch(addOrUpdateStream({userId: LOCAL_STREAM_USER_ID, stream: stream}));
-
-
-    // store dummy remote streams  
+   
+    // store streams
+    const streams = [{userId: LOCAL_STREAM_USER_ID, stream: stream}]
     const opponentsIds = [this.callSession.initiatorID, 
                           ...this.callSession.opponentsIDs.filter(oid => oid !== this.callSession.currentUserID)]
     for (uId of opponentsIds) {
-      store.dispatch(addOrUpdateStream({userId: uId, stream: null}));
+      streams.push({userId: uId, stream: null});
     }
+    store.dispatch(addOrUpdateStreams(streams));
 
     this.callSession.accept(options);
 
@@ -141,7 +156,7 @@ class CallService {
   }
 
   stopCall(options = {}, skipCallKit = false) {
-    console.log("[stopCall]", this.callSession?.ID)
+    console.log("[CallService][stopCall]", this.callSession?.ID)
     if (this.callSession) {
       this.callSession.stop(options);
       ConnectyCube.videochat.clearSession(this.callSession.ID);
@@ -318,6 +333,13 @@ class CallService {
     this.playSound('incoming');
 
     store.dispatch(setCallSession(session, true));
+
+    console.log("[CallService][_onCallListener]", {isEarlyAccepted: this.isEarlyAccepted, isAccepted: this.isAccepted})
+    if (this.isEarlyAccepted && !this.isAccepted) {
+      setTimeout(() => { // wait until redux updated the data
+        this.acceptCall();
+      })
+    }
   };
 
   async _onAcceptCallListener(session, userId, extension){
@@ -355,7 +377,7 @@ class CallService {
 
       // report to CallKit (iOS only)
       //
-      CallKitService.reportEndCallWithoutUserInitiating(session.ID, CK_CONSTANTS.END_CALL_REASONS.REMOTE_ENDED);
+      this.reportEndCallWithoutUserInitiating(session.ID, CK_CONSTANTS.END_CALL_REASONS.REMOTE_ENDED);
     }
   };
 
@@ -366,7 +388,7 @@ class CallService {
   };
 
   async _onRemoteStreamListener(session, userId, stream){
-    store.dispatch(addOrUpdateStream({userId, stream}));
+    store.dispatch(addOrUpdateStreams([{userId, stream}]));
   };
 
   
@@ -387,7 +409,13 @@ class CallService {
     // let { callUUID } = data;
 
     // Called when the user answers an incoming call via Call Kit
-    this.acceptCall({}, true);
+    if (!this.isAccepted) { // by some reason, this event could fire > 1 times
+      if (this.callSession) {
+        this.acceptCall({}, true);
+      } else {
+        store.dispatch(delayedAcceptCall());
+      }
+    }
   };
 
   onEndCallAction = (data) => {
@@ -399,6 +427,13 @@ class CallService {
     // it could be either reject or stop here
 
     this.stopCall({}, true);
+
+    // TODO
+    // if (this.callSession) {
+    //   this.stopCall({}, true);
+    // } else {
+    //   // call reject via HTTP API
+    // }
   };
 
   onToggleMute = (data) => {

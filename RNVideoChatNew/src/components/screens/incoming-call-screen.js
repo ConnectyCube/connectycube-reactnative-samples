@@ -11,7 +11,7 @@ export default function IncomingCallScreen ({ navigation }) {
   const callSession = useSelector(store => store.activeCall.session);
   const isCallAccepted = useSelector(store => store.activeCall.isAccepted); 
   const initiatorName = getUserById(callSession?.initiatorID)?.name;
-  const icomingCallText = `${initiatorName} is calling`
+  const icomingCallText = `${initiatorName} is calling`;
 
   useEffect(() => {
     // hide screen if call rejected/canceled

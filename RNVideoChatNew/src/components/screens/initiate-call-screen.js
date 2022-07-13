@@ -20,6 +20,7 @@ export default function VideoIncomingCallScreen ({ route, navigation }) {
 
   const callSession = useSelector(store => store.activeCall.session);
   const isIcoming = useSelector(store => store.activeCall.isIcoming);
+  const isEarlyAccepted = useSelector(store => store.activeCall.isEarlyAccepted);
   const currentUser = useSelector(store => store.currentUser);
 
   useLayoutEffect(() => {
@@ -30,11 +31,19 @@ export default function VideoIncomingCallScreen ({ route, navigation }) {
   }, [navigation]);
 
   useEffect(() => {
-    if (isIcoming) {
+    if (isIcoming && !isEarlyAccepted) {
       // incoming call
       navigation.push('IncomingCallScreen', { });
     }
-  }, [callSession, isIcoming]);
+  }, [callSession, isIcoming, isEarlyAccepted]);
+
+  useEffect(() => {
+    console.log("isEarlyAccepted", isEarlyAccepted)
+    if (isEarlyAccepted) {
+      console.log("NAVIGATE TO VideoScreen")
+      navigation.push('VideoScreen', { });
+    }
+  }, [isEarlyAccepted]);
 
   const selectUser = opponent => {
     setSelectedOpponents([...selectedOpponents, opponent]);

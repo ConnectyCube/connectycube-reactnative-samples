@@ -1,9 +1,10 @@
 import {
   SET_CALL_SESSION,
   RESET_ACTIVE_CALL,
-  ADD_OR_UPDATE_STREAM,
+  ADD_OR_UPDATE_STREAMS,
   REMOVE_STREAM,
   ACCEPT_CALL,
+  DELAYED_ACCEPT_CALL,
   MUTE_MICROPHONE
 } from '../actions/activeCall'
 
@@ -11,6 +12,7 @@ const initialState = {
   session: null,
   isIcoming: false,
   isAccepted: false,
+  isEarlyAccepted: false, // used when accepted via Call Kit, but the call session is not arrived yet
   isMicrophoneMuted: false,
   streams: [],
 }
@@ -34,14 +36,25 @@ export default (state = initialState, action) => {
         ...state,
         isAccepted: true,
       };
-    case ADD_OR_UPDATE_STREAM:
-      const { stream } = action;
-      const existingStream = state.streams.find(s => s.userId === stream.userId)
+    case DELAYED_ACCEPT_CALL:
       return {
         ...state,
-        streams: existingStream 
-                    ? state.streams.map(s => s.userId !== stream.userId ? s : stream) // replace
-                    : [...state.streams, stream], // add
+        isEarlyAccepted: true,
+      };
+    case ADD_OR_UPDATE_STREAMS:
+      const { streams } = action;
+
+      let updatedStreams = [...state.streams];
+      for (let stream of streams) {
+        const existingStream = updatedStreams.find(s => s.userId === stream.userId)
+        updatedStreams = existingStream 
+          ? updatedStreams.map(s => s.userId !== stream.userId ? s : stream) // replace
+          : [...updatedStreams, stream]; // add
+      }
+
+      return {
+        ...state,
+        streams: updatedStreams
       };
     case REMOVE_STREAM:
       return {

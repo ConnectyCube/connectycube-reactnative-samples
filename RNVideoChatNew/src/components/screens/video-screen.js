@@ -13,6 +13,7 @@ export default function VideoScreen ({ navigation }) {
   const callSession = useSelector(store => store.activeCall.session);
 
   useEffect(() => {
+    console.log("[VideoScreen] useEffect streams.length", streams.length)
     // stop call if all opponents are left
     if (streams.length === 1) {
       stopCall()
