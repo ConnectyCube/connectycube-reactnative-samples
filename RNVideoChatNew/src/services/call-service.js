@@ -3,6 +3,7 @@ import InCallManager from 'react-native-incall-manager';
 import Sound from 'react-native-sound';
 import { getApplicationName } from 'react-native-device-info';
 import RNCallKeep, { CONSTANTS as CK_CONSTANTS } from 'react-native-callkeep';
+import RNUserdefaults from '@tranzerdev/react-native-user-defaults';
 
 import { showToast, getUserById, getCallRecipientString } from '../utils'
 import store from '../store'
@@ -127,7 +128,7 @@ class CallService {
   }
 
   async acceptCall(options = {}, skipCallKit = false) {  
-    console.log("[acceptCall]")
+    console.log("[acceptCall] session", this.callSession)
 
     await this.setMediaDevices();
 
@@ -174,13 +175,15 @@ class CallService {
     this.stopSounds();
   }
 
-  rejectCall(options = {}) {
+  rejectCall(options = {}, skipCallKit = false) {
     if (this.callSession) {
       this.callSession.reject(options);
 
-      // report to CallKit (iOS only)
-      //
-      this.reportRejectCall(this.callSession.ID);
+      if (!skipCallKit) {
+        // report to CallKit (iOS only)
+        //
+        this.reportRejectCall(this.callSession.ID);
+      }
 
       store.dispatch(resetActiveCall());
     }
@@ -418,22 +421,31 @@ class CallService {
     }
   };
 
-  onEndCallAction = (data) => {
+  onEndCallAction = async (data) => {
     console.log('[CallKitService][onEndCallAction]', data);
 
-    // let { callUUID } = data;
+    let { callUUID } = data;
 
-    // TODO:
-    // it could be either reject or stop here
+    if (this.callSession) {
+      if (this.isAccepted) {
+        this.rejectCall({}, true);
+      } else {
+        this.stopCall({}, true);
+      }
+    } else {
+      const voipIncomingCallSessions = await RNUserdefaults.get("voipIncomingCallSessions");
+      const sessionInfo = voipIncomingCallSessions[callUUID];
+      const initiatorId = sessionInfo["initiatorId"];
 
-    this.stopCall({}, true);
-
-    // TODO
-    // if (this.callSession) {
-    //   this.stopCall({}, true);
-    // } else {
-    //   // call reject via HTTP API
-    // }
+      // most probably this is a call reject, so let's reject it via HTTP API
+      ConnectyCube.videochat.callRejectRequest({
+        sessionID: callUUID,
+        platform: Platform.OS,
+        recipientId: initiatorId
+      }).then(res => {
+        console.log("[CallKitService][onEndCallAction] [callRejectRequest] done")
+      });
+    }
   };
 
   onToggleMute = (data) => {

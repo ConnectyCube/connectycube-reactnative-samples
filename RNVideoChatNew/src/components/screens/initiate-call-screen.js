@@ -82,6 +82,8 @@ export default function VideoIncomingCallScreen ({ route, navigation }) {
       message: `Incoming call from ${currentUser.name}`,
       ios_voip: 1,
       handle: currentUser.name,
+      initiatorId: callSession.initiatorID,
+      opponentsIds: selectedOpponentsIds.join(","),
       uuid: callSession.ID,
       callType
     };

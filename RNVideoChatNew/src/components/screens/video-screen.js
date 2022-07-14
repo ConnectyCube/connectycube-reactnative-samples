@@ -27,7 +27,7 @@ export default function VideoScreen ({ navigation }) {
   }
 
   function stopCall(){
-    CallService.stopCall(callSession.ID);
+    CallService.stopCall(callSession?.ID);
 
     navigateBack()
   }

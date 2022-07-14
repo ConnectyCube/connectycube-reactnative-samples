@@ -66,6 +66,8 @@
                                            selector:@selector(handlePushKitNotificationReceived:)
                                                name:RNPushKitNotificationReceived
                                              object:nil];
+  // cleanup
+  [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"voipIncomingCallSessions"];
 
   return YES;
 }
@@ -93,8 +95,21 @@
   UIApplicationState state = [[UIApplication sharedApplication] applicationState];
   
   if (state == UIApplicationStateBackground || state == UIApplicationStateInactive) {
-    NSLog(@"uuid: %@", notification.userInfo[@"uuid"]);
     
+    // save call info to user defaults
+    NSMutableDictionary *callsInfo = [[[NSUserDefaults standardUserDefaults] objectForKey:@"voipIncomingCallSessions"] mutableCopy];
+    if (callsInfo == nil) {
+      callsInfo = [NSMutableDictionary dictionary];
+    }
+    [callsInfo setObject:@{
+      @"initiatorId": notification.userInfo[@"initiatorId"],
+      @"opponentsIds": notification.userInfo[@"opponentsIds"],
+      @"handle": notification.userInfo[@"handle"],
+      @"callType": notification.userInfo[@"callType"]
+    } forKey:notification.userInfo[@"uuid"]];
+    [[NSUserDefaults standardUserDefaults] setObject:callsInfo forKey:@"voipIncomingCallSessions"];
+    
+    // show CallKit incoming call screen
     [RNCallKeep reportNewIncomingCall: notification.userInfo[@"uuid"]
                                handle: notification.userInfo[@"handle"]
                            handleType: @"generic"

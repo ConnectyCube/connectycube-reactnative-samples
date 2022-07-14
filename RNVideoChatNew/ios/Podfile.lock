@@ -293,6 +293,8 @@ PODS:
   - react-native-simple-toast (1.1.3):
     - React-Core
     - Toast (~> 4.0.0)
+  - react-native-userdefaults (0.2.0):
+    - React-Core
   - react-native-webrtc (1.92.0):
     - React-Core
   - React-perflogger (0.68.2)
@@ -430,6 +432,7 @@ DEPENDENCIES:
   - react-native-notifications (from `../node_modules/react-native-notifications`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-simple-toast (from `../node_modules/react-native-simple-toast`)
+  - "react-native-userdefaults (from `../node_modules/@tranzerdev/react-native-user-defaults`)"
   - react-native-webrtc (from `../node_modules/react-native-webrtc`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
@@ -514,6 +517,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-simple-toast:
     :path: "../node_modules/react-native-simple-toast"
+  react-native-userdefaults:
+    :path: "../node_modules/@tranzerdev/react-native-user-defaults"
   react-native-webrtc:
     :path: "../node_modules/react-native-webrtc"
   React-perflogger:
@@ -592,6 +597,7 @@ SPEC CHECKSUMS:
   react-native-notifications: 33ec77006f7987bb22de8f1665889abc633b9196
   react-native-safe-area-context: 6c12e3859b6f27b25de4fee8201cfb858432d8de
   react-native-simple-toast: bf002828cf816775a6809f7a9ec3907509bce11f
+  react-native-userdefaults: 26b41e330da10805f9d155b088d2fd78f90d2c00
   react-native-webrtc: bbb644859dcc37ccb7edaec860ca62ed47bf996c
   React-perflogger: a18b4f0bd933b8b24ecf9f3c54f9bf65180f3fe6
   React-RCTActionSheet: 547fe42fdb4b6089598d79f8e1d855d7c23e2162
