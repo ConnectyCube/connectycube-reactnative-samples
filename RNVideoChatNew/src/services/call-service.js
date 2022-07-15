@@ -13,7 +13,7 @@ import {
   resetActiveCall, 
   setCallSession, 
   acceptCall, 
-  delayedAcceptCall, 
+  earlyAcceptCall, 
   muteMicrophone } from '../actions/activeCall'
 
 const LOCAL_STREAM_USER_ID = 'localStream';
@@ -91,6 +91,10 @@ class CallService {
     return store.getState().activeCall.isAccepted;
   }
 
+  get isDummySession() {
+    return store.getState().activeCall.isDummySession; 
+  }
+
   // Call API
   //
 
@@ -128,7 +132,13 @@ class CallService {
   }
 
   async acceptCall(options = {}, skipCallKit = false) {  
-    console.log("[acceptCall] session", this.callSession)
+    if (!this.callSession || this.isDummySession) {
+      store.dispatch(earlyAcceptCall());
+      console.log("[acceptCall] earlyAcceptCall");
+      return;
+    }
+
+    console.log("[acceptCall]");
 
     await this.setMediaDevices();
 
@@ -177,8 +187,18 @@ class CallService {
 
   rejectCall(options = {}, skipCallKit = false) {
     if (this.callSession) {
-      this.callSession.reject(options);
-
+      if (this.isDummySession) {
+        ConnectyCube.videochat.callRejectRequest({
+          sessionID: this.callSession.ID,
+          platform: Platform.OS,
+          recipientId: this.callSession.initiatorID
+        }).then(res => {
+          console.log("[CallKitService][rejectCall] [callRejectRequest] done")
+        });
+      } else {
+        this.callSession.reject(options);
+      }
+     
       if (!skipCallKit) {
         // report to CallKit (iOS only)
         //
@@ -328,7 +348,8 @@ class CallService {
 
   async _onCallListener(session, extension){
     // if already on a call
-    if (this.callSession) {
+    if (this.callSession && !this.isDummySession) {
+      console.log("[CallService][_onCallListener] reject, already_on_call")
       this.rejectCall(session, { already_on_call: true });
       return;
     }
@@ -413,11 +434,7 @@ class CallService {
 
     // Called when the user answers an incoming call via Call Kit
     if (!this.isAccepted) { // by some reason, this event could fire > 1 times
-      if (this.callSession) {
-        this.acceptCall({}, true);
-      } else {
-        store.dispatch(delayedAcceptCall());
-      }
+      this.acceptCall({}, true);
     }
   };
 

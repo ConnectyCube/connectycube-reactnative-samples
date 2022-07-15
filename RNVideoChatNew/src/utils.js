@@ -36,3 +36,10 @@ export function showToast(text) {
 
   commonToast.showWithGravity(text, Toast.LONG, Toast.TOP);
 };
+
+export function isCurrentRoute(navigation, routeName) {
+  const routes = navigation.getState().routes;
+  const currentRoute = routes[routes.length - 1];
+  const isAlreadyOnIncomingCallScreen = currentRoute.name === routeName;
+  return isAlreadyOnIncomingCallScreen;
+}

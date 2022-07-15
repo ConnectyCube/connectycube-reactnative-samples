@@ -4,7 +4,7 @@ import {
   ADD_OR_UPDATE_STREAMS,
   REMOVE_STREAM,
   ACCEPT_CALL,
-  DELAYED_ACCEPT_CALL,
+  EARLY_ACCEPT_CALL,
   MUTE_MICROPHONE
 } from '../actions/activeCall'
 
@@ -13,6 +13,7 @@ const initialState = {
   isIcoming: false,
   isAccepted: false,
   isEarlyAccepted: false, // used when accepted via Call Kit, but the call session is not arrived yet
+  isDummySession: false, // used when got incoming call on Android in bg/killed
   isMicrophoneMuted: false,
   streams: [],
 }
@@ -20,11 +21,12 @@ const initialState = {
 export default (state = initialState, action) => {
   switch (action.type) {
     case SET_CALL_SESSION:
-      const { session, isIcoming } = action;
+      const { session, isIcoming, isDummySession } = action;
       return {
         ...state,
         session,
-        isIcoming
+        isIcoming, 
+        isDummySession
       };
     case MUTE_MICROPHONE:
       return {
@@ -36,7 +38,7 @@ export default (state = initialState, action) => {
         ...state,
         isAccepted: true,
       };
-    case DELAYED_ACCEPT_CALL:
+    case EARLY_ACCEPT_CALL:
       return {
         ...state,
         isEarlyAccepted: true,

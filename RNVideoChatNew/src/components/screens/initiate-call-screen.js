@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux'
 
 import CallService from '../../services/call-service';
 import AuthService from '../../services/auth-service';
-import { getUserById, showToast } from '../../utils'
+import { getUserById, showToast, isCurrentRoute } from '../../utils'
 import LogoutButton from '../../components/generic/logout-button'
 import store from '../../store'
 import { setCurrentUser } from '../../actions/currentUser'
@@ -32,15 +32,17 @@ export default function VideoIncomingCallScreen ({ route, navigation }) {
 
   useEffect(() => {
     if (isIcoming && !isEarlyAccepted) {
-      // incoming call
-      navigation.push('IncomingCallScreen', { });
+    
+      const isAlreadyOnIncomingCallScreen = isCurrentRoute(navigation, 'IncomingCallScreen');
+      if (!isAlreadyOnIncomingCallScreen) {
+        // incoming call
+        navigation.push('IncomingCallScreen', { });
+      }
     }
   }, [callSession, isIcoming, isEarlyAccepted]);
 
   useEffect(() => {
-    console.log("isEarlyAccepted", isEarlyAccepted)
     if (isEarlyAccepted) {
-      console.log("NAVIGATE TO VideoScreen")
       navigation.push('VideoScreen', { });
     }
   }, [isEarlyAccepted]);

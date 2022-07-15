@@ -4,6 +4,8 @@ import { getUniqueId } from 'react-native-device-info';
 import invokeApp from 'react-native-invoke-app';
 
 import PermissionsService from './permissions-service';
+import { setCallSession } from '../actions/activeCall';
+import store from '../store';
 
 class PushNotificationsService {
   constructor() {
@@ -73,6 +75,13 @@ class PushNotificationsService {
       if (Platform.OS === 'android') {
         if (await PermissionsService.isDrawOverlaysPermisisonGranted()) {
           invokeApp();
+
+          const dummyCallSession = {
+            initiatorID: notificationBundle.initiatorId,
+            opponentsIDs: notificationBundle.opponentsIds.split(","),
+            ID: notificationBundle.uuid
+          }
+          store.dispatch(setCallSession(dummyCallSession, true, true));
         } else {
           PushNotificationsService.displayNotification(notification.payload);
         }
@@ -129,6 +138,13 @@ class PushNotificationsService {
 
           if (await PermissionsService.isDrawOverlaysPermisisonGranted()) {
             invokeApp();
+
+            const dummyCallSession = {
+              initiatorID: notificationBundle.initiatorId,
+              opponentsIDs: notificationBundle.opponentsIds.split(","),
+              ID: notificationBundle.uuid
+            }
+            store.dispatch(setCallSession(dummyCallSession, true, true));
           } else {
             PushNotificationsService.displayNotification(notificationBundle);
           }
