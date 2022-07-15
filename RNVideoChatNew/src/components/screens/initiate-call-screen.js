@@ -25,7 +25,7 @@ export default function VideoIncomingCallScreen ({ route, navigation }) {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: currentUser.name,
+      title: currentUser.full_name,
       headerRight: () =>  <LogoutButton onPress={logout} />,
     });
   }, [navigation]);
@@ -79,9 +79,9 @@ export default function VideoIncomingCallScreen ({ route, navigation }) {
     // 2. send push notitification to opponents
     //
     const pushParams = {
-      message: `Incoming call from ${currentUser.name}`,
+      message: `Incoming call from ${currentUser.full_name}`,
       ios_voip: 1,
-      handle: currentUser.name,
+      handle: currentUser.full_name,
       initiatorId: callSession.initiatorID,
       opponentsIds: selectedOpponentsIds.join(","),
       uuid: callSession.ID,
@@ -111,7 +111,7 @@ export default function VideoIncomingCallScreen ({ route, navigation }) {
               key={id}
               style={styles.userLabel(user.color)}
               onPress={() => onPress(opponent)}>
-              <Text style={styles.userName}>{user.name}</Text>
+              <Text style={styles.userName}>{user.full_name}</Text>
               <MaterialIcon name={type} size={20} color="white" />
             </TouchableOpacity>
           );

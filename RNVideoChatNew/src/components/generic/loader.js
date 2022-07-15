@@ -1,10 +1,10 @@
 import React from 'react';
 import {ActivityIndicator, View, Text, StyleSheet} from 'react-native';
 
-export default ({ name }) => (
+export default ({ text }) => (
   <View style={styles.container}>
     <View style={styles.info}>
-      <Text style={styles.text}>{name}</Text>
+      <Text style={styles.text}>{text}</Text>
       <ActivityIndicator size="small" color="white" />
     </View>
   </View>

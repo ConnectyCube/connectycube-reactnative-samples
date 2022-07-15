@@ -20,7 +20,7 @@ export default ({streams}) => {
 
     return (
       <View style={styles.blackView}>
-        <Loader name={getUserById(userId, 'name')} />
+        <Loader text={getUserById(userId, 'name')} />
       </View>
     );
   };

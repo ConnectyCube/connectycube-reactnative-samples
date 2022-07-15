@@ -15,7 +15,7 @@ export function getUserById(userId, key) {
 export function getCallRecipientString(usersIds) {
   let opponentsNamesString = ""
   for (let i = 0; i < usersIds.length; ++i) {
-    opponentsNamesString += getUserById(usersIds[i]).name
+    opponentsNamesString += getUserById(usersIds[i]).full_name
     if (i !== (usersIds.length - 1)) {
       opponentsNamesString += ", "
     }

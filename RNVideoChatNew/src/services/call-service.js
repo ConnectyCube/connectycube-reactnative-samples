@@ -115,7 +115,7 @@ class CallService {
     // report to CallKit (iOS only)
     this.reportStartCall(
       this.callSession.ID,
-      this.currentUser.name,
+      this.currentUser.full_name,
       getCallRecipientString(usersIds),
       "generic",
       type === "video"
@@ -352,13 +352,13 @@ class CallService {
       this.stopSounds();
     }
     
-    showToast(`${getUserById(userId, 'name')} has accepted the call`);
+    showToast(`${getUserById(userId, 'full_name')} has accepted the call`);
   };
 
   async _onRejectCallListener(session, userId, extension){
     store.dispatch(removeStream({userId}))
 
-    const userName = getUserById(userId, 'name');
+    const userName = getUserById(userId, 'full_name');
     const message = extension.already_on_call
       ? `${userName} is busy (already on a call)`
       : `${userName} rejected the call request`;
@@ -369,7 +369,7 @@ class CallService {
   async _onStopCallListener (session, userId, extension){
     this.stopSounds();
 
-    const userName = getUserById(userId, 'name');
+    const userName = getUserById(userId, 'full_name');
     const message = `${userName} has left the call`;
 
     showToast(message);
@@ -385,7 +385,7 @@ class CallService {
   };
 
   async _onUserNotAnswerListener(session, userId){
-    showToast(`${getUserById(userId, 'name')} did not answer`);
+    showToast(`${getUserById(userId, 'full_name')} did not answer`);
 
     store.dispatch(removeStream({userId}));
   };

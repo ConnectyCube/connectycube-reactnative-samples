@@ -72,7 +72,7 @@ export default function LoginScreen({navigation}){
             <View
               style={[styles.authBtn(user.color), styles.centeredChildren]}>
               <Text style={styles.authBtnText}>
-                {`Log in as ${user.name}`}
+                {`Log in as ${user.full_name}`}
               </Text>
             </View>
           </TouchableOpacity>
