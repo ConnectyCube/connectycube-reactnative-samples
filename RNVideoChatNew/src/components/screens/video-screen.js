@@ -5,12 +5,14 @@ import { useSelector } from 'react-redux'
 import VideoGrid from '../generic/video-grid';
 import CallService from '../../services/call-service';
 import VideoToolBar from '../generic/video-toolbar';
+import Loader from '../generic/loader';
 import { showToast } from '../../utils'
 
 
 export default function VideoScreen ({ navigation }) {
   const streams = useSelector(store => store.activeCall.streams);
   const callSession = useSelector(store => store.activeCall.session);
+  const isEarlyAccepted = useSelector(store => store.activeCall.isEarlyAccepted);
 
   useEffect(() => {
     console.log("[VideoScreen] useEffect streams.length", streams.length)
@@ -27,7 +29,7 @@ export default function VideoScreen ({ navigation }) {
   }
 
   function stopCall(){
-    CallService.stopCall(callSession?.ID);
+    CallService.stopCall();
 
     navigateBack()
   }
@@ -44,6 +46,7 @@ export default function VideoScreen ({ navigation }) {
     <SafeAreaView style={{flex: 1, backgroundColor: 'black'}}>
       <StatusBar backgroundColor="black" barStyle="light-content" />
       <VideoGrid streams={streams} />
+      {isEarlyAccepted && <Loader text="connecting.." />}
       <VideoToolBar
         onSwitchCamera={switchCamera}
         onStopCall={stopCall}

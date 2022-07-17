@@ -356,14 +356,14 @@ class CallService {
 
     this.playSound('incoming');
 
-    store.dispatch(setCallSession(session, true));
-
     console.log("[CallService][_onCallListener]", {isEarlyAccepted: this.isEarlyAccepted, isAccepted: this.isAccepted})
     if (this.isEarlyAccepted && !this.isAccepted) {
       setTimeout(() => { // wait until redux updated the data
         this.acceptCall();
       })
     }
+
+    store.dispatch(setCallSession(session, true));
   };
 
   async _onAcceptCallListener(session, userId, extension){
@@ -451,17 +451,21 @@ class CallService {
       }
     } else {
       const voipIncomingCallSessions = await RNUserdefaults.get("voipIncomingCallSessions");
-      const sessionInfo = voipIncomingCallSessions[callUUID];
-      const initiatorId = sessionInfo["initiatorId"];
+      if (voipIncomingCallSessions) {
+        const sessionInfo = voipIncomingCallSessions[callUUID];
+        if (sessionInfo) {
+          const initiatorId = sessionInfo["initiatorId"];
 
-      // most probably this is a call reject, so let's reject it via HTTP API
-      ConnectyCube.videochat.callRejectRequest({
-        sessionID: callUUID,
-        platform: Platform.OS,
-        recipientId: initiatorId
-      }).then(res => {
-        console.log("[CallKitService][onEndCallAction] [callRejectRequest] done")
-      });
+          // most probably this is a call reject, so let's reject it via HTTP API
+          ConnectyCube.videochat.callRejectRequest({
+            sessionID: callUUID,
+            platform: Platform.OS,
+            recipientId: initiatorId
+          }).then(res => {
+            console.log("[CallKitService][onEndCallAction] [callRejectRequest] done")
+          });
+        }
+      }
     }
   };
 

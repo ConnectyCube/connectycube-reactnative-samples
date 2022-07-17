@@ -26,7 +26,7 @@ export default (state = initialState, action) => {
         ...state,
         session,
         isIcoming, 
-        isDummySession
+        isDummySession,
       };
     case MUTE_MICROPHONE:
       return {
@@ -37,11 +37,14 @@ export default (state = initialState, action) => {
       return {
         ...state,
         isAccepted: true,
+        isEarlyAccepted: false,
+        isIcoming: true,
       };
     case EARLY_ACCEPT_CALL:
       return {
         ...state,
         isEarlyAccepted: true,
+        isIcoming: true,
       };
     case ADD_OR_UPDATE_STREAMS:
       const { streams } = action;

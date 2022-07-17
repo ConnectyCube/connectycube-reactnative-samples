@@ -32,9 +32,9 @@ export default function VideoIncomingCallScreen ({ route, navigation }) {
 
   useEffect(() => {
     if (isIcoming && !isEarlyAccepted) {
-    
       const isAlreadyOnIncomingCallScreen = isCurrentRoute(navigation, 'IncomingCallScreen');
-      if (!isAlreadyOnIncomingCallScreen) {
+      const isAlreadyOnVideoScreenScreen = isCurrentRoute(navigation, 'VideoScreen');
+      if (!isAlreadyOnIncomingCallScreen && !isAlreadyOnVideoScreenScreen) {
         // incoming call
         navigation.push('IncomingCallScreen', { });
       }
