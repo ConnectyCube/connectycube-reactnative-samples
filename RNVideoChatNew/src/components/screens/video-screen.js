@@ -17,7 +17,7 @@ export default function VideoScreen ({ navigation }) {
   useEffect(() => {
     console.log("[VideoScreen] useEffect streams.length", streams.length)
     // stop call if all opponents are left
-    if (streams.length === 1) {
+    if (streams.length <= 1) {
       stopCall()
     }
   }, [streams]);

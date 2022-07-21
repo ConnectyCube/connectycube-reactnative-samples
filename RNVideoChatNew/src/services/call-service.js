@@ -445,9 +445,9 @@ class CallService {
 
     if (this.callSession) {
       if (this.isAccepted) {
-        this.rejectCall({}, true);
-      } else {
         this.stopCall({}, true);
+      } else {
+        this.rejectCall({}, true);
       }
     } else {
       const voipIncomingCallSessions = await RNUserdefaults.get("voipIncomingCallSessions");
