@@ -1,3 +1,5 @@
+[![Stand With Ukraine](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/banner2-direct.svg)](https://stand-with-ukraine.pp.ua)
+
 # Chat and Video Chat code samples for React Native, based on ConnectyCube platform
 
 This project contains chat and video chat code samples for React Native platform based on [ConnectyCube](https://connectycube.com/) communication platform.
