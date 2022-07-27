@@ -61,6 +61,7 @@
   [self.window makeKeyAndVisible];
 
   [RNNotifications startMonitorNotifications];
+  [RNNotifications startMonitorPushKitNotifications];
   
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(handlePushKitNotificationReceived:)
