@@ -489,7 +489,40 @@ class CallService {
     console.log('[CallKitService][onLoadWithEvents]', events);
 
     // `events` is passed as an Array chronologically, handle or ignore events based on the app's logic
-    // see example usage in https://github.com/react-native-webrtc/react-native-callkeep/pull/169 or https://github.com/react-native-webrtc/react-native-callkeep/pull/20
+    // see example usage in https://github.com/react-native-webrtc/react-native-callkeep/pull/169 or https://github.com/react-native-webrtc/react-native-callkeep/pull/205
+
+    // Example:
+    // [
+    //   {"data": {"callUUID": "858c869d-96b1-40bf-a742-846bfb450dd6", "error": "", "errorCode": "", "fromPushKit": "1", "handle": "Dexter", "hasVideo": "1", "localizedCallerName": "Dexter", "payload": [Object], "supportsDTMF": "1", "supportsGrouping": "1", "supportsHolding": "1", "supportsUngrouping": "1"}, "name": "RNCallKeepDidDisplayIncomingCall"}, 
+    //   {"data": {"callUUID": "858c869d-96b1-40bf-a742-846bfb450dd6"}, "name": "RNCallKeepPerformAnswerCallAction"}, 
+    //   {"name": "RNCallKeepDidActivateAudioSession"}
+    // ]
+
+    let callDataToAdd = null;
+    let callDataToAnswer = null;
+    let callDataToReject = null;
+
+    for (let event of events) {
+      const { name, data } = event;
+      if (name === 'RNCallKeepDidDisplayIncomingCall') {
+        callDataToAdd = data;
+        callDataToAnswer = null;
+        callDataToReject = null;
+      }
+      if (name === 'RNCallKeepPerformAnswerCallAction') {
+        callDataToReject = null;
+        callDataToAnswer = data;
+      }
+    }
+
+    if (callDataToAdd) {
+      if (callDataToAnswer) {
+        // Called when the user answers an incoming call via Call Kit
+        if (!this.isAccepted) {
+          this.acceptCall({}, true);
+        }
+      }
+    }
   };
 }
 
