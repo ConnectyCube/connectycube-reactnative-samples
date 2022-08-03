@@ -213,15 +213,15 @@ class CallService {
 
   muteMicrophone(isMute, skipCallKit = false) {
     if (isMute) {
-      this.callSession.mute('audio');
+      this.callSession?.mute('audio');
     } else {
-      this.callSession.unmute('audio');
+      this.callSession?.unmute('audio');
     }
 
     store.dispatch(muteMicrophone(isMute));
     
     if (!skipCallKit) {
-      this.reportMutedCall(this.callSession.ID, isMute);    
+      this.reportMutedCall(this.callSession?.ID, isMute);    
     }
   };
 
@@ -515,10 +515,13 @@ class CallService {
       }
     }
 
+    console.log('[CallKitService][onLoadWithEvents]', {callDataToAdd, callDataToAnswer});
+
     if (callDataToAdd) {
       if (callDataToAnswer) {
         // Called when the user answers an incoming call via Call Kit
         if (!this.isAccepted) {
+          console.log('[CallKitService][onLoadWithEvents] acceptCall');
           this.acceptCall({}, true);
         }
       }
