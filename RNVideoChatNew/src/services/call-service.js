@@ -98,14 +98,18 @@ class CallService {
   // Call API
   //
 
-  async startCall(usersIds, type, options = {}) {
-    const session = ConnectyCube.videochat.createNewSession(usersIds, type, options);
+  async startCall(usersIds, callType, options = {}) {
+    const session = ConnectyCube.videochat.createNewSession(usersIds, callType, options);
     store.dispatch(setCallSession(session));
 
     await this.setMediaDevices();
 
     // create local stream
-    const stream = await this.callSession.getUserMedia(CallService.MEDIA_OPTIONS)
+    const mediaOptions = {...CallService.MEDIA_OPTIONS};
+    if (callType === ConnectyCube.videochat.CallType.AUDIO) {
+      mediaOptions.video = false;
+    }
+    const stream = await this.callSession.getUserMedia(mediaOptions)
 
     // store streams
     const streams = [{userId: LOCAL_STREAM_USER_ID, stream: stream}]
@@ -122,7 +126,7 @@ class CallService {
       this.currentUser.full_name,
       getCallRecipientString(usersIds),
       "generic",
-      type === "video"
+      callType === "video"
     );
 
 
@@ -142,8 +146,12 @@ class CallService {
 
     await this.setMediaDevices();
 
-     // create local stream
-    const stream = await this.callSession.getUserMedia(CallService.MEDIA_OPTIONS)
+    // create local stream
+    const mediaOptions = {...CallService.MEDIA_OPTIONS};
+    if (this.callSession.callType === ConnectyCube.videochat.CallType.AUDIO) {
+      mediaOptions.video = false;
+    }
+    const stream = await this.callSession.getUserMedia(mediaOptions)
    
     // store streams
     const streams = [{userId: LOCAL_STREAM_USER_ID, stream: stream}]

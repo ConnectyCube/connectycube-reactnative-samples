@@ -3,7 +3,7 @@ import { StyleSheet, SafeAreaView, TouchableOpacity, View } from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { useSelector } from 'react-redux'
 
-export default function VideoToolBar({onSwitchCamera, onStopCall, onMute, canSwitchCamera}) {
+export default function VideoToolBar({displaySwitchCam, onSwitchCamera, onStopCall, onMute, canSwitchCamera}) {
   const [isFrontCamera, setIsFrontCamera] = useState(true);
 
   const isMicrophoneMuted = useSelector(store => store.activeCall.isMicrophoneMuted);
@@ -60,9 +60,11 @@ export default function VideoToolBar({onSwitchCamera, onStopCall, onMute, canSwi
       <View style={styles.toolBarItem}>
         {_renderStopButton()}
       </View>
-      <View style={styles.toolBarItem}>
-        {canSwitchCamera && _renderSwitchVideoSourceButton()}
-      </View>
+      {displaySwitchCam && canSwitchCamera && 
+        <View style={styles.toolBarItem}>
+          {_renderSwitchVideoSourceButton()}
+        </View>
+      }
     </SafeAreaView>
   );
 }

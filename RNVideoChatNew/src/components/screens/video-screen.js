@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { SafeAreaView, StatusBar } from 'react-native';
 import { useSelector } from 'react-redux'
+import ConnectyCube from 'react-native-connectycube';
 
 import VideoGrid from '../generic/video-grid';
 import CallService from '../../services/call-service';
@@ -13,6 +14,8 @@ export default function VideoScreen ({ navigation }) {
   const streams = useSelector(store => store.activeCall.streams);
   const callSession = useSelector(store => store.activeCall.session);
   const isEarlyAccepted = useSelector(store => store.activeCall.isEarlyAccepted);
+
+  const displaySwitchCam = callSession?.callType === ConnectyCube.videochat.CallType.VIDEO;
 
   useEffect(() => {
     console.log("[VideoScreen] useEffect streams.length", streams.length)
@@ -48,6 +51,7 @@ export default function VideoScreen ({ navigation }) {
       <VideoGrid streams={streams} />
       {isEarlyAccepted && <Loader text="connecting.." />}
       <VideoToolBar
+        displaySwitchCam={displaySwitchCam}
         onSwitchCamera={switchCamera}
         onStopCall={stopCall}
         onMute={muteCall}

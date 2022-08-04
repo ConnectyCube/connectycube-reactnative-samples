@@ -64,7 +64,15 @@ export default function VideoIncomingCallScreen ({ route, navigation }) {
     navigation.popToTop();
   }
 
-  const startCall = async () => {
+  const startAudioCall = async () => {
+    await startCall(ConnectyCube.videochat.CallType.AUDIO)
+  }
+
+  const startVideoCall = async () => {
+    await startCall(ConnectyCube.videochat.CallType.VIDEO)
+  }
+
+  const startCall = async (callType) => {
     if (selectedOpponents.length === 0) {
       showToast("Please select at least one user")
       return;
@@ -72,11 +80,11 @@ export default function VideoIncomingCallScreen ({ route, navigation }) {
 
     const selectedOpponentsIds = selectedOpponents.map(op => op.id);
 
+    ConnectyCube.videochat.CallType.AUDIO
+
     // 1. initiate a call
     //
-    const callSession = await CallService.startCall(selectedOpponentsIds, ConnectyCube.videochat.CallType.VIDEO)
-
-    const callType = "video" // "voice"
+    const callSession = await CallService.startCall(selectedOpponentsIds, callType)
 
     // 2. send push notitification to opponents
     //
@@ -87,7 +95,7 @@ export default function VideoIncomingCallScreen ({ route, navigation }) {
       initiatorId: callSession.initiatorID,
       opponentsIds: selectedOpponentsIds.join(","),
       uuid: callSession.ID,
-      callType
+      callType: callType === ConnectyCube.videochat.CallType.VIDEO ? "video" : "audio"
     };
     PushNotificationsService.sendPushNotification(selectedOpponentsIds, pushParams);
 
@@ -98,7 +106,7 @@ export default function VideoIncomingCallScreen ({ route, navigation }) {
     <SafeAreaView style={{flex: 1, backgroundColor: 'black'}}>
       <StatusBar backgroundColor="black" barStyle="light-content" />
       <View style={styles.container}>
-        <Text style={styles.title}>Select users to start a video call</Text>
+        <Text style={styles.title}>Select users to start a call</Text>
         {opponents.map(opponent => {
           const id = opponent.id;
           const user = getUserById(id);
@@ -118,11 +126,18 @@ export default function VideoIncomingCallScreen ({ route, navigation }) {
             </TouchableOpacity>
           );
         })}
-        <TouchableOpacity
-          style={[styles.buttonStartCall]}
-          onPress={startCall}>
-          <MaterialIcon name={'call'} size={32} color="white" />
-        </TouchableOpacity>
+        <View style={styles.startCallButtonsContainer}>
+          <TouchableOpacity
+            style={[styles.buttonStartCall]}
+            onPress={startAudioCall}>
+            <MaterialIcon name={'call'} size={32} color="white" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.buttonStartCall]}
+            onPress={startVideoCall}>
+            <MaterialIcon name={'videocam'} size={32} color="white" />
+          </TouchableOpacity>
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -134,6 +149,9 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFill,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  startCallButtonsContainer: {
+    flexDirection: 'row'
   },
   title: {
     fontSize: 20,
