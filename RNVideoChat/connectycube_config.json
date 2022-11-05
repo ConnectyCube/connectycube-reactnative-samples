@@ -1,0 +1,26 @@
+{
+  "name": "Rnchat",
+  "displayName": "Rnchat",
+  "senderID": "147299227261",
+  "connectyCubeConfig": [
+    {
+      "appId": 5,
+      "authKey": "2gXQjcvCeapapRs",
+      "authSecret": "AKYfvd5h8EcV362"
+    },
+    { 
+      "chat": {
+        "streamManagement": {
+          "enable": true
+        }
+      },
+      "debug": {
+        "mode": 1
+      },
+      "endpoints" : {
+        "api": "apisrp.srplivecall.com",
+        "chat": "chatsrp.srplivecall.com"
+      }
+    }
+  ]
+}

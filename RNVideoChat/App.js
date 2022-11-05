@@ -1,21 +1,61 @@
-import React, {Component} from 'react';
-import Navigator from './src/navigator';
-import { CallService } from './src/services';
-import config from './src/config';
+import React, { useEffect} from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ConnectyCube from 'react-native-connectycube';
+import { Provider } from 'react-redux'
 
-export default class App extends Component {
-  constructor(props) {
-    super(props);
+import config from './connectycube_config.json';
+ConnectyCube.init(...config.connectyCubeConfig);
 
-    ConnectyCube.init(...config);
+import store from './src/store'
+import LoginScreen from './src/components/screens/login-screen';
+import VideoScreen from './src/components/screens/video-screen';
+import InitiateCallScreen from './src/components/screens/initiate-call-screen';
+import IncomingCallScreen from './src/components/screens/incoming-call-screen';
 
-    CallService.init(
-      require('./assets/sounds/dialing.mp3'),
-      require('./assets/sounds/calling.mp3'),
-      require('./assets/sounds/end_call.mp3')
-    )
-  }
+const Stack = createNativeStackNavigator();
 
-  render = () => <Navigator />;
-}
+export default function App () {
+  return (
+    <Provider store={store}>
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen 
+            name="LoginScreen" 
+            component={LoginScreen} 
+            options={{
+              headerShown: false
+            }}
+          />
+          <Stack.Screen 
+            name="IncomingCallScreen" 
+            component={IncomingCallScreen} 
+            options={{
+              headerShown: false
+            }}
+          />
+          <Stack.Screen 
+            name="InitiateCallScreen" 
+            component={InitiateCallScreen} 
+            options={{
+              headerStyle: {
+                backgroundColor: 'grey',
+              },
+              headerTintColor: '#fff',
+              headerShown: true,
+              headerLeft: () => <></>,
+              gestureEnabled: false,
+            }}
+          />
+          <Stack.Screen 
+            name="VideoScreen" 
+            component={VideoScreen} 
+            options={{
+              headerShown: false
+            }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
+  );
+};
