@@ -90,22 +90,22 @@ To make the sample works for your own app, please do the following:
 
 (Optional) If you are at [Enterprise](https://connectycube.com/pricing/) plan - provide your API server and Chat server endpoints in `connectycube_config.json` file to point the sample against your own server:
 
-    ```javascript
-    { 
-      "chat": {
-        "streamManagement": {
-          "enable": true
-        }
-      },
-      "debug": {
-        "mode": 1
-      },
-      "endpoints": {
-        "api": "",
-        "chat": ""
-      },
+```javascript
+{ 
+  "chat": {
+    "streamManagement": {
+      "enable": true
     }
-    ```
+  },
+  "debug": {
+    "mode": 1
+  },
+  "endpoints": {
+    "api": "",
+    "chat": ""
+  },
+}
+```
 
 5. In order to use push notifications on Android, you need to create `google-services.json` file and copy it into project's `android/app` folder. Also, you need to update the `applicationId` in `android/app/build.gradle` to the one which is specified in `google-services.json`, so they must match. If you have no existing API project yet, the easiest way to go about in creating one is using this [step-by-step installation process](https://firebase.google.com/docs/android/setup`)
 
@@ -115,4 +115,4 @@ To make the sample works for your own app, please do the following:
 
 ## Can't build yourself?
 
-Got troubles with building React Native code sample? Just create an issue at [Issues page](https://github.com/ConnectyCube/connectycube-reactnative-samples/issues) - we will create the sample for you. For FREE!
+Got troubles with building React Native code sample? Just create an issue at [Issues page](https://github.com/ConnectyCube/connectycube-reactnative-samples/issues)
