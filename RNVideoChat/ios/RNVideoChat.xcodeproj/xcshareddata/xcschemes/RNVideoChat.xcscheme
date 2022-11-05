@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "RNVideoChatNew.app"
-               BlueprintName = "RNVideoChatNew"
-               ReferencedContainer = "container:RNVideoChatNew.xcodeproj">
+               BuildableName = "RNVideoChat.app"
+               BlueprintName = "RNVideoChat"
+               ReferencedContainer = "container:RNVideoChat.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "RNVideoChatNewTests.xctest"
-               BlueprintName = "RNVideoChatNewTests"
-               ReferencedContainer = "container:RNVideoChatNew.xcodeproj">
+               BuildableName = "RNVideoChatTests.xctest"
+               BlueprintName = "RNVideoChatTests"
+               ReferencedContainer = "container:RNVideoChat.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "RNVideoChatNew.app"
-            BlueprintName = "RNVideoChatNew"
-            ReferencedContainer = "container:RNVideoChatNew.xcodeproj">
+            BuildableName = "RNVideoChat.app"
+            BlueprintName = "RNVideoChat"
+            ReferencedContainer = "container:RNVideoChat.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "RNVideoChatNew.app"
-            BlueprintName = "RNVideoChatNew"
-            ReferencedContainer = "container:RNVideoChatNew.xcodeproj">
+            BuildableName = "RNVideoChat.app"
+            BlueprintName = "RNVideoChat"
+            ReferencedContainer = "container:RNVideoChat.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

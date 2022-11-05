@@ -1,4 +1,4 @@
-package com.rnvideochatnew.newarchitecture;
+package com.rnvideochat.newarchitecture;
 
 import android.app.Application;
 import androidx.annotation.NonNull;
@@ -19,9 +19,9 @@ import com.facebook.react.fabric.CoreComponentsRegistry;
 import com.facebook.react.fabric.EmptyReactNativeConfig;
 import com.facebook.react.fabric.FabricJSIModuleProvider;
 import com.facebook.react.uimanager.ViewManagerRegistry;
-import com.rnvideochatnew.BuildConfig;
-import com.rnvideochatnew.newarchitecture.components.MainComponentsRegistry;
-import com.rnvideochatnew.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
+import com.rnvideochat.BuildConfig;
+import com.rnvideochat.newarchitecture.components.MainComponentsRegistry;
+import com.rnvideochat.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
 import java.util.ArrayList;
 import java.util.List;
 

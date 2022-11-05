@@ -132,6 +132,8 @@ class CallService {
 
     this.playSound('outgoing');
 
+    this.setSpeakerphoneOn(this.callSession.callType === ConnectyCube.videochat.CallType.VIDEO);
+
     return session;
   }
 
@@ -172,6 +174,8 @@ class CallService {
     this.stopSounds();
 
     store.dispatch(acceptCall());
+
+    this.setSpeakerphoneOn(this.callSession.callType === ConnectyCube.videochat.CallType.VIDEO);
   }
 
   stopCall(options = {}, skipCallKit = false) {
@@ -241,22 +245,22 @@ class CallService {
   setSpeakerphoneOn = flag => InCallManager.setSpeakerphoneOn(flag);
 
   playSound(type) {
-    // switch (type) {
-    //   case 'outgoing':
-    //     this._outgoingCallSound.setNumberOfLoops(-1);
-    //     this._outgoingCallSound.play();
-    //     break;
-    //   case 'incoming':
-    //     this._incomingCallSound.setNumberOfLoops(-1);
-    //     this._incomingCallSound.play();
-    //     break;
-    //   case 'end':
-    //     this._endCallSound.play();
-    //     break;
+    switch (type) {
+      case 'outgoing':
+        this._outgoingCallSound.setNumberOfLoops(-1);
+        this._outgoingCallSound.play();
+        break;
+      case 'incoming':
+        this._incomingCallSound.setNumberOfLoops(-1);
+        this._incomingCallSound.play();
+        break;
+      case 'end':
+        this._endCallSound.play();
+        break;
 
-    //   default:
-    //     break;
-    // }
+      default:
+        break;
+    }
   }
 
   stopSounds() {

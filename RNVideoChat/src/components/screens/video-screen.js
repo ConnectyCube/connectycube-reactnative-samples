@@ -15,7 +15,7 @@ export default function VideoScreen ({ navigation }) {
   const callSession = useSelector(store => store.activeCall.session);
   const isEarlyAccepted = useSelector(store => store.activeCall.isEarlyAccepted);
 
-  const displaySwitchCam = callSession?.callType === ConnectyCube.videochat.CallType.VIDEO;
+  const isVideoCall = callSession?.callType === ConnectyCube.videochat.CallType.VIDEO;
 
   useEffect(() => {
     console.log("[VideoScreen] useEffect streams.length", streams.length)
@@ -51,7 +51,7 @@ export default function VideoScreen ({ navigation }) {
       <VideoGrid streams={streams} />
       {isEarlyAccepted && <Loader text="connecting.." />}
       <VideoToolBar
-        displaySwitchCam={displaySwitchCam}
+        displaySwitchCam={isVideoCall}
         onSwitchCamera={switchCamera}
         onStopCall={stopCall}
         onMute={muteCall}

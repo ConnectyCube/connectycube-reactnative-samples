@@ -4,7 +4,7 @@ require_relative '../node_modules/@react-native-community/cli-platform-ios/nativ
 platform :ios, '11.0'
 install! 'cocoapods', :deterministic_uuids => false
 
-target 'RNVideoChatNew' do
+target 'RNVideoChat' do
   pod 'react-native-webrtc', :path => '../node_modules/react-native-webrtc'
 
   
@@ -22,7 +22,7 @@ target 'RNVideoChatNew' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
-  target 'RNVideoChatNewTests' do
+  target 'RNVideoChatTests' do
     inherit! :complete
     # Pods for testing
   end

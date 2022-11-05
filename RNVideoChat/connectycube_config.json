@@ -1,12 +1,12 @@
 {
-  "name": "Rnchat",
-  "displayName": "Rnchat",
+  "name": "RNVideoChat",
+  "displayName": "RNVideoChat",
   "senderID": "147299227261",
   "connectyCubeConfig": [
     {
-      "appId": 5,
-      "authKey": "2gXQjcvCeapapRs",
-      "authSecret": "AKYfvd5h8EcV362"
+      "appId": 385,
+      "authKey": "DFBMs5-dKBBCXcd",
+      "authSecret": "SkCW-ThdnmRg9Za"
     },
     { 
       "chat": {
@@ -16,10 +16,6 @@
       },
       "debug": {
         "mode": 1
-      },
-      "endpoints" : {
-        "api": "apisrp.srplivecall.com",
-        "chat": "chatsrp.srplivecall.com"
       }
     }
   ]

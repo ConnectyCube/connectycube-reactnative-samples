@@ -5963,10 +5963,9 @@ react-is@^16.13.0, react-is@^16.13.1, react-is@^16.7.0:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
 
-react-native-callkeep@^4.3.3:
+"react-native-callkeep@github:react-native-webrtc/react-native-callkeep#master":
   version "4.3.3"
-  resolved "https://registry.yarnpkg.com/react-native-callkeep/-/react-native-callkeep-4.3.3.tgz#0dd7f7964e27bc1c015d186cb336638a22a66a91"
-  integrity sha512-XfzVBB577qQpjhkdrqLgyyvRFqdvjzR+yamtl7hf0aSSiuIdMNTNJFj5wBoXp0Tffm11Jwl0myKXfxrRy+c45w==
+  resolved "https://codeload.github.com/react-native-webrtc/react-native-callkeep/tar.gz/4b1fa98a685f6502d151875138b7c81baf1ec680"
 
 react-native-can-draw-overlays@^1.0.0:
   version "1.0.0"
