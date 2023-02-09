@@ -17,8 +17,8 @@
     "@react-navigation/native-stack": "^6.6.2",
     "@react-navigation/stack": "^6.2.1",
     "@tranzerdev/react-native-user-defaults": "github:ConnectyCube/react-native-userdefaults#main",
-    "react": "17.0.2",
-    "react-native": "0.68.2",
+    "react": "18.1.0",
+    "react-native": "0.70.5",
     "react-native-callkeep": "github:react-native-webrtc/react-native-callkeep#master",
     "react-native-can-draw-overlays": "^1.0.0",
     "react-native-connectycube": "3.21.0",
@@ -41,9 +41,9 @@
     "babel-jest": "^28.1.2",
     "eslint": "^8.18.0",
     "jest": "^28.1.2",
-    "metro-react-native-babel-preset": "^0.71.2",
+    "metro-react-native-babel-preset": "^0.72.3",
     "patch-package": "^6.4.7",
-    "react-test-renderer": "17.0.2"
+    "react-test-renderer": "18.1.0"
   },
   "jest": {
     "preset": "react-native"
