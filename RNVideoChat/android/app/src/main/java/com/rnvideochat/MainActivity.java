@@ -1,8 +1,10 @@
 package com.rnvideochat;
 
+import androidx.annotation.NonNull;
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactRootView;
+import io.wazo.callkeep.RNCallKeepModule;
 
 public class MainActivity extends ReactActivity {
 
@@ -43,6 +45,17 @@ public class MainActivity extends ReactActivity {
       // If you opted-in for the New Architecture, we enable Concurrent Root (i.e. React 18).
       // More on this on https://reactjs.org/blog/2022/03/29/react-v18.html
       return BuildConfig.IS_NEW_ARCHITECTURE_ENABLED;
+    }
+  }
+
+  // Permission results
+  @Override
+  public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    switch (requestCode) {
+      case RNCallKeepModule.REQUEST_READ_PHONE_STATE:
+        RNCallKeepModule.onRequestPermissionsResult(requestCode, permissions, grantResults);
+      break;
     }
   }
 }

@@ -224,6 +224,7 @@ android {
             keyPassword 'android'
         }
     }
+    namespace 'com.rnvideochat'
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
@@ -284,9 +285,11 @@ dependencies {
         implementation jscFlavor
     }
 
+    implementation 'com.android.support:support-annotations:+'
+    implementation 'com.google.firebase:firebase-core:16.0.0'
     implementation project(':WebRTCModule')
     implementation project(':react-native-notifications')
-    implementation platform('com.google.firebase:firebase-bom:31.2.0')
+    implementation project(':react-native-callkeep')
 }
 
 if (isNewArchitectureEnabled()) {

@@ -385,7 +385,7 @@ PODS:
     - React-perflogger (= 0.70.5)
   - ReactNativeIncallManager (4.0.0):
     - React-Core
-  - RNCallKeep (4.3.3):
+  - RNCallKeep (4.3.6):
     - React
   - RNCAsyncStorage (1.17.7):
     - React-Core
@@ -646,7 +646,7 @@ SPEC CHECKSUMS:
   React-runtimeexecutor: 7401c4a40f8728fd89df4a56104541b760876117
   ReactCommon: c9246996e73bf75a2c6c3ff15f1e16707cdc2da9
   ReactNativeIncallManager: b169b57d3064d8f62478f8fc3c485da6c75045d1
-  RNCallKeep: 0654c8913d1bd24a3441c588b22503828793ad63
+  RNCallKeep: bf2041d23e6ba4d8db4044c3c3530a21e1de4f37
   RNCAsyncStorage: d81ee5c3db1060afd49ea7045ad460eff82d2b7d
   RNDeviceInfo: 1e3f62b9ec32f7754fac60bd06b8f8a27124e7f0
   RNScreens: 4830eb40e0793b38849965cd27f4f3a7d7bc65c1
