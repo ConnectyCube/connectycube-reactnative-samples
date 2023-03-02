@@ -5,6 +5,7 @@
   "scripts": {
     "postinstall": "patch-package && npx jetify && cd ios && pod install",
     "android": "react-native run-android",
+    "android:clean": "cd android && ./gradlew clean && ./gradlew cleanBuild && rm -rf $HOME/.gradle/caches/",
     "android-apk-dev": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/ && cd android && ./gradlew assembleDebug",
     "ios": "react-native run-ios",
     "clear-all": "watchman watch-del-all; rm -rf ./ios/build;  rm -rf ./ios/Pods; rm -rf $TMPDIR/react-*;rm -rf $TMPDIR/haste-*; rm -rf $TMPDIR/metro-*; rm -rf node_modules/; yarn cache clean; yarn install;"
@@ -21,7 +22,7 @@
     "react-native": "0.68.2",
     "react-native-callkeep": "github:react-native-webrtc/react-native-callkeep#master",
     "react-native-can-draw-overlays": "^1.0.0",
-    "react-native-connectycube": "3.21.0",
+    "react-native-connectycube": "^3.23.0",
     "react-native-device-info": "^9.0.2",
     "react-native-incall-manager": "^4.0.0",
     "react-native-invoke-app": "github:ConnectyCube/react-native-invoke-app#master",

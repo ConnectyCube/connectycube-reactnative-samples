@@ -19,6 +19,7 @@ PODS:
     - DoubleConversion
     - glog
   - glog (0.3.5)
+  - JitsiWebRTC (106.0.0)
   - RCTRequired (0.63.0)
   - RCTTypeSafety (0.63.0):
     - FBLazyVector (= 0.63.0)
@@ -187,10 +188,11 @@ PODS:
   - React-jsinspector (0.63.0)
   - react-native-safe-area-context (0.6.4):
     - React
-  - react-native-simple-toast (1.0.0):
-    - React
+  - react-native-simple-toast (1.1.4):
+    - React-Core
     - Toast (~> 4.0.0)
-  - react-native-webrtc (1.92.0):
+  - react-native-webrtc (106.0.6):
+    - JitsiWebRTC (~> 106.0.0)
     - React-Core
   - React-RCTActionSheet (0.63.0):
     - React-Core/RCTActionSheetHeaders (= 0.63.0)
@@ -256,19 +258,19 @@ PODS:
     - React
   - RNCAsyncStorage (1.7.1):
     - React
-  - RNCMaskedView (0.1.6):
+  - RNCMaskedView (0.1.11):
     - React
-  - RNGestureHandler (1.6.0):
-    - React
-  - RNReanimated (1.7.0):
-    - React
-  - RNScreens (2.1.0):
-    - React
-  - RNSound (0.11.0):
-    - React
-    - RNSound/Core (= 0.11.0)
-  - RNSound/Core (0.11.0):
-    - React
+  - RNGestureHandler (1.10.3):
+    - React-Core
+  - RNReanimated (1.13.4):
+    - React-Core
+  - RNScreens (2.18.1):
+    - React-Core
+  - RNSound (0.11.2):
+    - React-Core
+    - RNSound/Core (= 0.11.2)
+  - RNSound/Core (0.11.2):
+    - React-Core
   - RNVectorIcons (6.6.0):
     - React
   - Toast (4.0.0)
@@ -318,6 +320,7 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - boost-for-react-native
+    - JitsiWebRTC
     - Toast
 
 EXTERNAL SOURCES:
@@ -403,6 +406,7 @@ SPEC CHECKSUMS:
   FBReactNativeSpec: e856d5103d749483f86f53afafd8df4ed8a776bd
   Folly: b73c3869541e86821df3c387eb0af5f65addfab4
   glog: 40a13f7840415b9a77023fbcae0f1e6f43192af3
+  JitsiWebRTC: f441eb0e2d67f0588bf24e21c5162e97342714fb
   RCTRequired: e46bb77db03887b3e200d34b08515c804669db99
   RCTTypeSafety: 270fed6675c42f80fb87b47d626ef3cede1505e6
   React: e008906ff1328f9bccb345ff4f7826397ad223fc
@@ -413,9 +417,9 @@ SPEC CHECKSUMS:
   React-jsi: 254710f3a97e587427bfbf3011dacec2af66a1fc
   React-jsiexecutor: 0e0cb4e170ca72d4bb1179843d08dcbea3d100ac
   React-jsinspector: fc661eff8edbfb7e22119382c13f33bcadde0f3c
-  react-native-safe-area-context: 042dfc9d4db17196841df962ba9497f6e7a5bd02
-  react-native-simple-toast: 9c2f5979dfe555d0aa7b084348a06fd6ef7a6f55
-  react-native-webrtc: bbb644859dcc37ccb7edaec860ca62ed47bf996c
+  react-native-safe-area-context: 52342d2d80ea8faadd0ffa76d83b6051f20c5329
+  react-native-simple-toast: 8ee5d23f0b92b935ab7434cdb65159ce12dfb4b7
+  react-native-webrtc: 22ac6c64a1e38552bb173dde81ffea6979a58ef3
   React-RCTActionSheet: aadd91a1d6cbfae50dd41f140004f816e9e47ade
   React-RCTAnimation: 7fa2ef6c0ef1e3f0b7d2261c827ec94412deb5e6
   React-RCTBlob: ccbbc70295aee3a76a70323b48f63fb7a7fcffd6
@@ -426,17 +430,17 @@ SPEC CHECKSUMS:
   React-RCTText: ba503bf4cce41881ca258ba789c33e017955efdd
   React-RCTVibration: 77ab1cf4a5eb854b88ad5ed3e9d8509ed124525e
   ReactCommon: f63556ee9e41e9802257228237e5e660451a03cf
-  ReactNativeIncallManager: 35e387f58d3fc6e8cc042f47a2256b5f50134a67
-  RNCAsyncStorage: 8539fc80a0075fcc9c8e2dff84cd22dc5bf1dacf
-  RNCMaskedView: e5b99bc191945f157adeede68da9d424462de177
-  RNGestureHandler: dde546180bf24af0b5f737c8ad04b6f3fa51609a
-  RNReanimated: 031fe8d9ea93c2bd689a40f05320ef9d96f74d7f
-  RNScreens: 2a9cd603bcebc34319c92e595283d760dd1f55f5
-  RNSound: c980916b596cc15c8dcd2f6ecd3b13c4881dbe20
+  ReactNativeIncallManager: 352f4a3cbe9385edf7eff57be3fe6bd1ab64fe7f
+  RNCAsyncStorage: 44395cb9c7c1523104c2b499eb426ef7aff82bca
+  RNCMaskedView: 0e1bc4bfa8365eba5fbbb71e07fbdc0555249489
+  RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
+  RNReanimated: c1b56d030d1616239861534d9adb531f8cffab68
+  RNScreens: f7ad633b2e0190b77b6a7aab7f914fad6f198d8d
+  RNSound: 6c156f925295bdc83e8e422e7d8b38d33bc71852
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
   Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
   Yoga: 7d2edc5b410474191962e6dee88ee67f9b328b6b
 
-PODFILE CHECKSUM: 9e479a72c0cc1fdfff17b18ed91f7e2972b600dd
+PODFILE CHECKSUM: 9b1e018abc060c3e06a19db7be626fcb1be35971
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.12.0
