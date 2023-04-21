@@ -54,7 +54,9 @@ export default class AuthScreen extends PureComponent {
               styles.centeredChildren,
               {flexDirection: 'row'},
             ]}>
-            <Text>{isLogging ? 'Connecting... ' : 'Video Chat Conf'}</Text>
+            <Text style={styles.title}>
+              {isLogging ? 'Connecting... ' : 'Video Chat Conf'}
+            </Text>
             {isLogging && <ActivityIndicator size="small" color="#1198d4" />}
           </View>
         </SafeAreaView>
@@ -89,6 +91,9 @@ const styles = StyleSheet.create({
   logoImg: {
     width: '90%',
     height: '80%',
+  },
+  title: {
+    color: 'black',
   },
   authBtns: {
     justifyContent: 'flex-end',

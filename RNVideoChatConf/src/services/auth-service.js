@@ -5,13 +5,13 @@ import CallService from './call-service';
 export default class AuthService {
   init = (janusServerEndpoint = null) => {
     if (janusServerEndpoint) {
-      config.conference.server = janusServerEndpoint
+      config.conference.server = janusServerEndpoint;
     }
-    ConnectyCube.init(credentials, appConfig)
-  }
+    ConnectyCube.init(credentials, appConfig);
+  };
 
   createSession(user) {
-    return ConnectyCube.createSession(user)
+    return ConnectyCube.createSession(user);
   }
 
   login = user => {
@@ -19,18 +19,18 @@ export default class AuthService {
       this.createSession(user)
         .then(() => {
           CallService.CURRENT_USER = { name: user.name, id: user.id };
-          return ConnectyCube.chat.connect({ userId: user.id, password: user.password })
+          return ConnectyCube.chat.connect({
+            userId: user.id,
+            password: user.password,
+          });
         })
         .then(resolve)
         .catch(reject);
     });
   };
 
-
-
   logout = () => {
     ConnectyCube.chat.disconnect();
     ConnectyCube.destroySession();
   };
-
 }
