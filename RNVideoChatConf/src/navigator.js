@@ -20,7 +20,7 @@ const AppNavigator = () => {
           name="FullScreenModal"
           component={RTCViewFullScreenModal}
           screenOptions={{
-            presentation: 'modal',
+            presentation: 'fullScreenModal',
           }}
         />
       </Stack.Navigator>
