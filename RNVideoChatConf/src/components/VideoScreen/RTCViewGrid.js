@@ -1,111 +1,111 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
-import {RTCView} from 'react-native-connectycube';
-import {CallService} from '../../services';
+import { View, StyleSheet } from 'react-native';
+import { RTCView } from 'react-native-connectycube';
+import { CallService } from '../../services';
 import CallingLoader from './CallingLoader';
 
-export default ({streams}) => {
-  const RTCViewRendered = ({userId, stream}) => {
-    if (stream) {
-      return (
-        <RTCView
-          objectFit="cover"
-          style={styles.blackView}
-          key={userId}
-          streamURL={stream.toURL()}
-        />
-      );
-    }
-
-    return (
-      <View style={styles.blackView}>
+const RTCViewRendered = ({ userId, stream }) =>
+  stream && stream._tracks ? (
+    <View style={styles.blackView} key={`wrap:view:${userId}`}>
+      <RTCView
+        objectFit="cover"
+        style={styles.blackView}
+        streamURL={stream.toURL()}
+        key={`rtc:view:${userId}`}
+        zOrder={1}
+      />
+    </View>
+  ) : (
+    <View style={styles.blackView}>
+      {typeof stream === 'string' ? (
+        <CallingLoader name={stream} />
+      ) : (
         <CallingLoader name={CallService.getUserById(userId, 'name')} />
-      </View>
-    );
-  };
+      )}
+    </View>
+  );
 
-  const streamsCount = streams.length;
-
-  let RTCListView = null;
-
-  switch (streamsCount) {
+export default ({ streams }) => {
+  switch (streams.length) {
     case 1:
-      RTCListView = (
-        <RTCViewRendered
-          userId={streams[0].userId}
-          stream={streams[0].stream}
-        />
-      );
-      break;
-
-    case 2:
-      RTCListView = (
-        <View style={styles.inColumn}>
+      return (
+        <View style={styles.blackView}>
           <RTCViewRendered
             userId={streams[0].userId}
             stream={streams[0].stream}
           />
-          <RTCViewRendered
-            userId={streams[1].userId}
-            stream={streams[1].stream}
-          />
         </View>
       );
-      break;
+
+    case 2:
+      return (
+        <View style={styles.blackView}>
+          <View style={styles.inColumn}>
+            <RTCViewRendered
+              userId={streams[0].userId}
+              stream={streams[0].stream}
+            />
+            <RTCViewRendered
+              userId={streams[1].userId}
+              stream={streams[1].stream}
+            />
+          </View>
+        </View>
+      );
 
     case 3:
-      RTCListView = (
-        <View style={styles.inColumn}>
-          <View style={styles.inRow}>
-            <RTCViewRendered
-              userId={streams[0].userId}
-              stream={streams[0].stream}
-            />
-            <RTCViewRendered
-              userId={streams[1].userId}
-              stream={streams[1].stream}
-            />
-          </View>
-          <RTCViewRendered
-            userId={streams[2].userId}
-            stream={streams[2].stream}
-          />
-        </View>
-      );
-      break;
-
-    case 4:
-      RTCListView = (
-        <View style={styles.inColumn}>
-          <View style={styles.inRow}>
-            <RTCViewRendered
-              userId={streams[0].userId}
-              stream={streams[0].stream}
-            />
-            <RTCViewRendered
-              userId={streams[1].userId}
-              stream={streams[1].stream}
-            />
-          </View>
-          <View style={styles.inRow}>
+      return (
+        <View style={styles.blackView}>
+          <View style={styles.inColumn}>
+            <View style={styles.inRow}>
+              <RTCViewRendered
+                userId={streams[0].userId}
+                stream={streams[0].stream}
+              />
+              <RTCViewRendered
+                userId={streams[1].userId}
+                stream={streams[1].stream}
+              />
+            </View>
             <RTCViewRendered
               userId={streams[2].userId}
               stream={streams[2].stream}
             />
-            <RTCViewRendered
-              userId={streams[3].userId}
-              stream={streams[3].stream}
-            />
           </View>
         </View>
       );
-      break;
+
+    case 4:
+      return (
+        <View style={styles.blackView}>
+          <View style={styles.inColumn}>
+            <View style={styles.inRow}>
+              <RTCViewRendered
+                userId={streams[0].userId}
+                stream={streams[0].stream}
+              />
+              <RTCViewRendered
+                userId={streams[1].userId}
+                stream={streams[1].stream}
+              />
+            </View>
+            <View style={styles.inRow}>
+              <RTCViewRendered
+                userId={streams[2].userId}
+                stream={streams[2].stream}
+              />
+              <RTCViewRendered
+                userId={streams[3].userId}
+                stream={streams[3].stream}
+              />
+            </View>
+          </View>
+        </View>
+      );
 
     default:
-      break;
+      return null;
   }
-
-  return <View style={styles.blackView}>{RTCListView}</View>;
 };
 
 const styles = StyleSheet.create({

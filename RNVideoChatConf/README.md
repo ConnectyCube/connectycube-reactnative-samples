@@ -1,105 +1,79 @@
-# Conference calling code sample for React Native for ConnectyCube platform
+This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
 
-This README introduces [ConnectyCube](https://connectycube.com) Conference Calling code sample for React Native
+# Getting Started
 
-Project contains the following features implemented:
+>**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
 
-- User authorization
-- Video calls up to 4 users
-- Mute/unmute microphone
-- Mute/unmute video
-- Switch camera
-- Snack bars to notify users about changes
+## Step 1: Start the Metro Server
 
-## Documentation
+First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
 
-ConnectyCube React Native SDK getting started - [https://developers.connectycube.com/reactnative](https://developers.connectycube.com/reactnative)
+To start Metro, run the following command from the _root_ of your React Native project:
 
-ConnectyCube Conference Calling API documentation - [https://developers.connectycube.com/reactnative/videocalling-conference](https://developers.connectycube.com/reactnative/videocalling-conference)
+```bash
+# using npm
+npm start
 
-## Screenshots
+# OR using Yarn
+yarn start
+```
 
-<kbd><img alt="React Native video chat code sample, login" src="https://developers.connectycube.com/docs/_images/code_samples/reactnative/reactnative_codesample_video_login.PNG" width="200" /></kbd> <kbd><img alt="React Native video chat code sample, select users" src="https://developers.connectycube.com/docs/_images/code_samples/reactnative/reactnative_codesample_video_select_users.PNG" width="200" /></kbd> <kbd><img alt="React Native video chat code sample, video chat" src="https://developers.connectycube.com/docs/_images/code_samples/reactnative/reactnative_codesample_video_video.PNG" width="200" /></kbd>
+## Step 2: Start your Application
 
-## Quick start and develop
+Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
 
-Quick start [React Native](https://facebook.github.io/react-native/docs/getting-started.html) app.
+### For Android
 
-Prepare environment for React Native and:
+```bash
+# using npm
+npm run android
 
-1. Clone the project;
-2. Install node_modules: `cd connectycube-reactnative-samples/RNVideoChat && npm install`;
-3. Run `npm run ios` or `npm run android`.
+# OR using Yarn
+yarn android
+```
 
-## Running on a device
+### For iOS
 
-The above command will automatically run your app on the iOS Simulator by default. If you want to run the app on an actual physical iOS device, please follow the instructions [here](https://facebook.github.io/react-native/docs/running-on-device).
+```bash
+# using npm
+npm run ios
 
-## Build your own VideoChat app
+# OR using Yarn
+yarn ios
+```
 
-To make the sample works for your own app, please do the following:
+If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
 
-1.  Register new account and application at `https://admin.connectycube.com` and then put Application credentials from 'Overview' page into `src/config.js` file:
+This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
 
-    ```javascript
-    export const credentials = {
-      appId: 0,
-      authKey: "",
-      authSecret: ""
-    };
-    ```
+## Step 3: Modifying your App
 
-2.  At `https://admin.connectycube.com`, create from 2 to 4 users in 'Users' module and put them into `src/config.js` file:
+Now that you have successfully run the app, let's modify it.
 
-    ```javascript
-    export const users = [
-      {
-        id: 1,
-        name: "User1",
-        login: "videouser1",
-        password: "videouser1",
-        color: "#34ad86"
-      },
-      {
-        id: 2,
-        name: "User2",
-        login: "videouser2",
-        password: "videouser2",
-        color: "#077988"
-      },
-      {
-        id: 3,
-        name: "User3",
-        login: "videouser3",
-        password: "videouser3",
-        color: "#13aaae"
-      },
-      {
-        id: 4,
-        name: "User4",
-        login: "videouser4",
-        password: "videouser4",
-        color: "#056a96"
-      }
-    ];
-    ```
+1. Open `App.tsx` in your text editor of choice and edit some lines.
+2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
 
-3.  (Optional) If you are at [Enterprise](https://connectycube.com/pricing/) plan - provide your API server and Chat server endpoints at `src/config.js` file to point the sample against your own server:
+   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
 
-    ```javascript
-    {
-       endpoints: {
-           api: "",
-           chat: ""
-       },
-       ...
-    };
-    ```
+## Congratulations! :tada:
 
-4. Install node modules - `npm install`
-5. Run `npm run ios` or `npm run android`.
+You've successfully run and modified your React Native App. :partying_face:
 
+### Now what?
 
-## Can't build yourself?
+- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
+- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
 
-Got troubles with building React Native code sample? Just create an issue at [Issues page](https://github.com/ConnectyCube/connectycube-reactnative-samples/issues) - we will create the sample for you. For FREE!
+# Troubleshooting
+
+If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+
+# Learn More
+
+To learn more about React Native, take a look at the following resources:
+
+- [React Native Website](https://reactnative.dev) - learn more about React Native.
+- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
+- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
+- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
+- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.

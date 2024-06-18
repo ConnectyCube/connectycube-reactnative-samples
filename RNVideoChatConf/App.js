@@ -1,13 +1,13 @@
-import React, {Component} from 'react';
-import Navigator from './src/navigator';
-import {AuthService} from './src/services';
+import React from 'react';
+import AppNavigator from './src/navigator';
+import { AuthService } from './src/services';
 
-export default class App extends Component {
-  constructor(props) {
-    super(props);
-
+const App = () => {
+  React.useEffect(() => {
     AuthService.init();
-  }
+  }, []);
 
-  render = () => <Navigator />;
-}
+  return <AppNavigator />;
+};
+
+export default App;
