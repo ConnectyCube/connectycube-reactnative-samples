@@ -22,7 +22,7 @@
     "react-native": "0.68.2",
     "react-native-callkeep": "github:react-native-webrtc/react-native-callkeep#master",
     "react-native-can-draw-overlays": "^1.0.0",
-    "react-native-connectycube": "^3.23.0",
+    "react-native-connectycube": "3.29.0",
     "react-native-device-info": "^9.0.2",
     "react-native-incall-manager": "^4.0.0",
     "react-native-invoke-app": "github:ConnectyCube/react-native-invoke-app#master",
