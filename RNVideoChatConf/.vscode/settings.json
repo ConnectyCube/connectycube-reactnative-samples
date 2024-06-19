@@ -1,0 +1,18 @@
+{
+  "prettier.trailingComma": "es5",
+  "prettier.tabWidth": 4,
+  "prettier.singleQuote": true,
+  "prettier.printWidth": 120,
+  "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+  "editor.formatOnSave": true,
+  "diffEditor.maxComputationTime": 0,
+  "diffEditor.ignoreTrimWhitespace": false,
+  "prettier.useEditorConfig": false,
+  "prettier.useTabs": false,
+  "prettier.bracketSpacing": false,
+  "prettier.bracketSameLine": true,
+  "cSpell.words": [
+    "notifee",
+    "videochatconference"
+  ]
+}

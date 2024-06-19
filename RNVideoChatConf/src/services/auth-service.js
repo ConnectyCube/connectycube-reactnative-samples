@@ -5,7 +5,7 @@ import CallService from './call-service';
 export default class AuthService {
   init = (janusServerEndpoint = null) => {
     if (janusServerEndpoint) {
-      config.conference.server = janusServerEndpoint;
+      appConfig.conference.server = janusServerEndpoint;
     }
     ConnectyCube.init(credentials, appConfig);
   };
@@ -14,7 +14,7 @@ export default class AuthService {
     return ConnectyCube.createSession(user);
   }
 
-  login = user => {
+  login = (user) => {
     return new Promise((resolve, reject) => {
       this.createSession(user)
         .then(() => {

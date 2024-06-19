@@ -1,62 +1,54 @@
-import React, {Component} from 'react';
-import {StyleSheet, SafeAreaView, TouchableOpacity, View} from 'react-native';
-import {CallService} from '../../services';
+import React from 'react';
+import { StyleSheet, SafeAreaView, TouchableOpacity, View } from 'react-native';
+import { CallService } from '../../services';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
-import customEventEmiter, {CUSTOM_EVENTS} from '../../services/customEvents';
+import customEventEmitter, { CUSTOM_EVENTS } from '../../services/customEvents';
+import ShareScreenButton from './ShareScreenButton';
 
-export default class ToolBar extends Component {
-  constructor(props) {
-    super(props);
-    this._setUpListeners();
-  }
+const ToolBar = ({
+  selectedUsersIds,
+  localStream,
+  isActiveSelect,
+  isActiveCall,
+  closeSelect,
+  initRemoteStreams,
+  setLocalStream,
+  resetState,
+}) => {
+  const [isAudioMuted, setIsAudioMuted] = React.useState(false);
+  const [isVideoMuted, setIsVideoMuted] = React.useState(false);
+  const [isFrontCamera, setIsFrontCamera] = React.useState(true);
+  const [isSharedScreen, setIsSharedScreen] = React.useState(false);
+  const isCallInProgress = isActiveCall || !isActiveSelect;
+  const isAvailableToSwitch =
+    isActiveCall && CallService.mediaDevices.length > 1 && !isVideoMuted;
 
-  state = {
-    isAudioMuted: false,
-    isVideoMuted: false,
-    isFrontCamera: true,
-  };
+  React.useEffect(() => {
+    customEventEmitter.addListener(
+      CUSTOM_EVENTS.STOP_CALL_UI_RESET,
+      resetState,
+    );
 
-  static getDerivedStateFromProps(props, state) {
-    let derivedState = {};
+    return () => {
+      customEventEmitter.removeListener(
+        CUSTOM_EVENTS.STOP_CALL_UI_RESET,
+        resetState,
+      );
+    };
+  }, []);
 
-    if (!props.isActiveCall) {
-      derivedState.isAudioMuted = false;
-      derivedState.isVideoMuted = false;
-      derivedState.isFrontCamera = true;
+  React.useEffect(() => {
+    if (isActiveCall) {
+      setIsAudioMuted(CallService.isAudioMuted());
+      setIsVideoMuted(CallService.isVideoMuted());
     } else {
-      derivedState.isAudioMuted = CallService.isAudioMuted();
-      derivedState.isVideoMuted = CallService.isVideoMuted();
+      setIsAudioMuted(false);
+      setIsVideoMuted(false);
+      setIsFrontCamera(true);
     }
+  }, [isActiveCall]);
 
-    return derivedState;
-  }
-
-  componentWillUnmount() {
-    customEventEmiter.removeListener(
-      CUSTOM_EVENTS.STOP_CALL_UI_RESET,
-      this._resetUIState,
-    );
-  }
-
-  _setUpListeners = () => {
-    customEventEmiter.addListener(
-      CUSTOM_EVENTS.STOP_CALL_UI_RESET,
-      this._resetUIState,
-    );
-  };
-
-  _resetUIState = () => {
-    this.props.resetState();
-  };
-
-  startCall = () => {
-    const {
-      selectedUsersIds,
-      closeSelect,
-      initRemoteStreams,
-      setLocalStream,
-    } = this.props;
-
+  const startCall = React.useCallback(() => {
     if (selectedUsersIds.length === 0) {
       CallService.showToast('Select at less one user to start Videocall');
     } else {
@@ -64,111 +56,113 @@ export default class ToolBar extends Component {
       initRemoteStreams(selectedUsersIds);
       CallService.startCall(selectedUsersIds).then(setLocalStream);
     }
-  };
+  }, [selectedUsersIds, closeSelect, initRemoteStreams, setLocalStream]);
 
-  stopCall = () => {
+  const stopCall = React.useCallback(() => {
     CallService.stopCall();
-    this.props.resetState();
-  };
+    resetState();
+  }, [resetState]);
 
-  switchCamera = () => {
-    const {localStream} = this.props;
-
+  const switchCamera = React.useCallback(() => {
     CallService.switchCamera(localStream);
-    this.setState(prevState => ({isFrontCamera: !prevState.isFrontCamera}));
-  };
+    setIsFrontCamera((prevIsFrontCamera) => !prevIsFrontCamera);
+  }, [localStream]);
 
-  muteUnmuteAudio = () => {
-    const isAudioMuted = CallService.setAudioMute();
+  const muteUnmuteAudio = React.useCallback(() => {
+    setIsAudioMuted(CallService.setAudioMute());
+  }, []);
 
-    this.setState({isAudioMuted});
-  };
+  const muteUnmuteVideo = React.useCallback(() => {
+    setIsVideoMuted(CallService.setVideoMute());
+  }, []);
 
-  muteUnmuteVideo = () => {
-    const isVideoMuted = CallService.setVideoMute();
-
-    this.setState({isVideoMuted});
-  };
-
-  _renderCallStartStopButton = isCallInProgress => {
+  const CallStartStopButton = React.useCallback(() => {
     const style = isCallInProgress ? styles.buttonCallEnd : styles.buttonCall;
-    const onPress = isCallInProgress ? this.stopCall : this.startCall;
     const type = isCallInProgress ? 'call-end' : 'call';
 
     return (
       <TouchableOpacity
-        style={[styles.buttonContainer, style]}
-        onPress={onPress}>
+        style={[styles.buttonContainer(), style]}
+        onPress={isCallInProgress ? stopCall : startCall}>
         <MaterialIcon name={type} size={32} color="white" />
       </TouchableOpacity>
     );
-  };
+  }, [startCall, stopCall, isCallInProgress]);
 
-  _renderMuteMicButton = () => {
-    const {isAudioMuted} = this.state;
-    const type = isAudioMuted ? 'mic-off' : 'mic';
+  const MuteMicButton = React.useCallback(
+    ({ visible }) => {
+      const type = isAudioMuted ? 'mic-off' : 'mic';
 
-    return (
-      <TouchableOpacity
-        style={[styles.buttonContainer, styles.buttonMuteMic]}
-        onPress={this.muteUnmuteAudio}>
-        <MaterialIcon name={type} size={32} color="white" />
-      </TouchableOpacity>
-    );
-  };
+      return visible ? (
+        <TouchableOpacity
+          style={[styles.buttonContainer(), styles.buttonMuteMic]}
+          onPress={muteUnmuteAudio}>
+          <MaterialIcon name={type} size={32} color="white" />
+        </TouchableOpacity>
+      ) : null;
+    },
+    [muteUnmuteAudio, isAudioMuted],
+  );
 
-  _renderMuteCamButton = () => {
-    const {isVideoMuted} = this.state;
-    const type = isVideoMuted ? 'videocam-off' : 'videocam';
+  const MuteCamButton = React.useCallback(
+    ({ visible }) => {
+      const type = isVideoMuted ? 'videocam-off' : 'videocam';
 
-    return (
-      <TouchableOpacity
-        style={[styles.buttonContainer, styles.buttonMuteCam]}
-        onPress={this.muteUnmuteVideo}>
-        <MaterialIcon name={type} size={32} color="white" />
-      </TouchableOpacity>
-    );
-  };
+      return visible ? (
+        <TouchableOpacity
+          disabled={isSharedScreen}
+          style={[styles.buttonContainer(isSharedScreen), styles.buttonMuteCam]}
+          onPress={muteUnmuteVideo}>
+          <MaterialIcon name={type} size={32} color="white" />
+        </TouchableOpacity>
+      ) : null;
+    },
+    [muteUnmuteVideo, isVideoMuted, isSharedScreen],
+  );
 
-  _renderSwitchVideoSourceButton = () => {
-    const {isFrontCamera} = this.state;
-    const type = isFrontCamera ? 'camera-rear' : 'camera-front';
+  const SwitchVideoSourceButton = React.useCallback(
+    ({ visible }) => {
+      const type = isFrontCamera ? 'camera-rear' : 'camera-front';
 
-    return (
-      <TouchableOpacity
-        style={[styles.buttonContainer, styles.buttonSwitch]}
-        onPress={this.switchCamera}>
-        <MaterialIcon name={type} size={32} color="white" />
-      </TouchableOpacity>
-    );
-  };
+      return visible ? (
+        <TouchableOpacity
+          disabled={isSharedScreen}
+          style={[styles.buttonContainer(isSharedScreen), styles.buttonSwitch]}
+          onPress={switchCamera}>
+          <MaterialIcon name={type} size={32} color="white" />
+        </TouchableOpacity>
+      ) : null;
+    },
+    [switchCamera, isFrontCamera, isSharedScreen],
+  );
 
-  render() {
-    const {isVideoMuted} = this.state;
-    const {isActiveSelect, isActiveCall} = this.props;
-    const isCallInProgress = isActiveCall || !isActiveSelect;
-    const isAvailableToSwitch =
-      isActiveCall && CallService.mediaDevices.length > 1 && !isVideoMuted;
+  return (
+    <SafeAreaView style={styles.container}>
+      <View style={styles.toolBarItem}>
+        <MuteMicButton visible={isActiveCall} />
+      </View>
+      <View style={styles.toolBarItem}>
+        <MuteCamButton visible={isActiveCall} />
+      </View>
+      <View style={styles.toolBarItem}>
+        <CallStartStopButton />
+      </View>
+      <View style={styles.toolBarItem}>
+        <ShareScreenButton
+          visible={isActiveCall}
+          isSharedScreen={isSharedScreen}
+          setIsSharedScreen={setIsSharedScreen}
+          setLocalStream={setLocalStream}
+        />
+      </View>
+      <View style={styles.toolBarItem}>
+        <SwitchVideoSourceButton visible={isAvailableToSwitch} />
+      </View>
+    </SafeAreaView>
+  );
+};
 
-    return (
-      <SafeAreaView style={styles.container}>
-        <View style={styles.toolBarItem}>
-          {isActiveCall && this._renderMuteMicButton()}
-        </View>
-        <View style={styles.toolBarItem}>
-          {isActiveCall && this._renderMuteCamButton()}
-        </View>
-        <View style={styles.toolBarItem}>
-          {this._renderCallStartStopButton(isCallInProgress)}
-        </View>
-        <View style={styles.toolBarItem} />
-        <View style={styles.toolBarItem}>
-          {isAvailableToSwitch && this._renderSwitchVideoSourceButton()}
-        </View>
-      </SafeAreaView>
-    );
-  }
-}
+export default ToolBar;
 
 const styles = StyleSheet.create({
   container: {
@@ -187,14 +181,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  buttonContainer: {
+  buttonContainer: (disabled) => ({
     height: 50,
     width: 50,
     borderRadius: 25,
     marginHorizontal: 25,
     justifyContent: 'center',
     alignItems: 'center',
-  },
+    opacity: disabled ? 0.7 : 1,
+  }),
   buttonCall: {
     backgroundColor: 'green',
   },
@@ -206,6 +201,9 @@ const styles = StyleSheet.create({
   },
   buttonMuteCam: {
     backgroundColor: 'green',
+  },
+  buttonShareScreen: {
+    backgroundColor: 'purple',
   },
   buttonSwitch: {
     backgroundColor: 'orange',
