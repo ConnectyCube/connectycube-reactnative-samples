@@ -25,7 +25,7 @@ ConnectyCube Chat API documentation - [https://developers.connectycube.com/react
 
 ## Screenshots
 
-<kbd><img alt="React Native chat code sample, list of chats" src="https://developers.connectycube.com/docs/_images/code_samples/reactnative/reactnative_codesample_chat_chats.jpg" width="200" /></kbd> <kbd><img alt="React Native chat code sample, chat history" src="https://developers.connectycube.com/docs/_images/code_samples/reactnative/reactnative_codesample_chat_chat.jpg" width="200" /></kbd> <kbd><img alt="React Native chat code sample, profile" src="https://developers.connectycube.com/docs/_images/code_samples/reactnative/reactnative_codesample_chat_profile.jpg" width="200" /></kbd>
+<kbd><img alt="React Native chat code sample, list of chats" src="https://developers.connectycube.com/images/code_samples/reactnative/reactnative_codesample_chat_chats.jpg" width="200" /></kbd> <kbd><img alt="React Native chat code sample, chat history" src="https://developers.connectycube.com/images/code_samples/reactnative/reactnative_codesample_chat_chat.jpg" width="200" /></kbd> <kbd><img alt="React Native chat code sample, profile" src="https://developers.connectycube.com/images/code_samples/reactnative/reactnative_codesample_chat_profile.jpg" width="200" /></kbd>
 
 ## Getting started
 
