@@ -1,81 +1,74 @@
-import React, {PureComponent} from 'react';
+import React from 'react';
 import {
   StyleSheet,
   SafeAreaView,
   View,
-  StatusBar,
   Image,
   Text,
   ActivityIndicator,
   TouchableOpacity,
 } from 'react-native';
-import {AuthService} from '../../services';
-import {users} from '../../config';
+import { useNavigation } from '@react-navigation/native';
+import { AuthService } from '../../services';
+import { users } from '../../config';
 
-export default class AuthScreen extends PureComponent {
-  state = {isLogging: false};
+const logoSrc = require('../../../assets/logo.png');
 
-  setIsLogging = isLogging => this.setState({isLogging});
+const AuthScreen = () => {
+  const navigation = useNavigation();
+  const [isLogging, setIsLogging] = React.useState(false);
 
-  login = currentUser => {
+  const login = (currentUser) => {
     const _onSuccessLogin = () => {
-      const {navigation} = this.props;
       const opponentsIds = users
-        .filter(opponent => opponent.id !== currentUser.id)
-        .map(opponent => opponent.id);
+        .filter((opponent) => opponent.id !== currentUser.id)
+        .map((opponent) => opponent.id);
 
-      navigation.push('VideoScreen', {opponentsIds});
+      navigation.push('VideoScreen', { opponentsIds });
     };
 
     const _onFailLogin = (error = {}) => {
       alert(`Error.\n\n${JSON.stringify(error)}`);
     };
 
-    this.setIsLogging(true);
+    setIsLogging(true);
 
     AuthService.login(currentUser)
       .then(_onSuccessLogin)
       .catch(_onFailLogin)
-      .then(() => this.setIsLogging(false));
+      .then(() => setIsLogging(false));
   };
 
-  render() {
-    const {isLogging} = this.state;
-    const logoSrc = require('../../../assets/logo.png');
+  return (
+    <View style={[styles.container, styles.f1]}>
+      <SafeAreaView style={[styles.centeredChildren, styles.f1]}>
+        <Image resizeMode="contain" source={logoSrc} style={styles.logoImg} />
+        <View
+          style={[
+            styles.f1,
+            styles.centeredChildren,
+            { flexDirection: 'row' },
+          ]}>
+          <Text style={styles.title}>
+            {isLogging ? 'Connecting... ' : 'Video Chat Conf'}
+          </Text>
+          {isLogging && <ActivityIndicator size="small" color="#1198d4" />}
+        </View>
+      </SafeAreaView>
+      <SafeAreaView style={[styles.authBtns, styles.f1]}>
+        {users.map((user) => (
+          <TouchableOpacity key={user.id} onPress={() => login(user)}>
+            <View style={[styles.authBtn(user.color), styles.centeredChildren]}>
+              <Text style={styles.authBtnText}>{`Log in as ${user.name}`}</Text>
+            </View>
+          </TouchableOpacity>
+        ))}
+      </SafeAreaView>
+    </View>
+  );
+};
 
-    return (
-      <View style={[styles.container, styles.f1]}>
-        <StatusBar backgroundColor="white" barStyle="dark-content" />
-        <SafeAreaView style={[styles.centeredChildren, styles.f1]}>
-          <Image resizeMode="contain" source={logoSrc} style={styles.logoImg} />
-          <View
-            style={[
-              styles.f1,
-              styles.centeredChildren,
-              {flexDirection: 'row'},
-            ]}>
-            <Text style={styles.title}>
-              {isLogging ? 'Connecting... ' : 'Video Chat Conf'}
-            </Text>
-            {isLogging && <ActivityIndicator size="small" color="#1198d4" />}
-          </View>
-        </SafeAreaView>
-        <SafeAreaView style={[styles.authBtns, styles.f1]}>
-          {users.map(user => (
-            <TouchableOpacity key={user.id} onPress={() => this.login(user)}>
-              <View
-                style={[styles.authBtn(user.color), styles.centeredChildren]}>
-                <Text style={styles.authBtnText}>
-                  {`Log in as ${user.name}`}
-                </Text>
-              </View>
-            </TouchableOpacity>
-          ))}
-        </SafeAreaView>
-      </View>
-    );
-  }
-}
+export default AuthScreen;
 
 const styles = StyleSheet.create({
   f1: {
@@ -99,7 +92,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     marginBottom: 20,
   },
-  authBtn: backgroundColor => ({
+  authBtn: (backgroundColor) => ({
     backgroundColor,
     height: 50,
     borderRadius: 25,

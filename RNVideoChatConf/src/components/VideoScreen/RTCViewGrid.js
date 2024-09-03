@@ -1,111 +1,131 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
-import {RTCView} from 'react-native-connectycube';
-import {CallService} from '../../services';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { RTCView } from 'react-native-connectycube';
+import { CallService } from '../../services';
 import CallingLoader from './CallingLoader';
+import { useNavigation } from '@react-navigation/native';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
-export default ({streams}) => {
-  const RTCViewRendered = ({userId, stream}) => {
-    if (stream) {
-      return (
-        <RTCView
-          objectFit="cover"
-          style={styles.blackView}
-          key={userId}
-          streamURL={stream.toURL()}
-        />
-      );
-    }
+const RTCViewRendered = ({ userId, stream }) => {
+  const navigation = useNavigation();
 
-    return (
-      <View style={styles.blackView}>
-        <CallingLoader name={CallService.getUserById(userId, 'name')} />
-      </View>
-    );
-  };
+  const userName = React.useMemo(
+    () =>
+      userId === 'localStream'
+        ? 'Self video'
+        : CallService.getUserById(userId, 'name') ?? 'Unknown',
+    [userId],
+  );
 
-  const streamsCount = streams.length;
+  const openFullScreen = React.useCallback(() => {
+    navigation.navigate('FullScreenModal', { stream, userId, userName });
+  }, [stream, userId, userName, navigation]);
 
-  let RTCListView = null;
+  return stream && stream._tracks ? (
+    <View style={styles.blackView}>
+      <RTCView
+        objectFit="cover"
+        style={styles.blackView}
+        streamURL={stream.toURL()}
+        key={`stream:${userId}`}
+        zOrder={1}
+      />
+      <TouchableOpacity style={styles.fullScreen} onPress={openFullScreen}>
+        <MaterialIcon name={'fullscreen'} size={30} color="white" />
+      </TouchableOpacity>
+    </View>
+  ) : (
+    <View style={styles.blackView}>
+      {typeof stream === 'string' ? (
+        <CallingLoader name={stream} />
+      ) : (
+        <CallingLoader name={userName} />
+      )}
+    </View>
+  );
+};
 
-  switch (streamsCount) {
+const RTCViewGrid = ({ streams }) => {
+  switch (streams.length) {
     case 1:
-      RTCListView = (
-        <RTCViewRendered
-          userId={streams[0].userId}
-          stream={streams[0].stream}
-        />
-      );
-      break;
-
-    case 2:
-      RTCListView = (
-        <View style={styles.inColumn}>
+      return (
+        <View style={styles.blackView}>
           <RTCViewRendered
             userId={streams[0].userId}
             stream={streams[0].stream}
           />
-          <RTCViewRendered
-            userId={streams[1].userId}
-            stream={streams[1].stream}
-          />
         </View>
       );
-      break;
+
+    case 2:
+      return (
+        <View style={styles.blackView}>
+          <View style={styles.inColumn}>
+            <RTCViewRendered
+              userId={streams[0].userId}
+              stream={streams[0].stream}
+            />
+            <RTCViewRendered
+              userId={streams[1].userId}
+              stream={streams[1].stream}
+            />
+          </View>
+        </View>
+      );
 
     case 3:
-      RTCListView = (
-        <View style={styles.inColumn}>
-          <View style={styles.inRow}>
-            <RTCViewRendered
-              userId={streams[0].userId}
-              stream={streams[0].stream}
-            />
-            <RTCViewRendered
-              userId={streams[1].userId}
-              stream={streams[1].stream}
-            />
-          </View>
-          <RTCViewRendered
-            userId={streams[2].userId}
-            stream={streams[2].stream}
-          />
-        </View>
-      );
-      break;
-
-    case 4:
-      RTCListView = (
-        <View style={styles.inColumn}>
-          <View style={styles.inRow}>
-            <RTCViewRendered
-              userId={streams[0].userId}
-              stream={streams[0].stream}
-            />
-            <RTCViewRendered
-              userId={streams[1].userId}
-              stream={streams[1].stream}
-            />
-          </View>
-          <View style={styles.inRow}>
+      return (
+        <View style={styles.blackView}>
+          <View style={styles.inColumn}>
+            <View style={styles.inRow}>
+              <RTCViewRendered
+                userId={streams[0].userId}
+                stream={streams[0].stream}
+              />
+              <RTCViewRendered
+                userId={streams[1].userId}
+                stream={streams[1].stream}
+              />
+            </View>
             <RTCViewRendered
               userId={streams[2].userId}
               stream={streams[2].stream}
             />
-            <RTCViewRendered
-              userId={streams[3].userId}
-              stream={streams[3].stream}
-            />
           </View>
         </View>
       );
-      break;
+
+    case 4:
+      return (
+        <View style={styles.blackView}>
+          <View style={styles.inColumn}>
+            <View style={styles.inRow}>
+              <RTCViewRendered
+                userId={streams[0].userId}
+                stream={streams[0].stream}
+              />
+              <RTCViewRendered
+                userId={streams[1].userId}
+                stream={streams[1].stream}
+              />
+            </View>
+            <View style={styles.inRow}>
+              <RTCViewRendered
+                userId={streams[2].userId}
+                stream={streams[2].stream}
+              />
+              <RTCViewRendered
+                userId={streams[3].userId}
+                stream={streams[3].stream}
+              />
+            </View>
+          </View>
+        </View>
+      );
 
     default:
-      break;
+      return null;
   }
-
-  return <View style={styles.blackView}>{RTCListView}</View>;
 };
 
 const styles = StyleSheet.create({
@@ -121,4 +141,15 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
   },
+  fullScreen: {
+    height: 40,
+    width: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    top: 0,
+    right: 0,
+  },
 });
+
+export default RTCViewGrid;
