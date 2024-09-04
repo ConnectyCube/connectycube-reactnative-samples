@@ -84,7 +84,6 @@
    <ArchiveAction
       buildConfiguration = "Debug"
       customArchiveName = "RNVideoChatConf"
-      revealArchiveInOrganizer = "YES"
-      allowsArchivingForSimulator = "YES">
+      revealArchiveInOrganizer = "YES">
    </ArchiveAction>
 </Scheme>

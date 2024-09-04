@@ -43,7 +43,7 @@ cd RNVideoChatConf
 From RNVideoChatConf project root:
 
 ```bash
-yarn install;
+yarn install
 ```
 
 ### Step 3: Start the Metro Server
