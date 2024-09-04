@@ -1,4 +1,4 @@
-export const NO_ASNWER_TIMER = 30000; // 30 sec
+export const NO_ANSWER_TIMER = 30000; // 30 sec
 
 export const messages = {
   login:

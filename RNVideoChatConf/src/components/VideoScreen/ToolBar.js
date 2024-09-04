@@ -50,7 +50,7 @@ const ToolBar = ({
 
   const startCall = React.useCallback(() => {
     if (selectedUsersIds.length === 0) {
-      CallService.showToast('Select at less one user to start Videocall');
+      CallService.showToast('Select at less one user');
     } else {
       closeSelect();
       initRemoteStreams(selectedUsersIds);

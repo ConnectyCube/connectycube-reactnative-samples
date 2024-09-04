@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
   TouchableOpacity,
 } from 'react-native';
+import Toast from 'react-native-simple-toast';
 import { useNavigation } from '@react-navigation/native';
 import { AuthService } from '../../services';
 import { users } from '../../config';
@@ -28,7 +29,7 @@ const AuthScreen = () => {
     };
 
     const _onFailLogin = (error = {}) => {
-      alert(`Error.\n\n${JSON.stringify(error)}`);
+      Toast.show(`Error: "${JSON.stringify(error)}"`);
     };
 
     setIsLogging(true);
@@ -40,22 +41,27 @@ const AuthScreen = () => {
   };
 
   return (
-    <View style={[styles.container, styles.f1]}>
-      <SafeAreaView style={[styles.centeredChildren, styles.f1]}>
-        <Image resizeMode="contain" source={logoSrc} style={styles.logoImg} />
+    <SafeAreaView style={[styles.container, styles.f1]}>
+      <View style={[styles.centeredChildren, styles.f1]}>
+        <View style={[styles.f1, styles.centeredChildren]}>
+          <Image resizeMode="contain" source={logoSrc} style={styles.logoImg} />
+          <Text style={styles.heading}>
+            CONNECTYCUBE
+          </Text>
+        </View>
         <View
           style={[
             styles.f1,
             styles.centeredChildren,
-            { flexDirection: 'row' },
+            styles.flexRow,
           ]}>
           <Text style={styles.title}>
-            {isLogging ? 'Connecting... ' : 'Video Chat Conf'}
+            {isLogging ? 'Connecting... ' : 'Video Chat Conference'}
           </Text>
           {isLogging && <ActivityIndicator size="small" color="#1198d4" />}
         </View>
-      </SafeAreaView>
-      <SafeAreaView style={[styles.authBtns, styles.f1]}>
+      </View>
+      <View style={[styles.authButtons, styles.f1]}>
         {users.map((user) => (
           <TouchableOpacity key={user.id} onPress={() => login(user)}>
             <View style={[styles.authBtn(user.color), styles.centeredChildren]}>
@@ -63,8 +69,8 @@ const AuthScreen = () => {
             </View>
           </TouchableOpacity>
         ))}
-      </SafeAreaView>
-    </View>
+      </View>
+    </SafeAreaView>
   );
 };
 
@@ -78,17 +84,27 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  flexRow: {
+    flexDirection: 'row',
+  },
   container: {
-    backgroundColor: 'white',
+    backgroundColor: 'black',
   },
   logoImg: {
-    width: '90%',
-    height: '80%',
+    marginTop: 30,
+    marginBottom: 15,
+    width: 120,
+    height: 120,
+  },
+  heading: {
+    color: 'white',
+    fontSize: 28,
+    fontWeight: '900',
   },
   title: {
-    color: 'black',
+    color: 'white',
   },
-  authBtns: {
+  authButtons: {
     justifyContent: 'flex-end',
     marginBottom: 20,
   },

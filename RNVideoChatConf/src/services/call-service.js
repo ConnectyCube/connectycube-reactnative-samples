@@ -304,6 +304,7 @@ export default class CallService {
   isAudioMuted() {
     return this._session?.isAudioMuted();
   }
+
   isVideoMuted() {
     return this._session?.isVideoMuted();
   }
@@ -335,6 +336,7 @@ export default class CallService {
   setSpeakerphoneOn(flag) {
     InCallManager.setSpeakerphoneOn(flag);
   }
+
   switchCamera(localStream) {
     localStream.getVideoTracks().forEach((track) => track._switchCamera());
   }
