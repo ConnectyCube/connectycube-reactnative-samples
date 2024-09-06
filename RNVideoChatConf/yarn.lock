@@ -3341,7 +3341,7 @@ __metadata:
     react: "npm:18.3.1"
     react-native: "npm:0.75.2"
     react-native-awesome-alerts: "npm:^2.0.0"
-    react-native-connectycube: "npm:3.33.0"
+    react-native-connectycube: "npm:3.33.1"
     react-native-incall-manager: "npm:^4.2.0"
     react-native-safe-area-context: "npm:^4.10.9"
     react-native-screens: "npm:^3.34.0"
@@ -8649,16 +8649,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-connectycube@npm:3.33.0":
-  version: 3.33.0
-  resolution: "react-native-connectycube@npm:3.33.0"
+"react-native-connectycube@npm:3.33.1":
+  version: 3.33.1
+  resolution: "react-native-connectycube@npm:3.33.1"
   dependencies:
     "@xmpp/client": "npm:0.13.1"
     crypto-js: "npm:4.2.0"
     fbemitter: "npm:3.0.0"
     js-base64: "npm:3.7.7"
     react-native-webrtc: "npm:124.0.4"
-  checksum: 10/17d20e93d8b8e38e2b866fe0b9d21610f2b555083ca8f227f99348575c0e442a209c82ff70f07923e6f02434df7dca47bea672c29a99d9f5ad2a368999cd8254
+  checksum: 10/242d241e3634b33549913843fa37630eb5c899a13d5aaf6dbdf961c8a203cc8d98dfd7a6d6262db892ce2c7b8ce9f7b744c2bdf2c87a39cfdc01a39939c3db85
   languageName: node
   linkType: hard
 
