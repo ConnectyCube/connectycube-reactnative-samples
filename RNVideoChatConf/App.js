@@ -1,11 +1,10 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import Navigator from './src/navigator';
-import {AuthService} from './src/services';
+import { AuthService } from './src/services';
 
 export default class App extends Component {
   constructor(props) {
     super(props);
-
     AuthService.init();
   }
 
