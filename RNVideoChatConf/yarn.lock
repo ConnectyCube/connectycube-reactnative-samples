@@ -15,33 +15,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/cli@npm:^7.16.0":
-  version: 7.25.6
-  resolution: "@babel/cli@npm:7.25.6"
-  dependencies:
-    "@jridgewell/trace-mapping": "npm:^0.3.25"
-    "@nicolo-ribaudo/chokidar-2": "npm:2.1.8-no-fsevents.3"
-    chokidar: "npm:^3.6.0"
-    commander: "npm:^6.2.0"
-    convert-source-map: "npm:^2.0.0"
-    fs-readdir-recursive: "npm:^1.1.0"
-    glob: "npm:^7.2.0"
-    make-dir: "npm:^2.1.0"
-    slash: "npm:^2.0.0"
-  peerDependencies:
-    "@babel/core": ^7.0.0-0
-  dependenciesMeta:
-    "@nicolo-ribaudo/chokidar-2":
-      optional: true
-    chokidar:
-      optional: true
-  bin:
-    babel: ./bin/babel.js
-    babel-external-helpers: ./bin/babel-external-helpers.js
-  checksum: 10/b20d1b6cb8e5a4c5a19983f66f3526338b4c1cbbc6e3ff8b59d3f073499987a61ecbf76080c517ea88082f689a634ff1145a8f199ec469eea74b8b52294a622f
-  languageName: node
-  linkType: hard
-
 "@babel/code-frame@npm:^7.0.0, @babel/code-frame@npm:^7.12.13, @babel/code-frame@npm:^7.24.7":
   version: 7.24.7
   resolution: "@babel/code-frame@npm:7.24.7"
@@ -59,7 +32,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/core@npm:^7.11.6, @babel/core@npm:^7.12.3, @babel/core@npm:^7.13.16, @babel/core@npm:^7.16.5, @babel/core@npm:^7.20.0, @babel/core@npm:^7.23.9":
+"@babel/core@npm:^7.11.6, @babel/core@npm:^7.12.3, @babel/core@npm:^7.13.16, @babel/core@npm:^7.20.0, @babel/core@npm:^7.23.9":
   version: 7.25.2
   resolution: "@babel/core@npm:7.25.2"
   dependencies:
@@ -332,24 +305,6 @@ __metadata:
     js-tokens: "npm:^4.0.0"
     picocolors: "npm:^1.0.0"
   checksum: 10/69b73f38cdd4f881b09b939a711e76646da34f4834f4ce141d7a49a6bb1926eab1c594148970a8aa9360398dff800f63aade4e81fafdd7c8d8a8489ea93bfec1
-  languageName: node
-  linkType: hard
-
-"@babel/node@npm:^7.16.5":
-  version: 7.25.0
-  resolution: "@babel/node@npm:7.25.0"
-  dependencies:
-    "@babel/register": "npm:^7.24.6"
-    commander: "npm:^6.2.0"
-    core-js: "npm:^3.30.2"
-    node-environment-flags: "npm:^1.0.5"
-    regenerator-runtime: "npm:^0.14.0"
-    v8flags: "npm:^3.1.1"
-  peerDependencies:
-    "@babel/core": ^7.0.0-0
-  bin:
-    babel-node: ./bin/babel-node.js
-  checksum: 10/eb157c1d89656f0c42468e13679d81795468cc81c11179153583be70ff8827c47cbdd282ed13a70cd88c6599cc56dc52d02ee7be58988058f9477c2c7fce201f
   languageName: node
   linkType: hard
 
@@ -1243,7 +1198,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-transform-react-jsx@npm:^7.0.0, @babel/plugin-transform-react-jsx@npm:^7.16.5":
+"@babel/plugin-transform-react-jsx@npm:^7.0.0":
   version: 7.25.2
   resolution: "@babel/plugin-transform-react-jsx@npm:7.25.2"
   dependencies:
@@ -1549,7 +1504,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/register@npm:^7.13.16, @babel/register@npm:^7.24.6":
+"@babel/register@npm:^7.13.16":
   version: 7.24.6
   resolution: "@babel/register@npm:7.24.6"
   dependencies:
@@ -2049,13 +2004,6 @@ __metadata:
     "@jridgewell/resolve-uri": "npm:^3.1.0"
     "@jridgewell/sourcemap-codec": "npm:^1.4.14"
   checksum: 10/dced32160a44b49d531b80a4a2159dceab6b3ddf0c8e95a0deae4b0e894b172defa63d5ac52a19c2068e1fe7d31ea4ba931fbeec103233ecb4208953967120fc
-  languageName: node
-  linkType: hard
-
-"@nicolo-ribaudo/chokidar-2@npm:2.1.8-no-fsevents.3":
-  version: 2.1.8-no-fsevents.3
-  resolution: "@nicolo-ribaudo/chokidar-2@npm:2.1.8-no-fsevents.3"
-  checksum: 10/c6e83af3b5051a3f6562649ff8fe37de9934a4cc02138678ed1badbd13ed3334f7ae5f63f2bbc3432210f6b245f082ac97e9b2afe0c13730c9838b295658c185
   languageName: node
   linkType: hard
 
@@ -3049,272 +2997,256 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@xmpp/base64@npm:^0.13.1":
-  version: 0.13.1
-  resolution: "@xmpp/base64@npm:0.13.1"
+"@xmpp/base64@npm:^0.9.0":
+  version: 0.9.0
+  resolution: "@xmpp/base64@npm:0.9.0"
   dependencies:
-    base-64: "npm:^1.0.0"
-  checksum: 10/30a9b92f68a8cce94c234baa7d567f6a2238768f0694f9702e614e24522493cc9f81ed8bbea0978d5040067cecf73a82e16bce056b0f3d054ea911c05c89418b
+    base-64: "npm:^0.1.0"
+  checksum: 10/82600a4983848c1c4f3195c7582d66daa1226dde1f3c574393aab76f47be73c7a4fc6deeeb7ca47d788daf46dcd6074e15f5092f39f8705e7432a2d95362b910
   languageName: node
   linkType: hard
 
-"@xmpp/client-core@npm:^0.13.1":
-  version: 0.13.1
-  resolution: "@xmpp/client-core@npm:0.13.1"
+"@xmpp/client-core@npm:^0.9.2":
+  version: 0.9.2
+  resolution: "@xmpp/client-core@npm:0.9.2"
   dependencies:
-    "@xmpp/connection": "npm:^0.13.1"
-    "@xmpp/jid": "npm:^0.13.1"
-    "@xmpp/xml": "npm:^0.13.1"
-  checksum: 10/e52634b68a5ed326f8e29f071ba6074bf881990cd117770296ac889adb6d7378584473948bb33d92c378fc707e3fe84e6bc798f5c3dbc9218649053add2bd9ef
+    "@xmpp/connection": "npm:^0.9.2"
+    "@xmpp/jid": "npm:^0.9.2"
+    "@xmpp/xml": "npm:^0.9.2"
+  checksum: 10/0caced6f32ea7533bca1078cc3b781b14107bb657aa67ac5e47551c1990e74539d3ce3dca05362501ccd86c4e7d732e9cba480fd43992c1da910adac3871c48e
   languageName: node
   linkType: hard
 
-"@xmpp/client@npm:0.13.1":
-  version: 0.13.1
-  resolution: "@xmpp/client@npm:0.13.1"
+"@xmpp/client@npm:0.9.2":
+  version: 0.9.2
+  resolution: "@xmpp/client@npm:0.9.2"
   dependencies:
-    "@babel/cli": "npm:^7.16.0"
-    "@babel/core": "npm:^7.16.5"
-    "@babel/node": "npm:^7.16.5"
-    "@babel/plugin-transform-react-jsx": "npm:^7.16.5"
-    "@xmpp/client-core": "npm:^0.13.1"
-    "@xmpp/iq": "npm:^0.13.1"
-    "@xmpp/middleware": "npm:^0.13.1"
-    "@xmpp/reconnect": "npm:^0.13.1"
-    "@xmpp/resolve": "npm:^0.13.1"
-    "@xmpp/resource-binding": "npm:^0.13.1"
-    "@xmpp/sasl": "npm:^0.13.1"
-    "@xmpp/sasl-anonymous": "npm:^0.13.1"
-    "@xmpp/sasl-plain": "npm:^0.13.1"
-    "@xmpp/sasl-scram-sha-1": "npm:^0.13.1"
-    "@xmpp/session-establishment": "npm:^0.13.1"
-    "@xmpp/starttls": "npm:^0.13.1"
-    "@xmpp/stream-features": "npm:^0.13.1"
-    "@xmpp/stream-management": "npm:^0.13.1"
-    "@xmpp/tcp": "npm:^0.13.1"
-    "@xmpp/tls": "npm:^0.13.1"
-    "@xmpp/websocket": "npm:^0.13.1"
-    babel-plugin-jsx-pragmatic: "npm:^1.0.2"
-  checksum: 10/c96067b98cf5724587ac30aa776df7e9d57f7b150c24882ea174700773366f0969480d4f693743b07189ea4b9db338d6f8e21609a6f6147600add8dc0d87509b
+    "@xmpp/client-core": "npm:^0.9.2"
+    "@xmpp/iq": "npm:^0.9.2"
+    "@xmpp/middleware": "npm:^0.9.2"
+    "@xmpp/reconnect": "npm:^0.9.0"
+    "@xmpp/resolve": "npm:^0.9.2"
+    "@xmpp/resource-binding": "npm:^0.9.2"
+    "@xmpp/sasl": "npm:^0.9.2"
+    "@xmpp/sasl-anonymous": "npm:^0.9.0"
+    "@xmpp/sasl-plain": "npm:^0.9.0"
+    "@xmpp/sasl-scram-sha-1": "npm:^0.9.0"
+    "@xmpp/session-establishment": "npm:^0.9.2"
+    "@xmpp/starttls": "npm:^0.9.2"
+    "@xmpp/stream-features": "npm:^0.9.0"
+    "@xmpp/tcp": "npm:^0.9.2"
+    "@xmpp/tls": "npm:^0.9.2"
+    "@xmpp/websocket": "npm:^0.9.2"
+  checksum: 10/e9da9eeec881b42faeb1720a7d54aa283ffae4da13554d125baa65b4e89c425cd111620d6ef9b19b7e9df8ddd6423e4a95aec4406d43c1a4c797e4ba83c5d3cc
   languageName: node
   linkType: hard
 
-"@xmpp/connection-tcp@npm:^0.13.1":
-  version: 0.13.1
-  resolution: "@xmpp/connection-tcp@npm:0.13.1"
+"@xmpp/connection-tcp@npm:^0.9.2":
+  version: 0.9.2
+  resolution: "@xmpp/connection-tcp@npm:0.9.2"
   dependencies:
-    "@xmpp/connection": "npm:^0.13.1"
-    "@xmpp/xml": "npm:^0.13.1"
-  checksum: 10/bd6714c32e1d1cb5cf1b926752eedeebeb29dac5e10e96ca95f4400efd992e24b4901aa4f6691c34dfa8359f33b929534b0c07daf741eaa8e28cacb45d85e11a
+    "@xmpp/connection": "npm:^0.9.2"
+    "@xmpp/xml": "npm:^0.9.2"
+  checksum: 10/5c1efd29e46bd4ce84503ed3f1ded15b2c043b0241250205f388d0a705b5eb0c8e228e711c498e20199e43606f08813b09868a2d5af04e1d44b5ce39bb4a33f9
   languageName: node
   linkType: hard
 
-"@xmpp/connection@npm:^0.13.1":
-  version: 0.13.1
-  resolution: "@xmpp/connection@npm:0.13.1"
+"@xmpp/connection@npm:^0.9.2":
+  version: 0.9.2
+  resolution: "@xmpp/connection@npm:0.9.2"
   dependencies:
-    "@xmpp/error": "npm:^0.13.1"
-    "@xmpp/events": "npm:^0.13.1"
-    "@xmpp/jid": "npm:^0.13.1"
-    "@xmpp/xml": "npm:^0.13.1"
-  checksum: 10/6d381d8ba0c6d3c6c9b806fc0cfac6f23e77e0187c86dadf91d19e1262719f7f09953e4772aec457c1e8efd96940c6a220a5c1306e002b621b192bb123278dc1
+    "@xmpp/error": "npm:^0.9.0"
+    "@xmpp/events": "npm:^0.9.0"
+    "@xmpp/jid": "npm:^0.9.2"
+    "@xmpp/xml": "npm:^0.9.2"
+  checksum: 10/57232108eb06ac9b77531924f5b2fe6a497173879b07ceb48eac24e76bba0cd3e80a5e7f02f6a71a0f3e317ab48c922175401eb960d9a20a211b5174b51ee602
   languageName: node
   linkType: hard
 
-"@xmpp/error@npm:^0.13.1":
-  version: 0.13.1
-  resolution: "@xmpp/error@npm:0.13.1"
-  checksum: 10/654a98cef450607ddf8f34fad789ffedc59eb263e9f0a6430e6bbdc893c6400ae6b2a9f1bc56ee4732007a4b1e95dc9ac132eee0eb1ee2aac3d2f2b255f14df7
+"@xmpp/error@npm:^0.9.0":
+  version: 0.9.0
+  resolution: "@xmpp/error@npm:0.9.0"
+  checksum: 10/47621c8e6c4e7a064a405f9e01bcbc3905ed362b313a4e84e0baf5d921e7654979b032d884b03f2ef1ebe2e05cbb6384cf20f9c746cd7497c339199365288576
   languageName: node
   linkType: hard
 
-"@xmpp/events@npm:^0.13.0, @xmpp/events@npm:^0.13.1":
-  version: 0.13.1
-  resolution: "@xmpp/events@npm:0.13.1"
+"@xmpp/events@npm:^0.9.0":
+  version: 0.9.0
+  resolution: "@xmpp/events@npm:0.9.0"
   dependencies:
-    events: "npm:^3.3.0"
-  checksum: 10/d21d2052fd889745f96897ed97e7df2de86136c332d48b1e3b5e1f7ee817a3faf7278f8fbe2a7a49984ce637df176b2fccae81b0ca613ca3afeec9f1624dd307
+    events: "npm:^3.0.0"
+  checksum: 10/dcd5064439a8f3f4b733c39aa2d0c02c7c336a097f7b785956969df81609a8b64f05ec2e9ea72d5c9335058f33be11f773bafa503256a6a9f24989e5fbffcf5a
   languageName: node
   linkType: hard
 
-"@xmpp/id@npm:^0.13.1":
-  version: 0.13.1
-  resolution: "@xmpp/id@npm:0.13.1"
-  checksum: 10/d91fd3563e65e956222aa8280fabd3b2d9059f8c6687190690e3dd5afa1fcc3ebd208abd88424558dcba3f19ad6961c104ffe315caa693ef333917ab19b4684f
+"@xmpp/id@npm:^0.9.0":
+  version: 0.9.0
+  resolution: "@xmpp/id@npm:0.9.0"
+  checksum: 10/9e66ac3fcb902e94f7e296d44b7c3e61695092d4816c5d238c1f3189fd0f5c4fc62a9987ff7162c83bc7e6287fea3f90cdf233dea8dfc6464d870a3968c34a62
   languageName: node
   linkType: hard
 
-"@xmpp/iq@npm:^0.13.1":
-  version: 0.13.1
-  resolution: "@xmpp/iq@npm:0.13.1"
+"@xmpp/iq@npm:^0.9.2":
+  version: 0.9.2
+  resolution: "@xmpp/iq@npm:0.9.2"
   dependencies:
-    "@xmpp/events": "npm:^0.13.1"
-    "@xmpp/id": "npm:^0.13.1"
-    "@xmpp/middleware": "npm:^0.13.1"
-    "@xmpp/xml": "npm:^0.13.1"
-  checksum: 10/9363d4de4291e68ecc9d0ffca46a611954731aca409ceda3d9ccc16d7c87f34d231778ac7326cd7beefcf0f7a2874884f137721e69cef39b975445e4562585ca
+    "@xmpp/events": "npm:^0.9.0"
+    "@xmpp/id": "npm:^0.9.0"
+    "@xmpp/middleware": "npm:^0.9.2"
+    "@xmpp/xml": "npm:^0.9.2"
+  checksum: 10/b1e28f884138d72d6a69f57cd046a23c64e3e2cd6a61fa776ab0516f1b23aeb924728d3d5ad2084baa1a50b2e16fea9c448ca3439ddfecbeb70c19c066b3020b
   languageName: node
   linkType: hard
 
-"@xmpp/jid@npm:^0.13.1":
-  version: 0.13.1
-  resolution: "@xmpp/jid@npm:0.13.1"
-  checksum: 10/d8b960e4b6de55145a447cd809f8e021920eb70536971af9ab3ede311ebece941ea0caf1db308f1f2028266d3c5de0f17d3ab69fe1d37b98d0e42b1d77dfa459
+"@xmpp/jid@npm:^0.9.2":
+  version: 0.9.2
+  resolution: "@xmpp/jid@npm:0.9.2"
+  checksum: 10/e4661259cce6749e6870e18c099a287cbc10a949fc64db91b0abcddb8f885b4c0d26c03b07d3c3627a46cf354c5d97460be2fc68f3c241a3c38b888ecb7d890b
   languageName: node
   linkType: hard
 
-"@xmpp/middleware@npm:^0.13.1":
-  version: 0.13.1
-  resolution: "@xmpp/middleware@npm:0.13.1"
+"@xmpp/middleware@npm:^0.9.2":
+  version: 0.9.2
+  resolution: "@xmpp/middleware@npm:0.9.2"
   dependencies:
-    "@xmpp/error": "npm:^0.13.1"
-    "@xmpp/jid": "npm:^0.13.1"
-    "@xmpp/xml": "npm:^0.13.1"
+    "@xmpp/error": "npm:^0.9.0"
+    "@xmpp/jid": "npm:^0.9.2"
+    "@xmpp/xml": "npm:^0.9.2"
     koa-compose: "npm:^4.1.0"
-  checksum: 10/748ef35883c593041165de4c53907feac662c33f214005f76a47b7e4125d84d9f97c6e9eec6d8a664448741ad5ffad3b2908967f022ce2cde038f960c1b22f36
+  checksum: 10/e3457acb4131a9e0c78cceb0f6094c0ea8b147a1859749bd3e67589a6ba74630627cc6b5da44d94ae06697354a0ec5f53a7db590ea2a8fd09344d95fee597296
   languageName: node
   linkType: hard
 
-"@xmpp/reconnect@npm:^0.13.1":
-  version: 0.13.1
-  resolution: "@xmpp/reconnect@npm:0.13.1"
+"@xmpp/reconnect@npm:^0.9.0":
+  version: 0.9.0
+  resolution: "@xmpp/reconnect@npm:0.9.0"
   dependencies:
-    "@xmpp/events": "npm:^0.13.1"
-  checksum: 10/bf115a1b47e94cb2e01c04dca7314aeb3f71dfdb58e2ab3b9af65c4d942919c29781adfaa5d511188c7cf03b29673ceeae3bb48d1d4423e64640922a5a316c6a
+    "@xmpp/events": "npm:^0.9.0"
+  checksum: 10/c5b5f17c61df20d1dba903e2e748372f3d13882a14f3eaef157c5493b6f4fffb703e73ff5cc98685da740b1f8ee9bcb77f44b087d247559e79a0bf8194b2a342
   languageName: node
   linkType: hard
 
-"@xmpp/resolve@npm:^0.13.1":
-  version: 0.13.1
-  resolution: "@xmpp/resolve@npm:0.13.1"
+"@xmpp/resolve@npm:^0.9.2":
+  version: 0.9.2
+  resolution: "@xmpp/resolve@npm:0.9.2"
   dependencies:
-    "@xmpp/events": "npm:^0.13.0"
-    "@xmpp/xml": "npm:^0.13.0"
-    node-fetch: "npm:^2.6.6"
-  checksum: 10/a24920e172a508641e8c1da20c0b2080938f6fd1a1054aacf8f577c00eadd1a3fb18b7308df6eb106a9c40a366a8cf8fe7da7ec45cc6599ddc9f4d91d1a01215
+    "@xmpp/events": "npm:^0.9.0"
+    "@xmpp/xml": "npm:^0.9.2"
+    node-fetch: "npm:^2.3.0"
+  checksum: 10/74aa2034da0d0a301ace80712f55551990e2d6bbd7821cd7f48391ba245ef8f571123419e60358c9a11804e6a9205889d59418d840d2949b1d54014fd420a720
   languageName: node
   linkType: hard
 
-"@xmpp/resource-binding@npm:^0.13.1":
-  version: 0.13.1
-  resolution: "@xmpp/resource-binding@npm:0.13.1"
+"@xmpp/resource-binding@npm:^0.9.2":
+  version: 0.9.2
+  resolution: "@xmpp/resource-binding@npm:0.9.2"
   dependencies:
-    "@xmpp/xml": "npm:^0.13.1"
-  checksum: 10/6f7fbc20a0d0e05852726ca60a56ac7115a1c5a3d6e7ce7227e5e4e8fc62bd30077922b066d66143749eae717956cf79baa42413b4131ee1410d3e338a68ea98
+    "@xmpp/xml": "npm:^0.9.2"
+  checksum: 10/503b269e55b56644982d224742dadb6f880a02ef233d2e823ba19996f79f62f0762f85b5f2dde0fb92536446d07b95a7c98f6cd266389f4fe1fb5aff973bf194
   languageName: node
   linkType: hard
 
-"@xmpp/sasl-anonymous@npm:^0.13.1":
-  version: 0.13.1
-  resolution: "@xmpp/sasl-anonymous@npm:0.13.1"
+"@xmpp/sasl-anonymous@npm:^0.9.0":
+  version: 0.9.0
+  resolution: "@xmpp/sasl-anonymous@npm:0.9.0"
   dependencies:
     sasl-anonymous: "npm:^0.1.0"
-  checksum: 10/8850968d6d5dee99d129118e970776b75d7ab1ea4838db200ad3c36b26b53e8f53f1dffd5e38170e26d9c389311317651e29a58b5b8d7d66720bf51142bce483
+  checksum: 10/d86fde7dee63b0b8c083af33329c908d0c5ea63dc573981c7350b540331d60db34719723040022e0dafd00030599877561c6a2bbbda90cfd89287a0a668431b3
   languageName: node
   linkType: hard
 
-"@xmpp/sasl-plain@npm:^0.13.1":
-  version: 0.13.1
-  resolution: "@xmpp/sasl-plain@npm:0.13.1"
+"@xmpp/sasl-plain@npm:^0.9.0":
+  version: 0.9.0
+  resolution: "@xmpp/sasl-plain@npm:0.9.0"
   dependencies:
     sasl-plain: "npm:^0.1.0"
-  checksum: 10/97cbe29ab553c0f32dd439b456b3a2f2394d2138b4c6bee891442e850ae1e5163be942786d0db5867adc084901b809d013f9b383d8076c304cbfe351642e7837
+  checksum: 10/c121df54449a96350f95e640d4e408b13ef5d04441e500d312bbc2afff114089c9ebf39460deb4876211c7465efa6cc496d85d780d80364ed4638df1102f5238
   languageName: node
   linkType: hard
 
-"@xmpp/sasl-scram-sha-1@npm:^0.13.1":
-  version: 0.13.1
-  resolution: "@xmpp/sasl-scram-sha-1@npm:0.13.1"
+"@xmpp/sasl-scram-sha-1@npm:^0.9.0":
+  version: 0.9.0
+  resolution: "@xmpp/sasl-scram-sha-1@npm:0.9.0"
   dependencies:
-    sasl-scram-sha-1: "npm:^1.2.1"
-  checksum: 10/7da2ad1a6bfccf3f3eb0a632f1942433119fef5044be14e623eeb2fc6522307151dbe3dbe18115a3b2b66b8366bdb849eb75019925077ecbe9bfbafcb8cc44af
+    sasl-scram-sha-1: "npm:^1.2.0"
+  checksum: 10/110eac42952ae8c1476e60f508d233205df453bd77f79739b12a3a2fc4bfa558a05bae9d07fcc1e4bf0b00f19b27a60594732b89c9ffefa553b90b7226912f8d
   languageName: node
   linkType: hard
 
-"@xmpp/sasl@npm:^0.13.1":
-  version: 0.13.1
-  resolution: "@xmpp/sasl@npm:0.13.1"
+"@xmpp/sasl@npm:^0.9.2":
+  version: 0.9.2
+  resolution: "@xmpp/sasl@npm:0.9.2"
   dependencies:
-    "@xmpp/base64": "npm:^0.13.1"
-    "@xmpp/error": "npm:^0.13.1"
-    "@xmpp/xml": "npm:^0.13.1"
+    "@xmpp/base64": "npm:^0.9.0"
+    "@xmpp/error": "npm:^0.9.0"
+    "@xmpp/xml": "npm:^0.9.2"
     saslmechanisms: "npm:^0.1.1"
-  checksum: 10/9b061c64b4a3d0287932893239b905399e67d4fa506deb8c45b4124ebfb4645168b21fc91704fcc0b79d82a28b1d9be3201126284ed24d25d54b9c3d91ba4ea0
+  checksum: 10/41766f1d4e480922d1fe19d1b9d208a91a503ee800136ca47371e3c6e56f7bee0fa9733fd1a8feb04bc86cd4d71d6eba832143d0deb27136962b8468db401eb4
   languageName: node
   linkType: hard
 
-"@xmpp/session-establishment@npm:^0.13.1":
-  version: 0.13.1
-  resolution: "@xmpp/session-establishment@npm:0.13.1"
+"@xmpp/session-establishment@npm:^0.9.2":
+  version: 0.9.2
+  resolution: "@xmpp/session-establishment@npm:0.9.2"
   dependencies:
-    "@xmpp/xml": "npm:^0.13.1"
-  checksum: 10/58415bd794b10b5676452b4adc32c385f720533688dd2d02a1c1959b3d71a19f291bb826c0689ed11b999e065d4415eeea481b525dba43777c6144fbd0990d56
+    "@xmpp/xml": "npm:^0.9.2"
+  checksum: 10/449da9e99778efc4448b9d3eccdbd9bd525be7a2202795850091c1193ab0731e7c709b9130f248ac9262975f81f846ea9b3ea5e49db1b7268da1eb7595276fc4
   languageName: node
   linkType: hard
 
-"@xmpp/starttls@npm:^0.13.1":
-  version: 0.13.1
-  resolution: "@xmpp/starttls@npm:0.13.1"
+"@xmpp/starttls@npm:^0.9.2":
+  version: 0.9.2
+  resolution: "@xmpp/starttls@npm:0.9.2"
   dependencies:
-    "@xmpp/events": "npm:^0.13.1"
-    "@xmpp/tls": "npm:^0.13.1"
-    "@xmpp/xml": "npm:^0.13.1"
-  checksum: 10/ecee7c7938e1cb52a094181f782a0d6b1fcbce2fbdcf024a30db89a7f43b2be138b8f1557f82ce3c62ef41923a160284916d58480a7a2ff31883c12a7b31aa5a
+    "@xmpp/events": "npm:^0.9.0"
+    "@xmpp/xml": "npm:^0.9.2"
+  checksum: 10/13be6ae13893e007dc9d2f51141ccece5464a2e3c3c7c5cd37623d1770fddda76e4a4139bb0b87437d94b2d8dcf75321ae3fadb42e9015277a312341031a746f
   languageName: node
   linkType: hard
 
-"@xmpp/stream-features@npm:^0.13.1":
-  version: 0.13.1
-  resolution: "@xmpp/stream-features@npm:0.13.1"
-  checksum: 10/200fb1ccf30a974fbc623233169039791d0a0d34df01a0f62020163246a12ec48e32c4c6b326997722617e0d2cdeab37090cb923d16d8a91495464303b4866a7
+"@xmpp/stream-features@npm:^0.9.0":
+  version: 0.9.0
+  resolution: "@xmpp/stream-features@npm:0.9.0"
+  checksum: 10/36f354d7c87e435166414f41e945a28bb496d4bf6f3fd9659b5546077c775fd9bfe2cbf0668d9e1bf4906b401c61b3f93e5ca0c68ff10d56d4aa981ddea11204
   languageName: node
   linkType: hard
 
-"@xmpp/stream-management@npm:^0.13.1":
-  version: 0.13.1
-  resolution: "@xmpp/stream-management@npm:0.13.1"
+"@xmpp/tcp@npm:^0.9.2":
+  version: 0.9.2
+  resolution: "@xmpp/tcp@npm:0.9.2"
   dependencies:
-    "@xmpp/xml": "npm:^0.13.1"
-  checksum: 10/272f71aafdb0d4eb878bbcc7aaee2388696d657470c6e830e03ff3dd503af1445f5ed55810050ec5ec62ec89e69d578fc656975050919f46a0f2c2ba9dc8e790
+    "@xmpp/connection-tcp": "npm:^0.9.2"
+  checksum: 10/4981470a76c184da81f8a980688b57ccf5c7d6029d609d1634f92f74436f8c9e49bc073a6e15c936ed34db91239ed399a99ffcc5d5bbc321f55cd715745f0944
   languageName: node
   linkType: hard
 
-"@xmpp/tcp@npm:^0.13.1":
-  version: 0.13.1
-  resolution: "@xmpp/tcp@npm:0.13.1"
+"@xmpp/tls@npm:^0.9.2":
+  version: 0.9.2
+  resolution: "@xmpp/tls@npm:0.9.2"
   dependencies:
-    "@xmpp/connection-tcp": "npm:^0.13.1"
-  checksum: 10/a4d4cb30cd5c971a991035083864383bcfd6bcb7151c9f41a3d78a9344a7b3428e127dac59720576836b15f5687e2d19042a63abac9abe98deded57ae946a0bf
+    "@xmpp/connection": "npm:^0.9.2"
+    "@xmpp/connection-tcp": "npm:^0.9.2"
+  checksum: 10/1a3cb6a79d6e3a4731ca6ad7d22e12a298719f7fbf4a1e4e9c7779bdf50ecb9afc6b11668011c7804ba6b6c6ab451e0966cb6fd86c267cb6b2f154be265af1c3
   languageName: node
   linkType: hard
 
-"@xmpp/tls@npm:^0.13.1":
-  version: 0.13.1
-  resolution: "@xmpp/tls@npm:0.13.1"
+"@xmpp/websocket@npm:^0.9.2":
+  version: 0.9.2
+  resolution: "@xmpp/websocket@npm:0.9.2"
   dependencies:
-    "@xmpp/connection": "npm:^0.13.1"
-    "@xmpp/connection-tcp": "npm:^0.13.1"
-  checksum: 10/254422941533f6e556d265969ddfbc96386571f3a7d7a3689ba8388961c376346039813309af8569f2fb2dadbe4bedeb769a2d52e47898497f943f8a24d9319b
+    "@xmpp/connection": "npm:^0.9.2"
+    "@xmpp/xml": "npm:^0.9.2"
+    ws: "npm:^7.0.0"
+  checksum: 10/d3e2105dd73d6a421981dd9ea713b42474d605ed76325e9b6909bb50e7664ebfd61f7980765f900d2a8c5015829acda4137c0b48c786d672694549bd16ad4aad
   languageName: node
   linkType: hard
 
-"@xmpp/websocket@npm:^0.13.1":
-  version: 0.13.1
-  resolution: "@xmpp/websocket@npm:0.13.1"
+"@xmpp/xml@npm:^0.9.2":
+  version: 0.9.2
+  resolution: "@xmpp/xml@npm:0.9.2"
   dependencies:
-    "@xmpp/connection": "npm:^0.13.1"
-    "@xmpp/xml": "npm:^0.13.1"
-    ws: "npm:^8.4.0"
-  checksum: 10/dc0f897c290d2219d3ae045d184fde7d3482aa0ef66aca0b2ed5c699c1687fe5a8713e7447e3162b89d12103ee05555d0a2e1b52cff427c9d3b0a04d71fe042f
-  languageName: node
-  linkType: hard
-
-"@xmpp/xml@npm:^0.13.0, @xmpp/xml@npm:^0.13.1":
-  version: 0.13.1
-  resolution: "@xmpp/xml@npm:0.13.1"
-  dependencies:
-    ltx: "npm:^3.0.0"
-  checksum: 10/77d17b6335229c0e315cb8628040e58d572d7d8da6045a04c5bbdc966b01a0c13c3b933fc297cad09b2cef25d4658a05d28adbf157f8d4485bd02bb401874dee
+    ltx: "npm:^2.8.1"
+  checksum: 10/be224cee068067d6fea73a7b281c4accf420ef0bc58e1b107906fc2266e79ea5eeb8247f0c8b53907d69224a30d418df15e32145148bbe4505c4957e30f01001
   languageName: node
   linkType: hard
 
@@ -3341,7 +3273,7 @@ __metadata:
     react: "npm:18.3.1"
     react-native: "npm:0.75.2"
     react-native-awesome-alerts: "npm:^2.0.0"
-    react-native-connectycube: "npm:3.33.1"
+    react-native-connectycube: "npm:3.33.2"
     react-native-incall-manager: "npm:^4.2.0"
     react-native-safe-area-context: "npm:^4.10.9"
     react-native-screens: "npm:^3.34.0"
@@ -3508,7 +3440,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"anymatch@npm:^3.0.3, anymatch@npm:~3.1.2":
+"anymatch@npm:^3.0.3":
   version: 3.1.3
   resolution: "anymatch@npm:3.1.3"
   dependencies:
@@ -3607,21 +3539,6 @@ __metadata:
     es-abstract: "npm:^1.22.1"
     es-shim-unscopables: "npm:^1.0.0"
   checksum: 10/33f20006686e0cbe844fde7fd290971e8366c6c5e3380681c2df15738b1df766dd02c7784034aeeb3b037f65c496ee54de665388288edb323a2008bb550f77ea
-  languageName: node
-  linkType: hard
-
-"array.prototype.reduce@npm:^1.0.6":
-  version: 1.0.7
-  resolution: "array.prototype.reduce@npm:1.0.7"
-  dependencies:
-    call-bind: "npm:^1.0.7"
-    define-properties: "npm:^1.2.1"
-    es-abstract: "npm:^1.23.2"
-    es-array-method-boxes-properly: "npm:^1.0.0"
-    es-errors: "npm:^1.3.0"
-    es-object-atoms: "npm:^1.0.0"
-    is-string: "npm:^1.0.7"
-  checksum: 10/3a4fa56cf5843d821e97680861c8edfdfe6684a7f7cd1145ed611b5fa611fd62d1b149a438ae24ae884c843876a6539b67fbcacdd3276f89731eee9415dc9012
   languageName: node
   linkType: hard
 
@@ -3744,15 +3661,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-plugin-jsx-pragmatic@npm:^1.0.2":
-  version: 1.0.2
-  resolution: "babel-plugin-jsx-pragmatic@npm:1.0.2"
-  dependencies:
-    babel-plugin-syntax-jsx: "npm:^6.0.0"
-  checksum: 10/0f3d65f9a38a437df734fa3babb9cf754f8813e665579198caea335f9fa5bd8127d7d40075eb49f20eaa533311aca84cb3a4794fa98d971e21dad5b816bd553c
-  languageName: node
-  linkType: hard
-
 "babel-plugin-polyfill-corejs2@npm:^0.4.10":
   version: 0.4.11
   resolution: "babel-plugin-polyfill-corejs2@npm:0.4.11"
@@ -3786,13 +3694,6 @@ __metadata:
   peerDependencies:
     "@babel/core": ^7.4.0 || ^8.0.0-0 <8.0.0
   checksum: 10/150233571072b6b3dfe946242da39cba8587b7f908d1c006f7545fc88b0e3c3018d445739beb61e7a75835f0c2751dbe884a94ff9b245ec42369d9267e0e1b3f
-  languageName: node
-  linkType: hard
-
-"babel-plugin-syntax-jsx@npm:^6.0.0":
-  version: 6.18.0
-  resolution: "babel-plugin-syntax-jsx@npm:6.18.0"
-  checksum: 10/0c7ce5b81d6cfc01a7dd7a76a9a8f090ee02ba5c890310f51217ef1a7e6163fb7848994bbc14fd560117892e82240df9c7157ad0764da67ca5f2afafb73a7d27
   languageName: node
   linkType: hard
 
@@ -3849,10 +3750,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"base-64@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "base-64@npm:1.0.0"
-  checksum: 10/d10b64a1fc9b2c5a5f39f1ce1e6c9d1c5b249222bbfa3a0604c592d90623caf74419983feadd8a170f27dc0c3389704f72faafa3e645aeb56bfc030c93ff074a
+"base-64@npm:^0.1.0":
+  version: 0.1.0
+  resolution: "base-64@npm:0.1.0"
+  checksum: 10/5a42938f82372ab5392cbacc85a5a78115cbbd9dbef9f7540fa47d78763a3a8bd7d598475f0d92341f66285afd377509851a9bb5c67bbecb89686e9255d5b3eb
   languageName: node
   linkType: hard
 
@@ -3860,13 +3761,6 @@ __metadata:
   version: 1.5.1
   resolution: "base64-js@npm:1.5.1"
   checksum: 10/669632eb3745404c2f822a18fc3a0122d2f9a7a13f7fb8b5823ee19d1d2ff9ee5b52c53367176ea4ad093c332fd5ab4bd0ebae5a8e27917a4105a4cfc86b1005
-  languageName: node
-  linkType: hard
-
-"binary-extensions@npm:^2.0.0":
-  version: 2.3.0
-  resolution: "binary-extensions@npm:2.3.0"
-  checksum: 10/bcad01494e8a9283abf18c1b967af65ee79b0c6a9e6fcfafebfe91dbe6e0fc7272bafb73389e198b310516ae04f7ad17d79aacf6cb4c0d5d5202a7e2e52c7d98
   languageName: node
   linkType: hard
 
@@ -3900,7 +3794,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"braces@npm:^3.0.3, braces@npm:~3.0.2":
+"braces@npm:^3.0.3":
   version: 3.0.3
   resolution: "braces@npm:3.0.3"
   dependencies:
@@ -4067,25 +3961,6 @@ __metadata:
   version: 1.0.2
   resolution: "char-regex@npm:1.0.2"
   checksum: 10/1ec5c2906adb9f84e7f6732a40baef05d7c85401b82ffcbc44b85fbd0f7a2b0c2a96f2eb9cf55cae3235dc12d4023003b88f09bcae8be9ae894f52ed746f4d48
-  languageName: node
-  linkType: hard
-
-"chokidar@npm:^3.6.0":
-  version: 3.6.0
-  resolution: "chokidar@npm:3.6.0"
-  dependencies:
-    anymatch: "npm:~3.1.2"
-    braces: "npm:~3.0.2"
-    fsevents: "npm:~2.3.2"
-    glob-parent: "npm:~5.1.2"
-    is-binary-path: "npm:~2.1.0"
-    is-glob: "npm:~4.0.1"
-    normalize-path: "npm:~3.0.0"
-    readdirp: "npm:~3.6.0"
-  dependenciesMeta:
-    fsevents:
-      optional: true
-  checksum: 10/c327fb07704443f8d15f7b4a7ce93b2f0bc0e6cea07ec28a7570aa22cd51fcf0379df589403976ea956c369f25aa82d84561947e227cd925902e1751371658df
   languageName: node
   linkType: hard
 
@@ -4296,13 +4171,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"commander@npm:^6.2.0":
-  version: 6.2.1
-  resolution: "commander@npm:6.2.1"
-  checksum: 10/25b88c2efd0380c84f7844b39cf18510da7bfc5013692d68cdc65f764a1c34e6c8a36ea6d72b6620e3710a930cf8fab2695bdec2bf7107a0f4fa30a3ef3b7d0e
-  languageName: node
-  linkType: hard
-
 "commander@npm:^9.4.1":
   version: 9.5.0
   resolution: "commander@npm:9.5.0"
@@ -4373,13 +4241,6 @@ __metadata:
   dependencies:
     browserslist: "npm:^4.23.3"
   checksum: 10/4e2f219354fd268895f79486461a12df96f24ed307321482fe2a43529c5a64e7c16bcba654980ba217d603444f5141d43a79058aeac77511085f065c5da72207
-  languageName: node
-  linkType: hard
-
-"core-js@npm:^3.30.2":
-  version: 3.38.1
-  resolution: "core-js@npm:3.38.1"
-  checksum: 10/3c25fdf0b2595ed37ceb305213a61e2cf26185f628455e99d1c736dda5f69e2de4de7126e6a1da136f54260c4fcc982c4215e37b5a618790a597930f854c0a37
   languageName: node
   linkType: hard
 
@@ -4866,13 +4727,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"es-array-method-boxes-properly@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "es-array-method-boxes-properly@npm:1.0.0"
-  checksum: 10/27a8a21acf20f3f51f69dce8e643f151e380bffe569e95dc933b9ded9fcd89a765ee21b5229c93f9206c93f87395c6b75f80be8ac8c08a7ceb8771e1822ff1fb
-  languageName: node
-  linkType: hard
-
 "es-define-property@npm:^1.0.0":
   version: 1.0.0
   resolution: "es-define-property@npm:1.0.0"
@@ -5258,7 +5112,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"events@npm:^3.3.0":
+"events@npm:^3.0.0":
   version: 3.3.0
   resolution: "events@npm:3.3.0"
   checksum: 10/a3d47e285e28d324d7180f1e493961a2bbb4cad6412090e4dec114f4db1f5b560c7696ee8e758f55e23913ede856e3689cd3aa9ae13c56b5d8314cd3b3ddd1be
@@ -5570,13 +5424,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fs-readdir-recursive@npm:^1.1.0":
-  version: 1.1.0
-  resolution: "fs-readdir-recursive@npm:1.1.0"
-  checksum: 10/d5e3fd8456b8e5d57a43f169a9eaf65c70fa82c4a22f1d4361cdba4ea5e61c60c5c2b4ac481ea137a4d43b2b99b3ea2fae95ac2730255c4206d61af645866c3a
-  languageName: node
-  linkType: hard
-
 "fs.realpath@npm:^1.0.0":
   version: 1.0.0
   resolution: "fs.realpath@npm:1.0.0"
@@ -5584,7 +5431,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fsevents@npm:^2.3.2, fsevents@npm:~2.3.2":
+"fsevents@npm:^2.3.2":
   version: 2.3.3
   resolution: "fsevents@npm:2.3.3"
   dependencies:
@@ -5594,7 +5441,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fsevents@patch:fsevents@npm%3A^2.3.2#optional!builtin<compat/fsevents>, fsevents@patch:fsevents@npm%3A~2.3.2#optional!builtin<compat/fsevents>":
+"fsevents@patch:fsevents@npm%3A^2.3.2#optional!builtin<compat/fsevents>":
   version: 2.3.3
   resolution: "fsevents@patch:fsevents@npm%3A2.3.3#optional!builtin<compat/fsevents>::version=2.3.3&hash=df0bf1"
   dependencies:
@@ -5681,7 +5528,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"glob-parent@npm:^5.1.2, glob-parent@npm:~5.1.2":
+"glob-parent@npm:^5.1.2":
   version: 5.1.2
   resolution: "glob-parent@npm:5.1.2"
   dependencies:
@@ -5715,7 +5562,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"glob@npm:^7.1.1, glob@npm:^7.1.3, glob@npm:^7.1.4, glob@npm:^7.2.0":
+"glob@npm:^7.1.1, glob@npm:^7.1.3, glob@npm:^7.1.4":
   version: 7.2.3
   resolution: "glob@npm:7.2.3"
   dependencies:
@@ -5894,15 +5741,6 @@ __metadata:
   dependencies:
     hermes-estree: "npm:0.23.1"
   checksum: 10/de88df4f23bd8dc2ffa89c8a317445320af8c7705a2aeeb05c4dd171f037a747982be153a0a237b1c9c7337b79bceaeb5052934cb8a25fe2e2473294a5343334
-  languageName: node
-  linkType: hard
-
-"homedir-polyfill@npm:^1.0.1":
-  version: 1.0.3
-  resolution: "homedir-polyfill@npm:1.0.3"
-  dependencies:
-    parse-passwd: "npm:^1.0.0"
-  checksum: 10/18dd4db87052c6a2179d1813adea0c4bfcfa4f9996f0e226fefb29eb3d548e564350fa28ec46b0bf1fbc0a1d2d6922ceceb80093115ea45ff8842a4990139250
   languageName: node
   linkType: hard
 
@@ -6122,15 +5960,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"is-binary-path@npm:~2.1.0":
-  version: 2.1.0
-  resolution: "is-binary-path@npm:2.1.0"
-  dependencies:
-    binary-extensions: "npm:^2.0.0"
-  checksum: 10/078e51b4f956c2c5fd2b26bb2672c3ccf7e1faff38e0ebdba45612265f4e3d9fc3127a1fa8370bbf09eab61339203c3d3b7af5662cbf8be4030f8fac37745b0e
-  languageName: node
-  linkType: hard
-
 "is-boolean-object@npm:^1.1.0":
   version: 1.1.2
   resolution: "is-boolean-object@npm:1.1.2"
@@ -6237,7 +6066,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"is-glob@npm:^4.0.0, is-glob@npm:^4.0.1, is-glob@npm:^4.0.3, is-glob@npm:~4.0.1":
+"is-glob@npm:^4.0.0, is-glob@npm:^4.0.1, is-glob@npm:^4.0.3":
   version: 4.0.3
   resolution: "is-glob@npm:4.0.3"
   dependencies:
@@ -7338,10 +7167,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ltx@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "ltx@npm:3.0.0"
-  checksum: 10/ec1824c4db9762b73417688f630d2f2a781880b3857a43c5502656b5c2e3532c80dc1cdf8d04c5d01e54805611f0e612f7211115a4ce21fddadc04423e575d39
+"ltx@npm:^2.8.1":
+  version: 2.10.0
+  resolution: "ltx@npm:2.10.0"
+  dependencies:
+    inherits: "npm:^2.0.4"
+  checksum: 10/af76d5fc7054a77151f8c272e92dbba70838a383a21d4c009aaee9c4ad06d706a3a8d6565c333da05d2417d7ecce6a32732e4ccc3b0cea648508edf868f4340e
   languageName: node
   linkType: hard
 
@@ -7925,17 +7756,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-environment-flags@npm:^1.0.5":
-  version: 1.0.6
-  resolution: "node-environment-flags@npm:1.0.6"
-  dependencies:
-    object.getownpropertydescriptors: "npm:^2.0.3"
-    semver: "npm:^5.7.0"
-  checksum: 10/e179d0ff3697cd6006d426ce707060b044da93c8e4c7ce1b19d211c25cc276ba72aa36247bfe64d6e79a0264843d5df7124f0fc28e50fc904f07cc1b96f8c781
-  languageName: node
-  linkType: hard
-
-"node-fetch@npm:^2.2.0, node-fetch@npm:^2.6.12, node-fetch@npm:^2.6.6":
+"node-fetch@npm:^2.2.0, node-fetch@npm:^2.3.0, node-fetch@npm:^2.6.12":
   version: 2.7.0
   resolution: "node-fetch@npm:2.7.0"
   dependencies:
@@ -8008,7 +7829,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"normalize-path@npm:^3.0.0, normalize-path@npm:~3.0.0":
+"normalize-path@npm:^3.0.0":
   version: 3.0.0
   resolution: "normalize-path@npm:3.0.0"
   checksum: 10/88eeb4da891e10b1318c4b2476b6e2ecbeb5ff97d946815ffea7794c31a89017c70d7f34b3c2ebf23ef4e9fc9fb99f7dffe36da22011b5b5c6ffa34f4873ec20
@@ -8093,21 +7914,6 @@ __metadata:
     es-abstract: "npm:^1.23.2"
     es-object-atoms: "npm:^1.0.0"
   checksum: 10/5b2e80f7af1778b885e3d06aeb335dcc86965e39464671adb7167ab06ac3b0f5dd2e637a90d8ebd7426d69c6f135a4753ba3dd7d0fe2a7030cf718dcb910fd92
-  languageName: node
-  linkType: hard
-
-"object.getownpropertydescriptors@npm:^2.0.3":
-  version: 2.1.8
-  resolution: "object.getownpropertydescriptors@npm:2.1.8"
-  dependencies:
-    array.prototype.reduce: "npm:^1.0.6"
-    call-bind: "npm:^1.0.7"
-    define-properties: "npm:^1.2.1"
-    es-abstract: "npm:^1.23.2"
-    es-object-atoms: "npm:^1.0.0"
-    gopd: "npm:^1.0.1"
-    safe-array-concat: "npm:^1.1.2"
-  checksum: 10/8c50f52e0d702d30836f3d2772ba02807ca25a5381be6f9470c6d143ee0bad01bce3fff0fedea2bdbc0c9297e4eb7785ffee5739f6a3a7c60fcd622b42f8a9fb
   languageName: node
   linkType: hard
 
@@ -8314,13 +8120,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"parse-passwd@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "parse-passwd@npm:1.0.0"
-  checksum: 10/4e55e0231d58f828a41d0f1da2bf2ff7bcef8f4cb6146e69d16ce499190de58b06199e6bd9b17fbf0d4d8aef9052099cdf8c4f13a6294b1a522e8e958073066e
-  languageName: node
-  linkType: hard
-
 "parseurl@npm:~1.3.3":
   version: 1.3.3
   resolution: "parseurl@npm:1.3.3"
@@ -8387,7 +8186,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"picomatch@npm:^2.0.4, picomatch@npm:^2.2.1, picomatch@npm:^2.2.3, picomatch@npm:^2.3.1":
+"picomatch@npm:^2.0.4, picomatch@npm:^2.2.3, picomatch@npm:^2.3.1":
   version: 2.3.1
   resolution: "picomatch@npm:2.3.1"
   checksum: 10/60c2595003b05e4535394d1da94850f5372c9427ca4413b71210f437f7b2ca091dbd611c45e8b37d10036fa8eade25c1b8951654f9d3973bfa66a2ff4d3b08bc
@@ -8649,16 +8448,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-connectycube@npm:3.33.1":
-  version: 3.33.1
-  resolution: "react-native-connectycube@npm:3.33.1"
+"react-native-connectycube@npm:3.33.2":
+  version: 3.33.2
+  resolution: "react-native-connectycube@npm:3.33.2"
   dependencies:
-    "@xmpp/client": "npm:0.13.1"
+    "@xmpp/client": "npm:0.9.2"
     crypto-js: "npm:4.2.0"
     fbemitter: "npm:3.0.0"
     js-base64: "npm:3.7.7"
     react-native-webrtc: "npm:124.0.4"
-  checksum: 10/242d241e3634b33549913843fa37630eb5c899a13d5aaf6dbdf961c8a203cc8d98dfd7a6d6262db892ce2c7b8ce9f7b744c2bdf2c87a39cfdc01a39939c3db85
+  checksum: 10/4754169a60e4007765372b0b0197ef79255e6e41e4de599f0d309c08496420e6e7c4ad7300ddc17076102303f42fe01771673f8490f100b9cd4e3a7226a008eb
   languageName: node
   linkType: hard
 
@@ -8859,15 +8658,6 @@ __metadata:
     string_decoder: "npm:~1.1.1"
     util-deprecate: "npm:~1.0.1"
   checksum: 10/8500dd3a90e391d6c5d889256d50ec6026c059fadee98ae9aa9b86757d60ac46fff24fafb7a39fa41d54cb39d8be56cc77be202ebd4cd8ffcf4cb226cbaa40d4
-  languageName: node
-  linkType: hard
-
-"readdirp@npm:~3.6.0":
-  version: 3.6.0
-  resolution: "readdirp@npm:3.6.0"
-  dependencies:
-    picomatch: "npm:^2.2.1"
-  checksum: 10/196b30ef6ccf9b6e18c4e1724b7334f72a093d011a99f3b5920470f0b3406a51770867b3e1ae9711f227ef7a7065982f6ee2ce316746b2cb42c88efe44297fe7
   languageName: node
   linkType: hard
 
@@ -9207,7 +8997,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sasl-scram-sha-1@npm:^1.2.1":
+"sasl-scram-sha-1@npm:^1.2.0":
   version: 1.3.0
   resolution: "sasl-scram-sha-1@npm:1.3.0"
   dependencies:
@@ -9253,7 +9043,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"semver@npm:^5.6.0, semver@npm:^5.7.0":
+"semver@npm:^5.6.0":
   version: 5.7.2
   resolution: "semver@npm:5.7.2"
   bin:
@@ -9441,13 +9231,6 @@ __metadata:
   version: 1.0.5
   resolution: "sisteransi@npm:1.0.5"
   checksum: 10/aba6438f46d2bfcef94cf112c835ab395172c75f67453fe05c340c770d3c402363018ae1ab4172a1026a90c47eaccf3af7b6ff6fa749a680c2929bd7fa2b37a4
-  languageName: node
-  linkType: hard
-
-"slash@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "slash@npm:2.0.0"
-  checksum: 10/512d4350735375bd11647233cb0e2f93beca6f53441015eea241fe784d8068281c3987fbaa93e7ef1c38df68d9c60013045c92837423c69115297d6169aa85e6
   languageName: node
   linkType: hard
 
@@ -10222,15 +10005,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"v8flags@npm:^3.1.1":
-  version: 3.2.0
-  resolution: "v8flags@npm:3.2.0"
-  dependencies:
-    homedir-polyfill: "npm:^1.0.1"
-  checksum: 10/4c88e2681f12153ae5e45de678ba724ebd2daf2619d4fbe5cc8075b07b2095522dbfd0cb55e510a1d27ea0ed0db4a5e6fc6d18d312f7d8fc098a3c6a79b7ffc6
-  languageName: node
-  linkType: hard
-
 "vary@npm:~1.1.2":
   version: 1.1.2
   resolution: "vary@npm:1.1.2"
@@ -10458,7 +10232,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ws@npm:^7, ws@npm:^7.5.10":
+"ws@npm:^7, ws@npm:^7.0.0, ws@npm:^7.5.10":
   version: 7.5.10
   resolution: "ws@npm:7.5.10"
   peerDependencies:
@@ -10470,21 +10244,6 @@ __metadata:
     utf-8-validate:
       optional: true
   checksum: 10/9c796b84ba80ffc2c2adcdfc9c8e9a219ba99caa435c9a8d45f9ac593bba325563b3f83edc5eb067cc6d21b9a6bf2c930adf76dd40af5f58a5ca6859e81858f0
-  languageName: node
-  linkType: hard
-
-"ws@npm:^8.4.0":
-  version: 8.18.0
-  resolution: "ws@npm:8.18.0"
-  peerDependencies:
-    bufferutil: ^4.0.1
-    utf-8-validate: ">=5.0.2"
-  peerDependenciesMeta:
-    bufferutil:
-      optional: true
-    utf-8-validate:
-      optional: true
-  checksum: 10/70dfe53f23ff4368d46e4c0b1d4ca734db2c4149c6f68bc62cb16fc21f753c47b35fcc6e582f3bdfba0eaeb1c488cddab3c2255755a5c3eecb251431e42b3ff6
   languageName: node
   linkType: hard
 
