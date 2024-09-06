@@ -35,7 +35,7 @@ cd path/to/folder
 # use git to clone
 git clone https://github.com/ConnectyCube/connectycube-reactnative-samples.git
 # navigate to React Native Video Chat Conference sample project
-cd RNVideoChatConf
+cd connectycube-reactnative-samples/RNVideoChatConf
 ```
 
 ### Step 2: Install _node_modules_
