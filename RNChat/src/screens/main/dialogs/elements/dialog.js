@@ -1,21 +1,21 @@
-import React from 'react'
-import { StyleSheet, View, TouchableOpacity } from 'react-native'
-import Avatar from '../../../components/avatar'
-import DialogTitle from './dialogTitle'
-import DialogLastDate from './dialogLastDate'
-import DialogUnreadCounter from './dialogUnreadCounter'
-import UsersService from '../../../../services/users-service'
-import { DIALOG_TYPE } from '../../../../helpers/constants'
+import React from 'react';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import Avatar from '../../../components/avatar';
+import DialogTitle from './dialogTitle';
+import DialogLastDate from './dialogLastDate';
+import DialogUnreadCounter from './dialogUnreadCounter';
+import { UsersService } from '../../../../services';
+import { DIALOG_TYPE } from '../../../../helpers/constants';
 
-export default function Dialog ({dialog, onDialogClick}) {
+export default function Dialog({ dialog, onDialogClick }) {
 
   const onPress = async () => {
-    onDialogClick(dialog)
-  }
+    onDialogClick(dialog);
+  };
 
-  const dialogPhoto = dialog.type === DIALOG_TYPE.PRIVATE 
-      ? UsersService.getUsersAvatar(dialog.occupants_ids)
-      : dialog.photo;
+  const dialogPhoto = dialog.type === DIALOG_TYPE.PRIVATE
+    ? UsersService.getUsersAvatar(dialog.occupants_ids)
+    : dialog.photo;
 
   return (
     <TouchableOpacity onPress={onPress}>
@@ -43,7 +43,7 @@ export default function Dialog ({dialog, onDialogClick}) {
         </View>
       </View>
     </TouchableOpacity >
-  ) 
+  );
 }
 
 const styles = StyleSheet.create({
@@ -52,14 +52,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
-    paddingHorizontal: 10
+    paddingHorizontal: 10,
   },
   border: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     borderBottomWidth: 0.5,
-    borderBottomColor: 'lightgrey'
+    borderBottomColor: 'lightgrey',
   },
   infoContainer: {
     maxWidth: 75,
@@ -67,6 +67,6 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'flex-end',
     paddingVertical: 10,
-    marginLeft: 5
-  }
-})
+    marginLeft: 5,
+  },
+});

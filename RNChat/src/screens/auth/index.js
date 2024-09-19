@@ -1,32 +1,32 @@
-import React, { useState } from 'react'
-import { KeyboardAvoidingView, StatusBar, Platform } from 'react-native'
-import { useHeaderHeight } from '@react-navigation/elements'
-import AuthLogo from './AuthLogo'
-import AuthForm from './AuthForm'
-import AuthLinks from './AuthLinks'
+import React, { useState } from 'react';
+import { StyleSheet } from 'react-native';
+import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import AuthLogo from './AuthLogo';
+import AuthForm from './AuthForm';
+import AuthLinks from './AuthLinks';
 
 export default function Auth() {
-
+  const { bottom } = useSafeAreaInsets();
   const [isLogin, setIsLogin] = useState(false);
-
   const toggleAuthState = () => {
-    setIsLogin(!isLogin)
-  }
+    setIsLogin(!isLogin);
+  };
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1, backgroundColor: 'white' }}
-      behavior={Platform.OS === 'ios' ? 'padding' : null}
-      keyboardVerticalOffset={Platform.OS === 'ios' ? useHeaderHeight() + 20 : 0}>
-      <StatusBar barStyle={'dark-content'} />
-      <AuthLogo />
-      <AuthForm
-        isLogin={isLogin}
-      />
-      <AuthLinks
-        toggleAuthState={toggleAuthState}
-        isLogin={isLogin}
-      />
+    <KeyboardAvoidingView style={styles.wrap} behavior="padding" keyboardVerticalOffset={-bottom}>
+      <>
+        <AuthLogo />
+        <AuthForm isLogin={isLogin} />
+        <AuthLinks isLogin={isLogin} toggleAuthState={toggleAuthState} />
+      </>
     </KeyboardAvoidingView>
-  )
+  );
 }
+
+const styles = StyleSheet.create({
+  wrap: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
+});

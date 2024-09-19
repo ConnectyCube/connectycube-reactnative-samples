@@ -1,20 +1,24 @@
-import React, { useState } from 'react'
-import { StyleSheet, View, TextInput, FlatList, Text, TouchableOpacity } from 'react-native'
-import Icon from 'react-native-vector-icons/MaterialIcons'
-import IconGroup from 'react-native-vector-icons/FontAwesome'
-import UsersService from '../../../services/users-service'
-import Indicator from '../../components/indicator'
-import Participant from './participant'
-import Avatar from '../../components/avatar'
-import { showAlert } from '../../../helpers/alert'
-import CreateBtn from '../../components/createBtn'
-import { BTN_TYPE } from '../../../helpers/constants'
-import ChatService from '../../../services/chat-service'
-import {  StackActions } from '@react-navigation/compat'
+import React, { useState } from 'react';
+import { StyleSheet, View, TextInput, FlatList, Text, TouchableOpacity } from 'react-native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import IconGroup from 'react-native-vector-icons/FontAwesome';
+import { ChatService, UsersService } from '../../../services';
+import Indicator from '../../components/indicator';
+import Participant from './participant';
+import Avatar from '../../components/avatar';
+import { showAlert } from '../../../helpers/alert';
+import CreateBtn from '../../components/createBtn';
+import { BTN_TYPE } from '../../../helpers/constants';
+import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
+import useKeyboardOffset from '../../../hooks/useKeyboardOffset';
 
-export default function Contacts ({ route, navigation }) {
-  const dialog = route.params?.dialog
-  const isGroupDetails = !!dialog
+export default function Contacts() {
+  const route = useRoute();
+  const navigation = useNavigation();
+  const keyboardOffset = useKeyboardOffset();
+  const dialog = route.params?.dialog;
+  const isGroupDetails = !!dialog;
 
   const [keyword, setKeyword] = useState('');
   const [isLoader, setIsLoader] = useState(false);
@@ -22,24 +26,24 @@ export default function Contacts ({ route, navigation }) {
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [searchedUsers, setSearchedUsers] = useState([]);
 
-  const keyExtractor = (item, index) => index.toString()
+  const keyExtractor = (item, index) => index.toString();
 
   const toggleUserSelect = (user) => {
-    const newArr = []
+    const newArr = [];
     selectedUsers.forEach(elem => {
-      if (elem.id !== user.id) {
-        newArr.push(elem)
+      if (elem.id !== user?.id) {
+        newArr.push(elem);
       }
-    })
-    setSelectedUsers(newArr)
-  }
+    });
+    setSelectedUsers(newArr);
+  };
 
   const toggleUserUnselect = (user) => {
-    setSelectedUsers([...selectedUsers, user])
-  }
+    setSelectedUsers([...selectedUsers, user]);
+  };
 
   const _renderUser = ({ item }) => {
-    const isSelected = selectedUsers.find(elem => elem.id === item.id)
+    const isSelected = selectedUsers.find(elem => elem.id === item.id);
     return (
       <Participant
         user={item}
@@ -47,13 +51,13 @@ export default function Contacts ({ route, navigation }) {
         isGroupDialog={isGroupDialog}
         isSelected={!!isSelected}
       />
-    )
-  }
+    );
+  };
 
   const changeTypeDialog = () => {
-    setSelectedUsers([])
-    setIsGroupDialog(!isGroupDialog)
-  }
+    setSelectedUsers([]);
+    setIsGroupDialog(!isGroupDialog);
+  };
 
   const _renderSelectedUser = ({ item }) => {
     return (
@@ -65,80 +69,85 @@ export default function Contacts ({ route, navigation }) {
             iconSize="medium"
           />
           <View style={{ position: 'absolute', bottom: 7, right: 7, backgroundColor: 'white', width: 20, height: 20, borderRadius: 10 }}>
-            <Icon name="cancel" size={20} color='grey' />
+            <Icon name="cancel" size={20} color="grey" />
           </View>
         </View>
-        <Text numberOfLines={2} style={{ textAlign: 'center',  color: 'grey' }}>{item.full_name}</Text>
+        <Text numberOfLines={2} style={{ textAlign: 'center', color: 'grey' }}>{item.full_name}</Text>
       </TouchableOpacity >
-    )
-  }
+    );
+  };
 
   const onSelectUser = (user) => {
     // 1-1 chat
     if (!isGroupDialog) {
-      return ChatService.createPrivateDialog(user.id)
+      return ChatService.createPrivateDialog(user?.id)
         .then((newDialog) => {
-          navigation.dispatch(StackActions.popToTop())
-          navigation.push('Chat', { dialog: newDialog })
-        })
+          navigation.reset({
+            index: 1,
+            routes: [
+              { name: 'Dialogs' },
+              { name: 'Chat', params: { dialog: newDialog } },
+            ],
+          });
+        });
     }
 
     // group chat
-    const isUserSelected = selectedUsers.find(elem => elem.id === user.id)
+    const isUserSelected = selectedUsers.find(elem => elem.id === user?.id);
     if (isUserSelected) {
-      toggleUserSelect(user)
+      toggleUserSelect(user);
     } else {
-      const occupantsCount = dialog ? dialog.occupants_ids.length : 1
+      const occupantsCount = dialog ? dialog.occupants_ids.length : 1;
       if (selectedUsers.length + occupantsCount === 9) {
-        showAlert('Maximum 9 participants')
-        return
+        showAlert('Maximum 9 participants');
+        return;
       }
 
-      toggleUserUnselect(user)
+      toggleUserUnselect(user);
     }
-  }
+  };
 
   const searchUsers = () => {
-    let keywordTrimmed = keyword.trim()
+    let keywordTrimmed = keyword.trim();
 
     if (keywordTrimmed.length > 2) {
-      setIsLoader(true)
+      setIsLoader(true);
 
       UsersService.listUsersByFullName(keywordTrimmed, dialog?.occupants_ids)
         .then(users => {
-          setSearchedUsers(users)
-          setIsLoader(false)
+          setSearchedUsers(users);
+          setIsLoader(false);
         })
         .catch(() => {
-          setIsLoader(false)
-        })
+          setIsLoader(false);
+        });
     } else {
-      showAlert('Enter more than 3 characters')
+      showAlert('Enter more than 3 characters');
     }
-  }
+  };
 
   const goToCreateDialogScreen = () => {
     if (isGroupDetails) {
-      const addParticipantAction = route.params?.addParticipant || false
-      navigation.goBack()
-      addParticipantAction(selectedUsers)
-      return
+      const addParticipantAction = route.params?.addParticipant || false;
+      navigation.goBack();
+      addParticipantAction(selectedUsers);
+      return;
     }
-    navigation.push('CreateDialog', { users: selectedUsers })
-  }
+    navigation.push('CreateDialog', { users: selectedUsers });
+  };
 
   return (
     <View style={styles.container}>
       {isLoader && (
         <Indicator color={'red'} size={40} />
-      )}       
+      )}
       <View style={styles.dialogTypeContainer}>
         {!isGroupDetails &&
           <TouchableOpacity style={styles.dialogType} onPress={changeTypeDialog}>
-            {!isGroupDialog ? <IconGroup name="group" size={25} color='#48A6E3' /> :
-              <IconGroup name="user" size={25} color='#48A6E3' />
+            {!isGroupDialog ? <IconGroup name="group" size={25} color="#48A6E3" /> :
+              <IconGroup name="user" size={25} color="#48A6E3" />
             }
-            <Text style={styles.dialogTypeText}>{isGroupDialog ? `Switch to private chat creation` : `Switch to group chat creation`}</Text>
+            <Text style={styles.dialogTypeText}>{isGroupDialog ? 'Switch to private chat creation' : 'Switch to group chat creation'}</Text>
           </TouchableOpacity>
         }
       </View>
@@ -153,7 +162,7 @@ export default function Contacts ({ route, navigation }) {
           value={keyword}
         />
       </View>
-      <View style={selectedUsers.length > 0 && styles.containerCeletedUsers}>
+      <View style={selectedUsers.length > 0 && styles.containerSelectedUsers}>
         <FlatList
           data={selectedUsers}
           keyExtractor={keyExtractor}
@@ -161,26 +170,26 @@ export default function Contacts ({ route, navigation }) {
           horizontal={true}
         />
       </View>
-      <View style={{ flex: 1 }}>
+      <KeyboardAvoidingView style={styles.container} behavior="padding" keyboardVerticalOffset={keyboardOffset}>
         <FlatList
           data={searchedUsers}
           keyExtractor={keyExtractor}
           renderItem={(item) => _renderUser(item)}
         />
-      </View>
+      </KeyboardAvoidingView>
       {selectedUsers.length > 0 && (
         <CreateBtn goToScreen={goToCreateDialogScreen} type={BTN_TYPE.CONTACTS} />
       )}
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
   },
   searchUser: {
-    margin: 10
+    margin: 10,
   },
   searchInput: {
     fontSize: 18,
@@ -193,21 +202,21 @@ const styles = StyleSheet.create({
   },
   dialogTypeContainer: {
     marginHorizontal: 12,
-    paddingVertical: 10
+    paddingVertical: 10,
   },
   dialogType: {
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   dialogTypeText: {
     marginHorizontal: 5,
     fontSize: 16,
     color: 'grey',
   },
-  containerCeletedUsers: {
+  containerSelectedUsers: {
     borderBottomWidth: 0.5,
     borderColor: 'grey',
-    margin: 10
+    margin: 10,
   },
   selectedUser: {
     width: 70,
@@ -217,6 +226,6 @@ const styles = StyleSheet.create({
   userNotFound: {
     fontSize: 17,
     marginTop: 20,
-    textAlign: 'center'
-  }
-})
+    textAlign: 'center',
+  },
+});

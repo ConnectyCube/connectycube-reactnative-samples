@@ -1,117 +1,115 @@
-import React, { useEffect, useState, useLayoutEffect, useCallback } from 'react'
-import { StyleSheet, View, FlatList, Text, StatusBar, TouchableOpacity, Platform } from 'react-native'
-import { useSelector } from 'react-redux'
-import store from '../../../store'
-import Dialog from './elements/dialog'
-import ChatService from '../../../services/chat-service'
-import Indicator from '../../components/indicator'
-import CreateBtn from '../../components/createBtn'
-import { BTN_TYPE } from '../../../helpers/constants'
-import Avatar from '../../components/avatar'
-import PushNotificationService from '../../../services/push-notification'
+import React, { useState, useLayoutEffect, useCallback } from 'react';
+import { StyleSheet, View, FlatList, Text, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
+import Dialog from './elements/dialog';
+import { ChatService, PushNotificationService } from '../../../services';
+import Indicator from '../../components/indicator';
+import CreateBtn from '../../components/createBtn';
+import { BTN_TYPE } from '../../../helpers/constants';
+import Avatar from '../../components/avatar';
 import customEventEmitter, { CUSTOM_EVENTS } from '../../../events';
-import {  StackActions } from '@react-navigation/compat'
 
-export default function Dialogs ({ navigation }) {
+export default function Dialogs() {
+  const navigation = useNavigation();
   const dialogs = useSelector((state) => state.dialogs);
-  const currentUser = useSelector((state) => state.currentUser.user);
-
+  const currentUser = useSelector((state) => state.currentUser?.user);
   const [isLoader, setIsLoader] = useState(false);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    setIsLoader(true);
+
     ChatService.fetchDialogsFromServer()
       .then(() => {
-        PushNotificationService.init()
-      })
+        PushNotificationService.init();
+      }).finally(() => {
+        setIsLoader(false);
+      });
 
     customEventEmitter.addListener(
       CUSTOM_EVENTS.ON_NOTIFICATION_OPEN,
       onNotificationOpen,
     );
-  }, []);
+  }, [onNotificationOpen]);
 
-  const onNotificationOpen = useCallback(dialogId => {
-    console.log('Dialogs - PRESS', dialogId);
+  const onNotificationOpen = useCallback(async dialogId => {
+    const dialog = await ChatService.fetchDialogById(dialogId, true);
 
-    if (dialogId !== store.getState().selectedDialog) {
-      ChatService.getDialogById(dialogId).then(dialog => {
-        if (navigation.canGoBack()) {
-          navigation.dispatch(StackActions.popToTop())
-        }
-        onDialogClick(dialog)
-      })
+    if (dialog) {
+      navigation.reset({
+        index: 1,
+        routes: [
+          { name: 'Dialogs' },
+          { name: 'Chat', params: { dialog } },
+        ],
+      });
     }
-  }, []);
+  }, [navigation]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerTitle: () => (
-        <Text style={[
-          { fontSize: 22, color: 'black' },
-          Platform.OS === 'android' ?
-            { paddingLeft: 13 } :
-            { paddingLeft: 0 }]}>
-          {currentUser.full_name}
-        </Text>
-      ),
-      headerRight: () => (
-        <TouchableOpacity onPress={() => goToSettingsScreen()}>
+      headerTitle: currentUser.full_name,
+      headerRight: () =>
+        <TouchableOpacity onPress={goToSettingsScreen}>
           <Avatar
             photo={currentUser.avatar}
             name={currentUser.full_name}
             iconSize="small"
           />
-        </TouchableOpacity>
-      ),
+        </TouchableOpacity>,
     });
-  }, [navigation]);
+  }, [navigation, currentUser, goToSettingsScreen]);
 
-  const goToSettingsScreen = () => {
-    navigation.push('Settings', { user: currentUser })
-  }
+  const goToSettingsScreen = useCallback(() => {
+    navigation.push('Settings', { user: currentUser });
+  }, [navigation, currentUser]);
 
-  const keyExtractor = (item, index) => index.toString()
+  const keyExtractor = (item, index) => index.toString();
 
   const _renderDialog = ({ item }) => {
     return (
       <Dialog dialog={item} onDialogClick={onDialogClick} />
-    )
-  }
+    );
+  };
 
-  const onDialogClick = (dialog) => {
-    navigation.push('Chat', { dialog })
-  }
+  const onDialogClick = useCallback((dialog) => {
+    navigation.push('Chat', { dialog });
+  }, [navigation]);
 
-  const goToContactsScreen = () => {
-    navigation.push('Contacts')
-  }
+  const goToContactsScreen = useCallback(() => {
+    navigation.push('Contacts');
+  }, [navigation]);
 
   return (
     <View style={styles.container}>
-      <StatusBar barStyle={'dark-content'} />
-      {isLoader ?
-        (
-          <Indicator color={'red'} size={40} />
-        ) : dialogs.length === 0 ?
-          (<View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <Text style={{ fontSize: 19, color: 'grey' }}>No chats yet</Text>
+      {isLoader
+        ? <Indicator size={40} />
+        : dialogs.length === 0
+          ? <View style={styles.emptyContainer}>
+            <Text style={styles.emptyText}>No chats yet</Text>
           </View>
-          ) :
-          (
-            <FlatList
-              data={dialogs}
-              keyExtractor={keyExtractor}
-              renderItem={(item) => _renderDialog(item)}
-            />
-          )
+          : <FlatList
+            data={dialogs}
+            keyExtractor={keyExtractor}
+            renderItem={(item) => _renderDialog(item)}
+          />
       }
       <CreateBtn goToScreen={goToContactsScreen} type={BTN_TYPE.DIALOG} />
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  }
-})
+  },
+  emptyContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  emptyText: {
+    fontSize: 20,
+    color: 'black',
+  },
+});

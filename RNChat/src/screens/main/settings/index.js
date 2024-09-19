@@ -1,11 +1,19 @@
-import React, { useState, useRef } from 'react'
-import { StyleSheet, View, Text, TouchableOpacity, TextInput, KeyboardAvoidingView, Alert } from 'react-native'
-import AuthService from '../../../services/auth-service'
-import Indicator from '../../components/indicator'
-import { showAlert } from '../../../helpers/alert'
-import ImgPicker from '../../components/imgPicker'
+import React, { useState, useRef } from 'react';
+import { StyleSheet, View, Text, TouchableOpacity, TextInput, Alert } from 'react-native';
+import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
+import { AuthService } from '../../../services';
+import Indicator from '../../components/indicator';
+import { showAlert } from '../../../helpers/alert';
+import ImgPicker from '../../components/imgPicker';
+import { useRoute } from '@react-navigation/native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import useKeyboardOffset from '../../../hooks/useKeyboardOffset';
+import { isIOS } from '../../../helpers/platform';
 
-export default function Settings ({route}) {
+export default function Settings() {
+  const { bottom } = useSafeAreaInsets();
+  const keyboardOffset = useKeyboardOffset();
+  const route = useRoute();
   const { user } = route.params;
 
   const [isLoader, setIsLoader] = useState(false);
@@ -16,43 +24,40 @@ export default function Settings ({route}) {
   const inputRef = useRef(null);
 
   const onPickPhoto = (image) => {
-    setPhoto(image)
-  }
+    setPhoto(image);
+  };
 
-  const onCancelPickPhoto = () => {
-
-  }
+  const onCancelPickPhoto = () => { };
 
   const onSaveProfile = () => {
+    inputRef.current.blur();
 
-    inputRef.current.blur()
-
-    const newData = {}
+    const newData = {};
     if (user.full_name !== name) {
-      newData.full_name = name
+      newData.full_name = name;
     }
     if (user.login !== login) {
-      newData.login = login
+      newData.login = login;
     }
     if (photo) {
-      newData.image = photo
+      newData.image = photo;
     }
     if (Object.keys(newData).length === 0) {
-      return
+      return;
     }
 
-    setIsLoader(true)
+    setIsLoader(true);
 
     AuthService.updateCurrentUser(newData)
       .then(() => {
-        setIsLoader(false)
-        showAlert('User profile is updated successfully')
+        setIsLoader(false);
+        showAlert('User profile is updated successfully');
       })
       .catch((error) => {
-        setIsLoader(false)
-        showAlert(error)
-      })
-  }
+        setIsLoader(false);
+        showAlert(error);
+      });
+  };
 
   const onUserLogout = () => {
     Alert.alert(
@@ -62,130 +67,139 @@ export default function Settings ({route}) {
         {
           text: 'Yes',
           onPress: () => {
-            AuthService.logout()
-          }
+            AuthService.logout();
+          },
         },
         {
-          text: 'Cancel'
-        }
+          text: 'Cancel',
+        },
       ],
       { cancelable: false }
-    )
-  }
+    );
+  };
 
   return (
-    <KeyboardAvoidingView style={styles.container}>
+    <KeyboardAvoidingView style={styles.container(bottom)} behavior="padding" keyboardVerticalOffset={keyboardOffset} >
       {isLoader &&
         <Indicator size={40} color={'blue'} />
       }
-      <ImgPicker name={user.full_name} photo={user.avatar} onPickPhoto={onPickPhoto} onCancelPickPhoto={onCancelPickPhoto} />
-      <View style={styles.inputWrap}>
-        <View>
-          <TextInput
-            style={styles.input}
-            ref={inputRef}
-            autoCapitalize="none"
-            placeholder="Change name ..."
-            placeholderTextColor="grey"
-            onChangeText={setName}
-            value={name}
-            maxLength={100}
-          />
-          <View style={styles.subtitleWrap}>
-            <Text style={styles.subtitleInpu}>Change name</Text>
+      <View style={styles.topContainer}>
+        <ImgPicker name={user.full_name} photo={user.avatar} onPickPhoto={onPickPhoto} onCancelPickPhoto={onCancelPickPhoto} />
+        <View style={styles.inputWrap}>
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.input}
+              ref={inputRef}
+              autoCapitalize="none"
+              placeholder="Change name ..."
+              placeholderTextColor="grey"
+              onChangeText={setName}
+              value={name}
+              maxLength={100}
+            />
+            <Text style={styles.subtitleInput}>Change name</Text>
           </View>
-        </View>
-        <View>
-          <TextInput
-            style={styles.input}
-            ref={inputRef}
-            autoCapitalize="none"
-            placeholder="Change login ..."
-            placeholderTextColor="grey"
-            onChangeText={setLogin}
-            value={login}
-            maxLength={100}
-          />
-          <View style={styles.subtitleWrap}>
-            <Text style={styles.subtitleInpu}>Change login</Text>
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.input}
+              ref={inputRef}
+              autoCapitalize="none"
+              placeholder="Change login ..."
+              placeholderTextColor="grey"
+              onChangeText={setLogin}
+              value={login}
+              maxLength={100}
+            />
+            <Text style={styles.subtitleInput}>Change login</Text>
           </View>
         </View>
       </View>
-      <View>
+      <View style={styles.bottomContainer}>
         <TouchableOpacity onPress={onSaveProfile}>
-          <View style={styles.buttonContainerSave}>
-            <Text style={styles.buttonLabelSave}>Save</Text>
+          <View style={[styles.buttonContainer, styles.buttonContainerSave]}>
+            <Text style={[styles.buttonLabel, styles.buttonLabelSave]}>Save</Text>
           </View>
         </TouchableOpacity>
-      </View>
-      <View>
         <TouchableOpacity onPress={onUserLogout}>
-          <View style={styles.buttonContainer}>
-            <Text style={styles.buttonLabel}>logout</Text>
+          <View style={[styles.buttonContainer, styles.buttonContainerExit]}>
+            <Text style={[styles.buttonLabel, styles.buttonLabelExit]}>Log out</Text>
           </View>
         </TouchableOpacity>
       </View>
-    </KeyboardAvoidingView>
-  )
+    </KeyboardAvoidingView >
+  );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  container: (marginBottom = 0) => ({
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
-  },
-  buttonContainer: {
-    marginTop: 40,
-    height: 50,
-    width: 200,
-    borderRadius: 25,
-    backgroundColor: '#00e3cf',
-    marginHorizontal: 20,
-    marginVertical: 10,
+    justifyContent: 'space-between',
+    marginBottom,
+  }),
+  topContainer: {
+    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center'
-  },
-  buttonLabel: {
-    color: '#ffffff',
-    fontSize: 20,
-    fontWeight: '700'
-  },
-  buttonContainerSave: {
-    height: 50,
-    width: 200,
-    borderRadius: 25,
-    borderWidth: 1,
-    borderColor: '#00e3cf',
-    marginHorizontal: 20,
-    marginVertical: 10,
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  buttonLabelSave: {
-    color: '#00e3cf',
-    fontSize: 20,
-    fontWeight: '700'
+    justifyContent: 'flex-start',
+    gap: 10,
+    paddingHorizontal: 20,
+    marginTop: 20,
   },
   inputWrap: {
-    marginVertical: 20
+    flexGrow: 1,
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+    gap: 10,
+  },
+  inputContainer: {
+    width: '100%',
   },
   input: {
     borderBottomWidth: 1,
     borderColor: 'grey',
     color: 'black',
-    width: 200,
-    marginVertical: 15,
-    padding: 7,
-    paddingTop: 15,
-    fontSize: 17
+    width: '100%',
+    paddingVertical: isIOS ? 5 : 0,
+    paddingHorizontal: 5,
+    fontSize: 16,
   },
-  subtitleInpu: {
-    color: 'grey'
+  bottomContainer: {
+    gap: 20,
+    alignItems: 'stretch',
+    justifyContent: 'center',
+    width: '100%',
+    padding: 20,
   },
-  subtitleWrap: {
-    position: 'absolute',
-    marginVertical: -7,
-    bottom: 0,
-  }
-})
+  buttonContainer: {
+    height: 50,
+    width: '100%',
+    borderRadius: 25,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  buttonContainerSave: {
+    backgroundColor: '#ffffff',
+    borderColor: '#00e3cf',
+    borderWidth: 1,
+  },
+  buttonContainerExit: {
+    backgroundColor: '#00e3cf',
+    borderColor: '#ffffff',
+  },
+  buttonLabel: {
+    fontSize: 21,
+    fontWeight: '700',
+  },
+  buttonLabelSave: {
+    color: '#00e3cf',
+  },
+  buttonLabelExit: {
+    color: '#ffffff',
+  },
+  subtitleInput: {
+    color: 'grey',
+    paddingVertical: 1,
+    paddingHorizontal: 5,
+  },
+});

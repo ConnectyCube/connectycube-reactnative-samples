@@ -1,78 +1,78 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   View,
   TouchableOpacity,
   Text,
   SafeAreaView,
-  KeyboardAvoidingView,
   TextInput,
   FlatList,
-  Alert
-} from 'react-native'
-import Icon from 'react-native-vector-icons/MaterialIcons'
-import ImgPicker from '../../components/imgPicker'
-import CreateBtn from '../../components/createBtn'
-import { BTN_TYPE } from '../../../helpers/constants'
-import UsersService from '../../../services/users-service'
-import ChatService from '../../../services/chat-service'
-import Avatar from '../../components/avatar'
-import { SIZE_SCREEN } from '../../../helpers/constants'
-import Indicator from '../../components/indicator'
-import { showAlert } from '../../../helpers/alert'
-import {  StackActions } from '@react-navigation/compat'
+  Alert,
+} from 'react-native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import ImgPicker from '../../components/imgPicker';
+import CreateBtn from '../../components/createBtn';
+import { BTN_TYPE } from '../../../helpers/constants';
+import { UsersService, ChatService } from '../../../services';
+import Avatar from '../../components/avatar';
+import { SIZE_SCREEN } from '../../../helpers/constants';
+import Indicator from '../../components/indicator';
+import { showAlert } from '../../../helpers/alert';
 
-export default function GroupDetails ({route, navigation}) {
+export default function GroupDetails() {
+  const route = useRoute();
+  const navigation = useNavigation();
   const { dialog, isNeedFetchUsers } = route.params;
-
+  const defaultOccupantsInfo = isNeedFetchUsers ? [] : UsersService.getUsersInfoFromRedux(dialog.occupants_ids);
   const [dialogName, setDialogName] = useState(dialog.name);
   const [isLoader, setIsLoader] = useState(false);
   const [pickedImage, setPickedImage] = useState(false);
-  const [occupantsInfo, setOccupantsInfo] = useState(isNeedFetchUsers ? [] : UsersService.getUsersInfoFromRedux(dialog.occupants_ids));
+  const [occupantsInfo, setOccupantsInfo] = useState(defaultOccupantsInfo);
 
   useEffect(() => {
     if (isNeedFetchUsers) {
-      fetchMoreUsers(dialog.occupants_ids)
+      fetchMoreUsers(dialog.occupants_ids);
     }
   }, []);
 
   const fetchMoreUsers = async (occupants_ids) => {
-    await UsersService.getOccupants(occupants_ids)
-    const users = UsersService.getUsersInfoFromRedux(occupants_ids)
-    setOccupantsInfo(users)
-  }
+    await UsersService.getOccupants(occupants_ids);
+    const users = UsersService.getUsersInfoFromRedux(occupants_ids);
+    setOccupantsInfo(users);
+  };
 
   const onPickPhoto = (image) => {
-    setPickedImage(image)
-  }
+    setPickedImage(image);
+  };
 
   const updateDialog = () => {
-    const updateInfo = {}
+    const updateInfo = {};
     if (dialogName !== dialog.name) {
-      updateInfo.name = dialogName
+      updateInfo.name = dialogName;
     }
     if (pickedImage) {
-      updateInfo.photo = pickedImage
+      updateInfo.photo = pickedImage;
     }
     if (Object.keys(updateInfo).length === 0) {
-      return false
+      return false;
     }
-    updateInfo.dialogId = dialog.id
+    updateInfo.dialogId = dialog.id;
 
-    setIsLoader(true)
+    setIsLoader(true);
 
     ChatService.updateDialog(updateInfo)
       .then(() => {
-        setIsLoader(false)
+        setIsLoader(false);
 
-        showAlert('Dialog info is updated successfully')
+        showAlert('Dialog info is updated successfully');
       })
       .catch((error) => {
-        setIsLoader(false)
+        setIsLoader(false);
 
-        showAlert(error)
-      })
-  }
+        showAlert(error);
+      });
+  };
 
   const leaveGroup = () => {
     Alert.alert(
@@ -81,69 +81,63 @@ export default function GroupDetails ({route, navigation}) {
       [
         {
           text: 'Yes',
-          onPress: () => {
-            setIsLoader(true)
-
-            ChatService.deleteDialog(dialog.id)
-              .then(() => {
-                setIsLoader(false)
-
-                navigation.dispatch(StackActions.popToTop())
-              })
-              .catch((error) => {
-                setIsLoader(false)
-
-                navigation.dispatch(StackActions.popToTop())
-              })
-          }
+          onPress: async () => {
+            setIsLoader(true);
+            await ChatService.deleteDialog(dialog.id);
+            setIsLoader(false);
+            navigation.reset({
+              index: 0,
+              routes: [{ name: 'Dialogs' }],
+            });
+          },
         },
         {
-          text: 'Cancel'
-        }
+          text: 'Cancel',
+        },
       ],
       { cancelable: false }
-    )
-  }
+    );
+  };
 
   const isGroupCreator = () => {
-    return ChatService.isGroupCreator(dialog.user_id)
-  }
+    return ChatService.isGroupCreator(dialog.user_id);
+  };
 
-  const goToContactDeteailsScreen = (dialog) => {
-    navigation.push('ContactDetails', { dialog })
-  }
+  const goToContactDetailsScreen = (item) => {
+    navigation.push('ContactDetails', { dialog: item });
+  };
 
   const goToContactsScreen = () => {
     if (occupantsInfo.length >= 8) {
-      showAlert('Maximum 9 participants')
-      return
+      showAlert('Maximum 9 participants');
+      return;
     }
 
-    navigation.push('Contacts', { dialog, addParticipant: addParticipantAction })
-  }
+    navigation.push('Contacts', { dialog, addParticipant: addParticipantAction });
+  };
 
   const addParticipantAction = (participants) => {
-    setIsLoader(true)
+    setIsLoader(true);
 
     ChatService.addOccupantsToDialog(dialog.id, participants)
-      .then(dialog => {
-        showAlert('Participants added')
+      .then(({ occupants_ids }) => {
+        showAlert('Participants added');
+        setIsLoader(false);
 
-        setIsLoader(false)
+        const updateArrUsers = UsersService.getUsersInfoFromRedux(occupants_ids);
 
-        const updateArrUsers = UsersService.getUsersInfoFromRedux(dialog.occupants_ids)
-        setOccupantsInfo(updateArrUsers)
+        setOccupantsInfo(updateArrUsers);
       })
       .catch(error => {
-        setIsLoader(false)
-      })
-  }
+        setIsLoader(false);
+      });
+  };
 
-  const keyExtractor = (item, index) => index.toString()
+  const keyExtractor = ({ id }) => id.toString();
 
   const _renderUser = ({ item }) => {
     return (
-      <TouchableOpacity style={styles.renderContainer} onPress={() => goToContactDeteailsScreen(item)}>
+      <TouchableOpacity style={styles.renderContainer} onPress={() => goToContactDetailsScreen(item)}>
         <View style={styles.renderAvatar}>
           <Avatar
             photo={item.avatar}
@@ -153,39 +147,39 @@ export default function GroupDetails ({route, navigation}) {
           <Text style={styles.nameTitle}>{item.full_name}</Text>
         </View>
         <View>
-          <Icon name="keyboard-arrow-right" size={30} color='#48A6E3' />
+          <Icon name="keyboard-arrow-right" size={30} color="#48A6E3" />
         </View>
       </TouchableOpacity>
-    )
-  }
+    );
+  };
 
   const _renderFlatListHeader = () => {
     return isGroupCreator() ?
       (
         <TouchableOpacity style={styles.renderHeaderContainer} onPress={goToContactsScreen}>
           <View style={styles.renderAvatar}>
-            <Icon name="person-add" size={35} color='#48A6E3' style={{ marginRight: 15 }} />
+            <Icon name="person-add" size={35} color="#48A6E3" style={{ marginRight: 15 }} />
           </View>
           <View>
             <Text style={styles.nameTitle}>Add member</Text>
           </View>
         </TouchableOpacity>
-      ) : false
-  }
+      ) : false;
+  };
 
   const _renderFlatListFooter = () => {
     return <TouchableOpacity style={styles.renderHeaderContainer} onPress={leaveGroup}>
       <View style={styles.renderAvatar}>
-        <Icon name="exit-to-app" size={35} color='#48A6E3' style={{ marginRight: 15 }} />
+        <Icon name="exit-to-app" size={35} color="#48A6E3" style={{ marginRight: 15 }} />
       </View>
       <View>
         <Text style={styles.nameTitle}>Exit group</Text>
       </View>
-    </TouchableOpacity>
-  }
+    </TouchableOpacity>;
+  };
 
   return (
-    <KeyboardAvoidingView style={styles.container}>
+    <View style={styles.container}>
       {isLoader &&
         <Indicator color={'blue'} size={40} />
       }
@@ -202,7 +196,7 @@ export default function GroupDetails ({route, navigation}) {
             maxLength={100}
           />
           <View style={styles.subtitleWrap}>
-            <Text style={styles.subtitleInpu}>Change group name</Text>
+            <Text style={styles.subtitleInput}>Change group name</Text>
           </View>
         </View>) :
         <Text style={styles.dialogName}>{dialogName}</Text>
@@ -219,21 +213,21 @@ export default function GroupDetails ({route, navigation}) {
       {isGroupCreator() &&
         <CreateBtn goToScreen={updateDialog} type={BTN_TYPE.CREATE_GROUP} />
       }
-    </KeyboardAvoidingView>
-  )
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    marginTop: 40
+    marginTop: 40,
   },
   picker: {
     width: 102,
     height: 102,
     borderWidth: 1,
-    borderColor: 'red'
+    borderColor: 'red',
   },
   imgPicker: {
     width: 100,
@@ -250,7 +244,7 @@ const styles = StyleSheet.create({
     height: 32,
     borderRadius: 16,
     borderWidth: 1,
-    borderColor: '#48A6E3'
+    borderColor: '#48A6E3',
   },
   input: {
     borderBottomWidth: 1,
@@ -260,10 +254,10 @@ const styles = StyleSheet.create({
     marginVertical: 15,
     padding: 7,
     paddingTop: 15,
-    fontSize: 17
+    fontSize: 17,
   },
-  subtitleInpu: {
-    color: 'grey'
+  subtitleInput: {
+    color: 'grey',
   },
   subtitleWrap: {
     position: 'absolute',
@@ -272,7 +266,7 @@ const styles = StyleSheet.create({
   },
   listUsers: {
     marginVertical: 35,
-    flex: 1
+    flex: 1,
   },
   renderContainer: {
     width: SIZE_SCREEN.width - 30,
@@ -281,7 +275,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingVertical: 7
+    paddingVertical: 7,
   },
   renderHeaderContainer: {
     width: SIZE_SCREEN.width - 30,
@@ -289,7 +283,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.5,
     borderColor: 'grey',
     alignItems: 'center',
-    paddingVertical: 7
+    paddingVertical: 7,
   },
   renderAvatar: {
     flexDirection: 'row',
@@ -297,10 +291,10 @@ const styles = StyleSheet.create({
   },
   nameTitle: {
     fontSize: 17,
-    color: 'grey'
+    color: 'grey',
   },
   dialogName: {
     fontSize: 17,
-    marginTop: 35
-  }
-})
+    marginTop: 35,
+  },
+});

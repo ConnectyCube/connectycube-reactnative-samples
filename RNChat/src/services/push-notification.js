@@ -1,153 +1,120 @@
+import ConnectyCube from 'react-native-connectycube';
+import { PermissionsAndroid } from 'react-native';
 import { Notifications } from 'react-native-notifications';
-import ConnectyCube from 'react-native-connectycube'
-import { Platform } from 'react-native'
-import AsyncStorage from '@react-native-community/async-storage'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import customEventEmitter, { CUSTOM_EVENTS } from '../events';
+import { isAndroid, isIOS, platformOS, versionAndroid } from '../helpers/platform';
+import DeviceInfo from 'react-native-device-info';
 
 class PushNotificationService {
-  static DEVICE_SUBSCRIPTION_ID = 'DEVICE_SUBSCRIPTION_ID'
+  static DEVICE_SUBSCRIPTION_ID = 'DEVICE_SUBSCRIPTION_ID';
+
+  isEvents = false;
 
   constructor() {
-    console.log("[PushNotificationService][constructor]");
-    this._registerBackgroundTasks();
+    if (PushNotificationService.instance) {
+      return PushNotificationService.instance;
+    }
+
+    PushNotificationService.instance = this;
   }
 
   init() {
-    if (Platform.OS === 'ios') {
-      Notifications.ios.checkPermissions().then((currentPermissions) => {
-          console.log('Badges enabled: ' + !!currentPermissions.badge);
-          console.log('Sounds enabled: ' + !!currentPermissions.sound);
-          console.log('Alerts enabled: ' + !!currentPermissions.alert);
-          console.log('Car Play enabled: ' + !!currentPermissions.carPlay);
-          console.log('Critical Alerts enabled: ' + !!currentPermissions.criticalAlert);
-          console.log('Provisional enabled: ' + !!currentPermissions.provisional);
-          console.log('Provides App Notification Settings enabled: ' + !!currentPermissions.providesAppNotificationSettings);
-          console.log('Announcement enabled: ' + !!currentPermissions.announcement);
-      });
-    }
-
-    Notifications.getInitialNotification().then((notification) => {
-      console.log("Initial notification was:", (notification ? notification.payload : 'N/A'));
-
-      // this.displayNotification({message: "hello"});
-    })      
-    .catch((err) => console.error("getInitialNotifiation() failed", err));
-
-    Notifications.events().registerRemoteNotificationsRegistered((event) => {
-      // TODO: Send the token to my server so it could send back push notifications...
-      console.log("[PushNotificationService] Device Token Received", event.deviceToken);
-
-      this.subcribeToPushNotification(event.deviceToken)
-    });
-    Notifications.events().registerRemoteNotificationsRegistrationFailed((event) => {
-      console.error("[PushNotificationService] Failed to get Device Token", event);
-    });
-
-    Notifications.events().registerNotificationReceivedForeground((notification, completion) => {
-      console.log(`[PushNotificationService] Notification received in foreground`, notification.payload, notification?.payload?.message);
-
-      if (Platform.OS === 'android') {
-        PushNotificationService.displayNotification(notification.payload);
-      }
-
-   
-      completion({alert: false, sound: false, badge: false});
-    });
-
-    Notifications.events().registerNotificationReceivedBackground((notification, completion) => {
-      console.log("[PushNotificationService] Notification Received - Background", notification.payload, notification?.payload?.message);
-
-      if (Platform.OS === 'android') {
-        PushNotificationService.displayNotification(notification.payload);
-      }
-
-      // Calling completion on iOS with `alert: true` will present the native iOS inApp notification.
-      completion({alert: true, sound: true, badge: false});
-    });
-
-    Notifications.events().registerNotificationOpened(async (notification, completion) => {
-      console.log(`[PushNotificationService] Notification opened`, notification.payload);
-
-      await this.onNotificationOpened(notification.payload)
-
-      completion();
-    });
-
-    console.log(`[PushNotificationService]`);
+    this.getPostNotificationsPermissionAndroid();
     Notifications.registerRemoteNotifications();
-
+    this.onInitialNotification();
   }
 
-  _registerBackgroundTasks() {
-    if (Platform.OS === 'ios') {
+  registerEvents() {
+    if (this.isEvents) {
       return;
     }
 
-    const { AppRegistry } = require("react-native");
-
-    // https://reactnative.dev/docs/headless-js-android
-    //
-    AppRegistry.registerHeadlessTask(
-      "JSNotifyWhenKilledTask",
-      () => {
-        return async (notificationBundle) => {
-          console.log('[JSNotifyWhenKilledTask] notificationBundle', notificationBundle);
-
-          PushNotificationService.displayNotification(notificationBundle);
-        }
+    Notifications.events().registerRemoteNotificationsRegistered(async ({ deviceToken }) => {
+      console.log('[PushNotification] registerRemoteNotificationsRegistered:', deviceToken);
+      await this.subscribeToPushNotification(deviceToken);
+    });
+    Notifications.events().registerRemoteNotificationsRegistrationFailed((error) => {
+      console.error('[PushNotification] registerRemoteNotificationsRegistrationFailed:', error);
+    });
+    Notifications.events().registerRemoteNotificationsRegistrationDenied(() => {
+      console.error('[PushNotification] registerRemoteNotificationsRegistrationDenied:');
+    });
+    Notifications.events().registerNotificationReceivedForeground(
+      (notification, completion) => {
+        console.log('[PushNotification] registerNotificationReceivedForeground:', notification);
+        completion({ alert: true, sound: true, badge: true });
       },
     );
+    Notifications.events().registerNotificationReceivedBackground(
+      (notification, completion) => {
+        console.log('[PushNotification] registerNotificationReceivedBackground:', notification);
+        completion({ alert: true, sound: true, badge: false });
+      },
+    );
+    Notifications.events().registerNotificationOpened(async (notification, completion) => {
+      console.log('[PushNotification] onNotificationOpened:', notification);
+      this.onNotificationOpened(notification.payload);
+      completion();
+    });
+
+    this.isEvents = true;
   }
 
-  subcribeToPushNotification(token) {
-    const DeviceInfo = require('react-native-device-info').default
+  onInitialNotification() {
+    Notifications.getInitialNotification()
+      .then((notification) => {
+        console.log('[PushNotification] getInitialNotification:', (notification ? notification.payload : 'N/A'));
+        this.onNotificationOpened(notification.payload);
+      })
+      .catch((error) => {
+        console.error('[PushNotification] getInitialNotification:', error);
+      });
+  }
+
+  onNotificationOpened(payload) {
+    customEventEmitter.emit(CUSTOM_EVENTS.ON_NOTIFICATION_OPEN, payload.dialog_id);
+  }
+
+  async subscribeToPushNotification(token) {
+    const uniqueDeviceID = await DeviceInfo.getUniqueId();
     const params = {
-      notification_channels: Platform.OS === 'ios' ? 'apns' : 'gcm',
+      notification_channels: isIOS ? 'apns' : 'gcm',
       device: {
-        platform: Platform.OS,
-        udid: DeviceInfo.getUniqueId()
+        platform: platformOS,
+        udid: uniqueDeviceID,
       },
       push_token: {
         environment: __DEV__ ? 'development' : 'production',
-        client_identification_sequence: token
-      }
-    }
+        client_identification_sequence: token,
+      },
+    };
 
     ConnectyCube.pushnotifications.subscriptions.create(params)
       .then(result => {
-        console.log('PushNotificationService - result', result)
-        AsyncStorage.setItem(PushNotificationService.DEVICE_SUBSCRIPTION_ID, `${result[0].subscription.id}`)
+        console.log('[PushNotification][ConnectyCube] subscriptions', { result });
+        AsyncStorage.setItem(PushNotificationService.DEVICE_SUBSCRIPTION_ID, `${result[0].subscription.id}`);
       })
       .catch(error => {
-        console.log('PushNotificationService - error', error)
-      })
+        console.error('[PushNotification][ConnectyCube] subscriptions', { error });
+      });
   }
 
-  static displayNotification(payload) {
-    const extra = {dialog_id: payload.dialog_id, isLocal: true}
+  async getPostNotificationsPermissionAndroid() {
+    let granted = true;
 
-    const localNotification = Notifications.postLocalNotification({
-      body: payload.message,
-      title: "New message", // TODO: to use here chat name/sender name
-      // sound: "chime.aiff",
-      silent: false,
-      category: "SOME_CATEGORY",
-      userInfo: extra,
-      extra,
-    });
-  }
+    if (isAndroid && versionAndroid >= 33) {
+      try {
+        const result = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
+        granted = result === PermissionsAndroid.RESULTS.GRANTED;
+      } catch (err) {
+        granted = false;
+      }
+    }
 
-  async onNotificationOpened(payload) {
-    const dialogId = (Platform.OS === 'ios') ? payload.dialog_id : payload.extra.dialog_id;
-    console.log('PushNotificationService - onNotificationOpened - dialogId',  dialogId, payload)
-    customEventEmitter.emit(CUSTOM_EVENTS.ON_NOTIFICATION_OPEN, dialogId);
+    return granted;
   }
 }
 
-// create instance
-const pushNotificationService = new PushNotificationService()
-
-Object.freeze(pushNotificationService)
-
-export default pushNotificationService
+export default new PushNotificationService();
 
