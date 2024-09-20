@@ -1,9 +1,11 @@
 import { getImageLinkFromUID } from '../helpers/file';
 
-export const STATUS_PENDING = 0;
-export const STATUS_SENT = 1;
-export const STATUS_DELIVERED = 2;
-export const STATUS_READ = 3;
+export const STATUS = {
+	PENDING: 0,
+	SENT: 1,
+	DELIVERED: 2,
+	READ: 3,
+};
 
 const defaultMessage = {
 	id: '',
@@ -43,12 +45,12 @@ export class Message {
 
 	static getSendState(msg, currentUser) {
 		if (msg?.read_ids?.find(_id => _id !== currentUser)) {
-			return STATUS_READ;
+			return STATUS.READ;
 		}
 		if (msg?.delivered_ids?.find(msg => msg.delivered_ids !== currentUser)) {
-			return STATUS_DELIVERED;
+			return STATUS.DELIVERED;
 		}
-		return STATUS_PENDING;
+		return STATUS.PENDING;
 	}
 
 }

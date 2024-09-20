@@ -1,13 +1,12 @@
 import React from 'react';
-import { StyleSheet, View, Text, Dimensions, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import Avatar from '../../components/avatar';
 import { getTime } from '../../../helpers/getTime';
 import MessageStatus from '../../components/messageStatus';
 import ChatImage from '../../components/chatImage';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
-
-const fullWidth = Dimensions.get('window').width;
+import { SIZE_SCREEN } from '../../../helpers/constants';
 
 export default function Message({ message, messageSendState, messageAttachments, otherSender }) {
   const navigation = useNavigation();
@@ -81,12 +80,12 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   messageToLeft: {
-    maxWidth: fullWidth - 90,
+    maxWidth: SIZE_SCREEN.width - 90,
     borderBottomLeftRadius: 2,
     backgroundColor: '#63D9C6',
   },
   messageToRight: {
-    maxWidth: fullWidth - 55,
+    maxWidth: SIZE_SCREEN.width - 55,
     borderBottomRightRadius: 2,
     backgroundColor: '#48A6E3',
   },

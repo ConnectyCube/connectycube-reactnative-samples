@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, Keyboard } from 'react-native';
 import { showAlert } from '../../helpers/alert';
 import { AuthService } from '../../services';
@@ -9,14 +9,13 @@ export default function AuthForm({ isLogin }) {
 	const [password, setPassword] = useState('');
 	const [isLoader, setIsLoader] = useState(false);
 
-	const onSubmit = () => {
+	const onSubmit = useCallback(() => {
 		const dataUser = { full_name: name, login: name, password: password };
 
 		Keyboard.dismiss();
 
 		if (!name.trim() || !password.trim()) {
-			const endMessage = isLogin ? 'login.' : 'sign up';
-			showAlert(`Warning.\n\nFill the fields to ${endMessage}`);
+			showAlert(`Warning.\n\nFill the fields to ${isLogin ? 'login' : 'sign up'}`);
 			return;
 		}
 
@@ -24,9 +23,6 @@ export default function AuthForm({ isLogin }) {
 
 		if (isLogin) {
 			AuthService.signIn(dataUser)
-				.then(() => {
-
-				})
 				.catch(error => {
 					setIsLoader(false);
 					showAlert(`Error.\n\n${JSON.stringify(error)}`);
@@ -34,42 +30,41 @@ export default function AuthForm({ isLogin }) {
 		} else {
 			AuthService.signUp(dataUser)
 				.then(() => {
-
 					showAlert('Account successfully registered');
 				})
 				.catch(error => {
 					setIsLoader(false);
 					showAlert(`Error.\n\n${JSON.stringify(error)}`);
-				}
-				);
+				});
 		}
-	};
+	}, [name, password, isLogin]);
 
 	return (
 		<View style={styles.container}>
-			{
-				isLoader &&
-				(
-					<Indicator color={'green'} size={40} />
-				)
-			}
+			<Indicator isActive={isLoader} />
 			<TextInput
 				placeholder="Login"
 				placeholderTextColor="grey"
+				textContentType="username"
+				autoCapitalize="none"
 				returnKeyType="next"
+				autoComplete="off"
 				onChangeText={setName}
 				value={name}
 				style={styles.input}
+				blurOnSubmit
 			/>
 			<TextInput
+				secureTextEntry
 				placeholder="Password"
 				placeholderTextColor="grey"
-				secureTextEntry={true}
+				textContentType="password"
 				autoCapitalize="none"
 				returnKeyType="done"
 				onChangeText={setPassword}
 				value={password}
 				style={styles.input}
+				blurOnSubmit
 			/>
 			<TouchableOpacity onPress={onSubmit}>
 				<View style={styles.buttonContainer}>

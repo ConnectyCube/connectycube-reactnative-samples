@@ -37,9 +37,7 @@ export default function ContactDetails() {
 
   return (
     <View style={styles.container}>
-      {isLoader && (
-        <Indicator color={'red'} size={40} />
-      )}
+      <Indicator isActive={isLoader} />
       <Avatar
         photo={dialogPhoto}
         name={dialog.name || dialog.full_name}

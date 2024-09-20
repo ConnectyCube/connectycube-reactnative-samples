@@ -80,9 +80,7 @@ export default function Settings() {
 
   return (
     <KeyboardAvoidingView style={styles.container(bottom)} behavior="padding" keyboardVerticalOffset={keyboardOffset} >
-      {isLoader &&
-        <Indicator size={40} color={'blue'} />
-      }
+      <Indicator isActive={isLoader} />
       <View style={styles.topContainer}>
         <ImgPicker name={user.full_name} photo={user.avatar} onPickPhoto={onPickPhoto} onCancelPickPhoto={onCancelPickPhoto} />
         <View style={styles.inputWrap}>

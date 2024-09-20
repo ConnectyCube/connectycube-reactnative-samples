@@ -138,9 +138,7 @@ export default function Contacts() {
 
   return (
     <View style={styles.container}>
-      {isLoader && (
-        <Indicator color={'red'} size={40} />
-      )}
+      <Indicator isActive={isLoader} />
       <View style={styles.dialogTypeContainer}>
         {!isGroupDetails &&
           <TouchableOpacity style={styles.dialogType} onPress={changeTypeDialog}>

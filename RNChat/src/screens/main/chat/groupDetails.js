@@ -180,9 +180,7 @@ export default function GroupDetails() {
 
   return (
     <View style={styles.container}>
-      {isLoader &&
-        <Indicator color={'blue'} size={40} />
-      }
+      <Indicator isActive={isLoader} />
       <ImgPicker name={dialogName} photo={dialog.photo} onPickPhoto={onPickPhoto} disabled={!isGroupCreator()} />
       {isGroupCreator() ?
         (<View>

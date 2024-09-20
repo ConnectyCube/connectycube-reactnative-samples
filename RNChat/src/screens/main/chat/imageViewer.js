@@ -1,7 +1,8 @@
 import React, { useEffect, useMemo } from 'react';
-import { Image, useWindowDimensions } from 'react-native';
+import { Image } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { getAspectRatioSize, ResumableZoom } from 'react-native-zoom-toolkit';
+import { SIZE_SCREEN } from '../../../helpers/constants';
 
 export default function ImageViewer() {
   const navigation = useNavigation();
@@ -13,10 +14,9 @@ export default function ImageViewer() {
       : `${attachment.name.slice(0, 9)}...${attachment.name.slice(-9)}`,
     [attachment.name]);
   const source = { uri: attachment.url };
-  const { width } = useWindowDimensions();
   const imageSize = getAspectRatioSize({
     aspectRatio: +attachment.width / +attachment.height,
-    width: width,
+    width: SIZE_SCREEN.width,
   });
 
   useEffect(() => {

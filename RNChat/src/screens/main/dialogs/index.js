@@ -82,17 +82,19 @@ export default function Dialogs() {
 
   return (
     <View style={styles.container}>
-      {isLoader
-        ? <Indicator size={40} />
-        : dialogs.length === 0
-          ? <View style={styles.emptyContainer}>
+      <Indicator isActive={isLoader} />
+      {dialogs.length === 0
+        ? (
+          <View style={styles.emptyContainer}>
             <Text style={styles.emptyText}>No chats yet</Text>
           </View>
-          : <FlatList
+        ) : (
+          <FlatList
             data={dialogs}
             keyExtractor={keyExtractor}
             renderItem={(item) => _renderDialog(item)}
           />
+        )
       }
       <CreateBtn goToScreen={goToContactsScreen} type={BTN_TYPE.DIALOG} />
     </View>

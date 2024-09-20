@@ -1,8 +1,6 @@
 import { Dimensions } from 'react-native';
 
-export const SIZE_SCREEN = Dimensions.get('window');
-
-export const STATUS_BAR_COLOR = 'white';
+export const SIZE_SCREEN = Dimensions.get('screen');
 
 export const BTN_TYPE = {
   DIALOG: 1,

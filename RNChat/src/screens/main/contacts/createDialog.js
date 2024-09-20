@@ -72,9 +72,7 @@ export default function CreateDialog() {
 
   return (
     <View style={styles.container}>
-      {isLoader &&
-        <Indicator color={'blue'} size={40} />
-      }
+      <Indicator isActive={isLoader} />
       <View style={styles.header}>
         <TouchableOpacity onPress={onPickImage} style={styles.picker}>
           {pickedImage ? (

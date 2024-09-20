@@ -10,11 +10,7 @@ import { Message, FakeMessage } from '../models/message';
 import UserModel from '../models/user';
 import { preparationUploadImg, preparationAttachment } from '../helpers/file';
 import { DIALOG_TYPE } from '../helpers/constants';
-import {
-  STATUS_DELIVERED,
-  STATUS_READ,
-  STATUS_SENT,
-} from '../models/message';
+import { STATUS } from '../models/message';
 
 class ChatService {
   constructor() {
@@ -340,17 +336,17 @@ class ChatService {
     }
     const dialogId = msg.extension.dialog_id;
     const messageId = msg.id;
-    store.dispatch(updateMessages({ dialogId, messageId, sendState: STATUS_SENT }));
+    store.dispatch(updateMessages({ dialogId, messageId, sendState: STATUS.SENT }));
   }
 
   // ConnectyCube listeners
   onDeliveredStatus(messageId, dialogId, _userId) {
-    store.dispatch(updateMessages({ dialogId, messageId, sendState: STATUS_DELIVERED }));
+    store.dispatch(updateMessages({ dialogId, messageId, sendState: STATUS.DELIVERED }));
   }
 
   // ConnectyCube listeners
   onReadStatus(messageId, dialogId, _userId) {
-    store.dispatch(updateMessages({ dialogId, messageId, sendState: STATUS_READ }));
+    store.dispatch(updateMessages({ dialogId, messageId, sendState: STATUS.READ }));
   }
 
   sendReadStatus(messageId, userId, dialogId) {
