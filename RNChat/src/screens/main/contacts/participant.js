@@ -1,12 +1,12 @@
-import React from 'react'
-import { StyleSheet, View, TouchableOpacity, Text } from 'react-native'
-import Avatar from '../../components/avatar'
-import Icon from 'react-native-vector-icons/MaterialIcons'
+import React from 'react';
+import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
+import Avatar from '../../components/avatar';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
-export default function Participant ({isSelected, onSelectUser, user, isGroupDialog}) {
+export default function Participant({ isSelected, onSelectUser, user, isGroupDialog }) {
   const toggleUserSelect = () => {
-    onSelectUser(user)
-  }
+    onSelectUser(user);
+  };
 
   return (
     <TouchableOpacity onPress={toggleUserSelect}>
@@ -20,11 +20,11 @@ export default function Participant ({isSelected, onSelectUser, user, isGroupDia
           <Text style={styles.nameTitle}>{user.full_name}</Text>
         </View>
         <>
-          {isGroupDialog ? 
+          {isGroupDialog ?
             isSelected ? (
-                <Icon name="radio-button-checked" size={24} color="green" />
-              ) : (
-                <Icon name="radio-button-unchecked" size={24} color="black" />
+              <Icon name="radio-button-checked" size={24} color="green" />
+            ) : (
+              <Icon name="radio-button-unchecked" size={24} color="black" />
             ) : <Icon name="arrow-forward" size={24} color="green" />
           }
         </>

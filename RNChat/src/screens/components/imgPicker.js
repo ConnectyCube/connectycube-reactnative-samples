@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
-import { StyleSheet, View, TouchableOpacity, Image } from 'react-native'
-import Avatar from './avatar'
-import Icon from 'react-native-vector-icons/MaterialIcons'
-import ImagePicker from 'react-native-image-crop-picker'
+import React, { useState } from 'react';
+import { StyleSheet, View, TouchableOpacity, Image } from 'react-native';
+import Avatar from './avatar';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import ImagePicker from 'react-native-image-crop-picker';
 
-export default function ImgPicker ({name, photo, onPickPhoto, onCancelPickPhoto, disabled = false}) {
+export default function ImgPicker({ name, photo, onPickPhoto, onCancelPickPhoto, disabled = false }) {
 
   const [selectedPhoto, setSelectedPhoto] = useState(null);
 
@@ -12,15 +12,14 @@ export default function ImgPicker ({name, photo, onPickPhoto, onCancelPickPhoto,
     ImagePicker.openPicker({
       width: 300,
       height: 400,
-      cropping: true
+      cropping: true,
     }).then(image => {
-      onPickPhoto(image)
-      
-      setSelectedPhoto(image)
-    }).catch(e => {
+      onPickPhoto(image);
+      setSelectedPhoto(image);
+    }).catch((_error) => {
       onCancelPickPhoto();
-    })
-  }
+    });
+  };
 
   return (
     <TouchableOpacity onPress={onPickImage} style={styles.picker} disabled={disabled}>
@@ -31,7 +30,7 @@ export default function ImgPicker ({name, photo, onPickPhoto, onCancelPickPhoto,
             source={{ uri: selectedPhoto.path }}
           />
           <View style={styles.icon}>
-            <Icon name="create" size={20} color='#48A6E3' />
+            <Icon name="create" size={20} color="#48A6E3" />
           </View>
         </>
       ) :
@@ -43,19 +42,19 @@ export default function ImgPicker ({name, photo, onPickPhoto, onCancelPickPhoto,
           />
           {!disabled &&
             <View style={styles.icon}>
-              <Icon name="create" size={20} color='#48A6E3' />
+              <Icon name="create" size={20} color="#48A6E3" />
             </View>
           }
         </View>
       }
     </TouchableOpacity>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
   picker: {
     width: 102,
-    height: 102
+    height: 102,
   },
   imgPicker: {
     width: 100,
@@ -72,6 +71,6 @@ const styles = StyleSheet.create({
     height: 32,
     borderRadius: 16,
     borderWidth: 1,
-    borderColor: '#48A6E3'
+    borderColor: '#48A6E3',
   },
-})
+});

@@ -14,6 +14,7 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		7699B88040F8A987B510C191 /* libPods-RNVideoChatConf-RNVideoChatConfTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-RNVideoChatConf-RNVideoChatConfTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		D00F01A62C920BD100C5878E /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D00F01A52C920BD100C5878E /* icon.png */; };
 		D03E386D2C87638C001CE115 /* ReplayKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D03E386C2C87638C001CE115 /* ReplayKit.framework */; };
 		D03E38742C87638C001CE115 /* broadcast-extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = D03E386B2C87638C001CE115 /* broadcast-extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		D0D505C22C877182008E2298 /* SampleHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D505C12C877182008E2298 /* SampleHandler.swift */; };
@@ -21,7 +22,6 @@
 		D0D505C92C8771A2008E2298 /* SocketConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D505C52C8771A2008E2298 /* SocketConnection.swift */; };
 		D0D505CA2C8771A2008E2298 /* DarwinNotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D505C62C8771A2008E2298 /* DarwinNotificationCenter.swift */; };
 		D0D505CB2C8771A2008E2298 /* Atomic.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D505C72C8771A2008E2298 /* Atomic.swift */; };
-		D0F9E22C2C886D5B00B460DF /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D0F9E22B2C886D5B00B460DF /* icon.png */; };
 		EC536EE081A84CAFE4F091B7 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 624F5381818F63C9BF1E0E27 /* PrivacyInfo.xcprivacy */; };
 /* End PBXBuildFile section */
 
@@ -76,6 +76,7 @@
 		89C6BE57DB24E9ADA2F236DE /* Pods-RNVideoChatConf-RNVideoChatConfTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNVideoChatConf-RNVideoChatConfTests.release.xcconfig"; path = "Target Support Files/Pods-RNVideoChatConf-RNVideoChatConfTests/Pods-RNVideoChatConf-RNVideoChatConfTests.release.xcconfig"; sourceTree = "<group>"; };
 		D00A5E9F2C88684600D11F54 /* RNVideoChatConf.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = RNVideoChatConf.entitlements; path = RNVideoChatConf/RNVideoChatConf.entitlements; sourceTree = "<group>"; };
 		D00A5EA02C88688400D11F54 /* broadcast-extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "broadcast-extension.entitlements"; sourceTree = "<group>"; };
+		D00F01A52C920BD100C5878E /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon.png; path = ../assets/icon.png; sourceTree = "<group>"; };
 		D03E386B2C87638C001CE115 /* broadcast-extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "broadcast-extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D03E386C2C87638C001CE115 /* ReplayKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReplayKit.framework; path = System/Library/Frameworks/ReplayKit.framework; sourceTree = SDKROOT; };
 		D03E38712C87638C001CE115 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -84,7 +85,6 @@
 		D0D505C52C8771A2008E2298 /* SocketConnection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketConnection.swift; sourceTree = "<group>"; };
 		D0D505C62C8771A2008E2298 /* DarwinNotificationCenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DarwinNotificationCenter.swift; sourceTree = "<group>"; };
 		D0D505C72C8771A2008E2298 /* Atomic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Atomic.swift; sourceTree = "<group>"; };
-		D0F9E22B2C886D5B00B460DF /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon.png; path = RNVideoChatConf/Images.xcassets/AppIcon.appiconset/icon.png; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -144,7 +144,7 @@
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				624F5381818F63C9BF1E0E27 /* PrivacyInfo.xcprivacy */,
-				D0F9E22B2C886D5B00B460DF /* icon.png */,
+				D00F01A52C920BD100C5878E /* icon.png */,
 			);
 			name = RNVideoChatConf;
 			sourceTree = "<group>";
@@ -335,10 +335,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D00F01A62C920BD100C5878E /* icon.png in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				EC536EE081A84CAFE4F091B7 /* PrivacyInfo.xcprivacy in Resources */,
-				D0F9E22C2C886D5B00B460DF /* icon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -746,7 +746,10 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = "$(inherited)  ";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
@@ -819,7 +822,10 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = "$(inherited)  ";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
