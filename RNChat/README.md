@@ -16,7 +16,7 @@ Project contains the following features implemented:
 
 ## Documentation
 
-ConnectyCube React Native SDK getting started - [https://developers.connectycube.com/reactnative](https://developers.connectycube.com/reactnativee)
+ConnectyCube React Native SDK getting started - [https://developers.connectycube.com/reactnative](https://developers.connectycube.com/reactnative)
 
 ConnectyCube Chat API documentation - [https://developers.connectycube.com/reactnative/messaging](https://developers.connectycube.com/reactnative/messaging)
 
@@ -87,54 +87,29 @@ This project use React Native Notifications and it's recommended to test your ap
 
 To make the sample works for your own app, please do the following:
 
-1. Register new account and application at [https://admin.connectycube.com](https://admin.connectycube.co)
+1. Register new account and application at `https://admin.connectycube.com` and then put Application credentials from 'Overview' page into `src/config.js` file:
 
-2. Put Application credentials from 'Overview' page into `connectycube_config.json` file:
-
-```json
-{
-  "connectyCubeConfig": [
-    {
-      "appId": 0,
-      "authKey": "***",
-      "authSecret": "***"
-    },
-    {
-      ...
-      "chat": {
-        "streamManagement": {
-          "enable": true // true to receive message "sent" status in 1-1 chats
-        }
-      },
-      "debug": {
-        "mode": 1 // mode 0 is logs off, mode 1 -> console.log()
-      }
-    }
-  ]
-}
+```javascript
+export const appCredentials = {
+  appId: 0,
+  authKey: '***',
+  authSecret: '***',
+};
 ```
 
-3. (Optional) If you are at [Enterprise](https://connectycube.com/pricing/) plan - provide your API server and Chat server endpoints at `connectycube_config.json` file to point the sample against your own server:
+2. (Optional) If you are at [Enterprise](https://connectycube.com/pricing/) plan - provide your API server and Chat server endpoints at `src/config.js` file to point the sample against your own server:
 
-```json
-{
-  "connectyCubeConfig": [
-    {
-      ...
-    },
-    {
-      "endpoints": {
-         "api": "***",
-         "chat": "***",
-      },
-      ...
-    }
-  ]
-}
+```javascript
+export const appConfig = {
+  endpoints: {
+    api: '***',
+    chat: '***',
+  },
+};
 ```
 
 4. Run on Android/iOS device
 
 ## Can't build yourself?
 
-Got troubles with building React Native code sample? Just create an issue at [Issues page](https://github.com/ConnectyCube/connectycube-reactnative-samples/issues) - we will create the sample for you. For FREE!
+Got troubles with building React Native code sample? Just create an issue at [Issues page](https://github.com/ConnectyCube/connectycube-reactnative-samples/issues).
