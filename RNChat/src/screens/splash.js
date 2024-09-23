@@ -1,22 +1,21 @@
-import React, { useEffect } from 'react'
-import { StyleSheet, View, Image } from 'react-native'
-import AuthService from '../services/auth-service'
-import ChatService from '../services/chat-service'
+import React, { useEffect } from 'react';
+import { StyleSheet, View, Image } from 'react-native';
+import { AuthService } from '../services';
 
-export default function Splash ({ navigation }) {
+export default function Splash() {
   const initSDK = async () => {
-    await AuthService.init()
-  }
+    await AuthService.init();
+  };
 
   useEffect(() => {
-    initSDK()
+    initSDK();
   }, []);
 
   return (
     <View style={styles.container}>
-      <Image style={styles.imageSize} source={require('../../assets/image/logo_with_text.png')} />
+      <Image style={styles.imageSize} source={require('../../assets/image/splash.png')} />
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -27,6 +26,6 @@ const styles = StyleSheet.create({
   },
   imageSize: {
     width: 200,
-    height: 150
+    height: 150,
   },
-})
+});

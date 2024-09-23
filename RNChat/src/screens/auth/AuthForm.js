@@ -1,89 +1,85 @@
-import React, { useState } from 'react'
-import { StyleSheet, View, Text, TextInput, TouchableOpacity, Keyboard } from 'react-native'
-import { showAlert } from '../../helpers/alert'
-import AuthService from '../../services/auth-service'
-import Indicator from '../components/indicator'
-import ChatService from '../../services/chat-service'
+import React, { useCallback, useState } from 'react';
+import { StyleSheet, View, Text, TextInput, TouchableOpacity, Keyboard } from 'react-native';
+import { showAlert } from '../../helpers/alert';
+import { AuthService } from '../../services';
+import Indicator from '../components/indicator';
 
-export default function AuthForm ({isLogin}) {
-  const [name, setName] = useState('');
-  const [password, setPassword] = useState('');
-  const [isLoader, setIsLoader] = useState(false);
+export default function AuthForm({ isLogin }) {
+	const [name, setName] = useState('');
+	const [password, setPassword] = useState('');
+	const [isLoader, setIsLoader] = useState(false);
 
-	const onSubmit = () => {
-		const dataUser = { full_name: name, login: name, password: password }
+	const onSubmit = useCallback(() => {
+		const dataUser = { full_name: name, login: name, password: password };
 
-		Keyboard.dismiss()
+		Keyboard.dismiss();
 
 		if (!name.trim() || !password.trim()) {
-			const endMessage = isLogin ? 'login.' : 'sign up'
-			showAlert(`Warning.\n\nFill the fields to ${endMessage}`)
-			return
+			showAlert(`Warning.\n\nFill the fields to ${isLogin ? 'login' : 'sign up'}`);
+			return;
 		}
 
-		setIsLoader(true)
+		setIsLoader(true);
 
 		if (isLogin) {
 			AuthService.signIn(dataUser)
-				.then(() => {
-		
-				})
 				.catch(error => {
-					setIsLoader(false)
-					showAlert(`Error.\n\n${JSON.stringify(error)}`)
-				})
+					setIsLoader(false);
+					showAlert(`Error.\n\n${JSON.stringify(error)}`);
+				});
 		} else {
 			AuthService.signUp(dataUser)
 				.then(() => {
-				
-					showAlert('Account successfully registered')
+					showAlert('Account successfully registered');
 				})
 				.catch(error => {
-					setIsLoader(false)
-					showAlert(`Error.\n\n${JSON.stringify(error)}`)
-				}
-			)}
-	}
+					setIsLoader(false);
+					showAlert(`Error.\n\n${JSON.stringify(error)}`);
+				});
+		}
+	}, [name, password, isLogin]);
 
-  return (
-    <View style={styles.container}>
-      {
-        isLoader &&
-        (
-          <Indicator color={'green'} size={40} />
-        )
-      }
-      <TextInput
-        placeholder="Login"
-        placeholderTextColor="grey"
-        returnKeyType="next"
-        onChangeText={setName}
-        value={name}
-        style={styles.input}
-      />
-      <TextInput
-        placeholder="Password"
-        placeholderTextColor="grey"
-        secureTextEntry={true}
-        autoCapitalize="none"
-        returnKeyType="done"
-        onChangeText={setPassword}
-        value={password}
-        style={styles.input}
-      />
-      <TouchableOpacity onPress={onSubmit}>
-        <View style={styles.buttonContainer}>
-          <Text style={styles.buttonLabel}>{isLogin ? 'Log in' : 'Sign up'}</Text>
-        </View>
-      </TouchableOpacity>
-    </View>
-  )
+	return (
+		<View style={styles.container}>
+			<Indicator isActive={isLoader} />
+			<TextInput
+				placeholder="Login"
+				placeholderTextColor="grey"
+				textContentType="username"
+				autoCapitalize="none"
+				returnKeyType="next"
+				autoComplete="off"
+				onChangeText={setName}
+				value={name}
+				style={styles.input}
+				blurOnSubmit
+			/>
+			<TextInput
+				secureTextEntry
+				placeholder="Password"
+				placeholderTextColor="grey"
+				textContentType="password"
+				autoCapitalize="none"
+				returnKeyType="done"
+				onChangeText={setPassword}
+				value={password}
+				style={styles.input}
+				blurOnSubmit
+			/>
+			<TouchableOpacity onPress={onSubmit}>
+				<View style={styles.buttonContainer}>
+					<Text style={styles.buttonLabel}>{isLogin ? 'Log in' : 'Sign up'}</Text>
+				</View>
+			</TouchableOpacity>
+		</View>
+	);
 }
 
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		justifyContent: 'flex-end',
+		paddingTop: 20,
 	},
 	input: {
 		height: 50,
@@ -103,11 +99,11 @@ const styles = StyleSheet.create({
 		marginHorizontal: 20,
 		marginVertical: 10,
 		alignItems: 'center',
-		justifyContent: 'center'
+		justifyContent: 'center',
 	},
 	buttonLabel: {
 		color: '#ffffff',
 		fontSize: 20,
-		fontWeight: '700'
+		fontWeight: '700',
 	},
-})
+});
