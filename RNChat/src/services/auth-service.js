@@ -1,5 +1,5 @@
 import ConnectyCube from 'react-native-connectycube';
-import appConfig from '../../connectycube_config.json';
+import { appCredentials, appConfig } from '../config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import User from '../models/user';
 import store from '../redux/store';
@@ -22,10 +22,9 @@ class AuthService {
   }
 
   async init() {
-    store.dispatch(setAppIsLoading(true));
-
-    ConnectyCube.init(...appConfig.connectyCubeConfig);
+    ConnectyCube.init(appCredentials, appConfig);
     this.tryAutoLogin();
+    store.dispatch(setAppIsLoading(true));
   }
 
   async updateCurrentUser({ image, full_name, login }) {

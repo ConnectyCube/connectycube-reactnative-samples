@@ -131,18 +131,17 @@ export const users = [
 
 3. (Optional) If you are at [Enterprise](https://connectycube.com/pricing/) plan - provide your API server and Chat server endpoints at `src/config.js` file to point the sample against your own server:
 
-   ```javascript
-   {
-      endpoints: {
-          api: "***",
-          chat: "***"
-      },
-      ...
-   };
-   ```
+```javascript
+export const appConfig = {
+  endpoints: {
+    api: '***',
+    chat: '***',
+  },
+};
+```
 
 4. Run on Android/iOS device
 
 ## Can't build yourself?
 
-Got troubles with building React Native code sample? Just create an issue at [Issues page](https://github.com/ConnectyCube/connectycube-reactnative-samples/issues) - we will create the sample for you. For FREE!
+Got troubles with building React Native code sample? Just create an issue at [Issues page](https://github.com/ConnectyCube/connectycube-reactnative-samples/issues).
