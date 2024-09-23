@@ -1,4 +1,4 @@
-package com.rnvideochat
+package com.connectycube.videochatrn
 
 import android.app.Application
 import com.facebook.react.PackageList
@@ -11,6 +11,10 @@ import com.facebook.react.defaults.DefaultReactHost.getDefaultReactHost
 import com.facebook.react.defaults.DefaultReactNativeHost
 import com.facebook.soloader.SoLoader
 
+import com.oney.WebRTCModule.WebRTCModulePackage
+import com.oney.WebRTCModule.WebRTCModuleOptions
+import com.wix.reactnativenotifications.RNNotificationsPackage
+
 class MainApplication : Application(), ReactApplication {
 
   override val reactNativeHost: ReactNativeHost =
@@ -18,7 +22,7 @@ class MainApplication : Application(), ReactApplication {
         override fun getPackages(): List<ReactPackage> =
             PackageList(this).packages.apply {
               // Packages that cannot be autolinked yet can be added manually here, for example:
-              // add(MyReactNativePackage())
+              add(WebRTCModulePackage())
             }
 
         override fun getJSMainModuleName(): String = "index"
@@ -39,5 +43,7 @@ class MainApplication : Application(), ReactApplication {
       // If you opted-in for the New Architecture, we load the native entry point for this app.
       load()
     }
+    // Initialize the WebRTC module options.
+    WebRTCModuleOptions.getInstance().enableMediaProjectionService = true
   }
 }

@@ -5,16 +5,17 @@ import { getApplicationName } from 'react-native-device-info';
 import RNCallKeep, { CONSTANTS as CK_CONSTANTS } from 'react-native-callkeep';
 import RNUserdefaults from '@tranzerdev/react-native-user-defaults';
 
-import { showToast, getUserById, getCallRecipientString } from '../utils'
-import store from '../store'
-import { 
-  addOrUpdateStreams, 
-  removeStream, 
-  resetActiveCall, 
-  setCallSession, 
-  acceptCall, 
-  earlyAcceptCall, 
-  muteMicrophone } from '../actions/activeCall'
+import { showToast, getUserById, getCallRecipientString } from '../utils';
+import store from '../store';
+import {
+  addOrUpdateStreams,
+  removeStream,
+  resetActiveCall,
+  setCallSession,
+  acceptCall,
+  earlyAcceptCall,
+  muteMicrophone
+} from '../actions/activeCall';
 
 const LOCAL_STREAM_USER_ID = 'localStream';
 
@@ -23,14 +24,20 @@ class CallService {
 
   mediaDevices = [];
 
-  _outgoingCallSound = null
-  _incomingCallSound = null
-  _endCallSound = null
+  _outgoingCallSound = null;
+  _incomingCallSound = null;
+  _endCallSound = null;
 
   constructor() {
-    this._outgoingCallSound = new Sound(require('../../assets/sounds/dialing.mp3'))
-    this._incomingCallSound = new Sound(require('../../assets/sounds/calling.mp3'))
-    this._endCallSound = new Sound(require('../../assets/sounds/end_call.mp3'))
+    if (CallService.instance) {
+      return CallService.instance;
+    }
+
+    CallService.instance = this;
+
+    this._outgoingCallSound = new Sound(require('../../assets/sounds/dialing.mp3'));
+    this._incomingCallSound = new Sound(require('../../assets/sounds/calling.mp3'));
+    this._endCallSound = new Sound(require('../../assets/sounds/end_call.mp3'));
   }
 
   init() {
@@ -92,7 +99,7 @@ class CallService {
   }
 
   get isDummySession() {
-    return store.getState().activeCall.isDummySession; 
+    return store.getState().activeCall.isDummySession;
   }
 
   // Call API
@@ -105,16 +112,16 @@ class CallService {
     await this.setMediaDevices();
 
     // create local stream
-    const mediaOptions = {...CallService.MEDIA_OPTIONS};
+    const mediaOptions = { ...CallService.MEDIA_OPTIONS };
     if (callType === ConnectyCube.videochat.CallType.AUDIO) {
       mediaOptions.video = false;
     }
-    const stream = await this.callSession.getUserMedia(mediaOptions)
+    const stream = await this.callSession.getUserMedia(mediaOptions);
 
     // store streams
-    const streams = [{userId: LOCAL_STREAM_USER_ID, stream: stream}]
+    const streams = [{ userId: LOCAL_STREAM_USER_ID, stream: stream }];
     for (uId of usersIds) {
-      streams.push({userId: uId, stream: null})
+      streams.push({ userId: uId, stream: null });
     }
     store.dispatch(addOrUpdateStreams(streams));
 
@@ -137,7 +144,7 @@ class CallService {
     return session;
   }
 
-  async acceptCall(options = {}, skipCallKit = false) {  
+  async acceptCall(options = {}, skipCallKit = false) {
     if (!this.callSession || this.isDummySession) {
       store.dispatch(earlyAcceptCall());
       console.log("[acceptCall] earlyAcceptCall");
@@ -149,18 +156,18 @@ class CallService {
     await this.setMediaDevices();
 
     // create local stream
-    const mediaOptions = {...CallService.MEDIA_OPTIONS};
+    const mediaOptions = { ...CallService.MEDIA_OPTIONS };
     if (this.callSession.callType === ConnectyCube.videochat.CallType.AUDIO) {
       mediaOptions.video = false;
     }
-    const stream = await this.callSession.getUserMedia(mediaOptions)
-   
+    const stream = await this.callSession.getUserMedia(mediaOptions);
+
     // store streams
-    const streams = [{userId: LOCAL_STREAM_USER_ID, stream: stream}]
-    const opponentsIds = [this.callSession.initiatorID, 
-                          ...this.callSession.opponentsIDs.filter(oid => oid !== this.callSession.currentUserID)]
+    const streams = [{ userId: LOCAL_STREAM_USER_ID, stream: stream }];
+    const opponentsIds = [this.callSession.initiatorID,
+    ...this.callSession.opponentsIDs.filter(oid => oid !== this.callSession.currentUserID)];
     for (uId of opponentsIds) {
-      streams.push({userId: uId, stream: null});
+      streams.push({ userId: uId, stream: null });
     }
     store.dispatch(addOrUpdateStreams(streams));
 
@@ -179,7 +186,7 @@ class CallService {
   }
 
   stopCall(options = {}, skipCallKit = false) {
-    console.log("[CallService][stopCall]", this.callSession?.ID)
+    console.log("[CallService][stopCall]", this.callSession?.ID);
     if (this.callSession) {
       this.callSession.stop(options);
       ConnectyCube.videochat.clearSession(this.callSession.ID);
@@ -205,12 +212,12 @@ class CallService {
           platform: Platform.OS,
           recipientId: this.callSession.initiatorID
         }).then(res => {
-          console.log("[CallKitService][rejectCall] [callRejectRequest] done")
+          console.log("[CallKitService][rejectCall] [callRejectRequest] done");
         });
       } else {
         this.callSession.reject(options);
       }
-     
+
       if (!skipCallKit) {
         // report to CallKit (iOS only)
         //
@@ -231,9 +238,9 @@ class CallService {
     }
 
     store.dispatch(muteMicrophone(isMute));
-    
+
     if (!skipCallKit) {
-      this.reportMutedCall(this.callSession?.ID, isMute);    
+      this.reportMutedCall(this.callSession?.ID, isMute);
     }
   };
 
@@ -281,7 +288,7 @@ class CallService {
   //
 
   // Use startCall to ask the system to start a call - Initiate an outgoing call from this point
-  reportStartCall(callUUID, handle, contactIdentifier, handleType, hasVideo){
+  reportStartCall(callUUID, handle, contactIdentifier, handleType, hasVideo) {
     if (Platform.OS !== 'ios') {
       return;
     }
@@ -292,7 +299,7 @@ class CallService {
     RNCallKeep.startCall(callUUID, handle, contactIdentifier, handleType, hasVideo);
   };
 
-  reportAcceptCall(callUUID){
+  reportAcceptCall(callUUID) {
     if (Platform.OS !== 'ios') {
       return;
     }
@@ -303,7 +310,7 @@ class CallService {
     RNCallKeep.answerIncomingCall(callUUID);
   }
 
-  reportRejectCall(callUUID){
+  reportRejectCall(callUUID) {
     if (Platform.OS !== 'ios') {
       return;
     }
@@ -313,7 +320,7 @@ class CallService {
     RNCallKeep.rejectCall(callUUID);
   }
 
-  reportEndCall(callUUID){
+  reportEndCall(callUUID) {
     if (Platform.OS !== 'ios') {
       return;
     }
@@ -328,7 +335,7 @@ class CallService {
       return;
     }
 
-    console.log('[CallKitService][reportEndCall]', {callUUID, isMuted});
+    console.log('[CallKitService][reportEndCall]', { callUUID, isMuted });
 
     RNCallKeep.setMutedCall(callUUID, isMuted);
   }
@@ -344,7 +351,7 @@ class CallService {
   //   DECLINED_ELSEWHERE: 5 | 2,
   //   MISSED: 2 | 6
   // }
-  reportEndCallWithoutUserInitiating(callUUID, reason){
+  reportEndCallWithoutUserInitiating(callUUID, reason) {
     if (Platform.OS !== 'ios') {
       return;
     }
@@ -358,38 +365,38 @@ class CallService {
   // Call callbacks
   //
 
-  async _onCallListener(session, extension){
+  async _onCallListener(session, extension) {
     // if already on a call
     if (this.callSession && !this.isDummySession) {
-      console.log("[CallService][_onCallListener] reject, already_on_call")
+      console.log("[CallService][_onCallListener] reject, already_on_call");
       this.rejectCall(session, { already_on_call: true });
       return;
     }
 
     this.playSound('incoming');
 
-    console.log("[CallService][_onCallListener]", {isEarlyAccepted: this.isEarlyAccepted, isAccepted: this.isAccepted})
+    console.log("[CallService][_onCallListener]", { isEarlyAccepted: this.isEarlyAccepted, isAccepted: this.isAccepted });
     if (this.isEarlyAccepted && !this.isAccepted) {
       setTimeout(() => { // wait until redux updated the data
         this.acceptCall();
-      })
+      });
     }
 
     store.dispatch(setCallSession(session, true));
   };
 
-  async _onAcceptCallListener(session, userId, extension){
+  async _onAcceptCallListener(session, userId, extension) {
     console.log("_onAcceptCallListener", userId);
 
     if (this.callSession) {
       this.stopSounds();
     }
-    
+
     showToast(`${getUserById(userId, 'full_name')} has accepted the call`);
   };
 
-  async _onRejectCallListener(session, userId, extension){
-    store.dispatch(removeStream({userId}))
+  async _onRejectCallListener(session, userId, extension) {
+    store.dispatch(removeStream({ userId }));
 
     const userName = getUserById(userId, 'full_name');
     const message = extension.already_on_call
@@ -399,7 +406,7 @@ class CallService {
     showToast(message);
   };
 
-  async _onStopCallListener (session, userId, extension){
+  async _onStopCallListener(session, userId, extension) {
     this.stopSounds();
 
     const userName = getUserById(userId, 'full_name');
@@ -407,7 +414,7 @@ class CallService {
 
     showToast(message);
 
-    store.dispatch(removeStream({userId}));
+    store.dispatch(removeStream({ userId }));
     if (this.streams.length <= 1) {
       store.dispatch(resetActiveCall());
 
@@ -417,17 +424,17 @@ class CallService {
     }
   };
 
-  async _onUserNotAnswerListener(session, userId){
+  async _onUserNotAnswerListener(session, userId) {
     showToast(`${getUserById(userId, 'full_name')} did not answer`);
 
-    store.dispatch(removeStream({userId}));
+    store.dispatch(removeStream({ userId }));
   };
 
-  async _onRemoteStreamListener(session, userId, stream){
-    store.dispatch(addOrUpdateStreams([{userId, stream}]));
+  async _onRemoteStreamListener(session, userId, stream) {
+    store.dispatch(addOrUpdateStreams([{ userId, stream }]));
   };
 
-  
+
   // CallKit callbacks
   //
 
@@ -474,7 +481,7 @@ class CallService {
             platform: Platform.OS,
             recipientId: initiatorId
           }).then(res => {
-            console.log("[CallKitService][onEndCallAction] [callRejectRequest] done")
+            console.log("[CallKitService][onEndCallAction] [callRejectRequest] done");
           });
         }
       }
@@ -487,7 +494,7 @@ class CallService {
     let { muted, callUUID } = data;
     // Called when the system or user mutes a call
 
-    this.muteMicrophone(muted, true)
+    this.muteMicrophone(muted, true);
   };
 
   onChangeAudioRoute = (data) => {
@@ -527,7 +534,7 @@ class CallService {
       }
     }
 
-    console.log('[CallKitService][onLoadWithEvents]', {callDataToAdd, callDataToAnswer});
+    console.log('[CallKitService][onLoadWithEvents]', { callDataToAdd, callDataToAnswer });
 
     if (callDataToAdd) {
       if (callDataToAnswer) {
@@ -541,5 +548,4 @@ class CallService {
   };
 }
 
-const callService = new CallService()
-export default callService;
+export default new CallService();

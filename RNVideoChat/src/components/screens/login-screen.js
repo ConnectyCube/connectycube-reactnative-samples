@@ -9,47 +9,42 @@ import {
   ActivityIndicator,
   TouchableOpacity,
 } from 'react-native';
-
-import AuthService from '../../services/auth-service';
-import CallService from '../../services/call-service';
-import PushNotificationsService from '../../services/pushnotifications-service';
-import PermissionsService from '../../services/permissions-service';
+import { useNavigation } from '@react-navigation/native';
+import { AuthService, CallService, PushNotificationsService, PermissionsService } from '../../services';
 import { users } from '../../config-users';
-import store from '../../store'
-import { setCurrentUser } from '../../actions/currentUser'
+import store from '../../redux/store';
+import { setCurrentUser } from '../../actions/currentUser';
 
 const logoSrc = require('../../../assets/logo.png');
 
-export default function LoginScreen({navigation}){
-
+export default function LoginScreen() {
+  const navigation = useNavigation();
   const [isLogging, setIsLogging] = useState(false);
 
   useEffect(() => {
     AuthService.getStoredUser().then(storedUser => {
       if (storedUser) {
-        // auto login
-        login(storedUser)
+        login(storedUser);
       }
-    })
+    });
 
     // Android: for accepting calls in background you should provide access to show System Alerts from the background
     PermissionsService.checkAndRequestDrawOverlaysPermission();
   }, []);
 
-  async function login(user){
+  async function login(user) {
     setIsLogging(true);
 
-    await AuthService.login(user)
-    store.dispatch(setCurrentUser(user))
-
+    await AuthService.login(user);
+    store.dispatch(setCurrentUser(user));
     CallService.init();
     PushNotificationsService.init();
 
     setIsLogging(false);
 
-    const opponents = users.filter(opponent => opponent.id !== user.id)
+    const opponents = users.filter(opponent => opponent.id !== user.id);
     navigation.push('InitiateCallScreen', { opponents });
-  };
+  }
 
   return (
     <View style={[styles.container, styles.f1]}>
@@ -60,7 +55,7 @@ export default function LoginScreen({navigation}){
           style={[
             styles.f1,
             styles.centeredChildren,
-            {flexDirection: 'row'},
+            { flexDirection: 'row' },
           ]}>
           <Text style={styles.logoText}>{isLogging ? '' : 'P2P Video Chat'}</Text>
           {isLogging && <ActivityIndicator size="small" color="#1198d4" />}
@@ -99,7 +94,7 @@ const styles = StyleSheet.create({
   },
   logoText: {
     fontSize: 30,
-    color: 'black'
+    color: 'black',
   },
   authBtns: {
     justifyContent: 'flex-end',

@@ -1,7 +1,15 @@
 import { isOverlayPermissionGranted, requestOverlayPermission } from 'react-native-can-draw-overlays';
 import { Alert } from "react-native";
 
-class PermisisonsService {
+class PermissionsService {
+  constructor() {
+    if (PermissionsService.instance) {
+      return PermissionsService.instance;
+    }
+
+    PermissionsService.instance = this;
+  }
+
   async checkAndRequestDrawOverlaysPermission() {
     if (Platform.OS !== 'android') {
       return true;
@@ -15,30 +23,31 @@ class PermisisonsService {
         [
           {
             text: "Later",
-            onPress: () => {},
+            onPress: () => { },
             style: "cancel"
           },
-          { text: "Request", onPress: () => {
-            this.requestOverlayPermission();
-          }}
+          {
+            text: "Request", onPress: () => {
+              this.requestOverlayPermission();
+            }
+          }
         ]
       );
-  
+
     }
   }
-    
+
   async isDrawOverlaysPermisisonGranted() {
     const isGranted = await isOverlayPermissionGranted();
-    console.log("[PermisisonsService][isDrawOverlaysPermisisonGranted]", isGranted);
+    console.log("[PermissionsService][isDrawOverlaysPermisisonGranted]", isGranted);
     return isGranted;
   }
 
   async requestOverlayPermission() {
     const granted = await requestOverlayPermission();
-    console.log("[PermisisonsService][requestOverlayPermission]", granted);
+    console.log("[PermissionsService][requestOverlayPermission]", granted);
     return granted;
   }
 }
 
-const permisisonsService = new PermisisonsService();
-export default permisisonsService;
+export default new PermissionsService();

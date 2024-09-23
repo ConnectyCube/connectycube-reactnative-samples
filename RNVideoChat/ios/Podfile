@@ -15,6 +15,8 @@ if linkage != nil
 end
 
 target 'RNVideoChat' do
+  pod 'react-native-webrtc', :path => '../node_modules/react-native-webrtc'
+  
   config = use_native_modules!
 
   use_react_native!(
