@@ -1,4 +1,4 @@
-package com.connectycube.videochatrn
+package com.rnvideochat
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate

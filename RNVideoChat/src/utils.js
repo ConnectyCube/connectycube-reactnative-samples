@@ -1,4 +1,4 @@
-import { users } from './config-users';
+import { users } from './config';
 import { Platform } from 'react-native';
 import Toast from 'react-native-simple-toast';
 

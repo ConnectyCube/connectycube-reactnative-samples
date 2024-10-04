@@ -1516,6 +1516,11 @@ PODS:
     - React-Core
   - RNDeviceInfo (13.0.0):
     - React-Core
+  - RNNotifee (9.0.2):
+    - React-Core
+    - RNNotifee/NotifeeCore (= 9.0.2)
+  - RNNotifee/NotifeeCore (9.0.2):
+    - React-Core
   - RNScreens (3.34.0):
     - DoubleConversion
     - glog
@@ -1538,6 +1543,11 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
+  - RNSound (0.11.2):
+    - React-Core
+    - RNSound/Core (= 0.11.2)
+  - RNSound/Core (0.11.2):
+    - React-Core
   - RNVectorIcons (10.2.0):
     - DoubleConversion
     - glog
@@ -1635,7 +1645,9 @@ DEPENDENCIES:
   - RNCallKeep (from `../node_modules/react-native-callkeep`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
+  - "RNNotifee (from `../node_modules/@notifee/react-native`)"
   - RNScreens (from `../node_modules/react-native-screens`)
+  - RNSound (from `../node_modules/react-native-sound`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
@@ -1785,8 +1797,12 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-async-storage/async-storage"
   RNDeviceInfo:
     :path: "../node_modules/react-native-device-info"
+  RNNotifee:
+    :path: "../node_modules/@notifee/react-native"
   RNScreens:
     :path: "../node_modules/react-native-screens"
+  RNSound:
+    :path: "../node_modules/react-native-sound"
   RNVectorIcons:
     :path: "../node_modules/react-native-vector-icons"
   Yoga:
@@ -1863,12 +1879,14 @@ SPEC CHECKSUMS:
   RNCallKeep: 0cab0ef1e272f5ca19e3d0ea1f041257842844cb
   RNCAsyncStorage: d35c79ffba52c1013013e16b1fc295aec2feabb6
   RNDeviceInfo: 55264dd7cc939dad6e9c231a7621311f5277f1dc
+  RNNotifee: 2b7df6e32a9cc24b9af6b410fa7db1cd2f411d6d
   RNScreens: 19719a9c326e925498ac3b2d35c4e50fe87afc06
+  RNSound: 6c156f925295bdc83e8e422e7d8b38d33bc71852
   RNVectorIcons: 6382277afab3c54658e9d555ee0faa7a37827136
   SocketRocket: abac6f5de4d4d62d24e11868d7a2f427e0ef940d
   Toast: 1f5ea13423a1e6674c4abdac5be53587ae481c4e
   Yoga: 4ef80d96a5534f0e01b3055f17d1e19a9fc61b63
 
-PODFILE CHECKSUM: 8b4a03ff6858b9e475702bc7fa5fee3f63674479
+PODFILE CHECKSUM: 8f737d0aebcd57aa137447c693de0767d9bc8cff
 
 COCOAPODS: 1.15.2

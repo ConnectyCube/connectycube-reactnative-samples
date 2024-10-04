@@ -32,14 +32,13 @@ const activeCallSlice = createSlice({
       isMicrophoneMuted: payload,
     }),
     upsertStreams: (state, { payload }) => {
-      let updatedStreams = [...state.streams];
+      let streams = [...state.streams];
       for (let stream of payload) {
-        const existingStream = updatedStreams.find(s => s.userId === stream.userId);
-        updatedStreams = existingStream
-          ? updatedStreams.map(s => s.userId !== stream.userId ? s : stream) // replace
-          : [...updatedStreams, stream]; // add
+        streams = streams.find(s => s.userId === stream.userId)
+          ? streams.map(s => s.userId !== stream.userId ? s : stream) // replace
+          : [...streams, stream]; // add
       }
-      return Object.assign({}, state, { streams: updatedStreams });
+      return Object.assign({}, state, { streams });
     },
     removeStream: (state, { payload }) => Object.assign({}, state, {
       streams: state.streams.filter(s => s.userId !== payload.userId),

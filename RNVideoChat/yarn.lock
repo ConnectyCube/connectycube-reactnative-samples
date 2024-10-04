@@ -2043,6 +2043,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@notifee/react-native@npm:^9.0.2":
+  version: 9.0.2
+  resolution: "@notifee/react-native@npm:9.0.2"
+  peerDependencies:
+    react-native: "*"
+  checksum: 2b46e360096dffea51803ff28a5e106d0bdea09651a72487728ee925f1748b2a374377c4db9e85f62fda8d7e16b0e0a2d7dcd4078c0342bac522bec364ccf21a
+  languageName: node
+  linkType: hard
+
 "@npmcli/agent@npm:^2.0.0":
   version: 2.2.2
   resolution: "@npmcli/agent@npm:2.2.2"
@@ -2713,11 +2722,11 @@ __metadata:
   linkType: hard
 
 "@types/node@npm:*":
-  version: 22.5.5
-  resolution: "@types/node@npm:22.5.5"
+  version: 22.7.0
+  resolution: "@types/node@npm:22.7.0"
   dependencies:
     undici-types: ~6.19.2
-  checksum: 1f788966ff7df07add0af3481fb68c7fe5091cc72a265c671432abb443788ddacca4ca6378af64fe100c20f857c4d80170d358e66c070171fcea0d4adb1b45b1
+  checksum: a40a013afb3d00c2246d6eca39885a5516216785e9c6668191fd836eefd9b3daed0c8865485ebab181838131dbded6b9ee3275b404202261c31a7f9fa51a871a
   languageName: node
   linkType: hard
 
@@ -2738,12 +2747,12 @@ __metadata:
   linkType: hard
 
 "@types/react@npm:*, @types/react@npm:^18.2.6":
-  version: 18.3.8
-  resolution: "@types/react@npm:18.3.8"
+  version: 18.3.9
+  resolution: "@types/react@npm:18.3.9"
   dependencies:
     "@types/prop-types": "*"
     csstype: ^3.0.2
-  checksum: a2cc2034746cde564a49a9d7f1ae57214bc83adb0daafd4724dc400569adc54c5a489c0e7d8656752b8748908a364d6811e4d7a2adc7f18a7f7179728d20147a
+  checksum: ac8c7cf6f9c5c2ecef790f3db6f98c672fdec0884f4e4730777fd18823207231cdd1d2e4673f473ef17a096c73c87bff309e83b026fb2602ba068371f0dc54fe
   languageName: node
   linkType: hard
 
@@ -3241,6 +3250,7 @@ __metadata:
     "@babel/core": ^7.20.0
     "@babel/preset-env": ^7.20.0
     "@babel/runtime": ^7.20.0
+    "@notifee/react-native": ^9.0.2
     "@react-native-async-storage/async-storage": ^2.0.0
     "@react-native/babel-preset": 0.75.3
     "@react-native/eslint-config": 0.75.3
@@ -3259,14 +3269,16 @@ __metadata:
     react: 18.3.1
     react-native: 0.75.3
     react-native-callkeep: ^4.3.14
-    react-native-connectycube: ^3.33.2
+    react-native-connectycube: ^3.34.0
     react-native-device-info: ^13.0.0
     react-native-incall-manager: ^4.2.0
     react-native-notifications: ^5.1.0
     react-native-safe-area-context: ^4.11.0
     react-native-screens: ^3.34.0
     react-native-simple-toast: ^3.3.1
+    react-native-sound: ^0.11.2
     react-native-vector-icons: ^10.2.0
+    react-native-webrtc: ^124.0.4
     react-redux: ^9.1.2
     react-test-renderer: 18.3.1
     redux: ^5.0.1
@@ -3793,16 +3805,16 @@ __metadata:
   linkType: hard
 
 "browserslist@npm:^4.23.1, browserslist@npm:^4.23.3":
-  version: 4.23.3
-  resolution: "browserslist@npm:4.23.3"
+  version: 4.24.0
+  resolution: "browserslist@npm:4.24.0"
   dependencies:
-    caniuse-lite: ^1.0.30001646
-    electron-to-chromium: ^1.5.4
+    caniuse-lite: ^1.0.30001663
+    electron-to-chromium: ^1.5.28
     node-releases: ^2.0.18
     update-browserslist-db: ^1.1.0
   bin:
     browserslist: cli.js
-  checksum: 7906064f9970aeb941310b2fcb8b4ace4a1b50aa657c986677c6f1553a8cabcc94ee9c5922f715baffbedaa0e6cf0831b6fed7b059dde6873a4bfadcbe069c7e
+  checksum: de200d3eb8d6ed819dad99719099a28fb6ebeb88016a5ac42fbdc11607e910c236a84ca1b0bbf232477d4b88ab64e8ab6aa67557cdd40a73ca9c2834f92ccce0
   languageName: node
   linkType: hard
 
@@ -3918,10 +3930,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"caniuse-lite@npm:^1.0.30001646":
-  version: 1.0.30001662
-  resolution: "caniuse-lite@npm:1.0.30001662"
-  checksum: 7a6a0c0d9f7c4a1c51de02838eb47f41f36fff57a77b846c8faed35ba9afba17b9399bc00bd637e5c1663cbc132534085d91151de48edca2ad8932a5d87e23af
+"caniuse-lite@npm:^1.0.30001663":
+  version: 1.0.30001663
+  resolution: "caniuse-lite@npm:1.0.30001663"
+  checksum: 489a642feb6826a0fc7cfd7dbc35a3341cc1439eafdf0dae79338cf9033c5d9eddaedacbef7935acaddbb3c226a51097ed53d66dc6d8128cd6938c6763e1bbc4
   languageName: node
   linkType: hard
 
@@ -4567,10 +4579,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron-to-chromium@npm:^1.5.4":
-  version: 1.5.26
-  resolution: "electron-to-chromium@npm:1.5.26"
-  checksum: b2d85be3b77e20cbe94297d7c3d0fe280df07cf31491f8d0f4e0cb73b75b710ce32fc0bd7b3c73b9a376db0ec50ce236d26795d431e60dedb090293110c65163
+"electron-to-chromium@npm:^1.5.28":
+  version: 1.5.28
+  resolution: "electron-to-chromium@npm:1.5.28"
+  checksum: f997385e8f8a25900c6b04a666b65550b1592c5d2a11db94b4eebcc8921e942c7249b87e0eb33229ea156d79b5e0d5f3e0e1b0ac548c2de51d9e1d6fda097335
   languageName: node
   linkType: hard
 
@@ -8460,16 +8472,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-connectycube@npm:^3.33.2":
-  version: 3.33.2
-  resolution: "react-native-connectycube@npm:3.33.2"
+"react-native-connectycube@npm:^3.34.0":
+  version: 3.34.0
+  resolution: "react-native-connectycube@npm:3.34.0"
   dependencies:
     "@xmpp/client": 0.9.2
     crypto-js: 4.2.0
     fbemitter: 3.0.0
     js-base64: 3.7.7
-    react-native-webrtc: 124.0.4
-  checksum: bf83b1a737bd0d555a28ec0174698eec7baa1ebafd20470259ee9ee81503d6e123eeed5328467a6561a186dc294db448604f8ba21e5971bcec6c49dd5b06b3f7
+  peerDependencies:
+    react-native: ">=0.68.0"
+    react-native-webrtc: ">=111.0.0"
+  checksum: efcaefab37eeda08aa6b41ded8d8ef6a35dba1c249905e3fc4acdfb2864c4951023de237baf7c8390ed9c2df649cb4a5fdaf37bad0845923d5a698e4f93163ed
   languageName: node
   linkType: hard
 
@@ -8534,6 +8548,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-native-sound@npm:^0.11.2":
+  version: 0.11.2
+  resolution: "react-native-sound@npm:0.11.2"
+  peerDependencies:
+    react-native: ">=0.8.0"
+  checksum: d019de415c5f7bc8af51bc50adff7b9c307cb990aad3ea193933f89df743bbcdbfaa33c4a12bb1143a223137cea39f8b69baf5e1c29f77cf80476616bccc6f91
+  languageName: node
+  linkType: hard
+
 "react-native-vector-icons@npm:^10.2.0":
   version: 10.2.0
   resolution: "react-native-vector-icons@npm:10.2.0"
@@ -8549,7 +8572,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-webrtc@npm:124.0.4":
+"react-native-webrtc@npm:^124.0.4":
   version: 124.0.4
   resolution: "react-native-webrtc@npm:124.0.4"
   dependencies:

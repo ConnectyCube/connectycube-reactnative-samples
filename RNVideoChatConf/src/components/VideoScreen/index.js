@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRoute } from '@react-navigation/native';
-import { View, StyleSheet, StatusBar } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import ConnectyCube from 'react-native-connectycube';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import RTCViewGrid from './RTCViewGrid';
@@ -194,7 +194,6 @@ const VideoScreen = () => {
 
   return (
     <View style={styles.wrap(top)}>
-      <StatusBar barStyle="light-content" />
       <RTCViewGrid streams={streams} />
       <UsersSelect
         isActiveSelect={isActiveSelect}

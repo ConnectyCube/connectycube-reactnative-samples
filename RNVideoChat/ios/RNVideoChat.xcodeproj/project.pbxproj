@@ -15,6 +15,8 @@
 		5BF9C0FAA2FBA63A18F1B54E /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = D6A619414D6767F47F1E68A0 /* PrivacyInfo.xcprivacy */; };
 		7699B88040F8A987B510C191 /* libPods-RNVideoChat-RNVideoChatTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-RNVideoChat-RNVideoChatTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		D075D3052CA5CE9C0009DC60 /* CallKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D075D3042CA5CE9C0009DC60 /* CallKit.framework */; };
+		D075D3072CA5CEA60009DC60 /* Intents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D075D3062CA5CEA60009DC60 /* Intents.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		D0AA8CF22C9DA6BD005AAB7C /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D0AA8CF12C9DA6BD005AAB7C /* icon.png */; };
 /* End PBXBuildFile section */
 
@@ -46,8 +48,10 @@
 		5DCACB8F33CDC322A6C60F78 /* libPods-RNVideoChat.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RNVideoChat.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = RNVideoChat/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-RNVideoChat-RNVideoChatTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNVideoChat-RNVideoChatTests.release.xcconfig"; path = "Target Support Files/Pods-RNVideoChat-RNVideoChatTests/Pods-RNVideoChat-RNVideoChatTests.release.xcconfig"; sourceTree = "<group>"; };
+		D075D3042CA5CE9C0009DC60 /* CallKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CallKit.framework; path = System/Library/Frameworks/CallKit.framework; sourceTree = SDKROOT; };
+		D075D3062CA5CEA60009DC60 /* Intents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Intents.framework; path = System/Library/Frameworks/Intents.framework; sourceTree = SDKROOT; };
 		D0AA8CF12C9DA6BD005AAB7C /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
-		D6A619414D6767F47F1E68A0 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = RNVideoChat/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		D6A619414D6767F47F1E68A0 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = RNVideoChat/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -64,6 +68,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D075D3072CA5CEA60009DC60 /* Intents.framework in Frameworks */,
+				D075D3052CA5CE9C0009DC60 /* CallKit.framework in Frameworks */,
 				0C80B921A6F3F58F76C31292 /* libPods-RNVideoChat.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -107,6 +113,8 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D075D3062CA5CEA60009DC60 /* Intents.framework */,
+				D075D3042CA5CE9C0009DC60 /* CallKit.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				5DCACB8F33CDC322A6C60F78 /* libPods-RNVideoChat.a */,
 				19F6CBCC0A4E27FBF8BF4A61 /* libPods-RNVideoChat-RNVideoChatTests.a */,
@@ -423,12 +431,13 @@
 			baseConfigurationReference = 5B7EB9410499542E8C5724F5 /* Pods-RNVideoChat-RNVideoChatTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = T82Z2FZ225;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = RNVideoChatTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -439,7 +448,7 @@
 					"-lc++",
 					"$(inherited)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.rnvideochat.tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RNVideoChat.app/RNVideoChat";
 			};
@@ -451,8 +460,9 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = T82Z2FZ225;
 				INFOPLIST_FILE = RNVideoChatTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -463,7 +473,7 @@
 					"-lc++",
 					"$(inherited)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.rnvideochat.tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RNVideoChat.app/RNVideoChat";
 			};
@@ -478,8 +488,83 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = T82Z2FZ225;
 				ENABLE_BITCODE = NO;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/DoubleConversion\"",
+					"\"${PODS_ROOT}/Headers/Public/FBLazyVector\"",
+					"\"${PODS_ROOT}/Headers/Public/RCT-Folly\"",
+					"\"${PODS_ROOT}/Headers/Public/RCTDeprecation\"",
+					"\"${PODS_ROOT}/Headers/Public/RCTRequired\"",
+					"\"${PODS_ROOT}/Headers/Public/RCTTypeSafety\"",
+					"\"${PODS_ROOT}/Headers/Public/RNCAsyncStorage\"",
+					"\"${PODS_ROOT}/Headers/Public/RNCallKeep\"",
+					"\"${PODS_ROOT}/Headers/Public/RNDeviceInfo\"",
+					"\"${PODS_ROOT}/Headers/Public/RNScreens\"",
+					"\"${PODS_ROOT}/Headers/Public/RNSound\"",
+					"\"${PODS_ROOT}/Headers/Public/RNVectorIcons\"",
+					"\"${PODS_ROOT}/Headers/Public/React-Core\"",
+					"\"${PODS_ROOT}/Headers/Public/React-Fabric\"",
+					"\"${PODS_ROOT}/Headers/Public/React-FabricComponents\"",
+					"\"${PODS_ROOT}/Headers/Public/React-FabricImage\"",
+					"\"${PODS_ROOT}/Headers/Public/React-ImageManager\"",
+					"\"${PODS_ROOT}/Headers/Public/React-Mapbuffer\"",
+					"\"${PODS_ROOT}/Headers/Public/React-NativeModulesApple\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RCTAnimation\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RCTAppDelegate\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RCTBlob\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RCTFabric\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RCTText\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RuntimeApple\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RuntimeCore\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RuntimeHermes\"",
+					"\"${PODS_ROOT}/Headers/Public/React-callinvoker\"",
+					"\"${PODS_ROOT}/Headers/Public/React-cxxreact\"",
+					"\"${PODS_ROOT}/Headers/Public/React-debug\"",
+					"\"${PODS_ROOT}/Headers/Public/React-defaultsnativemodule\"",
+					"\"${PODS_ROOT}/Headers/Public/React-domnativemodule\"",
+					"\"${PODS_ROOT}/Headers/Public/React-featureflags\"",
+					"\"${PODS_ROOT}/Headers/Public/React-featureflagsnativemodule\"",
+					"\"${PODS_ROOT}/Headers/Public/React-graphics\"",
+					"\"${PODS_ROOT}/Headers/Public/React-hermes\"",
+					"\"${PODS_ROOT}/Headers/Public/React-idlecallbacksnativemodule\"",
+					"\"${PODS_ROOT}/Headers/Public/React-jserrorhandler\"",
+					"\"${PODS_ROOT}/Headers/Public/React-jsi\"",
+					"\"${PODS_ROOT}/Headers/Public/React-jsiexecutor\"",
+					"\"${PODS_ROOT}/Headers/Public/React-jsinspector\"",
+					"\"${PODS_ROOT}/Headers/Public/React-logger\"",
+					"\"${PODS_ROOT}/Headers/Public/React-microtasksnativemodule\"",
+					"\"${PODS_ROOT}/Headers/Public/React-nativeconfig\"",
+					"\"${PODS_ROOT}/Headers/Public/React-perflogger\"",
+					"\"${PODS_ROOT}/Headers/Public/React-performancetimeline\"",
+					"\"${PODS_ROOT}/Headers/Public/React-rendererconsistency\"",
+					"\"${PODS_ROOT}/Headers/Public/React-rendererdebug\"",
+					"\"${PODS_ROOT}/Headers/Public/React-runtimeexecutor\"",
+					"\"${PODS_ROOT}/Headers/Public/React-runtimescheduler\"",
+					"\"${PODS_ROOT}/Headers/Public/React-utils\"",
+					"\"${PODS_ROOT}/Headers/Public/ReactCodegen\"",
+					"\"${PODS_ROOT}/Headers/Public/ReactCommon\"",
+					"\"${PODS_ROOT}/Headers/Public/ReactNativeIncallManager\"",
+					"\"${PODS_ROOT}/Headers/Public/SocketRocket\"",
+					"\"${PODS_ROOT}/Headers/Public/Toast\"",
+					"\"${PODS_ROOT}/Headers/Public/Yoga\"",
+					"\"${PODS_ROOT}/Headers/Public/boost\"",
+					"\"${PODS_ROOT}/Headers/Public/fmt\"",
+					"\"${PODS_ROOT}/Headers/Public/glog\"",
+					"\"${PODS_ROOT}/Headers/Public/hermes-engine\"",
+					"\"${PODS_ROOT}/Headers/Public/react-native-notifications\"",
+					"\"${PODS_ROOT}/Headers/Public/react-native-safe-area-context\"",
+					"\"${PODS_ROOT}/Headers/Public/react-native-simple-toast\"",
+					"\"${PODS_ROOT}/Headers/Public/react-native-webrtc\"",
+					"\"$(PODS_ROOT)/DoubleConversion\"",
+					"\"$(PODS_ROOT)/boost\"",
+					"\"$(PODS_ROOT)/Headers/Private/React-Core\"",
+					"\"$(SRCROOT)/../node_modules/react-native-callkeep/ios/RNCallKeep\"",
+				);
 				INFOPLIST_FILE = RNVideoChat/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = RNVideoChat;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -490,7 +575,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.connectycube.videochatrn;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rnvideochat;
 				PRODUCT_NAME = RNVideoChat;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -506,8 +591,83 @@
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = T82Z2FZ225;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/DoubleConversion\"",
+					"\"${PODS_ROOT}/Headers/Public/FBLazyVector\"",
+					"\"${PODS_ROOT}/Headers/Public/RCT-Folly\"",
+					"\"${PODS_ROOT}/Headers/Public/RCTDeprecation\"",
+					"\"${PODS_ROOT}/Headers/Public/RCTRequired\"",
+					"\"${PODS_ROOT}/Headers/Public/RCTTypeSafety\"",
+					"\"${PODS_ROOT}/Headers/Public/RNCAsyncStorage\"",
+					"\"${PODS_ROOT}/Headers/Public/RNCallKeep\"",
+					"\"${PODS_ROOT}/Headers/Public/RNDeviceInfo\"",
+					"\"${PODS_ROOT}/Headers/Public/RNScreens\"",
+					"\"${PODS_ROOT}/Headers/Public/RNSound\"",
+					"\"${PODS_ROOT}/Headers/Public/RNVectorIcons\"",
+					"\"${PODS_ROOT}/Headers/Public/React-Core\"",
+					"\"${PODS_ROOT}/Headers/Public/React-Fabric\"",
+					"\"${PODS_ROOT}/Headers/Public/React-FabricComponents\"",
+					"\"${PODS_ROOT}/Headers/Public/React-FabricImage\"",
+					"\"${PODS_ROOT}/Headers/Public/React-ImageManager\"",
+					"\"${PODS_ROOT}/Headers/Public/React-Mapbuffer\"",
+					"\"${PODS_ROOT}/Headers/Public/React-NativeModulesApple\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RCTAnimation\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RCTAppDelegate\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RCTBlob\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RCTFabric\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RCTText\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RuntimeApple\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RuntimeCore\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RuntimeHermes\"",
+					"\"${PODS_ROOT}/Headers/Public/React-callinvoker\"",
+					"\"${PODS_ROOT}/Headers/Public/React-cxxreact\"",
+					"\"${PODS_ROOT}/Headers/Public/React-debug\"",
+					"\"${PODS_ROOT}/Headers/Public/React-defaultsnativemodule\"",
+					"\"${PODS_ROOT}/Headers/Public/React-domnativemodule\"",
+					"\"${PODS_ROOT}/Headers/Public/React-featureflags\"",
+					"\"${PODS_ROOT}/Headers/Public/React-featureflagsnativemodule\"",
+					"\"${PODS_ROOT}/Headers/Public/React-graphics\"",
+					"\"${PODS_ROOT}/Headers/Public/React-hermes\"",
+					"\"${PODS_ROOT}/Headers/Public/React-idlecallbacksnativemodule\"",
+					"\"${PODS_ROOT}/Headers/Public/React-jserrorhandler\"",
+					"\"${PODS_ROOT}/Headers/Public/React-jsi\"",
+					"\"${PODS_ROOT}/Headers/Public/React-jsiexecutor\"",
+					"\"${PODS_ROOT}/Headers/Public/React-jsinspector\"",
+					"\"${PODS_ROOT}/Headers/Public/React-logger\"",
+					"\"${PODS_ROOT}/Headers/Public/React-microtasksnativemodule\"",
+					"\"${PODS_ROOT}/Headers/Public/React-nativeconfig\"",
+					"\"${PODS_ROOT}/Headers/Public/React-perflogger\"",
+					"\"${PODS_ROOT}/Headers/Public/React-performancetimeline\"",
+					"\"${PODS_ROOT}/Headers/Public/React-rendererconsistency\"",
+					"\"${PODS_ROOT}/Headers/Public/React-rendererdebug\"",
+					"\"${PODS_ROOT}/Headers/Public/React-runtimeexecutor\"",
+					"\"${PODS_ROOT}/Headers/Public/React-runtimescheduler\"",
+					"\"${PODS_ROOT}/Headers/Public/React-utils\"",
+					"\"${PODS_ROOT}/Headers/Public/ReactCodegen\"",
+					"\"${PODS_ROOT}/Headers/Public/ReactCommon\"",
+					"\"${PODS_ROOT}/Headers/Public/ReactNativeIncallManager\"",
+					"\"${PODS_ROOT}/Headers/Public/SocketRocket\"",
+					"\"${PODS_ROOT}/Headers/Public/Toast\"",
+					"\"${PODS_ROOT}/Headers/Public/Yoga\"",
+					"\"${PODS_ROOT}/Headers/Public/boost\"",
+					"\"${PODS_ROOT}/Headers/Public/fmt\"",
+					"\"${PODS_ROOT}/Headers/Public/glog\"",
+					"\"${PODS_ROOT}/Headers/Public/hermes-engine\"",
+					"\"${PODS_ROOT}/Headers/Public/react-native-notifications\"",
+					"\"${PODS_ROOT}/Headers/Public/react-native-safe-area-context\"",
+					"\"${PODS_ROOT}/Headers/Public/react-native-simple-toast\"",
+					"\"${PODS_ROOT}/Headers/Public/react-native-webrtc\"",
+					"\"$(PODS_ROOT)/DoubleConversion\"",
+					"\"$(PODS_ROOT)/boost\"",
+					"\"$(PODS_ROOT)/Headers/Private/React-Core\"",
+					"\"$(SRCROOT)/../node_modules/react-native-callkeep/ios/RNCallKeep\"",
+				);
 				INFOPLIST_FILE = RNVideoChat/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = RNVideoChat;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -518,7 +678,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.connectycube.videochatrn;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rnvideochat;
 				PRODUCT_NAME = RNVideoChat;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";

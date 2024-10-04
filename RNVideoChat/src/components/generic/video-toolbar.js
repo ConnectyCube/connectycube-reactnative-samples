@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { StyleSheet, SafeAreaView, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { useSelector } from 'react-redux';
 

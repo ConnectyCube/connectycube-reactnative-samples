@@ -117,7 +117,7 @@ class CallService {
       mediaOptions.video = false;
     }
     const stream = await this.callSession.getUserMedia(mediaOptions);
-
+    console.warn(stream);
     // store streams
     const streams = [{ userId: LOCAL_STREAM_USER_ID, stream: stream }];
     for (uId of usersIds) {

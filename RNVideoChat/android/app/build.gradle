@@ -77,9 +77,9 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace "com.connectycube.videochatrn"
+    namespace "com.rnvideochat"
     defaultConfig {
-        applicationId "com.connectycube.videochatrn"
+        applicationId "com.rnvideochat"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
@@ -110,8 +110,7 @@ android {
 dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
-    implementation project(':react-native-notifications') // react-native-notifications
-    implementation project(':react-native-webrtc') // react-native-webrtc
+    implementation project(':react-native-notifications')
     implementation 'com.google.firebase:firebase-messaging:24.0.1'
 
     if (hermesEnabled.toBoolean()) {

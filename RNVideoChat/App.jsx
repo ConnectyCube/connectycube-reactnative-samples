@@ -29,12 +29,13 @@ export default function App() {
             name="InitiateCallScreen"
             component={InitiateCallScreen}
             options={{
-              headerStyle: {
-                backgroundColor: 'grey',
-              },
-              headerTintColor: '#fff',
               headerShown: true,
-              headerLeft: null,
+              headerLeft: () => <></>,
+              headerStyle: {
+                backgroundColor: 'black',
+              },
+              headerTitleAlign: 'center',
+              headerTintColor: 'white',
               gestureEnabled: false,
             }}
           />

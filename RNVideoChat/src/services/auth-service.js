@@ -22,7 +22,6 @@ class AuthService {
   async logout() {
     ConnectyCube.chat.disconnect();
     await ConnectyCube.destroySession();
-
     await this._removeStoredUser();
   }
 

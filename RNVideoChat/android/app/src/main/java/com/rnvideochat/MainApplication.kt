@@ -1,4 +1,4 @@
-package com.connectycube.videochatrn
+package com.rnvideochat
 
 import android.app.Application
 import com.facebook.react.PackageList
@@ -11,7 +11,6 @@ import com.facebook.react.defaults.DefaultReactHost.getDefaultReactHost
 import com.facebook.react.defaults.DefaultReactNativeHost
 import com.facebook.soloader.SoLoader
 
-import com.oney.WebRTCModule.WebRTCModulePackage
 import com.oney.WebRTCModule.WebRTCModuleOptions
 import com.wix.reactnativenotifications.RNNotificationsPackage
 
@@ -22,7 +21,7 @@ class MainApplication : Application(), ReactApplication {
         override fun getPackages(): List<ReactPackage> =
             PackageList(this).packages.apply {
               // Packages that cannot be autolinked yet can be added manually here, for example:
-              add(WebRTCModulePackage())
+              // add(MyModulePackage())
             }
 
         override fun getJSMainModuleName(): String = "index"

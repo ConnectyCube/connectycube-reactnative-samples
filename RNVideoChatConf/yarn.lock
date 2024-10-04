@@ -2043,7 +2043,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@notifee/react-native@npm:^7.8.2":
+"@notifee/react-native@npm:^7.9.0":
   version: 7.9.0
   resolution: "@notifee/react-native@npm:7.9.0"
   peerDependencies:
@@ -2691,11 +2691,11 @@ __metadata:
   linkType: hard
 
 "@types/node@npm:*":
-  version: 22.5.5
-  resolution: "@types/node@npm:22.5.5"
+  version: 22.7.0
+  resolution: "@types/node@npm:22.7.0"
   dependencies:
     undici-types: "npm:~6.19.2"
-  checksum: 10/172d02c8e6d921699edcf559c28b3805616bd6481af1b3cb0299f89ad9a6f33b71050434c06ce7b503166054a26275344187c443f99f745d0b12601372452f19
+  checksum: 10/6476d94a4c0fbf60df56634063e8aa26da1152e7096daf374f1eb010eab1c7ef4cdb75ab2508480e82c0b56538e0e7bdfc72af47e7a4e4ace37f2035eddfd3c2
   languageName: node
   linkType: hard
 
@@ -2716,12 +2716,12 @@ __metadata:
   linkType: hard
 
 "@types/react@npm:*, @types/react@npm:^18.2.6":
-  version: 18.3.7
-  resolution: "@types/react@npm:18.3.7"
+  version: 18.3.9
+  resolution: "@types/react@npm:18.3.9"
   dependencies:
     "@types/prop-types": "npm:*"
     csstype: "npm:^3.0.2"
-  checksum: 10/30cfbe33c82e8033df5f70a4f54068f4344a691cff3f2b3901dd678e89ce5477dc8faada4a45d333ea570e1992ca8fda5b096d9deddfafb8c373acababc40c70
+  checksum: 10/d1321e874e6523b0a944d4ce514c071cbe44501b04591e17c0b265c9a03fb3e4486337ae1bec74541b72a41f34beef157342205dd07b31d116f4d06fa39cf32f
   languageName: node
   linkType: hard
 
@@ -3212,7 +3212,7 @@ __metadata:
     "@babel/core": "npm:^7.20.0"
     "@babel/preset-env": "npm:^7.20.0"
     "@babel/runtime": "npm:^7.20.0"
-    "@notifee/react-native": "npm:^7.8.2"
+    "@notifee/react-native": "npm:^7.9.0"
     "@react-native/babel-preset": "npm:0.75.3"
     "@react-native/eslint-config": "npm:0.75.3"
     "@react-native/metro-config": "npm:0.75.3"
@@ -3228,13 +3228,14 @@ __metadata:
     react: "npm:18.3.1"
     react-native: "npm:0.75.3"
     react-native-awesome-alerts: "npm:^2.0.0"
-    react-native-connectycube: "npm:3.33.2"
+    react-native-connectycube: "npm:3.34.0"
     react-native-incall-manager: "npm:^4.2.0"
     react-native-safe-area-context: "npm:^4.11.0"
     react-native-screens: "npm:^3.34.0"
     react-native-simple-toast: "npm:^3.3.1"
     react-native-sound: "npm:^0.11.2"
     react-native-vector-icons: "npm:^10.2.0"
+    react-native-webrtc: "npm:^124.0.4"
     react-test-renderer: "npm:18.3.1"
     typescript: "npm:5.0.4"
   languageName: unknown
@@ -3759,16 +3760,16 @@ __metadata:
   linkType: hard
 
 "browserslist@npm:^4.23.1, browserslist@npm:^4.23.3":
-  version: 4.23.3
-  resolution: "browserslist@npm:4.23.3"
+  version: 4.24.0
+  resolution: "browserslist@npm:4.24.0"
   dependencies:
-    caniuse-lite: "npm:^1.0.30001646"
-    electron-to-chromium: "npm:^1.5.4"
+    caniuse-lite: "npm:^1.0.30001663"
+    electron-to-chromium: "npm:^1.5.28"
     node-releases: "npm:^2.0.18"
     update-browserslist-db: "npm:^1.1.0"
   bin:
     browserslist: cli.js
-  checksum: 10/e266d18c6c6c5becf9a1a7aa264477677b9796387972e8fce34854bb33dc1666194dc28389780e5dc6566e68a95e87ece2ce222e1c4ca93c2b75b61dfebd5f1c
+  checksum: 10/26c1b8ba257a0b51b102080ba9d42945af2abaa8c4cf6da21cd47b3f123fc1e81640203b293214356c2c17d9d265bb3a5ed428b6d302f383576dd6ce8fd5036c
   languageName: node
   linkType: hard
 
@@ -3884,10 +3885,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"caniuse-lite@npm:^1.0.30001646":
-  version: 1.0.30001662
-  resolution: "caniuse-lite@npm:1.0.30001662"
-  checksum: 10/275dee3c2365d58c65609e707dfd7454e72195fdae7d3a8fea05f1ddb49581f64dfc65965964ee2cff99cc0af44d08c572437b1effd43e9ddc174d7a1d7f95a3
+"caniuse-lite@npm:^1.0.30001663":
+  version: 1.0.30001663
+  resolution: "caniuse-lite@npm:1.0.30001663"
+  checksum: 10/a67aba45e10bf56f584f82ab414ff21f5d23ddbd71936839b79c305710b332d8b91df37948a525fe1c9cede81ab56a3d831ee6e3f1fa11c4f299651ea49a8067
   languageName: node
   linkType: hard
 
@@ -4533,10 +4534,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron-to-chromium@npm:^1.5.4":
-  version: 1.5.25
-  resolution: "electron-to-chromium@npm:1.5.25"
-  checksum: 10/831d1fb98b5f9bf07f90902310d79e235c672b4ceb157bdf0b74d0f3b947ef35b5ad6f623282495a12470cbaee8e2143e8b14cc74f681ee5d388e6dac60a3c36
+"electron-to-chromium@npm:^1.5.28":
+  version: 1.5.28
+  resolution: "electron-to-chromium@npm:1.5.28"
+  checksum: 10/dfe890eaeec6f48d245895060edbfd6a0ff8b1a102b22324b2b33cd4aaabe39748a4a9f687be6a5e08f1d8fb1fac0d3bcd96da00d47771a3665d8641111a5f07
   languageName: node
   linkType: hard
 
@@ -8403,16 +8404,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-connectycube@npm:3.33.2":
-  version: 3.33.2
-  resolution: "react-native-connectycube@npm:3.33.2"
+"react-native-connectycube@npm:3.34.0":
+  version: 3.34.0
+  resolution: "react-native-connectycube@npm:3.34.0"
   dependencies:
     "@xmpp/client": "npm:0.9.2"
     crypto-js: "npm:4.2.0"
     fbemitter: "npm:3.0.0"
     js-base64: "npm:3.7.7"
-    react-native-webrtc: "npm:124.0.4"
-  checksum: 10/4754169a60e4007765372b0b0197ef79255e6e41e4de599f0d309c08496420e6e7c4ad7300ddc17076102303f42fe01771673f8490f100b9cd4e3a7226a008eb
+  peerDependencies:
+    react-native: ">=0.68.0"
+    react-native-webrtc: ">=111.0.0"
+  checksum: 10/47444fbd7e37290e4e487ae0b7748c90749a6a7d955c273188016703befe2a68fe5cc438cbd051f0bf5f3cf3ac97ea1bd4f2c2cf35b26b89a4bcecdb3b0f1fe8
   languageName: node
   linkType: hard
 
@@ -8482,7 +8485,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-webrtc@npm:124.0.4":
+"react-native-webrtc@npm:^124.0.4":
   version: 124.0.4
   resolution: "react-native-webrtc@npm:124.0.4"
   dependencies:

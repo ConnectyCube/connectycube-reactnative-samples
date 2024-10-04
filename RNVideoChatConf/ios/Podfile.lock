@@ -1508,10 +1508,10 @@ PODS:
     - React-utils (= 0.75.3)
   - ReactNativeIncallManager (4.2.0):
     - React-Core
-  - RNNotifee (9.0.2):
+  - RNNotifee (7.9.0):
     - React-Core
-    - RNNotifee/NotifeeCore (= 9.0.2)
-  - RNNotifee/NotifeeCore (9.0.2):
+    - RNNotifee/NotifeeCore (= 7.9.0)
+  - RNNotifee/NotifeeCore (7.9.0):
     - React-Core
   - RNScreens (3.34.0):
     - DoubleConversion
@@ -1855,7 +1855,7 @@ SPEC CHECKSUMS:
   ReactCodegen: ff95a93d5ab5d9b2551571886271478eaa168565
   ReactCommon: 289214026502e6a93484f4a46bcc0efa4f3f2864
   ReactNativeIncallManager: bfc9c67358cd524882a7c4116dcb311ac2293d4b
-  RNNotifee: 2b7df6e32a9cc24b9af6b410fa7db1cd2f411d6d
+  RNNotifee: 935f3ea8c134c88cbf8b13ea0c97c72c09ad2116
   RNScreens: 19719a9c326e925498ac3b2d35c4e50fe87afc06
   RNSound: 6c156f925295bdc83e8e422e7d8b38d33bc71852
   RNVectorIcons: 6382277afab3c54658e9d555ee0faa7a37827136
@@ -1863,6 +1863,6 @@ SPEC CHECKSUMS:
   Toast: 1f5ea13423a1e6674c4abdac5be53587ae481c4e
   Yoga: 4ef80d96a5534f0e01b3055f17d1e19a9fc61b63
 
-PODFILE CHECKSUM: 7cd8d0e1a89c2514bbfa98037edeade72d4c5735
+PODFILE CHECKSUM: 71ff3d0ef2e9e920dbdb5385a9f33c08e8b948ae
 
 COCOAPODS: 1.15.2
