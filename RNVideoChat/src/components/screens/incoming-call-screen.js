@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react';
-import { SafeAreaView, StatusBar, StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import React, { useCallback, useEffect } from 'react';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
@@ -10,13 +11,26 @@ export default function IncomingCallScreen() {
   const navigation = useNavigation();
   const callSession = useSelector(store => store.activeCall.session);
   const isCallAccepted = useSelector(store => store.activeCall.isAccepted);
-  const initiatorName = getUserById(callSession?.initiatorID)?.full_name;
-  const incomingCallText = `${initiatorName} is calling`;
+  const isCallEarlyAccepted = useSelector(store => store.activeCall.isEarlyAccepted);
+  const initiatorId = Number(callSession?.initiatorID);
+  const callType = callSession?.callType === 1 ? 'video' : 'audio';
+  const initiatorName = getUserById(initiatorId, 'full_name') ?? 'Unknown';
+  const incomingCallText = `Incoming ${callType} call from ${initiatorName}`;
+
+  const acceptCall = useCallback(async () => {
+    if (typeof callSession.accept === 'function') {
+      await CallService.acceptCall();
+    }
+  }, [callSession]);
+
+  const rejectCall = useCallback(() => {
+    if (typeof callSession.reject === 'function') {
+      CallService.rejectCall();
+    }
+  }, [callSession]);
 
   useEffect(() => {
-    // hide screen if call rejected/canceled
     if (!callSession) {
-      console.log('[IncomingCallScreen][useEffect] Call is ended');
       navigation.goBack();
       showToast('Call is ended');
     }
@@ -24,37 +38,32 @@ export default function IncomingCallScreen() {
 
   useEffect(() => {
     if (isCallAccepted) {
-      navigation.goBack();
-      navigation.push('VideoScreen', {});
+      navigation.replace('VideoScreen');
     }
   }, [navigation, isCallAccepted]);
 
-  const acceptCall = async () => {
-    await CallService.acceptCall();
-  };
-
-  const rejectCall = () => {
-    CallService.rejectCall();
-    navigation.goBack();
-  };
+  useEffect(() => {
+    if (isCallEarlyAccepted) {
+      acceptCall();
+    }
+  }, [acceptCall, isCallEarlyAccepted]);
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: 'black' }}>
-      <StatusBar backgroundColor="black" barStyle="light-content" />
-      <View style={styles.container}>
-        {initiatorName && <Text style={styles.incomingCallText}>{incomingCallText}</Text>}
-        <View style={styles.containerButtons}>
-          <TouchableOpacity
-            style={[styles.buttonAcceptCall]}
-            onPress={acceptCall}>
-            <MaterialIcon name={'call'} size={32} color="white" />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.buttonRejectCall]}
-            onPress={rejectCall}>
-            <MaterialIcon name={'call-end'} size={32} color="white" />
-          </TouchableOpacity>
-        </View>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.containerName}>
+        <Text style={styles.incomingCallText}>{incomingCallText}</Text>
+      </View>
+      <View style={styles.containerButtons}>
+        <TouchableOpacity
+          style={[styles.button, styles.buttonAcceptCall]}
+          onPress={acceptCall}>
+          <MaterialIcon name={'call'} size={40} color="white" />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.button, styles.buttonRejectCall]}
+          onPress={rejectCall}>
+          <MaterialIcon name={'call-end'} size={40} color="white" />
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
@@ -63,13 +72,13 @@ export default function IncomingCallScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    ...StyleSheet.absoluteFill,
     justifyContent: 'space-around',
     alignItems: 'stretch',
+    backgroundColor: 'black',
   },
-  containerButtons: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
+  containerName: {
+    flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
   },
   incomingCallText: {
@@ -77,20 +86,24 @@ const styles = StyleSheet.create({
     color: 'white',
     textAlign: 'center',
   },
-  buttonAcceptCall: {
-    height: 50,
-    width: 50,
-    borderRadius: 25,
+  containerButtons: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'flex-end',
+    paddingBottom: 50,
+  },
+  button: {
+    height: 80,
+    width: 80,
+    borderRadius: 40,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  buttonAcceptCall: {
     backgroundColor: 'green',
   },
   buttonRejectCall: {
-    height: 50,
-    width: 50,
-    borderRadius: 25,
-    justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: 'red',
   },
 });

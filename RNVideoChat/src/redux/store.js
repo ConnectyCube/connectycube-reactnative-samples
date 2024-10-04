@@ -2,10 +2,12 @@ import { configureStore } from '@reduxjs/toolkit';
 import { combineReducers } from 'redux';
 import { activeCall, resetActiveCall } from './slices/activeCall';
 import { currentUser, resetCurrentUser } from './slices/currentUser';
+import { isLogging, resetIsLogging } from './slices/isLogging';
 
 const rootReducer = combineReducers({
   activeCall,
   currentUser,
+  isLogging,
 });
 
 const store = configureStore({
@@ -16,6 +18,7 @@ const store = configureStore({
 export const resetStore = () => {
   store.dispatch(resetActiveCall());
   store.dispatch(resetCurrentUser());
+  store.dispatch(resetIsLogging());
 };
 
 export default store;

@@ -1,8 +1,6 @@
-// import ConnectyCube from 'react-native-connectycube';
-// import { Settings } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import RNCallKeep from 'react-native-callkeep';
-import { isAndroid, isIOS, platformOS } from '../utils';
+import { isIOS, platformOS } from '../utils';
 import CallService from './call-service';
 
 class CallKeepService {
@@ -18,29 +16,14 @@ class CallKeepService {
     if (!isIOS) { return; }
 
     try {
-      const appName = DeviceInfo.getApplicationName();
       const options = {
         ios: {
-          appName,
+          appName: DeviceInfo.getApplicationName(),
           includesCallsInRecents: false,
-        },
-        android: {
-          alertTitle: 'Permissions required',
-          alertDescription: 'This application needs to access your phone accounts',
-          cancelButton: 'Cancel',
-          okButton: 'ok',
-          foregroundService: {
-            channelId: DeviceInfo.getBundleId(),
-            channelName: `Foreground service for ${appName}`,
-            notificationTitle: `${appName} is running on background`,
-            notificationIcon: 'ic_launcher',
-          },
-          selfManaged: true,
         },
       };
 
       await RNCallKeep.setup(options);
-      RNCallKeep.setAvailable(true);
     } catch (err) {
       console.error(platformOS, '[CallKeepService][setup] Error:', err.message);
     }
@@ -168,32 +151,15 @@ class CallKeepService {
 
   onToggleMute = (data) => {
     console.log(platformOS, '[CallKeepService][onToggleMute]', data);
-
-    if (isIOS || isAndroid) {
-      return;
-    }
-
-    let { muted, callUUID } = data;
-    CallService.muteMicrophone(muted, true);
+    CallService.muteMicrophone(data.muted, true);
   };
 
   onChangeAudioRoute = (data) => {
     console.log(platformOS, '[CallKeepService][onChangeAudioRoute]', data);
-
-    if (isIOS || isAndroid) {
-      return;
-    }
-
-    const output = data.output;
-    // could be Speaker or Receiver
   };
 
   onLoadWithEvents = (events) => {
     console.log(platformOS, '[CallKeepService][onLoadWithEvents]', events);
-
-    if (isIOS || isAndroid) {
-      return;
-    }
 
     // `events` is passed as an Array chronologically, handle or ignore events based on the app's logic
     // see example usage in https://github.com/react-native-webrtc/react-native-callkeep/pull/169 or https://github.com/react-native-webrtc/react-native-callkeep/pull/205

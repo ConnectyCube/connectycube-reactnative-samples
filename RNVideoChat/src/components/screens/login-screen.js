@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import {
   StyleSheet,
   View,
@@ -8,40 +8,26 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native';
-import { AuthService, CallService, PushNotificationsService, CallKeepService } from '../../services';
+import { AuthService } from '../../services';
 import { users } from '../../config';
-import store from '../../redux/store';
-import { setCurrentUser } from '../../redux/slices/currentUser';
+import { useSelector } from 'react-redux';
 
 const logoSrc = require('../../../assets/image/logo.png');
 
 export default function LoginScreen() {
-  const navigation = useNavigation();
-  const [isLogging, setIsLogging] = useState(false);
+  const isLogging = useSelector((state) => state.isLogging);
+
+  const autoLogin = async () => {
+    await AuthService.autoLogin();
+  };
+
+  const login = async (user) => {
+    await AuthService.login(user);
+  };
 
   useEffect(() => {
-    AuthService.getStoredUser().then(storedUser => {
-      if (storedUser) {
-        login(storedUser);
-      }
-    });
+    autoLogin();
   }, []);
-
-  async function login(user) {
-    setIsLogging(true);
-
-    await AuthService.login(user);
-    store.dispatch(setCurrentUser(user));
-
-    CallService.registerEvents();
-    PushNotificationsService.register();
-
-    setIsLogging(false);
-
-    const opponents = users.filter(opponent => opponent.id !== user.id);
-    navigation.push('InitiateCallScreen', { opponents });
-  }
 
   return (
     <SafeAreaView style={[styles.container, styles.f1]}>

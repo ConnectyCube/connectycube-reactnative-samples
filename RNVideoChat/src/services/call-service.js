@@ -2,7 +2,7 @@ import ConnectyCube from 'react-native-connectycube';
 import InCallManager from 'react-native-incall-manager';
 import Sound from 'react-native-sound';
 import { CONSTANTS as CK_CONSTANTS } from 'react-native-callkeep';
-import { showToast, getUserById, getCallRecipientString, platformOS, isIOS, isAndroid } from '../utils';
+import { showToast, getUserById, getCallRecipientString, platformOS, isAndroid } from '../utils';
 import store from '../redux/store';
 import {
   upsertStreams,
@@ -39,7 +39,7 @@ class CallService {
   }
 
   registerEvents() {
-    // ConnectyCube.videochat.onCallListener = this._onCallListener.bind(this);
+    ConnectyCube.videochat.onCallListener = this._onCallListener.bind(this);
     ConnectyCube.videochat.onAcceptCallListener = this._onAcceptCallListener.bind(this);
     ConnectyCube.videochat.onRejectCallListener = this._onRejectCallListener.bind(this);
     ConnectyCube.videochat.onStopCallListener = this._onStopCallListener.bind(this);
@@ -111,11 +111,13 @@ class CallService {
   }
 
   async acceptCall(options = {}, skipCallKit = false) {
-    if (!this.callSession || this.isDummySession) {
+    if (this.isDummySession) {
       store.dispatch(earlyAcceptCall());
       console.log('[acceptCall] earlyAcceptCall');
       return;
     }
+
+    this.stopSounds();
 
     console.log('[acceptCall]');
 
@@ -143,17 +145,16 @@ class CallService {
       CallKeepService.reportAcceptCall(this.callSession.ID);
     }
 
-    this.stopSounds();
-
     store.dispatch(acceptCall());
 
     this.setSpeakerphoneOn(this.callSession.callType === ConnectyCube.videochat.CallType.VIDEO);
   }
 
   stopCall(options = {}, skipCallKit = false) {
-    console.log('[CallService][stopCall]', this.callSession?.ID);
+    this.stopSounds();
+
     if (this.callSession) {
-      this.callSession.stop(options);
+      this.callSession.stop?.(options);
       ConnectyCube.videochat.clearSession(this.callSession.ID);
 
       this.playSound('end');
@@ -164,11 +165,11 @@ class CallService {
 
       store.dispatch(resetActiveCall());
     }
-
-    this.stopSounds();
   }
 
   rejectCall(options = {}, skipCallKit = false) {
+    this.stopSounds();
+
     if (this.callSession) {
       if (this.isDummySession) {
         ConnectyCube.videochat.callRejectRequest({
@@ -176,6 +177,7 @@ class CallService {
           platform: platformOS,
           recipientId: this.callSession.initiatorID,
         }).then(res => {
+          this.stopSounds();
           console.log('[CallKitService][rejectCall] [callRejectRequest] done');
         });
       } else {
@@ -188,8 +190,6 @@ class CallService {
 
       store.dispatch(resetActiveCall());
     }
-
-    this.stopSounds();
   }
 
   muteMicrophone(isMute, skipCallKit = false) {
@@ -216,12 +216,16 @@ class CallService {
   playSound(type) {
     switch (type) {
       case 'outgoing':
-        this._outgoingCallSound.setNumberOfLoops(-1);
-        this._outgoingCallSound.play();
+        if (!this._outgoingCallSound.isPlaying()) {
+          this._outgoingCallSound.setNumberOfLoops(-1);
+          this._outgoingCallSound.play();
+        }
         break;
       case 'incoming':
-        this._incomingCallSound.setNumberOfLoops(-1);
-        this._incomingCallSound.play();
+        if (!this._incomingCallSound.isPlaying() && !this.isAccepted) {
+          this._incomingCallSound.setNumberOfLoops(-1);
+          this._incomingCallSound.play();
+        }
         break;
       case 'end':
         this._endCallSound.play();
@@ -253,16 +257,17 @@ class CallService {
       return;
     }
 
-    this.playSound('incoming');
+    store.dispatch(setCallSession({ session, isIncoming: true }));
 
     console.log('[CallService][_onCallListener]', { isEarlyAccepted: this.isEarlyAccepted, isAccepted: this.isAccepted });
+
     if (this.isEarlyAccepted && !this.isAccepted) {
-      setTimeout(() => { // wait until redux updated the data
+      setTimeout(() => {
         this.acceptCall();
       });
     }
 
-    store.dispatch(setCallSession({ session, isIncoming: true }));
+    this.playSound('incoming');
   }
 
   async _onAcceptCallListener(session, userId, extension) {

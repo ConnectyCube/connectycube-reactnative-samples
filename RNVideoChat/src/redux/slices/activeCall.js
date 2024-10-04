@@ -16,8 +16,13 @@ const activeCallSlice = createSlice({
   reducers: {
     setCallSession: (state, { payload }) => Object.assign({}, state, {
       session: payload.session,
-      isIncoming: payload.isIncoming,
-      isDummySession: payload.isDummySession,
+      isIncoming: payload.isIncoming ?? false,
+      isDummySession: false,
+    }),
+    setDummyCallSession: (state, { payload }) => Object.assign({}, state, {
+      session: payload,
+      isIncoming: true,
+      isDummySession: true,
     }),
     acceptCall: (state) => Object.assign({}, state, {
       isAccepted: true,
@@ -25,6 +30,7 @@ const activeCallSlice = createSlice({
       isIncoming: true,
     }),
     earlyAcceptCall: (state) => Object.assign({}, state, {
+      isAccepted: false,
       isEarlyAccepted: true,
       isIncoming: true,
     }),
@@ -50,6 +56,7 @@ const activeCallSlice = createSlice({
 export const activeCall = activeCallSlice.reducer;
 export const {
   setCallSession,
+  setDummyCallSession,
   acceptCall,
   earlyAcceptCall,
   muteMicrophone,

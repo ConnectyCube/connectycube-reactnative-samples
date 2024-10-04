@@ -9,10 +9,10 @@ export const versionAndroid = Number(isAndroid ? Platform.Version : -1);
 
 export function getUserById(userId, key) {
   const user = users.find(({ id }) => id === userId);
-  if (typeof key === 'string') {
-    return user[key];
-  }
-  return user;
+
+  return typeof key === 'string' && user?.hasOwnProperty(key)
+    ? user[key]
+    : user;
 }
 
 export function getCallRecipientString(usersIds) {

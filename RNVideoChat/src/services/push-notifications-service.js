@@ -3,12 +3,14 @@ import ConnectyCube from 'react-native-connectycube';
 import { Notifications } from 'react-native-notifications';
 import DeviceInfo from 'react-native-device-info';
 import store from '../redux/store';
-import { setCallSession } from '../redux/slices/activeCall';
+import { setDummyCallSession } from '../redux/slices/activeCall';
 import { isAndroid, isIOS, platformOS } from '../utils';
-import notifee, { AndroidDefaults, AndroidImportance, AndroidLaunchActivityFlag, AndroidVisibility, EventType } from '@notifee/react-native';
-// import CallKeepService from './call-keep-service';
+import notifee, { AndroidImportance, AndroidVisibility } from '@notifee/react-native';
+import { CallService, AuthService } from '.';
 
 class PushNotificationsService {
+  isEvents = false;
+
   constructor() {
     console.log('[PushNotificationsService][constructor]');
     if (PushNotificationsService.instance) {
@@ -31,10 +33,12 @@ class PushNotificationsService {
   }
 
   async registerEvents() {
-    console.log('[PushNotificationsService][registerEvents]');
+    if (this.isEvents) {
+      return;
+    }
 
     Notifications.events().registerRemoteNotificationsRegistered((event) => {
-      console.warn('[PushNotificationsService] registerRemoteNotificationsRegistered:', event.deviceToken);
+      console.log('[PushNotificationsService] registerRemoteNotificationsRegistered:', event.deviceToken);
       this.subscribe(event.deviceToken, platformOS === 'android' ? 'gcm' : 'apns');
     });
     Notifications.events().registerRemoteNotificationsRegistrationFailed((error) => {
@@ -43,71 +47,30 @@ class PushNotificationsService {
     Notifications.events().registerRemoteNotificationsRegistrationDenied(() => {
       console.error('[PushNotificationsService] registerRemoteNotificationsRegistrationDenied:');
     });
-    Notifications.events().registerNotificationReceivedForeground(
-      ({ payload }, completion) => {
-        console.warn('[PushNotificationsService] registerNotificationReceivedForeground:', payload);
-        completion({ alert: true, sound: true, badge: true });
-      },
-    );
     Notifications.events().registerNotificationReceivedBackground(
       async ({ payload }, completion) => {
         console.log('[PushNotificationsService] registerNotificationReceivedBackground:', payload);
-        this.displayNotification(payload);
-        // CallKeepService.displayIncomingCall(payload);
-        // if (isAndroid) {
-        //   const dummyCallSession = {
-        //     initiatorID: payload.initiatorId,
-        //     opponentsIDs: payload.opponentsIds.split(','),
-        //     ID: payload.uuid,
-        //   };
-        //   store.dispatch(setCallSession({
-        //     session: dummyCallSession,
-        //     isIncoming: true,
-        //     isDummySession: true,
-        //   }));
-        // }
+        this.createAndShowNotification(payload, 'default');
         completion({ alert: true, sound: true, badge: false });
       },
     );
-    Notifications.events().registerNotificationOpened(async (notification, completion) => {
-      console.warn('[PushNotificationsService] registerNotificationOpened:', notification);
-      completion();
-    });
 
     if (isAndroid) {
-      const initialNotification = await notifee.getInitialNotification();
-      console.warn('NOTIFEE INITIAL >>>', JSON.stringify(initialNotification, null, 2));
-
       notifee.onBackgroundEvent(async ({ detail, type }) => {
-        console.warn('NOTIFEE IN BACKGROUND >>>', JSON.stringify(detail, null, 2));
-        const { pressAction, notification } = detail;
-        const actionId = pressAction?.id;
-        const data = notification.data;
-        if (type === EventType.PRESS) {
-          if (actionId === 'accept') {
-            this.handlePressAcceptCall(data);
-          } else if (actionId === 'reject') {
-            this.handlePressRejectCall(data);
-          } else {
-            this.handlePressDefault(data);
-          }
-        }
+        const { notification, pressAction } = detail;
+        this.handleNotifeeEvent(notification.data, pressAction?.id);
       });
-      notifee.onForegroundEvent(async (event) => {
-        console.warn('NOTIFEE IN FOREGROUND >>>', JSON.stringify(event, null, 2));
+      notifee.onForegroundEvent(async ({ detail, type }) => {
+        const { notification, pressAction } = detail;
+        this.handleNotifeeEvent(notification.data, pressAction?.id);
       });
-      notifee.registerForegroundService((notification) => {
-        console.warn('registerForegroundService notification >>>', JSON.stringify(notification, null, 2));
-        return new Promise(() => {
-          notifee.onBackgroundEvent(async (event) => {
-            console.warn('||| NOTIFEE IN BACKGROUND (SERVICE) >>>', JSON.stringify(event, null, 2));
-          });
-          notifee.onForegroundEvent(async (event) => {
-            console.warn('||| NOTIFEE IN FOREGROUND (SERVICE) >>>', JSON.stringify(event, null, 2));
-          });
+
+      AppRegistry.registerHeadlessTask('CallNotificationHeadlessJsTask', () =>
+        async (payload) => {
+          await AuthService.autoLogin();
+          this.createDummyCallSession(payload);
+          this.createAndShowNotification(payload, 'default');
         });
-      });
-      this.registerBackgroundTask();
     }
 
     if (isIOS) {
@@ -116,38 +79,27 @@ class PushNotificationsService {
         this.subscribe(event.pushKitToken, 'apns_voip');
       });
     }
+
+    this.isEvents = true;
   }
 
-  handlePressAcceptCall(data) {
-    console.log(data);
-    console.log('|||||||||||||||||||||||||||||||||||');
-    console.log('||||||||||| ACCEPT CALL |||||||||||');
-    console.log('|||||||||||||||||||||||||||||||||||');
-  }
-
-  handlePressRejectCall() {
-    console.log(data);
-    console.log('|||||||||||||||||||||||||||||||||||');
-    console.log('||||||||||| REJECT CALL |||||||||||');
-    console.log('|||||||||||||||||||||||||||||||||||');
-  }
-
-  handlePressDefault() {
-    console.log(data);
-    console.log('||||||||||||||||||||||||||||||||||||');
-    console.log('||||||||||| DEFAULT ACTION |||||||||');
-    console.log('||||||||||||||||||||||||||||||||||||');
-  }
-
-  checkInitialNotification() {
-    Notifications.getInitialNotification()
-      .then((notification) => {
-        console.log('[PushNotificationsService][getInitialNotification]', (notification ? notification.payload : 'N/A'));
-      })
-      .catch((err) => {
-        console.error('getInitialNotification() failed', err);
-      });
-  }
+  handleNotifeeEvent = async (payload, action = 'unknown') => {
+    switch (action) {
+      case 'accept':
+        console.log('[PushNotificationsService] handleNotifeeEvent ACCEPT from background');
+        CallService.acceptCall();
+        break;
+      case 'reject':
+        console.log('[PushNotificationsService] handleNotifeeEvent REJECT from background');
+        CallService.rejectCall();
+        break;
+      case 'default':
+        console.log('[PushNotificationsService] handleNotifeeEvent SHOW from background');
+        break;
+      default:
+        break;
+    }
+  };
 
   async subscribe(token, type) {
     const uniqueId = await DeviceInfo.getUniqueId();
@@ -183,12 +135,12 @@ class PushNotificationsService {
           ConnectyCube.pushnotifications.subscriptions.delete(subscription.id).then(result => {
             console.log('[PushNotificationsService][deleteSubscription] Ok', subscription.id);
           }).catch(error => {
-            console.warn('[PushNotificationsService][deleteSubscription] Error1', error);
+            console.log('[PushNotificationsService][deleteSubscription] Error1', error);
           });
         }
       }
     }).catch(error => {
-      console.warn('[PushNotificationsService][deleteSubscription] Error2', error);
+      console.log('[PushNotificationsService][deleteSubscription] Error2', error);
     });
   }
 
@@ -205,39 +157,25 @@ class PushNotificationsService {
       .then(result => {
         console.log('[PushNotificationsService][sendPushNotification] Ok', result);
       }).catch(error => {
-        console.warn('[PushNotificationsService][sendPushNotification] Error', error);
+        console.log('[PushNotificationsService][sendPushNotification] Error', error);
       });
   }
 
-  registerBackgroundTask() {
-    AppRegistry.registerHeadlessTask('CallNotificationHeadlessJsTask', () => async (notification) => {
-      console.warn(
-        '[processIncomingCallNotification]',
-        notification
-      );
+  createDummyCallSession(payload) {
+    if (isAndroid) {
+      const ID = payload.uuid;
+      const initiatorID = Number(payload.initiatorId);
+      const opponentsIDs = payload.opponentsIds.split(',').map(Number);
+      const callType = payload.callType === 'video'
+        ? ConnectyCube.videochat.CallType.VIDEO
+        : ConnectyCube.videochat.CallType.AUDIO;
+      const session = { initiatorID, opponentsIDs, callType, ID };
 
-      await this.displayNotification(notification);
-    });
+      store.dispatch(setDummyCallSession(session));
+    }
   }
 
-  async startForegroundService(data) {
-    const channelId = await notifee.createChannel({
-      id: 'foreground-service-channel',
-      name: 'foreground-service-notification',
-    });
-    const notificationId = await notifee.displayNotification({
-      data,
-      title: data.message,
-      body: `Incoming ${data.callType} call`,
-      android: {
-        channelId,
-        asForegroundService: true,
-      },
-    });
-    return notificationId;
-  }
-
-  async displayNotification(data) {
+  async createAndShowNotification(data, launchActivity = undefined) {
     const channelId = await notifee.createChannel({
       id: 'incoming-call-channel',
       name: 'incoming-call-notification',
@@ -246,6 +184,7 @@ class PushNotificationsService {
       importance: AndroidImportance.HIGH,
       visibility: AndroidVisibility.PUBLIC,
     });
+
     const notificationId = await notifee.displayNotification({
       data,
       title: data.message,
@@ -256,7 +195,7 @@ class PushNotificationsService {
         loopSound: true,
         pressAction: { id: 'default' },
         actions: [
-          { title: 'Accept', pressAction: { id: 'accept' } },
+          { title: 'Accept', pressAction: { id: 'accept', launchActivity } },
           { title: 'Reject', pressAction: { id: 'reject' } },
         ],
       },

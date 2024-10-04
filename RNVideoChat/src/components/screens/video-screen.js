@@ -18,7 +18,6 @@ export default function VideoScreen() {
   const isVideoCall = callSession?.callType === ConnectyCube.videochat.CallType.VIDEO;
 
   useEffect(() => {
-    console.log('>>>>>>>>>>>', streams);
     if (streams.length <= 1) {
       stopCall(); // stop call if all opponents are left
     }

@@ -15,7 +15,7 @@ const RTCViewRendered = ({ userId, stream }) => {
     />
   ) : (
     <View style={styles.blackView}>
-      <Loader text={getUserById(userId, 'name')} />
+      <Loader text={getUserById(userId, 'full_name')} />
     </View>
   );
 };
