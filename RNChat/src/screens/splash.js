@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { StyleSheet, View, Image } from 'react-native';
+import { StyleSheet, View, ActivityIndicator } from 'react-native';
 import { AuthService } from '../services';
 
 export default function Splash() {
@@ -13,7 +13,7 @@ export default function Splash() {
 
   return (
     <View style={styles.container}>
-      <Image style={styles.imageSize} source={require('../../assets/image/splash.png')} />
+      <ActivityIndicator size="large" color="blue" />
     </View>
   );
 }
@@ -23,9 +23,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  imageSize: {
-    width: 200,
-    height: 150,
+    backgroundColor: 'white',
   },
 });

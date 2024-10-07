@@ -1,84 +1,65 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import {
   StyleSheet,
-  SafeAreaView,
   View,
-  StatusBar,
   Image,
   Text,
   ActivityIndicator,
   TouchableOpacity,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { AuthService } from '../../services';
+import { users } from '../../config';
+import { useSelector } from 'react-redux';
 
-import AuthService from '../../services/auth-service';
-import CallService from '../../services/call-service';
-import PushNotificationsService from '../../services/pushnotifications-service';
-import PermissionsService from '../../services/permissions-service';
-import { users } from '../../config-users';
-import store from '../../store'
-import { setCurrentUser } from '../../actions/currentUser'
+const logoSrc = require('../../../assets/image/logo.png');
 
-const logoSrc = require('../../../assets/logo.png');
+export default function LoginScreen() {
+  const isLogging = useSelector((state) => state.isLogging);
 
-export default function LoginScreen({navigation}){
-
-  const [isLogging, setIsLogging] = useState(false);
-
-  useEffect(() => {
-    AuthService.getStoredUser().then(storedUser => {
-      if (storedUser) {
-        // auto login
-        login(storedUser)
-      }
-    })
-
-    // Android: for accepting calls in background you should provide access to show System Alerts from the background
-    PermissionsService.checkAndRequestDrawOverlaysPermission();
-  }, []);
-
-  async function login(user){
-    setIsLogging(true);
-
-    await AuthService.login(user)
-    store.dispatch(setCurrentUser(user))
-
-    CallService.init();
-    PushNotificationsService.init();
-
-    setIsLogging(false);
-
-    const opponents = users.filter(opponent => opponent.id !== user.id)
-    navigation.push('InitiateCallScreen', { opponents });
+  const autoLogin = async () => {
+    await AuthService.autoLogin();
   };
 
+  const login = async (user) => {
+    await AuthService.login(user);
+  };
+
+  useEffect(() => {
+    autoLogin();
+  }, []);
+
   return (
-    <View style={[styles.container, styles.f1]}>
-      <StatusBar backgroundColor="white" barStyle="dark-content" />
-      <SafeAreaView style={[styles.centeredChildren, styles.f1]}>
-        <Image resizeMode="contain" source={logoSrc} style={styles.logoImg} />
+    <SafeAreaView style={[styles.container, styles.f1]}>
+      <View style={[styles.centeredChildren, styles.f1]}>
+        <View style={[styles.f1, styles.centeredChildren]}>
+          <Image resizeMode="contain" source={logoSrc} style={styles.logoImg} />
+          <Text style={styles.heading}>
+            CONNECTYCUBE
+          </Text>
+        </View>
         <View
           style={[
             styles.f1,
             styles.centeredChildren,
-            {flexDirection: 'row'},
+            styles.flexRow,
           ]}>
-          <Text style={styles.logoText}>{isLogging ? '' : 'P2P Video Chat'}</Text>
+          <Text style={styles.title}>
+            {isLogging ? 'Connecting... ' : 'P2P Video Chat'}
+          </Text>
           {isLogging && <ActivityIndicator size="small" color="#1198d4" />}
         </View>
-      </SafeAreaView>
-      <SafeAreaView style={[styles.authBtns, styles.f1]}>
-        {users.map(user => (
+      </View>
+      <View style={[styles.authButtons, styles.f1]}>
+        {users.map((user) => (
           <TouchableOpacity key={user.id} onPress={() => login(user)}>
-            <View
-              style={[styles.authBtn(user.color), styles.centeredChildren]}>
-              <Text style={styles.authBtnText}>
-                {`Log in as ${user.full_name}`}
-              </Text>
+            <View style={[styles.authBtn(user.color), styles.centeredChildren]}>
+              <Text style={styles.authBtnText}>{`Log in as ${user.full_name}`}</Text>
             </View>
           </TouchableOpacity>
         ))}
-      </SafeAreaView>
-    </View>
+      </View>
+    </SafeAreaView>
   );
 }
 
@@ -90,22 +71,31 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  flexRow: {
+    flexDirection: 'row',
+  },
   container: {
-    backgroundColor: 'white',
+    backgroundColor: 'black',
   },
   logoImg: {
-    width: '90%',
-    height: '80%',
+    marginTop: 30,
+    marginBottom: 15,
+    width: 120,
+    height: 120,
   },
-  logoText: {
-    fontSize: 30,
-    color: 'black'
+  heading: {
+    color: 'white',
+    fontSize: 28,
+    fontWeight: '900',
   },
-  authBtns: {
+  title: {
+    color: 'white',
+  },
+  authButtons: {
     justifyContent: 'flex-end',
     marginBottom: 20,
   },
-  authBtn: backgroundColor => ({
+  authBtn: (backgroundColor) => ({
     backgroundColor,
     height: 50,
     borderRadius: 25,

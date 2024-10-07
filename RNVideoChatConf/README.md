@@ -5,10 +5,11 @@ This README introduces [ConnectyCube](https://connectycube.com) Conference Calli
 Project contains the following features implemented:
 
 - User authorization
-- Video calls up to 4 users
+- Video/audio calls up to 4 users
 - Mute/unmute microphone
 - Mute/unmute video
 - Switch camera
+- Screensharing
 - Snack bars to notify users about changes
 
 ## Documentation

@@ -16,28 +16,29 @@
     "test": "jest"
   },
   "dependencies": {
-    "@notifee/react-native": "^7.8.2",
+    "@notifee/react-native": "^9.0.3",
     "@react-navigation/native": "^6.1.18",
     "@react-navigation/native-stack": "^6.11.0",
     "react": "18.3.1",
-    "react-native": "0.75.3",
+    "react-native": "0.75.4",
     "react-native-awesome-alerts": "^2.0.0",
-    "react-native-connectycube": "3.33.2",
+    "react-native-connectycube": "3.34.0",
     "react-native-incall-manager": "^4.2.0",
     "react-native-safe-area-context": "^4.11.0",
     "react-native-screens": "^3.34.0",
     "react-native-simple-toast": "^3.3.1",
     "react-native-sound": "^0.11.2",
-    "react-native-vector-icons": "^10.2.0"
+    "react-native-vector-icons": "^10.2.0",
+    "react-native-webrtc": "^124.0.4"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
     "@babel/preset-env": "^7.20.0",
     "@babel/runtime": "^7.20.0",
-    "@react-native/babel-preset": "0.75.3",
+    "@react-native/babel-preset": "0.75.4",
     "@react-native/eslint-config": "0.75.3",
-    "@react-native/metro-config": "0.75.3",
-    "@react-native/typescript-config": "0.75.3",
+    "@react-native/metro-config": "0.75.4",
+    "@react-native/typescript-config": "0.75.4",
     "@types/react": "^18.2.6",
     "@types/react-test-renderer": "^18.0.0",
     "babel-jest": "^29.6.3",
@@ -48,10 +49,10 @@
     "typescript": "5.0.4"
   },
   "resolutions": {
-    "react-native": "0.75.3"
+    "react-native": "0.75.4"
   },
   "engines": {
     "node": ">=18"
   },
-  "packageManager": "yarn@4.4.1"
+  "packageManager": "yarn@4.5.0"
 }

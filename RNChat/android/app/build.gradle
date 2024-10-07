@@ -110,8 +110,7 @@ android {
 dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
-    // react-native-notifications
-    implementation project(':react-native-notifications')
+    implementation project(':react-native-notifications') // react-native-notifications
     implementation 'com.google.firebase:firebase-messaging:24.0.1'
 
     if (hermesEnabled.toBoolean()) {
