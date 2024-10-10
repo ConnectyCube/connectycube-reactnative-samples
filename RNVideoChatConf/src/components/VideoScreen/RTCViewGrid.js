@@ -24,6 +24,7 @@ const RTCViewRendered = ({ userId, stream }) => {
   return stream && stream._tracks ? (
     <View style={styles.blackView}>
       <RTCView
+        mirror={userId === 'localStream'}
         objectFit="cover"
         style={styles.blackView}
         streamURL={stream.toURL()}

@@ -65,7 +65,9 @@ class PushNotificationService {
     Notifications.getInitialNotification()
       .then((notification) => {
         console.log('[PushNotification] getInitialNotification:', (notification ? notification.payload : 'N/A'));
-        this.onNotificationOpened(notification.payload);
+        if (notification) {
+          this.onNotificationOpened(notification.payload);
+        }
       })
       .catch((error) => {
         console.error('[PushNotification] getInitialNotification:', error);
