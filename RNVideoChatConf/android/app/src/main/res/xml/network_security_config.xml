@@ -9,7 +9,7 @@
     </domain-config>
 
     <domain-config cleartextTrafficPermitted="true">
-        <domain includeSubdomains="true">connectycube.com</domain> <!-- Allows all subdomains of connectycube.com -->
+        <domain includeSubdomains="true">connectycube.com</domain> <!-- Allows all domains of connectycube.com -->
         <trust-anchors>
             <certificates src="system"/> <!-- Use the system's root certificates -->
             <certificates src="@raw/globalsign_root_ca_r6"/> <!-- GlobalSign Root CA - R6 -->
