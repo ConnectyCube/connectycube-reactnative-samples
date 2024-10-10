@@ -33,6 +33,7 @@ const RTCViewFullScreenModal = () => {
         </TouchableOpacity>
       </View>
       <RTCView
+        mirror={userId === 'localStream'}
         objectFit="contain"
         style={styles.blackView}
         streamURL={stream.toURL()}
