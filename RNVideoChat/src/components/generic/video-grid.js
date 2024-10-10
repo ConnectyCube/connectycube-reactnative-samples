@@ -6,7 +6,6 @@ import Loader from './loader';
 import { getUserById } from '../../utils';
 
 const RTCViewRendered = ({ userId, stream }) => {
-  console.warn({ userId, stream });
   return stream ? (
     <RTCView
       mirror={userId === 'localStream'}
