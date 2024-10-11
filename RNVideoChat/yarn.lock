@@ -2043,12 +2043,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@notifee/react-native@npm:^9.0.2":
-  version: 9.0.2
-  resolution: "@notifee/react-native@npm:9.0.2"
+"@notifee/react-native@npm:^9.1.1":
+  version: 9.1.1
+  resolution: "@notifee/react-native@npm:9.1.1"
   peerDependencies:
     react-native: "*"
-  checksum: 2b46e360096dffea51803ff28a5e106d0bdea09651a72487728ee925f1748b2a374377c4db9e85f62fda8d7e16b0e0a2d7dcd4078c0342bac522bec364ccf21a
+  checksum: 93d7efcb1a622cb6f53af99bd0b6856e2cf30ec684e74d8c91715dee5135cf7ea165eef26a7a5acc0e7b13db91c68982a4d22f186019322ed01c162fa02f5d03
   languageName: node
   linkType: hard
 
@@ -2562,9 +2562,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@reduxjs/toolkit@npm:^2.2.7":
-  version: 2.2.7
-  resolution: "@reduxjs/toolkit@npm:2.2.7"
+"@reduxjs/toolkit@npm:^2.2.8":
+  version: 2.2.8
+  resolution: "@reduxjs/toolkit@npm:2.2.8"
   dependencies:
     immer: ^10.0.3
     redux: ^5.0.1
@@ -2578,7 +2578,7 @@ __metadata:
       optional: true
     react-redux:
       optional: true
-  checksum: 039d61d94cec25d07c7813f9cd234cbe83478f65df7622f2dafed609f2f0cbe00565999e33e7d22bf915c3c5bceb7be606ca17a9c55b51ce1841f541f63a3395
+  checksum: 4a40f9831f9d31e8822c0cc27cdf9abaabb46655d8d368e4c733955a3694b6dd4d25af6506e2fdc6c3b0abaa253b822d0b28e8807ce4a8b904f59d3b0fb1b2f0
   languageName: node
   linkType: hard
 
@@ -2990,256 +2990,184 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@xmpp/base64@npm:^0.9.0":
-  version: 0.9.0
-  resolution: "@xmpp/base64@npm:0.9.0"
+"@xmpp/base64@npm:^0.13.1":
+  version: 0.13.1
+  resolution: "@xmpp/base64@npm:0.13.1"
   dependencies:
-    base-64: ^0.1.0
-  checksum: 82600a4983848c1c4f3195c7582d66daa1226dde1f3c574393aab76f47be73c7a4fc6deeeb7ca47d788daf46dcd6074e15f5092f39f8705e7432a2d95362b910
+    base-64: ^1.0.0
+  checksum: 30a9b92f68a8cce94c234baa7d567f6a2238768f0694f9702e614e24522493cc9f81ed8bbea0978d5040067cecf73a82e16bce056b0f3d054ea911c05c89418b
   languageName: node
   linkType: hard
 
-"@xmpp/client-core@npm:^0.9.2":
-  version: 0.9.2
-  resolution: "@xmpp/client-core@npm:0.9.2"
+"@xmpp/client-core@npm:^0.13.1":
+  version: 0.13.1
+  resolution: "@xmpp/client-core@npm:0.13.1"
   dependencies:
-    "@xmpp/connection": ^0.9.2
-    "@xmpp/jid": ^0.9.2
-    "@xmpp/xml": ^0.9.2
-  checksum: 0caced6f32ea7533bca1078cc3b781b14107bb657aa67ac5e47551c1990e74539d3ce3dca05362501ccd86c4e7d732e9cba480fd43992c1da910adac3871c48e
+    "@xmpp/connection": ^0.13.1
+    "@xmpp/jid": ^0.13.1
+    "@xmpp/xml": ^0.13.1
+  checksum: 2d8b45884336dff2d9a461489f2c69036990c480ca3ae33958a9e23b51ec051826a0398a247c34bb90a758068ab6ba1ec8b42e98c7a02d3e57a6f1b4ab17d886
   languageName: node
   linkType: hard
 
-"@xmpp/client@npm:0.9.2":
-  version: 0.9.2
-  resolution: "@xmpp/client@npm:0.9.2"
+"@xmpp/connection@npm:^0.13.1":
+  version: 0.13.1
+  resolution: "@xmpp/connection@npm:0.13.1"
   dependencies:
-    "@xmpp/client-core": ^0.9.2
-    "@xmpp/iq": ^0.9.2
-    "@xmpp/middleware": ^0.9.2
-    "@xmpp/reconnect": ^0.9.0
-    "@xmpp/resolve": ^0.9.2
-    "@xmpp/resource-binding": ^0.9.2
-    "@xmpp/sasl": ^0.9.2
-    "@xmpp/sasl-anonymous": ^0.9.0
-    "@xmpp/sasl-plain": ^0.9.0
-    "@xmpp/sasl-scram-sha-1": ^0.9.0
-    "@xmpp/session-establishment": ^0.9.2
-    "@xmpp/starttls": ^0.9.2
-    "@xmpp/stream-features": ^0.9.0
-    "@xmpp/tcp": ^0.9.2
-    "@xmpp/tls": ^0.9.2
-    "@xmpp/websocket": ^0.9.2
-  checksum: 102004294d158ab0dcde3162f2d216cd023bb64bbc74263c332a520c85fe43bab0532653dcece1ea32bfaee568618c0a201520378b0afc8512af56b583fe429e
+    "@xmpp/error": ^0.13.1
+    "@xmpp/events": ^0.13.1
+    "@xmpp/jid": ^0.13.1
+    "@xmpp/xml": ^0.13.1
+  checksum: b5d0029f2ece342870d9ad5f2df2ecc2a9ecd0f54c3480a930af3ff08c1d871381bb7f88dcd160296cd3c121f0caab231bed7a44a5a83bd3c35c3ebc6f4f3aa8
   languageName: node
   linkType: hard
 
-"@xmpp/connection-tcp@npm:^0.9.2":
-  version: 0.9.2
-  resolution: "@xmpp/connection-tcp@npm:0.9.2"
+"@xmpp/error@npm:^0.13.1":
+  version: 0.13.1
+  resolution: "@xmpp/error@npm:0.13.1"
+  checksum: 654a98cef450607ddf8f34fad789ffedc59eb263e9f0a6430e6bbdc893c6400ae6b2a9f1bc56ee4732007a4b1e95dc9ac132eee0eb1ee2aac3d2f2b255f14df7
+  languageName: node
+  linkType: hard
+
+"@xmpp/events@npm:^0.13.0, @xmpp/events@npm:^0.13.1":
+  version: 0.13.1
+  resolution: "@xmpp/events@npm:0.13.1"
   dependencies:
-    "@xmpp/connection": ^0.9.2
-    "@xmpp/xml": ^0.9.2
-  checksum: 5c1efd29e46bd4ce84503ed3f1ded15b2c043b0241250205f388d0a705b5eb0c8e228e711c498e20199e43606f08813b09868a2d5af04e1d44b5ce39bb4a33f9
+    events: ^3.3.0
+  checksum: 8aff4531c979cd800825d1b05105afe509ff11a2a6b7419136add52ca3d574808c2d81f88c9e1e45f617d579b113ecc663e141a01db6b469c0ec006cb3cea0c2
   languageName: node
   linkType: hard
 
-"@xmpp/connection@npm:^0.9.2":
-  version: 0.9.2
-  resolution: "@xmpp/connection@npm:0.9.2"
+"@xmpp/id@npm:^0.13.1":
+  version: 0.13.1
+  resolution: "@xmpp/id@npm:0.13.1"
+  checksum: d91fd3563e65e956222aa8280fabd3b2d9059f8c6687190690e3dd5afa1fcc3ebd208abd88424558dcba3f19ad6961c104ffe315caa693ef333917ab19b4684f
+  languageName: node
+  linkType: hard
+
+"@xmpp/iq@npm:^0.13.1":
+  version: 0.13.1
+  resolution: "@xmpp/iq@npm:0.13.1"
   dependencies:
-    "@xmpp/error": ^0.9.0
-    "@xmpp/events": ^0.9.0
-    "@xmpp/jid": ^0.9.2
-    "@xmpp/xml": ^0.9.2
-  checksum: a5bc697eeb1ecf00ab2a5b337e0e15369b9af264611a2a4073aa1843a8a9ab90536524533e85bc9ce2f2831418941b07bd698948df60d5b32feb127128861ae5
+    "@xmpp/events": ^0.13.1
+    "@xmpp/id": ^0.13.1
+    "@xmpp/middleware": ^0.13.1
+    "@xmpp/xml": ^0.13.1
+  checksum: 9363d4de4291e68ecc9d0ffca46a611954731aca409ceda3d9ccc16d7c87f34d231778ac7326cd7beefcf0f7a2874884f137721e69cef39b975445e4562585ca
   languageName: node
   linkType: hard
 
-"@xmpp/error@npm:^0.9.0":
-  version: 0.9.0
-  resolution: "@xmpp/error@npm:0.9.0"
-  checksum: 47621c8e6c4e7a064a405f9e01bcbc3905ed362b313a4e84e0baf5d921e7654979b032d884b03f2ef1ebe2e05cbb6384cf20f9c746cd7497c339199365288576
+"@xmpp/jid@npm:^0.13.1":
+  version: 0.13.1
+  resolution: "@xmpp/jid@npm:0.13.1"
+  checksum: d8b960e4b6de55145a447cd809f8e021920eb70536971af9ab3ede311ebece941ea0caf1db308f1f2028266d3c5de0f17d3ab69fe1d37b98d0e42b1d77dfa459
   languageName: node
   linkType: hard
 
-"@xmpp/events@npm:^0.9.0":
-  version: 0.9.0
-  resolution: "@xmpp/events@npm:0.9.0"
+"@xmpp/middleware@npm:^0.13.1":
+  version: 0.13.1
+  resolution: "@xmpp/middleware@npm:0.13.1"
   dependencies:
-    events: ^3.0.0
-  checksum: dcd5064439a8f3f4b733c39aa2d0c02c7c336a097f7b785956969df81609a8b64f05ec2e9ea72d5c9335058f33be11f773bafa503256a6a9f24989e5fbffcf5a
-  languageName: node
-  linkType: hard
-
-"@xmpp/id@npm:^0.9.0":
-  version: 0.9.0
-  resolution: "@xmpp/id@npm:0.9.0"
-  checksum: 9e66ac3fcb902e94f7e296d44b7c3e61695092d4816c5d238c1f3189fd0f5c4fc62a9987ff7162c83bc7e6287fea3f90cdf233dea8dfc6464d870a3968c34a62
-  languageName: node
-  linkType: hard
-
-"@xmpp/iq@npm:^0.9.2":
-  version: 0.9.2
-  resolution: "@xmpp/iq@npm:0.9.2"
-  dependencies:
-    "@xmpp/events": ^0.9.0
-    "@xmpp/id": ^0.9.0
-    "@xmpp/middleware": ^0.9.2
-    "@xmpp/xml": ^0.9.2
-  checksum: fe3dc79de42be25c37aaa35e12e8c83716085484468ddf7956b6a373c5b553f91f3096e510702cebf95117a1d31565bdbc79668013a824483a056c18037d2cf6
-  languageName: node
-  linkType: hard
-
-"@xmpp/jid@npm:^0.9.2":
-  version: 0.9.2
-  resolution: "@xmpp/jid@npm:0.9.2"
-  checksum: e4661259cce6749e6870e18c099a287cbc10a949fc64db91b0abcddb8f885b4c0d26c03b07d3c3627a46cf354c5d97460be2fc68f3c241a3c38b888ecb7d890b
-  languageName: node
-  linkType: hard
-
-"@xmpp/middleware@npm:^0.9.2":
-  version: 0.9.2
-  resolution: "@xmpp/middleware@npm:0.9.2"
-  dependencies:
-    "@xmpp/error": ^0.9.0
-    "@xmpp/jid": ^0.9.2
-    "@xmpp/xml": ^0.9.2
+    "@xmpp/error": ^0.13.1
+    "@xmpp/jid": ^0.13.1
+    "@xmpp/xml": ^0.13.1
     koa-compose: ^4.1.0
-  checksum: e3457acb4131a9e0c78cceb0f6094c0ea8b147a1859749bd3e67589a6ba74630627cc6b5da44d94ae06697354a0ec5f53a7db590ea2a8fd09344d95fee597296
+  checksum: 748ef35883c593041165de4c53907feac662c33f214005f76a47b7e4125d84d9f97c6e9eec6d8a664448741ad5ffad3b2908967f022ce2cde038f960c1b22f36
   languageName: node
   linkType: hard
 
-"@xmpp/reconnect@npm:^0.9.0":
-  version: 0.9.0
-  resolution: "@xmpp/reconnect@npm:0.9.0"
+"@xmpp/reconnect@npm:^0.13.1":
+  version: 0.13.1
+  resolution: "@xmpp/reconnect@npm:0.13.1"
   dependencies:
-    "@xmpp/events": ^0.9.0
-  checksum: aa067df0e151cfc39bbc28f6f45ac409a02ac7c3a671015b72bc48f90c121626ee2ec22aa6569edc2239068bf7d720865616dd721009c13df74dbf716a03c768
+    "@xmpp/events": ^0.13.1
+  checksum: 5e9673abd68ad928bc10a07df2744bb497fca122523abce5322423aa4c684ae7b61c127525ddf09f0d61c99d61864d4cc77ecf85a3978559b6588d958657cc02
   languageName: node
   linkType: hard
 
-"@xmpp/resolve@npm:^0.9.2":
-  version: 0.9.2
-  resolution: "@xmpp/resolve@npm:0.9.2"
+"@xmpp/resolve@npm:^0.13.1":
+  version: 0.13.1
+  resolution: "@xmpp/resolve@npm:0.13.1"
   dependencies:
-    "@xmpp/events": ^0.9.0
-    "@xmpp/xml": ^0.9.2
-    node-fetch: ^2.3.0
-  checksum: 9e803290ec8d8da2d24592c87d2e16dcc7e3e3883e424006a06bac1e53a7e3aa125e83b114938cc6cc6f682283f20261ce1a14d915ca9c10eb2468431e9f140c
+    "@xmpp/events": ^0.13.0
+    "@xmpp/xml": ^0.13.0
+    node-fetch: ^2.6.6
+  checksum: 143c98f2205ca0bcf8544db630e776543aa8368b685c5ca99b49d9977e99773fdb6f600c05205fb2ab8f08c45fea216ed8ae33c595138552d25722b4048fda06
   languageName: node
   linkType: hard
 
-"@xmpp/resource-binding@npm:^0.9.2":
-  version: 0.9.2
-  resolution: "@xmpp/resource-binding@npm:0.9.2"
+"@xmpp/resource-binding@npm:^0.13.1":
+  version: 0.13.1
+  resolution: "@xmpp/resource-binding@npm:0.13.1"
   dependencies:
-    "@xmpp/xml": ^0.9.2
-  checksum: 503b269e55b56644982d224742dadb6f880a02ef233d2e823ba19996f79f62f0762f85b5f2dde0fb92536446d07b95a7c98f6cd266389f4fe1fb5aff973bf194
+    "@xmpp/xml": ^0.13.1
+  checksum: 6f7fbc20a0d0e05852726ca60a56ac7115a1c5a3d6e7ce7227e5e4e8fc62bd30077922b066d66143749eae717956cf79baa42413b4131ee1410d3e338a68ea98
   languageName: node
   linkType: hard
 
-"@xmpp/sasl-anonymous@npm:^0.9.0":
-  version: 0.9.0
-  resolution: "@xmpp/sasl-anonymous@npm:0.9.0"
+"@xmpp/sasl-anonymous@npm:^0.13.1":
+  version: 0.13.1
+  resolution: "@xmpp/sasl-anonymous@npm:0.13.1"
   dependencies:
     sasl-anonymous: ^0.1.0
-  checksum: d86fde7dee63b0b8c083af33329c908d0c5ea63dc573981c7350b540331d60db34719723040022e0dafd00030599877561c6a2bbbda90cfd89287a0a668431b3
+  checksum: 8850968d6d5dee99d129118e970776b75d7ab1ea4838db200ad3c36b26b53e8f53f1dffd5e38170e26d9c389311317651e29a58b5b8d7d66720bf51142bce483
   languageName: node
   linkType: hard
 
-"@xmpp/sasl-plain@npm:^0.9.0":
-  version: 0.9.0
-  resolution: "@xmpp/sasl-plain@npm:0.9.0"
+"@xmpp/sasl-plain@npm:^0.13.1":
+  version: 0.13.1
+  resolution: "@xmpp/sasl-plain@npm:0.13.1"
   dependencies:
     sasl-plain: ^0.1.0
-  checksum: c121df54449a96350f95e640d4e408b13ef5d04441e500d312bbc2afff114089c9ebf39460deb4876211c7465efa6cc496d85d780d80364ed4638df1102f5238
+  checksum: 97cbe29ab553c0f32dd439b456b3a2f2394d2138b4c6bee891442e850ae1e5163be942786d0db5867adc084901b809d013f9b383d8076c304cbfe351642e7837
   languageName: node
   linkType: hard
 
-"@xmpp/sasl-scram-sha-1@npm:^0.9.0":
-  version: 0.9.0
-  resolution: "@xmpp/sasl-scram-sha-1@npm:0.9.0"
+"@xmpp/sasl@npm:^0.13.1":
+  version: 0.13.1
+  resolution: "@xmpp/sasl@npm:0.13.1"
   dependencies:
-    sasl-scram-sha-1: ^1.2.0
-  checksum: 110eac42952ae8c1476e60f508d233205df453bd77f79739b12a3a2fc4bfa558a05bae9d07fcc1e4bf0b00f19b27a60594732b89c9ffefa553b90b7226912f8d
-  languageName: node
-  linkType: hard
-
-"@xmpp/sasl@npm:^0.9.2":
-  version: 0.9.2
-  resolution: "@xmpp/sasl@npm:0.9.2"
-  dependencies:
-    "@xmpp/base64": ^0.9.0
-    "@xmpp/error": ^0.9.0
-    "@xmpp/xml": ^0.9.2
+    "@xmpp/base64": ^0.13.1
+    "@xmpp/error": ^0.13.1
+    "@xmpp/xml": ^0.13.1
     saslmechanisms: ^0.1.1
-  checksum: 41766f1d4e480922d1fe19d1b9d208a91a503ee800136ca47371e3c6e56f7bee0fa9733fd1a8feb04bc86cd4d71d6eba832143d0deb27136962b8468db401eb4
+  checksum: 7018d79b1555a7faecf8d381837bc50dcb28e363dfdc17f2f0e0fa4bc283ed027aefbe5ac2d2a3c2cd0c11be4707f4c32431bbdda6f10667d0c7feb14fe25e17
   languageName: node
   linkType: hard
 
-"@xmpp/session-establishment@npm:^0.9.2":
-  version: 0.9.2
-  resolution: "@xmpp/session-establishment@npm:0.9.2"
+"@xmpp/session-establishment@npm:^0.13.1":
+  version: 0.13.1
+  resolution: "@xmpp/session-establishment@npm:0.13.1"
   dependencies:
-    "@xmpp/xml": ^0.9.2
-  checksum: 449da9e99778efc4448b9d3eccdbd9bd525be7a2202795850091c1193ab0731e7c709b9130f248ac9262975f81f846ea9b3ea5e49db1b7268da1eb7595276fc4
+    "@xmpp/xml": ^0.13.1
+  checksum: 58415bd794b10b5676452b4adc32c385f720533688dd2d02a1c1959b3d71a19f291bb826c0689ed11b999e065d4415eeea481b525dba43777c6144fbd0990d56
   languageName: node
   linkType: hard
 
-"@xmpp/starttls@npm:^0.9.2":
-  version: 0.9.2
-  resolution: "@xmpp/starttls@npm:0.9.2"
+"@xmpp/stream-features@npm:^0.13.1":
+  version: 0.13.1
+  resolution: "@xmpp/stream-features@npm:0.13.1"
+  checksum: 89da2ff871a269d36a0451f0120987cb5b33fadbfb6b686dcb78ce47220ccf7bc8738e472a0db6705cb20d5aeb47e978f442973a57ee918ed90d1b6a0f85ca07
+  languageName: node
+  linkType: hard
+
+"@xmpp/websocket@npm:^0.13.1":
+  version: 0.13.1
+  resolution: "@xmpp/websocket@npm:0.13.1"
   dependencies:
-    "@xmpp/events": ^0.9.0
-    "@xmpp/xml": ^0.9.2
-  checksum: 13be6ae13893e007dc9d2f51141ccece5464a2e3c3c7c5cd37623d1770fddda76e4a4139bb0b87437d94b2d8dcf75321ae3fadb42e9015277a312341031a746f
+    "@xmpp/connection": ^0.13.1
+    "@xmpp/xml": ^0.13.1
+    ws: ^8.4.0
+  checksum: dc0f897c290d2219d3ae045d184fde7d3482aa0ef66aca0b2ed5c699c1687fe5a8713e7447e3162b89d12103ee05555d0a2e1b52cff427c9d3b0a04d71fe042f
   languageName: node
   linkType: hard
 
-"@xmpp/stream-features@npm:^0.9.0":
-  version: 0.9.0
-  resolution: "@xmpp/stream-features@npm:0.9.0"
-  checksum: 8281d210699775e0e2119353783e0ce6981d54c3f0db6230346a49255f8a746a75b2c3a923b4a63a3219964ec4e8232064ff2ff25e71b2fad48d4f302665e51f
-  languageName: node
-  linkType: hard
-
-"@xmpp/tcp@npm:^0.9.2":
-  version: 0.9.2
-  resolution: "@xmpp/tcp@npm:0.9.2"
+"@xmpp/xml@npm:^0.13.0, @xmpp/xml@npm:^0.13.1":
+  version: 0.13.1
+  resolution: "@xmpp/xml@npm:0.13.1"
   dependencies:
-    "@xmpp/connection-tcp": ^0.9.2
-  checksum: 4981470a76c184da81f8a980688b57ccf5c7d6029d609d1634f92f74436f8c9e49bc073a6e15c936ed34db91239ed399a99ffcc5d5bbc321f55cd715745f0944
-  languageName: node
-  linkType: hard
-
-"@xmpp/tls@npm:^0.9.2":
-  version: 0.9.2
-  resolution: "@xmpp/tls@npm:0.9.2"
-  dependencies:
-    "@xmpp/connection": ^0.9.2
-    "@xmpp/connection-tcp": ^0.9.2
-  checksum: 1eb87a0f49552a66894c23895d30a0dfe5ae2b19b12815b10d40da98fc95a68e462d0edf78ac19a79febcb6350874a64cf07fafabadb290b5a866e1004965c06
-  languageName: node
-  linkType: hard
-
-"@xmpp/websocket@npm:^0.9.2":
-  version: 0.9.2
-  resolution: "@xmpp/websocket@npm:0.9.2"
-  dependencies:
-    "@xmpp/connection": ^0.9.2
-    "@xmpp/xml": ^0.9.2
-    ws: ^7.0.0
-  checksum: 66fc5e2a937457543e04ec2645510485a96881c27f1b7ffdd0e8c3c68c545208a3c420e1174019ed554355c6b80ef76a7538a7f791ca117970b886da70e901fb
-  languageName: node
-  linkType: hard
-
-"@xmpp/xml@npm:^0.9.2":
-  version: 0.9.2
-  resolution: "@xmpp/xml@npm:0.9.2"
-  dependencies:
-    ltx: ^2.8.1
-  checksum: 99983e0db1cf88c1866fb7fce79da732cf0304083fb8b65ee9c9d31a3d653ff35d0d9e6c1d0e39cf47fcd4b6ee7f3a3f84e7461781d18d1e45904330891029f0
+    ltx: ^3.0.0
+  checksum: b0c621c71e5609f271e3dd2812c75be87bd560db8bedc70d557a651fb4fcad416c79da6a7e0b688aa8ebc2bb12b76dd0d6f7da3366173399007f3aab71f6af8f
   languageName: node
   linkType: hard
 
@@ -3250,7 +3178,7 @@ __metadata:
     "@babel/core": ^7.20.0
     "@babel/preset-env": ^7.20.0
     "@babel/runtime": ^7.20.0
-    "@notifee/react-native": ^9.0.2
+    "@notifee/react-native": ^9.1.1
     "@react-native-async-storage/async-storage": ^2.0.0
     "@react-native/babel-preset": 0.75.4
     "@react-native/eslint-config": 0.75.4
@@ -3259,7 +3187,7 @@ __metadata:
     "@react-navigation/elements": ^1.3.31
     "@react-navigation/native": ^6.1.18
     "@react-navigation/native-stack": ^6.11.0
-    "@reduxjs/toolkit": ^2.2.7
+    "@reduxjs/toolkit": ^2.2.8
     "@types/react": ^18.2.6
     "@types/react-test-renderer": ^18.0.0
     babel-jest: ^29.6.3
@@ -3269,7 +3197,7 @@ __metadata:
     react: 18.3.1
     react-native: 0.75.4
     react-native-callkeep: ^4.3.14
-    react-native-connectycube: ^3.34.0
+    react-native-connectycube: ^3.35.0
     react-native-device-info: ^13.0.0
     react-native-incall-manager: ^4.2.0
     react-native-notifications: ^5.1.0
@@ -3751,10 +3679,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"base-64@npm:^0.1.0":
-  version: 0.1.0
-  resolution: "base-64@npm:0.1.0"
-  checksum: 5a42938f82372ab5392cbacc85a5a78115cbbd9dbef9f7540fa47d78763a3a8bd7d598475f0d92341f66285afd377509851a9bb5c67bbecb89686e9255d5b3eb
+"base-64@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "base-64@npm:1.0.0"
+  checksum: d10b64a1fc9b2c5a5f39f1ce1e6c9d1c5b249222bbfa3a0604c592d90623caf74419983feadd8a170f27dc0c3389704f72faafa3e645aeb56bfc030c93ff074a
   languageName: node
   linkType: hard
 
@@ -4014,16 +3942,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cipher-base@npm:^1.0.1, cipher-base@npm:^1.0.3":
-  version: 1.0.4
-  resolution: "cipher-base@npm:1.0.4"
-  dependencies:
-    inherits: ^2.0.1
-    safe-buffer: ^5.0.1
-  checksum: 47d3568dbc17431a339bad1fe7dff83ac0891be8206911ace3d3b818fc695f376df809bea406e759cdea07fff4b454fa25f1013e648851bec790c1d75763032e
-  languageName: node
-  linkType: hard
-
 "cjs-module-lexer@npm:^1.0.0":
   version: 1.4.1
   resolution: "cjs-module-lexer@npm:1.4.1"
@@ -4278,33 +4196,6 @@ __metadata:
     typescript:
       optional: true
   checksum: a30c424b53d442ea0bdd24cb1b3d0d8687c8dda4a17ab6afcdc439f8964438801619cdb66e8e79f63b9caa3e6586b60d8bab9ce203e72df6c5e80179b971fe8f
-  languageName: node
-  linkType: hard
-
-"create-hash@npm:^1.1.0":
-  version: 1.2.0
-  resolution: "create-hash@npm:1.2.0"
-  dependencies:
-    cipher-base: ^1.0.1
-    inherits: ^2.0.1
-    md5.js: ^1.3.4
-    ripemd160: ^2.0.1
-    sha.js: ^2.4.0
-  checksum: 02a6ae3bb9cd4afee3fabd846c1d8426a0e6b495560a977ba46120c473cb283be6aa1cace76b5f927cf4e499c6146fb798253e48e83d522feba807d6b722eaa9
-  languageName: node
-  linkType: hard
-
-"create-hmac@npm:^1.1.3":
-  version: 1.1.7
-  resolution: "create-hmac@npm:1.1.7"
-  dependencies:
-    cipher-base: ^1.0.3
-    create-hash: ^1.1.0
-    inherits: ^2.0.1
-    ripemd160: ^2.0.0
-    safe-buffer: ^5.0.1
-    sha.js: ^2.4.8
-  checksum: ba12bb2257b585a0396108c72830e85f882ab659c3320c83584b1037f8ab72415095167ced80dc4ce8e446a8ecc4b2acf36d87befe0707d73b26cf9dc77440ed
   languageName: node
   linkType: hard
 
@@ -5120,7 +5011,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"events@npm:^3.0.0":
+"events@npm:^3.3.0":
   version: 3.3.0
   resolution: "events@npm:3.3.0"
   checksum: f6f487ad2198aa41d878fa31452f1a3c00958f46e9019286ff4787c84aac329332ab45c9cdc8c445928fc6d7ded294b9e005a7fce9426488518017831b272780
@@ -5700,17 +5591,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hash-base@npm:^3.0.0":
-  version: 3.1.0
-  resolution: "hash-base@npm:3.1.0"
-  dependencies:
-    inherits: ^2.0.4
-    readable-stream: ^3.6.0
-    safe-buffer: ^5.2.0
-  checksum: 26b7e97ac3de13cb23fc3145e7e3450b0530274a9562144fc2bf5c1e2983afd0e09ed7cc3b20974ba66039fad316db463da80eb452e7373e780cbee9a0d2f2dc
-  languageName: node
-  linkType: hard
-
 "hasown@npm:^2.0.0, hasown@npm:^2.0.1, hasown@npm:^2.0.2":
   version: 2.0.2
   resolution: "hasown@npm:2.0.2"
@@ -5903,7 +5783,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"inherits@npm:2, inherits@npm:2.0.4, inherits@npm:^2.0.1, inherits@npm:^2.0.3, inherits@npm:^2.0.4, inherits@npm:~2.0.3":
+"inherits@npm:2, inherits@npm:2.0.4, inherits@npm:^2.0.3, inherits@npm:^2.0.4, inherits@npm:~2.0.3":
   version: 2.0.4
   resolution: "inherits@npm:2.0.4"
   checksum: 4a48a733847879d6cf6691860a6b1e3f0f4754176e4d71494c41f3475553768b10f84b5ce1d40fbd0e34e6bfbb864ee35858ad4dd2cf31e02fc4a154b724d7f1
@@ -7189,12 +7069,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ltx@npm:^2.8.1":
-  version: 2.10.0
-  resolution: "ltx@npm:2.10.0"
-  dependencies:
-    inherits: ^2.0.4
-  checksum: 0b3718bde6ec582e230addc833eb4d9c66cba320e3b5cec1f81ec48ff442e10614a3c1b8197095219b540aeebb646ccec2438ae77b9b141721ae6da7bed7ceca
+"ltx@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "ltx@npm:3.0.0"
+  checksum: 16d303b89e9874fdeaf198dae0325dec0df70cc3818762a57cf4bdb2a7088d994f70c79e1661f0edc4c40f979e75256721481e411e349f830ce4497d8457467e
   languageName: node
   linkType: hard
 
@@ -7250,17 +7128,6 @@ __metadata:
   version: 1.2.5
   resolution: "marky@npm:1.2.5"
   checksum: 823b946677749551cdfc3b5221685478b5d1b9cc0dc03eff977c6f9a615fb05c67559f9556cb3c0fcb941a9ea0e195e37befd83026443396ccee8b724f54f4c5
-  languageName: node
-  linkType: hard
-
-"md5.js@npm:^1.3.4":
-  version: 1.3.5
-  resolution: "md5.js@npm:1.3.5"
-  dependencies:
-    hash-base: ^3.0.0
-    inherits: ^2.0.1
-    safe-buffer: ^5.1.2
-  checksum: 098494d885684bcc4f92294b18ba61b7bd353c23147fbc4688c75b45cb8590f5a95fd4584d742415dcc52487f7a1ef6ea611cfa1543b0dc4492fe026357f3f0c
   languageName: node
   linkType: hard
 
@@ -7787,7 +7654,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-fetch@npm:^2.2.0, node-fetch@npm:^2.3.0, node-fetch@npm:^2.6.12":
+"node-fetch@npm:^2.2.0, node-fetch@npm:^2.6.12, node-fetch@npm:^2.6.6":
   version: 2.7.0
   resolution: "node-fetch@npm:2.7.0"
   dependencies:
@@ -8407,15 +8274,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"randombytes@npm:^2.0.1":
-  version: 2.1.0
-  resolution: "randombytes@npm:2.1.0"
-  dependencies:
-    safe-buffer: ^5.1.0
-  checksum: d779499376bd4cbb435ef3ab9a957006c8682f343f14089ed5f27764e4645114196e75b7f6abf1cbd84fd247c0cb0651698444df8c9bf30e62120fbbc52269d6
-  languageName: node
-  linkType: hard
-
 "range-parser@npm:~1.2.1":
   version: 1.2.1
   resolution: "range-parser@npm:1.2.1"
@@ -8472,18 +8330,29 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-connectycube@npm:^3.34.0":
-  version: 3.34.0
-  resolution: "react-native-connectycube@npm:3.34.0"
+"react-native-connectycube@npm:^3.35.0":
+  version: 3.35.0
+  resolution: "react-native-connectycube@npm:3.35.0"
   dependencies:
-    "@xmpp/client": 0.9.2
+    "@xmpp/client-core": ^0.13.1
+    "@xmpp/iq": ^0.13.1
+    "@xmpp/middleware": ^0.13.1
+    "@xmpp/reconnect": ^0.13.1
+    "@xmpp/resolve": ^0.13.1
+    "@xmpp/resource-binding": ^0.13.1
+    "@xmpp/sasl": ^0.13.1
+    "@xmpp/sasl-anonymous": ^0.13.1
+    "@xmpp/sasl-plain": ^0.13.1
+    "@xmpp/session-establishment": ^0.13.1
+    "@xmpp/stream-features": ^0.13.1
+    "@xmpp/websocket": ^0.13.1
     crypto-js: 4.2.0
     fbemitter: 3.0.0
     js-base64: 3.7.7
   peerDependencies:
     react-native: ">=0.68.0"
     react-native-webrtc: ">=111.0.0"
-  checksum: efcaefab37eeda08aa6b41ded8d8ef6a35dba1c249905e3fc4acdfb2864c4951023de237baf7c8390ed9c2df649cb4a5fdaf37bad0845923d5a698e4f93163ed
+  checksum: 1bbde8c2f984fd6cba1bd43e7d8072ac51e83b3203a5ac534fff77d209367a87810ca66a761c0a65849b3ab25a11522c872625d64946799279d12c33860c15c2
   languageName: node
   linkType: hard
 
@@ -8700,7 +8569,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"readable-stream@npm:^3.4.0, readable-stream@npm:^3.6.0":
+"readable-stream@npm:^3.4.0":
   version: 3.6.2
   resolution: "readable-stream@npm:3.6.2"
   dependencies:
@@ -9008,16 +8877,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ripemd160@npm:^2.0.0, ripemd160@npm:^2.0.1":
-  version: 2.0.2
-  resolution: "ripemd160@npm:2.0.2"
-  dependencies:
-    hash-base: ^3.0.0
-    inherits: ^2.0.1
-  checksum: 006accc40578ee2beae382757c4ce2908a826b27e2b079efdcd2959ee544ddf210b7b5d7d5e80467807604244e7388427330f5c6d4cd61e6edaddc5773ccc393
-  languageName: node
-  linkType: hard
-
 "run-parallel@npm:^1.1.9":
   version: 1.2.0
   resolution: "run-parallel@npm:1.2.0"
@@ -9046,7 +8905,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"safe-buffer@npm:^5.0.1, safe-buffer@npm:^5.1.0, safe-buffer@npm:^5.1.2, safe-buffer@npm:^5.2.0, safe-buffer@npm:~5.2.0":
+"safe-buffer@npm:~5.2.0":
   version: 5.2.1
   resolution: "safe-buffer@npm:5.2.1"
   checksum: b99c4b41fdd67a6aaf280fcd05e9ffb0813654894223afb78a31f14a19ad220bba8aba1cb14eddce1fcfb037155fe6de4e861784eb434f7d11ed58d1e70dd491
@@ -9082,17 +8941,6 @@ __metadata:
   version: 0.1.0
   resolution: "sasl-plain@npm:0.1.0"
   checksum: 919add3d69646acfa620c6f42263d57355a952d497b9f76c314bb22a7dbc1885744ac299b28aa24d36c83455a5536614d0946d2534001c87c0508bc6c1a7e54c
-  languageName: node
-  linkType: hard
-
-"sasl-scram-sha-1@npm:^1.2.0":
-  version: 1.3.0
-  resolution: "sasl-scram-sha-1@npm:1.3.0"
-  dependencies:
-    create-hash: ^1.1.0
-    create-hmac: ^1.1.3
-    randombytes: ^2.0.1
-  checksum: cdbfc708a13b1ad384c5e2084b5ee29404f6a0dbf07266e9cf3a75ae46ff766d982540d9c1b2e574e78fd3e391f074e7a464fcd8c8f3403e410d24577447efa3
   languageName: node
   linkType: hard
 
@@ -9242,18 +9090,6 @@ __metadata:
   version: 1.2.0
   resolution: "setprototypeof@npm:1.2.0"
   checksum: be18cbbf70e7d8097c97f713a2e76edf84e87299b40d085c6bf8b65314e994cc15e2e317727342fa6996e38e1f52c59720b53fe621e2eb593a6847bf0356db89
-  languageName: node
-  linkType: hard
-
-"sha.js@npm:^2.4.0, sha.js@npm:^2.4.8":
-  version: 2.4.11
-  resolution: "sha.js@npm:2.4.11"
-  dependencies:
-    inherits: ^2.0.1
-    safe-buffer: ^5.0.1
-  bin:
-    sha.js: ./bin.js
-  checksum: ebd3f59d4b799000699097dadb831c8e3da3eb579144fd7eb7a19484cbcbb7aca3c68ba2bb362242eb09e33217de3b4ea56e4678184c334323eca24a58e3ad07
   languageName: node
   linkType: hard
 
@@ -10331,7 +10167,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ws@npm:^7, ws@npm:^7.0.0, ws@npm:^7.5.10":
+"ws@npm:^7, ws@npm:^7.5.10":
   version: 7.5.10
   resolution: "ws@npm:7.5.10"
   peerDependencies:
@@ -10343,6 +10179,21 @@ __metadata:
     utf-8-validate:
       optional: true
   checksum: f9bb062abf54cc8f02d94ca86dcd349c3945d63851f5d07a3a61c2fcb755b15a88e943a63cf580cbdb5b74436d67ef6b67f745b8f7c0814e411379138e1863cb
+  languageName: node
+  linkType: hard
+
+"ws@npm:^8.4.0":
+  version: 8.18.0
+  resolution: "ws@npm:8.18.0"
+  peerDependencies:
+    bufferutil: ^4.0.1
+    utf-8-validate: ">=5.0.2"
+  peerDependenciesMeta:
+    bufferutil:
+      optional: true
+    utf-8-validate:
+      optional: true
+  checksum: 91d4d35bc99ff6df483bdf029b9ea4bfd7af1f16fc91231a96777a63d263e1eabf486e13a2353970efc534f9faa43bdbf9ee76525af22f4752cbc5ebda333975
   languageName: node
   linkType: hard
 
