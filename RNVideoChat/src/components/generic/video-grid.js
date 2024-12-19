@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { RTCView } from 'react-native-connectycube';
+import { RTCView } from 'react-native-webrtc';
 
 import Loader from './loader';
 import { getUserById } from '../../utils';

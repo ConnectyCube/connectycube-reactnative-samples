@@ -25,7 +25,7 @@
     "react": "18.3.1",
     "react-native": "0.75.4",
     "react-native-callkeep": "^4.3.14",
-    "react-native-connectycube": "^3.35.0",
+    "react-native-connectycube": "^4.0.0",
     "react-native-device-info": "^13.0.0",
     "react-native-incall-manager": "^4.2.0",
     "react-native-notifications": "^5.1.0",
