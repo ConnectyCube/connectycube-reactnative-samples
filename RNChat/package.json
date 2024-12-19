@@ -23,16 +23,17 @@
     "@reduxjs/toolkit": "^2.2.8",
     "react": "18.3.1",
     "react-native": "0.75.4",
-    "react-native-connectycube": "^3.35.0",
+    "react-native-connectycube": "^4.0.0",
     "react-native-device-info": "^13.0.0",
     "react-native-gesture-handler": "^2.20.0",
     "react-native-image-crop-picker": "^0.41.3",
-    "react-native-keyboard-controller": "^1.14.0",
+    "react-native-keyboard-controller": "1.14.0",
     "react-native-notifications": "^5.1.0",
     "react-native-reanimated": "^3.15.4",
     "react-native-safe-area-context": "^4.11.0",
     "react-native-screens": "^3.34.0",
     "react-native-vector-icons": "^10.2.0",
+    "react-native-webrtc": "^124.0.4",
     "react-native-zoom-toolkit": "^3.1.0",
     "react-redux": "^9.1.2",
     "redux": "^5.0.1"
@@ -57,5 +58,5 @@
   "engines": {
     "node": ">=18"
   },
-  "packageManager": "yarn@3.6.4"
+  "packageManager": "yarn@4.5.3"
 }

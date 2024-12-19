@@ -36,9 +36,9 @@
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Microphone permission</string>
 	<key>RTCAppGroupIdentifier</key>
-	<string>group.com.rnconference.appgroup</string>
+	<string>group.com.rnconference</string>
 	<key>RTCScreenSharingExtension</key>
-	<string>com.rnconference.broadcast-extension</string>
+	<string>com.rnconference.broadcast-ext</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>MaterialIcons.ttf</string>

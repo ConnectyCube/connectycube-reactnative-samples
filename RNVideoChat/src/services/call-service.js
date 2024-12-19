@@ -74,6 +74,7 @@ class CallService {
   // Call API
   async startCall(usersIds, callType, options = {}) {
     const session = ConnectyCube.videochat.createNewSession(usersIds, callType, options);
+
     store.dispatch(setCallSession({ session, isIncoming: false }));
     await this.setMediaDevices();
 
