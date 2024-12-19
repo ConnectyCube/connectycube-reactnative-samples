@@ -18,7 +18,7 @@ import ReplayKit
 
 private enum Constants {
     // the App Group ID value that the app and the broadcast extension targets are setup with. It differs for each app.
-    static let appGroupIdentifier = "group.com.rnconference.appgroup"
+    static let appGroupIdentifier = "group.com.rnconference"
 }
 
 class SampleHandler: RPBroadcastSampleHandler {

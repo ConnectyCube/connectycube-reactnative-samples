@@ -16,7 +16,7 @@
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		D00F01A62C920BD100C5878E /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D00F01A52C920BD100C5878E /* icon.png */; };
 		D03E386D2C87638C001CE115 /* ReplayKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D03E386C2C87638C001CE115 /* ReplayKit.framework */; };
-		D03E38742C87638C001CE115 /* broadcast-extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = D03E386B2C87638C001CE115 /* broadcast-extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		D03E38742C87638C001CE115 /* broadcast-ext.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = D03E386B2C87638C001CE115 /* broadcast-ext.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		D0D505C22C877182008E2298 /* SampleHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D505C12C877182008E2298 /* SampleHandler.swift */; };
 		D0D505C82C8771A2008E2298 /* SampleUploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D505C32C8771A2008E2298 /* SampleUploader.swift */; };
 		D0D505C92C8771A2008E2298 /* SocketConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D505C52C8771A2008E2298 /* SocketConnection.swift */; };
@@ -49,7 +49,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				D03E38742C87638C001CE115 /* broadcast-extension.appex in Embed Foundation Extensions */,
+				D03E38742C87638C001CE115 /* broadcast-ext.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -77,7 +77,7 @@
 		D00A5E9F2C88684600D11F54 /* RNVideoChatConf.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = RNVideoChatConf.entitlements; path = RNVideoChatConf/RNVideoChatConf.entitlements; sourceTree = "<group>"; };
 		D00A5EA02C88688400D11F54 /* broadcast-extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "broadcast-extension.entitlements"; sourceTree = "<group>"; };
 		D00F01A52C920BD100C5878E /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon.png; path = ../assets/icon.png; sourceTree = "<group>"; };
-		D03E386B2C87638C001CE115 /* broadcast-extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "broadcast-extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D03E386B2C87638C001CE115 /* broadcast-ext.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "broadcast-ext.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D03E386C2C87638C001CE115 /* ReplayKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReplayKit.framework; path = System/Library/Frameworks/ReplayKit.framework; sourceTree = SDKROOT; };
 		D03E38712C87638C001CE115 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D0D505C12C877182008E2298 /* SampleHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SampleHandler.swift; sourceTree = "<group>"; };
@@ -188,7 +188,7 @@
 			children = (
 				13B07F961A680F5B00A75B9A /* RNVideoChatConf.app */,
 				00E356EE1AD99517003FC87E /* RNVideoChatConfTests.xctest */,
-				D03E386B2C87638C001CE115 /* broadcast-extension.appex */,
+				D03E386B2C87638C001CE115 /* broadcast-ext.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -265,9 +265,9 @@
 			productReference = 13B07F961A680F5B00A75B9A /* RNVideoChatConf.app */;
 			productType = "com.apple.product-type.application";
 		};
-		D03E386A2C87638C001CE115 /* broadcast-extension */ = {
+		D03E386A2C87638C001CE115 /* broadcast-ext */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D03E38782C87638C001CE115 /* Build configuration list for PBXNativeTarget "broadcast-extension" */;
+			buildConfigurationList = D03E38782C87638C001CE115 /* Build configuration list for PBXNativeTarget "broadcast-ext" */;
 			buildPhases = (
 				D03E38672C87638C001CE115 /* Sources */,
 				D03E38682C87638C001CE115 /* Frameworks */,
@@ -277,9 +277,9 @@
 			);
 			dependencies = (
 			);
-			name = "broadcast-extension";
+			name = "broadcast-ext";
 			productName = "broadcast-extension";
-			productReference = D03E386B2C87638C001CE115 /* broadcast-extension.appex */;
+			productReference = D03E386B2C87638C001CE115 /* broadcast-ext.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
@@ -318,7 +318,7 @@
 			targets = (
 				13B07F861A680F5B00A75B9A /* RNVideoChatConf */,
 				00E356ED1AD99517003FC87E /* RNVideoChatConfTests */,
-				D03E386A2C87638C001CE115 /* broadcast-extension */,
+				D03E386A2C87638C001CE115 /* broadcast-ext */,
 			);
 		};
 /* End PBXProject section */
@@ -522,7 +522,7 @@
 		};
 		D03E38732C87638C001CE115 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = D03E386A2C87638C001CE115 /* broadcast-extension */;
+			target = D03E386A2C87638C001CE115 /* broadcast-ext */;
 			targetProxy = D03E38722C87638C001CE115 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -605,7 +605,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = T82Z2FZ225;
+				DEVELOPMENT_TEAM = LQZ558R8Q8;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = RNVideoChatConf/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = RNVideoChatConf;
@@ -646,7 +646,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = T82Z2FZ225;
+				DEVELOPMENT_TEAM = LQZ558R8Q8;
 				INFOPLIST_FILE = RNVideoChatConf/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = RNVideoChatConf;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -847,7 +847,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = T82Z2FZ225;
+				DEVELOPMENT_TEAM = LQZ558R8Q8;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -864,7 +864,7 @@
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.rnconference.broadcast-extension";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.rnconference.broadcast-ext";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -894,7 +894,7 @@
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = T82Z2FZ225;
+				DEVELOPMENT_TEAM = LQZ558R8Q8;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -910,7 +910,7 @@
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.rnconference.broadcast-extension";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.rnconference.broadcast-ext";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -954,7 +954,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D03E38782C87638C001CE115 /* Build configuration list for PBXNativeTarget "broadcast-extension" */ = {
+		D03E38782C87638C001CE115 /* Build configuration list for PBXNativeTarget "broadcast-ext" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D03E38762C87638C001CE115 /* Debug */,
