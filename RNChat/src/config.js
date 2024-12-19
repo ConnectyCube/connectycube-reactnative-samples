@@ -1,7 +1,6 @@
 export const appCredentials = {
   appId: 6195,
-  authKey: 'spb6HkEDmGwKG5j',
-  authSecret: 'kwqpCauG4XP9F94',
+  authKey: '749DB3C2-DD67-4CF4-8660-60E36C8BADAE',
 };
 
 export const appConfig = {

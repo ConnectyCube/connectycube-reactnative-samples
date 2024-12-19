@@ -286,7 +286,8 @@ class ChatService {
 
   async uploadPhoto(params) {
     const file = preparationUploadImg(params);
-    return ConnectyCube.storage.createAndUpload({ file });
+    const { type, name, size } = file;
+    return ConnectyCube.storage.createAndUpload({ file, type, name, size, public: true });
   }
 
   async updateDialog({ photo, name, dialogId }) {
@@ -331,6 +332,7 @@ class ChatService {
 
   // ConnectyCube listeners
   onSentMessageListener(failedMessage, msg) {
+    console.log({ failedMessage, msg });
     if (failedMessage) {
       return;
     }

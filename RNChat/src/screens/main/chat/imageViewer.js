@@ -3,6 +3,7 @@ import { Image } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { getAspectRatioSize, ResumableZoom } from 'react-native-zoom-toolkit';
 import { SIZE_SCREEN } from '../../../helpers/constants';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 export default function ImageViewer() {
   const navigation = useNavigation();
@@ -30,10 +31,10 @@ export default function ImageViewer() {
   };
 
   return (
-    <>
+    <GestureHandlerRootView style={{ flex: 1 }}>
       <ResumableZoom onSwipe={onHandleSwipe}>
         <Image source={source} style={imageSize} resizeMethod="scale" />
       </ResumableZoom>
-    </>
+    </GestureHandlerRootView>
   );
 }

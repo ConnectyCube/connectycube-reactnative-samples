@@ -37,7 +37,8 @@ class AuthService {
     }
     if (image) {
       const file = preparationUploadImg(image);
-      const resultUploadImg = await ConnectyCube.storage.createAndUpload({ file });
+      const { type, name, size } = file;
+      const resultUploadImg = await ConnectyCube.storage.createAndUpload({ file, type, name, size, public: true });
       updateData.avatar = resultUploadImg.uid;
     }
     const responseUpdateUser = await ConnectyCube.users.update(updateData);
@@ -70,7 +71,6 @@ class AuthService {
   }
 
   async signUp(params) {
-    await ConnectyCube.createSession();
     await ConnectyCube.users.signup(params);
     return this.signIn(params);
   }
@@ -94,7 +94,6 @@ class AuthService {
 
   async logout() {
     await this.unsubscribePushNotifications();
-    await ConnectyCube.logout();
     await ChatService.disconnect();
     await AsyncStorage.clear();
     resetStore();

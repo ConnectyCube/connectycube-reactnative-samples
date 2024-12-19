@@ -8,7 +8,6 @@ import Contacts from '../screens/main/contacts/index';
 import CreateDialog from '../screens/main/contacts/createDialog';
 import GroupDetails from '../screens/main/chat/groupDetails';
 import ContactDetails from '../screens/main/chat/contactDetails';
-import { View } from 'react-native';
 
 const Stack = createNativeStackNavigator();
 

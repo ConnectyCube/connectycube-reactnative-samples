@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
-import { RTCView } from 'react-native-connectycube';
+import { RTCView } from 'react-native-webrtc';
 import { CallService } from '../../services';
 import CallingLoader from './CallingLoader';
 import { useNavigation } from '@react-navigation/native';
