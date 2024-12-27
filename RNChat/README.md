@@ -18,6 +18,10 @@ Getting Started - [https://developers.connectycube.com/reactnative](https://deve
 
 Chat API documentation - [https://developers.connectycube.com/reactnative/messaging](https://developers.connectycube.com/reactnative/messaging)
 
+## Screenshots 
+
+<kbd><img alt="React Native chat code sample, list of chats" src="https://developers.connectycube.com/images/code_samples/reactnative/reactnative_codesample_chat_chats.jpg" width="200" /></kbd> <kbd><img alt="React Native chat code sample, chat history" src="https://developers.connectycube.com/images/code_samples/reactnative/reactnative_codesample_chat_chat.jpg" width="200" /></kbd> <kbd><img alt="React Native chat code sample, profile" src="https://developers.connectycube.com/images/code_samples/reactnative/reactnative_codesample_chat_profile.jpg" width="200" /></kbd>
+
 ## Quick start
 
 ### Step 1: Clone the project
@@ -46,25 +50,42 @@ export const appCredentials = {
 };
 ```
 
-### Step 4: Start the Metro Server
+### Step 4: Add a Firebase configuration file
+
+**Android**
+
+Go to the [Firebase console](https://console.firebase.google.com/), create Android app and download **google-services.json**. Then put it into **RNChat/android/app/google-services.json** location. 
+
+Follow https://firebase.google.com/docs/android/setup#console (Option 1, Step 1 and 2) for more detailed guide how to obtain Firebase configuration file for Android.
+
+**iOS**
+
+Go to the [Firebase console](https://console.firebase.google.com/), create iOS app and download **GoogleService-Info.plist**. Then put it into **RNChat/ios/RNChat/GoogleService-Info.plist** location. 
+
+Follow https://firebase.google.com/docs/ios/setup (Step 1, 2 and 3) for more detailed guide how to obtain Firebase configuration file for iOS.
+
+### Step 5: Start the Metro Server
 
 ```bash
 yarn start
 ```
 
-### Step 5: Start the Application
+### Step 6: Start the Application
 
-From other terminal window, run Android: 
+For Android, run the followinf command in termnial to run the app:
 
 ```bash
 yarn android
 ```
 
-For iOS, open **RNChat/ios/RNChat.xcworkspace** in Xcode and select iOS device target or do:
+For iOS, do:
 
 ```bash
-yarn ios
+cd ios
+pod install
 ```
+
+Then open **RNChat/ios/RNChat.xcworkspace** in Xcode and run the project.
 
 ## Can't build yourself?
 
