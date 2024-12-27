@@ -1,7 +1,7 @@
 import ConnectyCube from 'react-native-connectycube';
 import UserModel from '../models/user';
 import store from '../redux/store';
-import { fetchUsers } from '../redux/slices/users';
+import {fetchUsers} from '../redux/slices/users';
 
 class UsersService {
   constructor() {
@@ -22,12 +22,12 @@ class UsersService {
       }
     });
 
-    if (idsForFetch.length === 0) { return; }
+    if (idsForFetch.length === 0) {
+      return;
+    }
 
     const usersFromServer = await ConnectyCube.users.getV2({
-      // per_page: 100,
-      // filter: [{ field: 'id', param: 'in', value: idsForFetch }]
-      id: { in: idsForFetch },
+      id: {in: idsForFetch},
     });
     const newUsers = usersFromServer.items.map(elem => {
       return new UserModel(elem.user);
@@ -46,14 +46,18 @@ class UsersService {
   }
 
   async listUsersByFullName(name, usersIdsToIgnore = []) {
-    if (!usersIdsToIgnore) {
+    console.log('usersIdsToIgnore', usersIdsToIgnore);
+    if (!usersIdsToIgnore || usersIdsToIgnore.length === 0) {
       usersIdsToIgnore = [this.currentUser?.id];
     }
-    const allUsers = await ConnectyCube.users.get({ per_page: 100, full_name: name });
+      console.log('usersIdsToIgnore2', usersIdsToIgnore);
+    const allUsers = await ConnectyCube.users.getV2({
+      full_name: {start_with: name},
+    });
     let contacts = [];
-    allUsers.items.forEach(elem => {
-      if (!usersIdsToIgnore.includes(elem.user.id)) {
-        contacts.push(new UserModel(elem.user));
+    allUsers.items.forEach(user => {
+      if (!usersIdsToIgnore.includes(user.id)) {
+        contacts.push(new UserModel(user));
       }
     });
     return contacts;
@@ -77,8 +81,6 @@ class UsersService {
   get getUsers() {
     return store.getState().users;
   }
-
 }
 
 export default new UsersService();
-

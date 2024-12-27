@@ -100,7 +100,7 @@ class ChatService {
 
     const message = new FakeMessage(msg);
     store.dispatch(pushMessage({ message, dialogId: dialog.id }));
-    await ConnectyCube.chat.send(recipient_id, msg);
+    ConnectyCube.chat.send(recipient_id, msg);
     store.dispatch(sortDialogs({ message }));
   }
 
@@ -116,7 +116,7 @@ class ChatService {
     const response = await this.uploadPhoto(attachments);
     const updateAttach = preparationAttachment(attachments, response.uid);
     msg.extension.attachments = [updateAttach];
-    await ConnectyCube.chat.send(recipient_id, msg);
+    ConnectyCube.chat.send(recipient_id, msg);
     store.dispatch(sortDialogs({ message }));
     return;
   }
