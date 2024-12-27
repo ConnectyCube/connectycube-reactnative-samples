@@ -20,11 +20,7 @@ Chat API documentation - [https://developers.connectycube.com/reactnative/messag
 
 ## Quick start
 
-Prepare environment for [React Native](https://reactnative.dev/docs/0.75/set-up-your-environment) and:
-
 ### Step 1: Clone the project
-
-Clone the project:
 
 ```bash
 # Clone the project
@@ -33,7 +29,7 @@ git clone https://github.com/ConnectyCube/connectycube-reactnative-samples.git
 cd connectycube-reactnative-samples/RNChat
 ```
 
-### Step 2: Install _node_modules_
+### Step 2: Install 'node_modules'
 
 ```bash
 yarn install
