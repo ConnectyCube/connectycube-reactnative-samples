@@ -93,7 +93,7 @@ yarn start
 
 ### Step 5: Start the Application
 
-Run Android:
+From other terminal window, run Android:
 
 ```bash
 yarn android
