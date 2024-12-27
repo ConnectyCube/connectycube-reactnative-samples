@@ -48,13 +48,13 @@ export const appCredentials = {
 
 ### Step 4: Add a Firebase configuration file
 
-#### Android
+**Android**
 
 Go to the [Firebase console](https://console.firebase.google.com/), create Android app and download **google-services.json**. Then put it into **RNChat/android/app/google-services.json** location. 
 
 Follow https://firebase.google.com/docs/android/setup#console (Option 1, Step 1 and 2) for more detailed guide how to obtain Firebase configuration file. 
 
-#### iOS
+**iOS**
 
 Go to the [Firebase console](https://console.firebase.google.com/), create iOS app and download **GoogleService-Info.plist**. Then put it into **RNChat/ios/RNChat/GoogleService-Info.plist** location. 
 
