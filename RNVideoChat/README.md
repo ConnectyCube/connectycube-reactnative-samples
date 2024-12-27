@@ -89,13 +89,27 @@ export const users = [
 ];
 ```
 
-### Step 4: Start the Metro Server
+### Step 4: Add a Firebase configuration file
+
+**Android**
+
+Go to the [Firebase console](https://console.firebase.google.com/), create Android app and download **google-services.json**. Then put it into **RNVideoChat/android/app/google-services.json** location. 
+
+Follow https://firebase.google.com/docs/android/setup#console (Option 1, Step 1 and 2) for more detailed guide how to obtain Firebase configuration file for Android.
+
+**iOS**
+
+Go to the [Firebase console](https://console.firebase.google.com/), create iOS app and download **GoogleService-Info.plist**. Then put it into **RNVideoChat/ios/RNVideoChat/GoogleService-Info.plist** location. 
+
+Follow https://firebase.google.com/docs/ios/setup (Step 1, 2 and 3) for more detailed guide how to obtain Firebase configuration file for iOS.
+
+### Step 5: Start the Metro Server
 
 ```bash
 yarn start
 ```
 
-### Step 5: Start the Application
+### Step 6: Start the Application
 
 From other terminal window, run Android:
 
