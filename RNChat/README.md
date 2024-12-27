@@ -58,7 +58,7 @@ Follow https://firebase.google.com/docs/android/setup#console (Option 1, Step 1 
 
 Go to the [Firebase console](https://console.firebase.google.com/), create iOS app and download **GoogleService-Info.plist**. Then put it into **RNChat/ios/RNChat/GoogleService-Info.plist** location. 
 
-Follow [https://firebase.google.com/docs/android/setup#console](https://firebase.google.com/docs/ios/setup) (Step 1, 2 and 3) for more detailed guide how to obtain Firebase configuration file for iOS.
+Follow https://firebase.google.com/docs/ios/setup (Step 1, 2 and 3) for more detailed guide how to obtain Firebase configuration file for iOS.
 
 ### Step 5: Start the Metro Server
 
