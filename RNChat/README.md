@@ -18,6 +18,10 @@ Getting Started - [https://developers.connectycube.com/reactnative](https://deve
 
 Chat API documentation - [https://developers.connectycube.com/reactnative/messaging](https://developers.connectycube.com/reactnative/messaging)
 
+## Screenshots 
+
+<kbd><img alt="React Native chat code sample, list of chats" src="https://developers.connectycube.com/images/code_samples/reactnative/reactnative_codesample_chat_chats.jpg" width="200" /></kbd> <kbd><img alt="React Native chat code sample, chat history" src="https://developers.connectycube.com/images/code_samples/reactnative/reactnative_codesample_chat_chat.jpg" width="200" /></kbd> <kbd><img alt="React Native chat code sample, profile" src="https://developers.connectycube.com/images/code_samples/reactnative/reactnative_codesample_chat_profile.jpg" width="200" /></kbd>
+
 ## Quick start
 
 ### Step 1: Clone the project
