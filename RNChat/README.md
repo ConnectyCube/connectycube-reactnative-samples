@@ -1,13 +1,13 @@
-# Chat sample code for React Native for ConnectyCube platform
+# [ConnectyCube](https://connectycube.com) Chat sample for React Native
 
-This README introduces [ConnectyCube](https://connectycube.com) Chat sample code for React Native
+The README introduces [ConnectyCube](https://connectycube.com) Chat code sample for React Native
 
 Project contains the following features implemented:
 
-- User sign up / login
+- User authorization
 - User profile
 - Users search
-- Create, update, delete group chats
+- Create, update, delete 1-1 and group chats
 - Send and receive messages/images
 - Send and receive sent/delivered/read message statuses
 - Push notifications support
@@ -60,7 +60,7 @@ Run Android:
 yarn android
 ```
 
-For iOS, open _RNChat/ios/RNChat.xcworkspace_ in Xcode and select iOS device target or do:
+For iOS, open **RNChat/ios/RNChat.xcworkspace** in Xcode and select iOS device target or do:
 
 ```bash
 yarn ios
