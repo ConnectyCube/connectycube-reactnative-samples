@@ -54,7 +54,7 @@ export default function LoginScreen() {
         {users.map((user) => (
           <TouchableOpacity key={user.id} onPress={() => login(user)}>
             <View style={[styles.authBtn(user.color), styles.centeredChildren]}>
-              <Text style={styles.authBtnText}>{`Log in as ${user.full_name}`}</Text>
+              <Text numberOfLines={1} style={styles.authBtnText}>{`Log in as ${user.full_name}`}</Text>
             </View>
           </TouchableOpacity>
         ))}
@@ -99,7 +99,8 @@ const styles = StyleSheet.create({
     backgroundColor,
     height: 50,
     borderRadius: 25,
-    marginHorizontal: 25,
+    paddingHorizontal: 10,
+    marginHorizontal: 20,
     marginVertical: 5,
   }),
   authBtnText: {

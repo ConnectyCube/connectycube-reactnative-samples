@@ -104,7 +104,7 @@ export default function VideoIncomingCallScreen() {
             key={id}
             style={styles.userLabel(user.color)}
             onPress={() => onPress(opponent)}>
-            <Text style={styles.userName}>{user?.full_name ?? 'Unknown'}</Text>
+            <Text numberOfLines={1} style={styles.userName}>{user?.full_name ?? 'Unknown'}</Text>
             <MaterialIcon name={type} size={20} color="white" />
           </TouchableOpacity>
         );
@@ -143,16 +143,20 @@ const styles = StyleSheet.create({
   },
   userLabel: backgroundColor => ({
     backgroundColor,
-    width: 150,
     height: 50,
     borderRadius: 25,
-    paddingHorizontal: 15,
+    paddingHorizontal: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    margin: 5,
+    marginVertical: 5,
+    marginHorizontal: 20,
   }),
-  userName: { color: 'white', fontSize: 20 },
+  userName: {
+    color: 'white',
+    fontSize: 20,
+    marginRight: 10,
+  },
   buttonStartCall: {
     height: 50,
     width: 50,
