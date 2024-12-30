@@ -99,11 +99,14 @@ From other terminal window, run Android:
 yarn android
 ```
 
-For iOS, open **RNVideoChatConf/ios/RNVideoChatConf.xcworkspace** in Xcode and select iOS device target or do:
+For iOS, do:
 
 ```bash
-yarn ios
+cd ios
+pod install
 ```
+
+Then open **RNVideoChatConf/ios/RNVideoChatConf.xcworkspace** in Xcode and run the project.
 
 ## Can't build yourself?
 

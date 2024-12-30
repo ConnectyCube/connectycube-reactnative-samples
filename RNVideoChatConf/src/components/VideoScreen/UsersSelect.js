@@ -30,7 +30,7 @@ export default ({
             key={id}
             style={styles.userLabel(user.color)}
             onPress={() => onPress(id)}>
-            <Text style={styles.userName}>{user.name}</Text>
+            <Text style={styles.userName}>{user.full_name}</Text>
             <MaterialIcon name={type} size={20} color="white" />
           </TouchableOpacity>
         );

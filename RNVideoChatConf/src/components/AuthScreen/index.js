@@ -65,7 +65,7 @@ const AuthScreen = () => {
         {users.map((user) => (
           <TouchableOpacity key={user.id} onPress={() => login(user)}>
             <View style={[styles.authBtn(user.color), styles.centeredChildren]}>
-              <Text style={styles.authBtnText}>{`Log in as ${user.name}`}</Text>
+              <Text style={styles.authBtnText}>{`Log in as ${user.full_name}`}</Text>
             </View>
           </TouchableOpacity>
         ))}
