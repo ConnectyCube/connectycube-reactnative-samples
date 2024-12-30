@@ -18,7 +18,7 @@ Getting Started - [https://developers.connectycube.com/reactnative](https://deve
 
 Chat API documentation - [https://developers.connectycube.com/reactnative/messaging](https://developers.connectycube.com/reactnative/messaging)
 
-## Screenshots 
+## Screenshots
 
 <kbd><img alt="React Native chat code sample, list of chats" src="https://developers.connectycube.com/images/code_samples/reactnative/reactnative_codesample_chat_chats.jpg" width="200" /></kbd> <kbd><img alt="React Native chat code sample, chat history" src="https://developers.connectycube.com/images/code_samples/reactnative/reactnative_codesample_chat_chat.jpg" width="200" /></kbd> <kbd><img alt="React Native chat code sample, profile" src="https://developers.connectycube.com/images/code_samples/reactnative/reactnative_codesample_chat_profile.jpg" width="200" /></kbd>
 
@@ -46,7 +46,7 @@ Register new account and application at [https://admin.connectycube.com](https:/
 ```javascript
 export const appCredentials = {
   appId: 111,
-  authKey: 'zzzxxxccc'
+  authKey: 'zzzxxxccc',
 };
 ```
 
@@ -54,15 +54,15 @@ export const appCredentials = {
 
 **Android**
 
-Go to the [Firebase console](https://console.firebase.google.com/), create Android app and download **google-services.json**. Then put it into **RNChat/android/app/google-services.json** location. 
+Go to the [Firebase console](https://console.firebase.google.com/), create Android app and download **google-services.json**. Then put it into **RNChat/android/app/google-services.json** location.
 
-Follow https://firebase.google.com/docs/android/setup#console (Option 1, Step 1 and 2) for more detailed guide how to obtain Firebase configuration file for Android.
+Follow <https://firebase.google.com/docs/android/setup#console> (Option 1, Step 1 and 2) for more detailed guide how to obtain Firebase configuration file for Android.
 
 **iOS**
 
-Go to the [Firebase console](https://console.firebase.google.com/), create iOS app and download **GoogleService-Info.plist**. Then put it into **RNChat/ios/RNChat/GoogleService-Info.plist** location. 
+Go to the [Firebase console](https://console.firebase.google.com/), create iOS app and download **GoogleService-Info.plist**. Then put it into **RNChat/ios/RNChat/GoogleService-Info.plist** location.
 
-Follow https://firebase.google.com/docs/ios/setup (Step 1, 2 and 3) for more detailed guide how to obtain Firebase configuration file for iOS.
+Follow <https://firebase.google.com/docs/ios/setup> (Step 1, 2 and 3) for more detailed guide how to obtain Firebase configuration file for iOS.
 
 ### Step 5: Start the Metro Server
 

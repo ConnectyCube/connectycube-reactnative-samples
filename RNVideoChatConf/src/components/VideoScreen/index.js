@@ -20,7 +20,7 @@ const VideoScreen = () => {
   const [isActiveCall, setIsActiveCall] = React.useState(false);
   const [isIncomingCall, setIsIncomingCall] = React.useState(false);
   const initiatorName = React.useMemo(() => {
-    return isIncomingCall ? CallService.getInitiatorName('name') : '';
+    return isIncomingCall ? CallService.getInitiatorName() : '';
   }, [isIncomingCall]);
   const localStreamItem = React.useMemo(() => {
     return localStream ? [{ userId: 'localStream', stream: localStream }] : [];

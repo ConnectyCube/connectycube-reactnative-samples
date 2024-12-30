@@ -13,7 +13,7 @@ const RTCViewRendered = ({ userId, stream }) => {
     () =>
       userId === 'localStream'
         ? 'Self video'
-        : CallService.getUserById(userId, 'name') ?? 'Unknown',
+        : CallService.getUserById(userId, 'full_name') ?? 'Unknown',
     [userId],
   );
 

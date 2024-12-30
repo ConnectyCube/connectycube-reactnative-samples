@@ -18,7 +18,7 @@ export default class AuthService {
     return new Promise((resolve, reject) => {
       this.createSession(user)
         .then(() => {
-          CallService.CURRENT_USER = { name: user.name, id: user.id };
+          CallService.CURRENT_USER = { full_name: user.full_name, id: user.id };
           return ConnectyCube.chat.connect({
             userId: user.id,
             password: user.password,

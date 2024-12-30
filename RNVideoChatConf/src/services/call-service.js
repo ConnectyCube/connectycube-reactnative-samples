@@ -78,7 +78,7 @@ export default class CallService {
         this._session.join(
           this.janusRoomId,
           CallService.CURRENT_USER.id,
-          CallService.CURRENT_USER.name,
+          CallService.CURRENT_USER.full_name,
         );
 
         return stream;
@@ -98,7 +98,7 @@ export default class CallService {
 
     ids.forEach((id) => {
       const userInfo = this.getUserById(id);
-      opponents.push(userInfo.id, userInfo.name);
+      opponents.push(userInfo.id, userInfo.full_name);
     });
 
     this.participantIds = ids;
@@ -148,7 +148,7 @@ export default class CallService {
       this._session.join(
         this.janusRoomId,
         CallService.CURRENT_USER.id,
-        CallService.CURRENT_USER.name,
+        CallService.CURRENT_USER.full_name,
       );
       return stream;
     });
@@ -165,7 +165,7 @@ export default class CallService {
     this.stopSounds();
 
     if (this.hasSession) {
-      const userName = this.getUserById(userId, 'name');
+      const userName = this.getUserById(userId, 'full_name');
       const action = isInitiator ? 'stopped' : 'left';
       const message = `${userName} has ${action} the call`;
 
@@ -180,7 +180,7 @@ export default class CallService {
       this._session = null;
       this.showToast('You have rejected the call on other side');
     } else {
-      const userName = this.getUserById(userId, 'name');
+      const userName = this.getUserById(userId, 'full_name');
       const message = extension.busy
         ? `${userName} is busy`
         : `${userName} rejected the call request`;
@@ -194,7 +194,7 @@ export default class CallService {
 
     const userName = this.isGuestMode
       ? displayName
-      : this.getUserById(userId, 'name');
+      : this.getUserById(userId, 'full_name');
     const action = this.isGuestMode ? 'joined' : 'accepted';
     const infoText = `${userName} has ${action} the call`;
 
@@ -254,7 +254,7 @@ export default class CallService {
 
   getInitiatorName() {
     const user = users.find((user) => user.id == this.initiatorID);
-    return user.name;
+    return user.full_name;
   }
 
   showToast(text) {
@@ -366,7 +366,7 @@ export default class CallService {
       return false;
     }
 
-    const userName = this.getUserById(userId, 'name');
+    const userName = this.getUserById(userId, 'full_name');
     const infoText = `${userName} did not answer`;
 
     this.showToast(infoText);

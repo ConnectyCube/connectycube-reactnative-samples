@@ -30,7 +30,7 @@ export default ({
             key={id}
             style={styles.userLabel(user.color)}
             onPress={() => onPress(id)}>
-            <Text style={styles.userName}>{user.name}</Text>
+            <Text numberOfLines={1} style={styles.userName}>{user.full_name}</Text>
             <MaterialIcon name={type} size={20} color="white" />
           </TouchableOpacity>
         );
@@ -53,14 +53,18 @@ const styles = StyleSheet.create({
   },
   userLabel: backgroundColor => ({
     backgroundColor,
-    width: 150,
     height: 50,
     borderRadius: 25,
-    paddingHorizontal: 15,
+    paddingHorizontal: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    margin: 5,
+    marginVertical: 5,
+    marginHorizontal: 20,
   }),
-  userName: { color: 'white', fontSize: 20 },
+  userName: {
+    color: 'white',
+    fontSize: 20,
+    marginRight: 10,
+  },
 });
