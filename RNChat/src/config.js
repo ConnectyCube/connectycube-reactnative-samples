@@ -1,12 +1,12 @@
 export const appCredentials = {
-  appId: 10,
-  authKey: '8973CAB0-63B0-42D5-ACC1-08FE0B4D3C49',
+  appId: 'REPLACE_APP_ID',
+  authKey: 'REPLACE_APP_AUTH_KEY',
 };
 
 export const appConfig = {
   endpoints: {
-    api: 'apidev.connectycube.com',
-    chat: 'chatdev.connectycube.com',
+    api: 'REPLACE_API_ENDPOINTS',
+    chat: 'REPLACE_CHAT_ENDPOINTS',
   },
   chat: {
     streamManagement: {

@@ -1,12 +1,12 @@
 export const appCredentials = {
-  appId: 11,
-  authKey: 'B7D0EEEB-2E28-4CD7-A011-17C52C36CD82',
+  appId: 'REPLACE_APP_ID',
+  authKey: 'REPLACE_APP_AUTH_KEY',
 };
 
 export const appConfig = {
   endpoints: {
-    api: 'apidev.connectycube.com',
-    chat: 'chatdev.connectycube.com',
+    api: 'REPLACE_API_ENDPOINTS',
+    chat: 'REPLACE_CHAT_ENDPOINTS',
   },
   debug: {
     mode: 1,
@@ -15,31 +15,31 @@ export const appConfig = {
 
 export const users = [
   {
-    id: 8282,
-    full_name: 'Alice',
-    login: 'videouser1',
-    password: 'videouser1',
+    id: 'REPLACE_USER_1_ID',
+    full_name: 'REPLACE_USER_1_NAME',
+    login: 'REPLACE_USER_1_LOGIN',
+    password: 'REPLACE_USER_1_PASSWORD',
     color: '#34ad86',
   },
   {
-    id: 8283,
-    full_name: 'Bob',
-    login: 'videouser2',
-    password: 'videouser2',
+    id: 'REPLACE_USER_2_ID',
+    full_name: 'REPLACE_USER_2_NAME',
+    login: 'REPLACE_USER_2_LOGIN',
+    password: 'REPLACE_USER_2_PASSWORD',
     color: '#077988',
   },
   {
-    id: 8284,
-    full_name: 'Ciri',
-    login: 'videouser3',
-    password: 'videouser3',
+    id: 'REPLACE_USER_3_ID',
+    full_name: 'REPLACE_USER_3_NAME',
+    login: 'REPLACE_USER_3_LOGIN',
+    password: 'REPLACE_USER_3_PASSWORD',
     color: '#13aaae',
   },
   {
-    id: 8285,
-    full_name: 'Dexter',
-    login: 'videouser4',
-    password: 'videouser4',
+    id: 'REPLACE_USER_4_ID',
+    full_name: 'REPLACE_USER_4_NAME',
+    login: 'REPLACE_USER_4_LOGIN',
+    password: 'REPLACE_USER_4_PASSWORD',
     color: '#056a96',
   },
 ];
