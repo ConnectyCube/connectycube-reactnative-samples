@@ -39,7 +39,7 @@ Join our [Discord](https://discord.com/invite/zqbBWNCCFJ) community to get real-
 - X (twitter)[@ConnectyCube](https://x.com/ConnectyCube)
 - [Facebook](https://www.facebook.com/ConnectyCube)
 - [Medium](https://medium.com/@connectycube)
-- [Youtube](https://www.youtube.com/@ConnectyCube)
+- [YouTube](https://www.youtube.com/@ConnectyCube)
 
 **Want to support our team**:<br>
 <a href="https://www.buymeacoffee.com/connectycube" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-blue.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
