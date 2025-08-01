@@ -31,7 +31,7 @@ All the samples use ConnectyCube SDK. The following tech integration documentati
 
 ## Have an issue?
 
-Join our [Discord](https://discord.com/invite/zqbBWNCCFJ) community to get real-time help from our team
+Join our [Discord](https://discord.com/invite/zqbBWNCCFJ) community to get real-time help from our team or create an issue at [GitHub issues page](https://github.com/ConnectyCube/connectycube-reactnative-samples/issues).
 
 ## Community
 
