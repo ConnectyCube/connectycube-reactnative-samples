@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<network-security-config>
+
+    <domain-config cleartextTrafficPermitted="true"> <!-- Allow cleartext traffic for Metro server -->
+        <domain includeSubdomains="false">localhost</domain>
+        <domain includeSubdomains="false">10.0.2.2</domain>
+        <domain includeSubdomains="false">10.0.2.3</domain>
+    </domain-config>
+
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">connectycube.com</domain> <!-- Allows all domains of connectycube.com -->
+        <trust-anchors>
+            <certificates src="system"/> <!-- Use the system's root certificates -->
+            <certificates src="@raw/globalsign_root_ca_r6"/> <!-- GlobalSign Root CA - R6 -->
+        </trust-anchors>
+    </domain-config>
+    
+</network-security-config>
