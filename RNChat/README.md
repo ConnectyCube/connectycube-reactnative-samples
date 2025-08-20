@@ -72,7 +72,7 @@ yarn start
 
 ### Step 6: Start the Application
 
-For Android, run the followinf command in termnial to run the app:
+For Android, run the following command in terminal to run the app:
 
 ```bash
 yarn android

@@ -1,5 +1,5 @@
 export const appCredentials = {
-  appId: REPLACE_APP_ID,
+  appId: 'REPLACE_APP_ID',
   authKey: 'REPLACE_APP_AUTH_KEY',
 };
 

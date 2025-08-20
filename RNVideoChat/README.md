@@ -1,4 +1,3 @@
-
 # [ConnectyCube](https://connectycube.com) Video Chat sample for React Native
 
 This README introduces [ConnectyCube](https://connectycube.com) Video Chat code sample for React Native
@@ -50,7 +49,7 @@ Register new account and application at [https://admin.connectycube.com](https:/
 ```javascript
 export const appCredentials = {
   appId: 111,
-  authKey: 'zzzxxxccc'
+  authKey: 'zzzxxxccc',
 };
 ```
 
@@ -93,15 +92,15 @@ export const users = [
 
 **Android**
 
-Go to the [Firebase console](https://console.firebase.google.com/), create Android app and download **google-services.json**. Then put it into **RNVideoChat/android/app/google-services.json** location. 
+Go to the [Firebase console](https://console.firebase.google.com/), create Android app and download **google-services.json**. Then put it into **RNVideoChat/android/app/google-services.json** location.
 
-Follow https://firebase.google.com/docs/android/setup#console (Option 1, Step 1 and 2) for more detailed guide how to obtain Firebase configuration file for Android.
+Follow <https://firebase.google.com/docs/android/setup#console> (Option 1, Step 1 and 2) for more detailed guide how to obtain Firebase configuration file for Android.
 
 **iOS**
 
-Go to the [Firebase console](https://console.firebase.google.com/), create iOS app and download **GoogleService-Info.plist**. Then put it into **RNVideoChat/ios/RNVideoChat/GoogleService-Info.plist** location. 
+Go to the [Firebase console](https://console.firebase.google.com/), create iOS app and download **GoogleService-Info.plist**. Then put it into **RNVideoChat/ios/RNVideoChat/GoogleService-Info.plist** location.
 
-Follow https://firebase.google.com/docs/ios/setup (Step 1, 2 and 3) for more detailed guide how to obtain Firebase configuration file for iOS.
+Follow <https://firebase.google.com/docs/ios/setup> (Step 1, 2 and 3) for more detailed guide how to obtain Firebase configuration file for iOS.
 
 ### Step 5: Start the Metro Server
 
@@ -125,7 +124,6 @@ pod install
 ```
 
 Then open **RNVideoChat/ios/RNVideoChat.xcworkspace** in Xcode and run the project.
-
 
 ## Can't build yourself?
 
