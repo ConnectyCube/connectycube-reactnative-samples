@@ -6,10 +6,6 @@ export const credentials = {
 };
 
 export const appConfig = {
-  endpoints: {
-    api: 'REPLACE_API_ENDPOINTS',
-    chat: 'REPLACE_CHAT_ENDPOINTS',
-  },
   debug: {
     mode: 1,
   },

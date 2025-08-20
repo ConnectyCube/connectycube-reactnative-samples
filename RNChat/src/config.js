@@ -4,10 +4,6 @@ export const appCredentials = {
 };
 
 export const appConfig = {
-  endpoints: {
-    api: 'REPLACE_API_ENDPOINTS',
-    chat: 'REPLACE_CHAT_ENDPOINTS',
-  },
   chat: {
     streamManagement: {
       enable: true,
