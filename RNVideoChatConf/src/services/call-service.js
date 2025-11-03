@@ -1,5 +1,5 @@
 import Toast from 'react-native-simple-toast';
-import ConnectyCube from 'react-native-connectycube';
+import { ConnectyCube } from '@connectycube/react';
 import InCallManager from 'react-native-incall-manager';
 import Sound from 'react-native-sound';
 import { users, NO_ANSWER_TIMER } from '../config';

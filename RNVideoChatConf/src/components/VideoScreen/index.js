@@ -1,7 +1,7 @@
 import React from 'react';
 import { useRoute } from '@react-navigation/native';
 import { View, StyleSheet } from 'react-native';
-import ConnectyCube from 'react-native-connectycube';
+import { ConnectyCube } from '@connectycube/react';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import RTCViewGrid from './RTCViewGrid';
 import { CallService, AuthService } from '../../services';

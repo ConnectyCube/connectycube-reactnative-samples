@@ -1,4 +1,4 @@
-import ConnectyCube from 'react-native-connectycube';
+import { ConnectyCube } from '@connectycube/react';
 import { credentials, appConfig } from '../config';
 import CallService from './call-service';
 

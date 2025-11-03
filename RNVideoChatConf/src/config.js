@@ -1,15 +1,11 @@
 export const NO_ANSWER_TIMER = 30000; // 30 sec
 
 export const credentials = {
-  appId: 'REPLACE_APP_ID',
-  authKey: 'REPLACE_APP_AUTH_KEY',
+  appId: 385,
+  authKey: 'F111EE6B-5B16-4BE4-9107-BEA18F3D03BC',
 };
 
 export const appConfig = {
-  endpoints: {
-    api: 'REPLACE_API_ENDPOINTS',
-    chat: 'REPLACE_CHAT_ENDPOINTS',
-  },
   debug: {
     mode: 1,
   },
@@ -17,33 +13,31 @@ export const appConfig = {
 
 export const users = [
   {
-    id: 'REPLACE_USER_1_ID',
-    full_name: 'REPLACE_USER_1_NAME',
-    login: 'REPLACE_USER_1_LOGIN',
-    password: 'REPLACE_USER_1_PASSWORD',
+    id: 13731688,
+    full_name: 'Aaron',
+    login: 'Aaron',
+    password: 'video_chat_user_1',
     color: '#34ad86',
   },
   {
-    id: 'REPLACE_USER_2_ID',
-    full_name: 'REPLACE_USER_2_NAME',
-    login: 'REPLACE_USER_2_LOGIN',
-    password: 'REPLACE_USER_2_PASSWORD',
+    id: 13731691,
+    full_name: 'Bella',
+    login: 'Bella',
+    password: 'video_chat_user_2',
     color: '#077988',
   },
   {
-    id: 'REPLACE_USER_3_ID',
-    full_name: 'REPLACE_USER_3_NAME',
-    login: 'REPLACE_USER_3_LOGIN',
-    password: 'REPLACE_USER_3_PASSWORD',
+    id: 13731692,
+    full_name: 'Chloe',
+    login: 'Chloe',
+    password: 'video_chat_user_3',
     color: '#13aaae',
   },
   {
-    id: 'REPLACE_USER_4_ID',
-    full_name: 'REPLACE_USER_4_NAME',
-    login: 'REPLACE_USER_4_LOGIN',
-    password: 'REPLACE_USER_4_PASSWORD',
+    id: 13731694,
+    full_name: 'David',
+    login: 'David',
+    password: 'video_chat_user_4',
     color: '#056a96',
   },
 ];
-
-
