@@ -9,7 +9,7 @@ import {
 import { ScreenCapturePickerView } from 'react-native-webrtc';
 import notifee, { AndroidImportance } from '@notifee/react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
-import { CallService } from '../../services';
+import CallService from '../../services/call-service';
 
 const isAndroid = Platform.OS === 'android';
 const isIOS = Platform.OS === 'ios';

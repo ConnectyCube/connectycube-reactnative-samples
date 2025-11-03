@@ -10,16 +10,17 @@ import {
 } from 'react-native';
 import Toast from 'react-native-simple-toast';
 import { useNavigation } from '@react-navigation/native';
-import { AuthService } from '../../services';
 import { users } from '../../config';
+import { useConnectyCube } from '@connectycube/react';
 
 const logoSrc = require('../../../assets/logo.png');
 
 const AuthScreen = () => {
   const navigation = useNavigation();
+  const { createUserSession, connect, dangerouslySetIsOnline } = useConnectyCube();
   const [isLogging, setIsLogging] = React.useState(false);
 
-  const login = (currentUser) => {
+  const login = async (currentUser) => {
     const _onSuccessLogin = () => {
       const opponentsIds = users
         .filter((opponent) => opponent.id !== currentUser.id)
@@ -28,16 +29,19 @@ const AuthScreen = () => {
       navigation.push('VideoScreen', { opponentsIds });
     };
 
-    const _onFailLogin = (error = {}) => {
-      Toast.show(`Error: "${JSON.stringify(error)}"`);
-    };
-
     setIsLogging(true);
 
-    AuthService.login(currentUser)
-      .then(_onSuccessLogin)
-      .catch(_onFailLogin)
-      .then(() => setIsLogging(false));
+    try {
+      await createUserSession(currentUser);
+      dangerouslySetIsOnline(true);
+      await connect({ userId: currentUser.id, password: currentUser.password });
+    } catch (error) {
+      Toast.show(`Error: "${JSON.stringify(error)}"`);
+    } finally {
+      setIsLogging(false);
+    }
+    _onSuccessLogin();
+
   };
 
   return (

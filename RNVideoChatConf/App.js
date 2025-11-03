@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import Navigator from './src/navigator';
-import { AuthService } from './src/services';
+import { ConnectyCube } from '@connectycube/react';
+import { appConfig, credentials } from './src/config';
 
 export default class App extends Component {
   constructor(props) {
     super(props);
-    AuthService.init();
+    ConnectyCube.init(credentials, appConfig);
   }
 
   render = () => <Navigator />;

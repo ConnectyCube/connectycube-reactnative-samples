@@ -5,7 +5,7 @@ import Sound from 'react-native-sound';
 import { users, NO_ANSWER_TIMER } from '../config';
 import customEventEmitter, { CUSTOM_EVENTS } from './customEvents';
 
-export default class CallService {
+class CallService {
   static MEDIA_OPTIONS = { audio: true, video: { facingMode: 'user' } };
   static CURRENT_USER = null;
 
@@ -374,3 +374,5 @@ export default class CallService {
     this.stopCall(userId);
   }
 }
+
+export default new CallService();

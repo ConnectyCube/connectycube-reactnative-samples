@@ -41,5 +41,3 @@ export const users = [
     color: '#056a96',
   },
 ];
-
-

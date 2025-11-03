@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
-import { CallService } from '../../services';
+import CallService from '../../services/call-service';
 
 export default ({
   isActiveSelect,

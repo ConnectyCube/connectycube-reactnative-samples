@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, SafeAreaView, TouchableOpacity, View } from 'react-native';
-import { CallService } from '../../services';
+import CallService from '../../services/call-service';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import customEventEmitter, { CUSTOM_EVENTS } from '../../services/customEvents';
 import ShareScreenButton from './ShareScreenButton';

@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { RTCView } from 'react-native-webrtc';
-import { CallService } from '../../services';
+import CallService from '../../services/call-service';
 import CallingLoader from './CallingLoader';
 import { useNavigation } from '@react-navigation/native';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';

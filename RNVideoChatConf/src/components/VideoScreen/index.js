@@ -1,15 +1,16 @@
 import React from 'react';
 import { useRoute } from '@react-navigation/native';
 import { View, StyleSheet } from 'react-native';
-import { ConnectyCube } from '@connectycube/react';
+import { ConnectyCube, useConnectyCube } from '@connectycube/react';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import RTCViewGrid from './RTCViewGrid';
-import { CallService, AuthService } from '../../services';
+import CallService from '../../services/call-service';
 import ToolBar from './ToolBar';
 import UsersSelect from './UsersSelect';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const VideoScreen = () => {
+  const { destroySession, disconnect, dangerouslySetIsOnline } = useConnectyCube();
   const route = useRoute();
   const { top } = useSafeAreaInsets();
   const opponentsIds = route?.params?.opponentsIds ?? [];
@@ -49,7 +50,9 @@ const VideoScreen = () => {
 
     return () => {
       CallService.stopCall();
-      AuthService.logout();
+      destroySession();
+      disconnect();
+      dangerouslySetIsOnline(false);
     };
   }, []);
 
