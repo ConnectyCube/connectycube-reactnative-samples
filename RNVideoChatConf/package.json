@@ -16,7 +16,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "@connectycube/react": "4.7.22",
+    "@connectycube/react": "^5.0.2",
     "@notifee/react-native": "^9.1.1",
     "@react-navigation/native": "^6.1.18",
     "@react-navigation/native-stack": "^6.11.0",

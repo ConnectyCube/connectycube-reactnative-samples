@@ -1789,12 +1789,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@connectycube/react@npm:4.7.22":
-  version: 4.7.22
-  resolution: "@connectycube/react@npm:4.7.22"
+"@connectycube/react@npm:^5.0.2":
+  version: 5.0.2
+  resolution: "@connectycube/react@npm:5.0.2"
   dependencies:
     "@rollup/rollup-linux-x64-gnu": "npm:^4.52.5"
-    connectycube: "npm:4.7.22"
+    connectycube: "npm:5.0.2"
     date-fns: "npm:^4.1.0"
     zustand: "npm:^5.0.8"
   peerDependencies:
@@ -1802,7 +1802,7 @@ __metadata:
   dependenciesMeta:
     "@rollup/rollup-linux-x64-gnu":
       optional: true
-  checksum: 10/755996f321333a91fcaf6e02aa51b0d8dcdfe963573edebd0294dd23e09bdf8718c966915bb9a614fcd818d978c0526445407515bd30e5aa09d14da581f7a3be
+  checksum: 10/90ede8e5635f96820c46cc4cec499352fc8618b7c1851791f32cf9227f9d105a971d3843ce049c22082909d0d52a85a752e8ff4a7bc27d73a7ace39744eb5485
   languageName: node
   linkType: hard
 
@@ -3615,7 +3615,7 @@ __metadata:
     "@babel/core": "npm:^7.20.0"
     "@babel/preset-env": "npm:^7.20.0"
     "@babel/runtime": "npm:^7.20.0"
-    "@connectycube/react": "npm:4.7.22"
+    "@connectycube/react": "npm:^5.0.2"
     "@notifee/react-native": "npm:^9.1.1"
     "@react-native/babel-preset": "npm:0.75.5"
     "@react-native/eslint-config": "npm:0.75.5"
@@ -4686,9 +4686,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"connectycube@npm:4.7.22":
-  version: 4.7.22
-  resolution: "connectycube@npm:4.7.22"
+"connectycube@npm:5.0.2":
+  version: 5.0.2
+  resolution: "connectycube@npm:5.0.2"
   dependencies:
     "@rollup/rollup-linux-x64-gnu": "npm:4.52.5"
     "@xmpp/client": "npm:^0.13.6"
@@ -4702,7 +4702,7 @@ __metadata:
       optional: true
   bin:
     connectycube: bin/connectycube.mjs
-  checksum: 10/f82cc635fc532232125f3c3ce77096ff40a33c35d2ace154abaf28ec8736377cbcd7da3dcc59af5ede2eab820808eb4cacddf7d61d6958d59228f3b87f15e013
+  checksum: 10/79be2349bd46e5552afd22f38bb2e6498047a0691e906786e69a2992b5efb5f0f25a6a1496027dd35a6ee8cbbd286051e8035fda0dc9abca688548b168a89bb1
   languageName: node
   linkType: hard
 

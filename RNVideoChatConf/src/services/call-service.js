@@ -7,7 +7,7 @@ import customEventEmitter, { CUSTOM_EVENTS } from './customEvents';
 
 class CallService {
   static MEDIA_OPTIONS = { audio: true, video: { facingMode: 'user' } };
-  static CURRENT_USER = null;
+  currentUser = null;
 
   _session = null;
   mediaDevices = [];
@@ -20,6 +20,13 @@ class CallService {
 
   get hasSession() {
     return !!this._session;
+  }
+
+  setCurrentUser(user) {
+    this.currentUser = {
+      id: user.id,
+      full_name: user.full_name,
+    };
   }
 
   getUserMedia(params = CallService.MEDIA_OPTIONS) {
@@ -42,7 +49,7 @@ class CallService {
       opponentIds.push(+userId);
 
       opponentIds = opponentIds.filter(
-        (user_id) => user_id !== CallService.CURRENT_USER.id,
+        (user_id) => user_id !== this.currentUser.id,
       );
       if (this.janusRoomId) {
         return this.sendRejectCallMessage(
@@ -77,8 +84,8 @@ class CallService {
       (stream) => {
         this._session.join(
           this.janusRoomId,
-          CallService.CURRENT_USER.id,
-          CallService.CURRENT_USER.full_name,
+          this.currentUser.id,
+          this.currentUser.full_name,
         );
 
         return stream;
@@ -147,8 +154,8 @@ class CallService {
     return this.getUserMedia().then((stream) => {
       this._session.join(
         this.janusRoomId,
-        CallService.CURRENT_USER.id,
-        CallService.CURRENT_USER.full_name,
+        this.currentUser.id,
+        this.currentUser.full_name,
       );
       return stream;
     });

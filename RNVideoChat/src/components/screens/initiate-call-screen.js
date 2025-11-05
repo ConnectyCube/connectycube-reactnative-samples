@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { CallService, AuthService, PushNotificationsService } from '../../services';
 import { getUserById, showToast, isCurrentRoute } from '../../utils';
-import LogoutButton from '../../components/generic/logout-button';
+import LogoutButton from '../generic/logout-button';
 import { users } from '../../config';
 
 export default function VideoIncomingCallScreen() {
