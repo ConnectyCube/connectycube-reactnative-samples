@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, TouchableOpacity, Image } from 'react-native';
 import Avatar from './avatar';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import { Plus } from 'lucide-react-native';
 import ImagePicker from 'react-native-image-crop-picker';
 
 export default function ImgPicker({ name, photo, onPickPhoto, onCancelPickPhoto, disabled = false }) {
@@ -30,7 +30,7 @@ export default function ImgPicker({ name, photo, onPickPhoto, onCancelPickPhoto,
             source={{ uri: selectedPhoto.path }}
           />
           <View style={styles.icon}>
-            <Icon name="create" size={20} color="#48A6E3" />
+            <Plus size={20} color="#48A6E3" />
           </View>
         </>
       ) :
@@ -42,7 +42,7 @@ export default function ImgPicker({ name, photo, onPickPhoto, onCancelPickPhoto,
           />
           {!disabled &&
             <View style={styles.icon}>
-              <Icon name="create" size={20} color="#48A6E3" />
+              <Plus size={20} color="#48A6E3" />
             </View>
           }
         </View>

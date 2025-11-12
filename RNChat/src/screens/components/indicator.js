@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, ActivityIndicator } from 'react-native';
 import { SIZE_SCREEN } from '../../helpers/constants';
-import { useHeaderHeight } from '@react-navigation/elements';
+import { useHeaderHeight } from '../../../node_modules/@react-navigation/elements/lib/typescript/src';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function Indicator({ isActive }) {

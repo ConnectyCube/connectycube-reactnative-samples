@@ -3,5 +3,10 @@
     "Notifee"
   ],
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "notebook.defaultFormatter": "esbenp.prettier-vscode"
+  "notebook.defaultFormatter": "esbenp.prettier-vscode",
+  "tailwindCSS.classAttributes": [
+    "class",
+    "className",
+    "headerClassName"
+  ]
 }

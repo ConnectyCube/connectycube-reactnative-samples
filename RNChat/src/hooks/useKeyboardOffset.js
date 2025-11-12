@@ -1,5 +1,5 @@
 import { StatusBar } from 'react-native';
-import { useHeaderHeight } from '@react-navigation/elements';
+import { useHeaderHeight } from '../../node_modules/@react-navigation/elements/lib/typescript/src';
 import { isAndroid } from '../helpers/platform';
 
 export default function useKeyboardOffset() {

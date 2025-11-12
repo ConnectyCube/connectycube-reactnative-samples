@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute } from '../../../../node_modules/@react-navigation/native/lib/typescript/src';
 import Avatar from '../../components/avatar';
 import { ChatService, UsersService } from '../../../services';
 import Indicator from '../../components/indicator';

@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 import Avatar from '../../components/avatar';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import { ArrowRight, Circle, CircleCheckBig } from 'lucide-react-native';
 
 export default function Participant({ isSelected, onSelectUser, user, isGroupDialog }) {
   const toggleUserSelect = () => {
@@ -22,10 +22,10 @@ export default function Participant({ isSelected, onSelectUser, user, isGroupDia
         <>
           {isGroupDialog ?
             isSelected ? (
-              <Icon name="radio-button-checked" size={24} color="green" />
+              <Circle size={24} color="green" />
             ) : (
-              <Icon name="radio-button-unchecked" size={24} color="black" />
-            ) : <Icon name="arrow-forward" size={24} color="green" />
+              <CircleCheckBig size={24} color="black" />
+            ) : <ArrowRight size={24} color="green" />
           }
         </>
       </View>

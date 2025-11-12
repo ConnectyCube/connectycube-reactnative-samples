@@ -1,4 +1,4 @@
-import ConnectyCube from 'react-native-connectycube';
+import { ConnectyCube } from '../../node_modules/@connectycube/react/dist/types';
 import { appCredentials, appConfig } from '../config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import User from '../models/user';
@@ -50,13 +50,17 @@ class AuthService {
   }
 
   async tryAutoLogin() {
-    const checkUserSessionFromStore = await this.getUserSession();
-    if (checkUserSessionFromStore) {
-      const data = JSON.parse(checkUserSessionFromStore);
-      await this.signIn({ login: data.login, password: data.password });
+    try {
+      const checkUserSessionFromStore = await this.getUserSession();
+      if (checkUserSessionFromStore) {
+        const data = JSON.parse(checkUserSessionFromStore);
+        await this.signIn({ login: data.login, password: data.password });
+      }
+    } catch (error) {
+      this.logout();
+    } finally {
+      store.dispatch(setAppIsLoading(false));
     }
-
-    store.dispatch(setAppIsLoading(false));
   }
 
   async signIn(params) {

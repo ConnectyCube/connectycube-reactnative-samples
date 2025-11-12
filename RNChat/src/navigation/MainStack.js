@@ -1,5 +1,5 @@
 import React from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createNativeStackNavigator } from '../../node_modules/@react-navigation/native-stack/lib/typescript/src';
 import Dialogs from '../screens/main/dialogs';
 import Settings from '../screens/main/settings/index';
 import Chat from '../screens/main/chat/index';

@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "RNVideoChatConf.app"
-               BlueprintName = "RNVideoChatConf"
-               ReferencedContainer = "container:RNVideoChatConf.xcodeproj">
+               BuildableName = "rnvideochatconf.app"
+               BlueprintName = "rnvideochatconf"
+               ReferencedContainer = "container:rnvideochatconf.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "RNVideoChatConfTests.xctest"
-               BlueprintName = "RNVideoChatConfTests"
-               ReferencedContainer = "container:RNVideoChatConf.xcodeproj">
+               BuildableName = "rnvideochatconfTests.xctest"
+               BlueprintName = "rnvideochatconfTests"
+               ReferencedContainer = "container:rnvideochatconf.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,14 +55,14 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "RNVideoChatConf.app"
-            BlueprintName = "RNVideoChatConf"
-            ReferencedContainer = "container:RNVideoChatConf.xcodeproj">
+            BuildableName = "rnvideochatconf.app"
+            BlueprintName = "rnvideochatconf"
+            ReferencedContainer = "container:rnvideochatconf.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
    <ProfileAction
-      buildConfiguration = "Debug"
+      buildConfiguration = "Release"
       shouldUseLaunchSchemeArgsEnv = "YES"
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "RNVideoChatConf.app"
-            BlueprintName = "RNVideoChatConf"
-            ReferencedContainer = "container:RNVideoChatConf.xcodeproj">
+            BuildableName = "rnvideochatconf.app"
+            BlueprintName = "rnvideochatconf"
+            ReferencedContainer = "container:rnvideochatconf.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
@@ -82,8 +82,7 @@
       buildConfiguration = "Debug">
    </AnalyzeAction>
    <ArchiveAction
-      buildConfiguration = "Debug"
-      customArchiveName = "RNVideoChatConf"
+      buildConfiguration = "Release"
       revealArchiveInOrganizer = "YES">
    </ArchiveAction>
 </Scheme>

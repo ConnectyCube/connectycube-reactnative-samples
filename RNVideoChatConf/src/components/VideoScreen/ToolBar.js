@@ -1,9 +1,10 @@
 import React from 'react';
-import { StyleSheet, SafeAreaView, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import CallService from '../../services/call-service';
-import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import { Aperture, CircleUser, Mic, MicOff, Video, VideoOff, Phone, PhoneOff } from 'lucide-react-native';
 import customEventEmitter, { CUSTOM_EVENTS } from '../../services/customEvents';
 import ShareScreenButton from './ShareScreenButton';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const ToolBar = ({
   selectedUsersIds,
@@ -78,26 +79,26 @@ const ToolBar = ({
 
   const CallStartStopButton = React.useCallback(() => {
     const style = isCallInProgress ? styles.buttonCallEnd : styles.buttonCall;
-    const type = isCallInProgress ? 'call-end' : 'call';
+    const CallIcon = isCallInProgress ? PhoneOff : Phone;
 
     return (
       <TouchableOpacity
         style={[styles.buttonContainer(), style]}
         onPress={isCallInProgress ? stopCall : startCall}>
-        <MaterialIcon name={type} size={32} color="white" />
+        <CallIcon size={32} color="white" />
       </TouchableOpacity>
     );
   }, [startCall, stopCall, isCallInProgress]);
 
   const MuteMicButton = React.useCallback(
     ({ visible }) => {
-      const type = isAudioMuted ? 'mic-off' : 'mic';
+      const MicIcon = isAudioMuted ? MicOff : Mic;
 
       return visible ? (
         <TouchableOpacity
           style={[styles.buttonContainer(), styles.buttonMuteMic]}
           onPress={muteUnmuteAudio}>
-          <MaterialIcon name={type} size={32} color="white" />
+          <MicIcon size={32} color="white" />
         </TouchableOpacity>
       ) : null;
     },
@@ -106,14 +107,14 @@ const ToolBar = ({
 
   const MuteCamButton = React.useCallback(
     ({ visible }) => {
-      const type = isVideoMuted ? 'videocam-off' : 'videocam';
+      const VideoIcon = isVideoMuted ? VideoOff : Video;
 
       return visible ? (
         <TouchableOpacity
           disabled={isSharedScreen}
           style={[styles.buttonContainer(isSharedScreen), styles.buttonMuteCam]}
           onPress={muteUnmuteVideo}>
-          <MaterialIcon name={type} size={32} color="white" />
+          <VideoIcon size={32} color="white" />
         </TouchableOpacity>
       ) : null;
     },
@@ -122,14 +123,14 @@ const ToolBar = ({
 
   const SwitchVideoSourceButton = React.useCallback(
     ({ visible }) => {
-      const type = isFrontCamera ? 'camera-rear' : 'camera-front';
+      const CameraIcon = isFrontCamera ? Aperture : CircleUser;
 
       return visible ? (
         <TouchableOpacity
           disabled={isSharedScreen}
           style={[styles.buttonContainer(isSharedScreen), styles.buttonSwitch]}
           onPress={switchCamera}>
-          <MaterialIcon name={type} size={32} color="white" />
+          <CameraIcon size={32} color="white" />
         </TouchableOpacity>
       ) : null;
     },

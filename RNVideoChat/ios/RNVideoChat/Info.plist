@@ -33,10 +33,10 @@
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>Camera permission</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Microphone permission</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string></string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>MaterialIcons.ttf</string>

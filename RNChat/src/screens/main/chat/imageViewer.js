@@ -1,8 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
-import { Image } from 'react-native';
-import { useNavigation, useRoute } from '@react-navigation/native';
-import { getAspectRatioSize, ResumableZoom } from 'react-native-zoom-toolkit';
-import { SIZE_SCREEN } from '../../../helpers/constants';
+import { Image, useWindowDimensions } from 'react-native';
+import { useNavigation, useRoute } from '../../../../node_modules/@react-navigation/native/lib/typescript/src';
+import { fitContainer, ResumableZoom, useImageResolution, } from 'react-native-zoom-toolkit';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 export default function ImageViewer() {
@@ -15,14 +14,6 @@ export default function ImageViewer() {
       : `${attachment.name.slice(0, 9)}...${attachment.name.slice(-9)}`,
     [attachment.name]);
   const source = { uri: attachment.url };
-  const imageSize = getAspectRatioSize({
-    aspectRatio: +attachment.width / +attachment.height,
-    width: SIZE_SCREEN.width,
-  });
-
-  useEffect(() => {
-    navigation.setOptions({ headerTitle });
-  }, [navigation, headerTitle]);
 
   const onHandleSwipe = direction => {
     if (direction === 'up' || direction === 'down') {
@@ -30,10 +21,26 @@ export default function ImageViewer() {
     }
   };
 
+  useEffect(() => {
+    navigation.setOptions({ headerTitle });
+  }, [navigation, headerTitle]);
+
+  const { width, height } = useWindowDimensions();
+  const { isFetching, resolution } = useImageResolution(source);
+
+  if (isFetching || resolution === undefined) {
+    return null;
+  }
+
+  const size = fitContainer(resolution.width / resolution.height, {
+    width,
+    height,
+  });
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <ResumableZoom onSwipe={onHandleSwipe}>
-        <Image source={source} style={imageSize} resizeMethod="scale" />
+        <Image source={source} style={{ ...size }} resizeMethod="scale" />
       </ResumableZoom>
     </GestureHandlerRootView>
   );

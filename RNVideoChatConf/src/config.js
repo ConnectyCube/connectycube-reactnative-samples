@@ -1,6 +1,6 @@
 export const NO_ANSWER_TIMER = 30000; // 30 sec
 
-export const credentials = {
+export const appCredentials = {
   appId: 'REPLACE_APP_ID',
   authKey: 'REPLACE_APP_AUTH_KEY',
 };
@@ -41,3 +41,4 @@ export const users = [
     color: '#056a96',
   },
 ];
+

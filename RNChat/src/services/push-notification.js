@@ -1,6 +1,7 @@
-import ConnectyCube from 'react-native-connectycube';
+import { ConnectyCube } from '../../node_modules/@connectycube/react/dist/types';
 import { PermissionsAndroid } from 'react-native';
-import { Notifications } from 'react-native-notifications';
+import messaging from '@react-native-firebase/messaging';
+import notifee, { AndroidImportance, AndroidVisibility } from '@notifee/react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import customEventEmitter, { CUSTOM_EVENTS } from '../events';
 import { isAndroid, isIOS, platformOS, versionAndroid } from '../helpers/platform';
@@ -8,8 +9,6 @@ import DeviceInfo from 'react-native-device-info';
 
 class PushNotificationService {
   static DEVICE_SUBSCRIPTION_ID = 'DEVICE_SUBSCRIPTION_ID';
-
-  isEvents = false;
 
   constructor() {
     if (PushNotificationService.instance) {
@@ -19,69 +18,85 @@ class PushNotificationService {
     PushNotificationService.instance = this;
   }
 
-  init() {
-    this.getPostNotificationsPermissionAndroid();
-    Notifications.registerRemoteNotifications();
-    this.onInitialNotification();
+  async init() {
+    await this.handleOnNotificationPressed();
+    await this.requestPermission();
+    await this.registerRemoteMessages();
   }
 
-  registerEvents() {
-    if (this.isEvents) {
-      return;
-    }
-
-    Notifications.events().registerRemoteNotificationsRegistered(async ({ deviceToken }) => {
-      console.log('[PushNotification] registerRemoteNotificationsRegistered:', deviceToken);
+  async registerRemoteMessages() {
+    try {
+      await messaging().registerDeviceForRemoteMessages();
+      const deviceToken = await messaging().getToken();
       await this.subscribeToPushNotification(deviceToken);
-    });
-    Notifications.events().registerRemoteNotificationsRegistrationFailed((error) => {
-      console.error('[PushNotification] registerRemoteNotificationsRegistrationFailed:', error);
-    });
-    Notifications.events().registerRemoteNotificationsRegistrationDenied(() => {
-      console.error('[PushNotification] registerRemoteNotificationsRegistrationDenied:');
-    });
-    Notifications.events().registerNotificationReceivedForeground(
-      (notification, completion) => {
-        console.log('[PushNotification] registerNotificationReceivedForeground:', notification);
-        completion({ alert: true, sound: true, badge: true });
-      },
-    );
-    Notifications.events().registerNotificationReceivedBackground(
-      (notification, completion) => {
-        console.log('[PushNotification] registerNotificationReceivedBackground:', notification);
-        completion({ alert: true, sound: true, badge: false });
-      },
-    );
-    Notifications.events().registerNotificationOpened(async (notification, completion) => {
-      console.log('[PushNotification] onNotificationOpened:', notification);
-      this.onNotificationOpened(notification.payload);
-      completion();
-    });
-
-    this.isEvents = true;
+      console.log('[PushNotification] registerDeviceForRemoteMessages Success:', deviceToken);
+    } catch (error) {
+      console.error('[PushNotification] registerDeviceForRemoteMessages Failed:', error);
+    }
   }
 
-  onInitialNotification() {
-    Notifications.getInitialNotification()
-      .then((notification) => {
-        console.log('[PushNotification] getInitialNotification:', (notification ? notification.payload : 'N/A'));
-        if (notification) {
-          this.onNotificationOpened(notification.payload);
-        }
-      })
-      .catch((error) => {
-        console.error('[PushNotification] getInitialNotification:', error);
+  setRemoteNotificationHandler() {
+    if (!isAndroid) return;
+
+    messaging().setBackgroundMessageHandler(async ({ data }) => {
+      const channelId = await notifee.createChannel({
+        id: 'connectycube-chat-channel',
+        name: 'connectycube-chat-notification',
+        badge: true,
+        vibration: true,
+        importance: AndroidImportance.HIGH,
+        visibility: AndroidVisibility.PUBLIC,
       });
+
+      await notifee.displayNotification({
+        data,
+        title: data?.title || 'Notification',
+        body: data?.message || 'Message',
+        android: {
+          channelId,
+          pressAction: { id: 'default' },
+        },
+      });
+    });
   }
 
-  onNotificationOpened(payload) {
-    customEventEmitter.emit(CUSTOM_EVENTS.ON_NOTIFICATION_OPEN, payload.dialog_id);
+  async getDialogIdFromInitialNotification() {
+    const message = await messaging().getInitialNotification();
+
+    return message?.data?.dialog_id ?? null;
   }
+
+  async handleOnNotificationPressed() {
+    if (isAndroid) {
+      notifee.getInitialNotification().then(this.onAndroidNotificationPressed);
+      notifee.onBackgroundEvent(this.onAndroidNotificationPressed);
+    } else if (isIOS) {
+      messaging().getInitialNotification().then(this.onNotificationPressed);
+      messaging().onNotificationOpenedApp(this.onNotificationPressed);
+    }
+  }
+
+  onNotificationPressed = (notification = {}) => {
+    const dialogId = notification.data?.dialog_id ?? null;
+
+    if (dialogId) {
+      customEventEmitter.emit(CUSTOM_EVENTS.ON_NOTIFICATION_OPEN, dialogId);
+    }
+  };
+
+  onAndroidNotificationPressed = async (payload = {}) => {
+    const detail = payload.detail ?? payload;
+    const { notification, pressAction } = detail;
+
+    if (pressAction) {
+      this.onNotificationPressed(notification);
+    }
+  };
 
   async subscribeToPushNotification(token) {
     const uniqueDeviceID = await DeviceInfo.getUniqueId();
     const params = {
-      notification_channels: isIOS ? 'apns' : 'gcm',
+      notification_channels: 'gcm',
       device: {
         platform: platformOS,
         udid: uniqueDeviceID,
@@ -102,19 +117,24 @@ class PushNotificationService {
       });
   }
 
-  async getPostNotificationsPermissionAndroid() {
-    let granted = true;
+  async requestPermission() {
+    const authorizationStatus = await messaging().requestPermission();
+    const iosGranted =
+      authorizationStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+      authorizationStatus === messaging.AuthorizationStatus.PROVISIONAL;
+
+    let androidGranted = true;
 
     if (isAndroid && versionAndroid >= 33) {
       try {
         const result = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
-        granted = result === PermissionsAndroid.RESULTS.GRANTED;
+        androidGranted = result === PermissionsAndroid.RESULTS.GRANTED;
       } catch (err) {
-        granted = false;
+        androidGranted = false;
       }
     }
 
-    return granted;
+    return androidGranted && authorizationStatus === iosGranted;
   }
 }
 

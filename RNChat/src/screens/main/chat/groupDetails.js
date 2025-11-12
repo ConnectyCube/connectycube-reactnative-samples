@@ -4,13 +4,12 @@ import {
   View,
   TouchableOpacity,
   Text,
-  SafeAreaView,
   TextInput,
   FlatList,
   Alert,
 } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import { ChevronRight, LogOut, UserPlus } from 'lucide-react-native';
 import ImgPicker from '../../components/imgPicker';
 import CreateBtn from '../../components/createBtn';
 import { BTN_TYPE } from '../../../helpers/constants';
@@ -147,7 +146,7 @@ export default function GroupDetails() {
           <Text style={styles.nameTitle}>{item.full_name}</Text>
         </View>
         <View>
-          <Icon name="keyboard-arrow-right" size={30} color="#48A6E3" />
+          <ChevronRight size={30} color="#48A6E3" />
         </View>
       </TouchableOpacity>
     );
@@ -158,7 +157,7 @@ export default function GroupDetails() {
       (
         <TouchableOpacity style={styles.renderHeaderContainer} onPress={goToContactsScreen}>
           <View style={styles.renderAvatar}>
-            <Icon name="person-add" size={35} color="#48A6E3" style={{ marginRight: 15 }} />
+            <UserPlus size={35} color="#48A6E3" style={{ marginRight: 15 }} />
           </View>
           <View>
             <Text style={styles.nameTitle}>Add member</Text>
@@ -170,7 +169,7 @@ export default function GroupDetails() {
   const _renderFlatListFooter = () => {
     return <TouchableOpacity style={styles.renderHeaderContainer} onPress={leaveGroup}>
       <View style={styles.renderAvatar}>
-        <Icon name="exit-to-app" size={35} color="#48A6E3" style={{ marginRight: 15 }} />
+        <LogOut size={35} color="#48A6E3" style={{ marginRight: 15 }} />
       </View>
       <View>
         <Text style={styles.nameTitle}>Exit group</Text>
@@ -199,7 +198,7 @@ export default function GroupDetails() {
         </View>) :
         <Text style={styles.dialogName}>{dialogName}</Text>
       }
-      <SafeAreaView style={styles.listUsers}>
+      <View style={styles.listUsers}>
         <FlatList
           data={occupantsInfo}
           ListHeaderComponent={_renderFlatListHeader}
@@ -207,7 +206,7 @@ export default function GroupDetails() {
           renderItem={_renderUser}
           keyExtractor={keyExtractor}
         />
-      </SafeAreaView>
+      </View>
       {isGroupCreator() &&
         <CreateBtn goToScreen={updateDialog} type={BTN_TYPE.CREATE_GROUP} />
       }

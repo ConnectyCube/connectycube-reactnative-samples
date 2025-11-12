@@ -4,7 +4,7 @@ import { RTCView } from 'react-native-webrtc';
 import CallService from '../../services/call-service';
 import CallingLoader from './CallingLoader';
 import { useNavigation } from '@react-navigation/native';
-import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import { Maximize } from 'lucide-react-native';
 
 const RTCViewRendered = ({ userId, stream }) => {
   const navigation = useNavigation();
@@ -32,7 +32,7 @@ const RTCViewRendered = ({ userId, stream }) => {
         zOrder={1}
       />
       <TouchableOpacity style={styles.fullScreen} onPress={openFullScreen}>
-        <MaterialIcon name={'fullscreen'} size={30} color="white" />
+        <Maximize size={30} color="white" />
       </TouchableOpacity>
     </View>
   ) : (

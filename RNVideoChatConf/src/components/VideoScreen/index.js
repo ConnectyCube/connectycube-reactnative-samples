@@ -1,13 +1,30 @@
 import React from 'react';
 import { useRoute } from '@react-navigation/native';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { ConnectyCube, useConnectyCube } from '@connectycube/react';
-import AwesomeAlert from 'react-native-awesome-alerts';
+// import AwesomeAlert from 'react-native-awesome-alerts';
 import RTCViewGrid from './RTCViewGrid';
 import CallService from '../../services/call-service';
 import ToolBar from './ToolBar';
 import UsersSelect from './UsersSelect';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Toast from 'react-native-toast-message';
+
+const toastConfig = {
+  incoming_call: ({ props }) => (
+    <View style={styles.toastContainer}>
+      <Text style={styles.title}>{props.name}</Text>
+      <View style={styles.buttons}>
+        <TouchableOpacity style={[styles.button, styles.accept]} onPress={props.onAccept}>
+          <Text style={styles.buttonText}>Accept</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.button, styles.reject]} onPress={props.onReject}>
+          <Text style={styles.buttonText}>Reject</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  ),
+};
 
 const VideoScreen = () => {
   const { destroySession, disconnect, dangerouslySetIsOnline } = useConnectyCube();
@@ -19,10 +36,6 @@ const VideoScreen = () => {
   const [selectedUsersIds, setSelectedUsersIds] = React.useState([]);
   const [isActiveSelect, setIsActiveSelect] = React.useState(true);
   const [isActiveCall, setIsActiveCall] = React.useState(false);
-  const [isIncomingCall, setIsIncomingCall] = React.useState(false);
-  const initiatorName = React.useMemo(() => {
-    return isIncomingCall ? CallService.getInitiatorName() : '';
-  }, [isIncomingCall]);
   const localStreamItem = React.useMemo(() => {
     return localStream ? [{ userId: 'localStream', stream: localStream }] : [];
   }, [localStream]);
@@ -81,9 +94,28 @@ const VideoScreen = () => {
     );
   };
 
-  const showIncomingCallModal = () => setIsIncomingCall(true);
+  const showIncomingCallModal = () => {
+    Toast.show({
+      type: 'incoming_call',
+      position: 'top',
+      autoHide: false,
+      props: {
+        name: `Incoming call from ${CallService.getInitiatorName()}`,
+        onAccept: onPressAccept,
+        onReject: onPressReject,
+      },
+    });
+    requestAnimationFrame(() => {
+      CallService.playSound('incoming');
+    });
+  };
 
-  const hideIncomingCallModal = () => setIsIncomingCall(false);
+  const hideIncomingCallModal = () => {
+    Toast.hide();
+    requestAnimationFrame(() => {
+      CallService.stopSounds();
+    });
+  };
 
   const selectUser = (userId) => {
     setSelectedUsersIds((prevSelectedUsersIds) => [
@@ -197,6 +229,7 @@ const VideoScreen = () => {
 
   return (
     <View style={styles.wrap(top)}>
+      <Toast config={toastConfig} />
       <RTCViewGrid streams={streams} />
       <UsersSelect
         isActiveSelect={isActiveSelect}
@@ -214,26 +247,6 @@ const VideoScreen = () => {
         initRemoteStreams={initRemoteStreams}
         setLocalStream={setLocalStream}
         resetState={resetState}
-      />
-      <AwesomeAlert
-        show={isIncomingCall}
-        showProgress={false}
-        title={`Incoming call from ${initiatorName}`}
-        closeOnTouchOutside={false}
-        closeOnHardwareBackPress={true}
-        showCancelButton={true}
-        showConfirmButton={true}
-        cancelText="Reject"
-        confirmText="Accept"
-        cancelButtonColor="red"
-        confirmButtonColor="green"
-        onCancelPressed={onPressReject}
-        onConfirmPressed={onPressAccept}
-        onDismiss={hideIncomingCallModal}
-        alertContainerStyle={styles.alertContainer}
-        titleStyle={styles.fontSize(21)}
-        cancelButtonTextStyle={styles.fontSize(18)}
-        confirmButtonTextStyle={styles.fontSize(18)}
       />
     </View>
   );
@@ -253,4 +266,24 @@ const styles = StyleSheet.create({
   fontSize: (size = 18) => {
     return { fontSize: size };
   },
+  // call toast
+  toastContainer: {
+    backgroundColor: '#222',
+    borderRadius: 15,
+    padding: 20,
+    marginTop: 40,
+    marginHorizontal: 20,
+    alignItems: 'center',
+  },
+  title: { color: 'white', fontSize: 18, marginBottom: 15 },
+  buttons: { flexDirection: 'row', gap: 10 },
+  button: {
+    fontSize: 18,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 15,
+  },
+  accept: { backgroundColor: 'green' },
+  reject: { backgroundColor: 'red' },
+  buttonText: { color: '#fff', fontWeight: 'bold' },
 });

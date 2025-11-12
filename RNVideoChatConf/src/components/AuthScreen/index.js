@@ -12,6 +12,7 @@ import Toast from 'react-native-simple-toast';
 import { useNavigation } from '@react-navigation/native';
 import { users } from '../../config';
 import { useConnectyCube } from '@connectycube/react';
+import CallService from '../../services/call-service';
 
 const logoSrc = require('../../../assets/logo.png');
 
@@ -21,6 +22,8 @@ const AuthScreen = () => {
   const [isLogging, setIsLogging] = React.useState(false);
 
   const login = async (currentUser) => {
+    CallService.setCurrentUser(currentUser);
+
     const _onSuccessLogin = () => {
       const opponentsIds = users
         .filter((opponent) => opponent.id !== currentUser.id)

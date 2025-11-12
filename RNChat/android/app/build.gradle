@@ -63,27 +63,27 @@ def enableProguardInReleaseBuilds = false
  * The preferred build flavor of JavaScriptCore (JSC)
  *
  * For example, to use the international variant, you can use:
- * `def jscFlavor = 'org.webkit:android-jsc-intl:+'`
+ * `def jscFlavor = io.github.react-native-community:jsc-android-intl:2026004.+`
  *
  * The international variant includes ICU i18n library and necessary data
  * allowing to use e.g. `Date.toLocaleString` and `String.localeCompare` that
  * give correct results when using with locales other than en-US. Note that
  * this variant is about 6MiB larger per architecture than default.
  */
-def jscFlavor = 'org.webkit:android-jsc:+'
+def jscFlavor = 'io.github.react-native-community:jsc-android:2026004.+'
 
 android {
     ndkVersion rootProject.ext.ndkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace "com.connectycube.samplechatrn"
+    namespace "com.rnchat"
     defaultConfig {
-        applicationId "com.connectycube.samplechatrn"
+        applicationId "com.rnchat"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName "2.0"
+        versionName "1.0"
     }
     signingConfigs {
         debug {
@@ -110,24 +110,13 @@ android {
 dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
-    implementation project(':react-native-notifications') // react-native-notifications
-    implementation 'com.google.firebase:firebase-messaging:24.0.1'
+    implementation 'com.google.firebase:firebase-core:21.1.1'
 
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")
     } else {
         implementation jscFlavor
-    } 
+    }
 }
 
-project.ext.vectoricons = [
-    iconFontNames: [
-        'AntDesign.ttf',
-        'Entypo.ttf',
-        'FontAwesome.ttf',
-        'MaterialIcons.ttf', 
-    ] // Name of the font files you want to copy
-]
-
-apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
 apply plugin: 'com.google.gms.google-services'
