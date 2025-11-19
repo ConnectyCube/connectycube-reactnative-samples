@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "451292833973",
+    "project_id": "rnchat-a10f4",
+    "storage_bucket": "rnchat-a10f4.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:451292833973:android:8da91e32e88f1b5a43b6fc",
+        "android_client_info": {
+          "package_name": "com.rnchat"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCWvMTFJRm_cvVoqwNaGJgscR2gAw79li8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

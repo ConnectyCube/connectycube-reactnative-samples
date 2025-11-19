@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1026506712706",
+    "project_id": "rnvideochat-ea4ab",
+    "storage_bucket": "rnvideochat-ea4ab.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1026506712706:android:755e59112f13a9470ff69b",
+        "android_client_info": {
+          "package_name": "com.rnvideochat"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDHfM-tkiqrPxEEqaGF7LXeN5QdtTjK9-k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
