@@ -1,4 +1,3 @@
-import React from 'react';
 import { ActivityIndicator, View, Text, StyleSheet } from 'react-native';
 
 export default ({ text }) => (

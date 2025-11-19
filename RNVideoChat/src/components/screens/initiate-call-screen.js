@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useLayoutEffect } from 'react';
+import { useState, useEffect, useLayoutEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
-import ConnectyCube from 'react-native-connectycube';
+import { Circle, CircleCheckBig, Phone, Video } from 'lucide-react-native';
+import { CallType } from '@connectycube/react';
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
-import { CallService, AuthService, PushNotificationsService } from '../../services';
+import { CallService, AuthService, PushService } from '../../services';
 import { getUserById, showToast, isCurrentRoute } from '../../utils';
 import LogoutButton from '../generic/logout-button';
 import { users } from '../../config';
@@ -14,9 +14,10 @@ export default function VideoIncomingCallScreen() {
   const navigation = useNavigation();
   const [selectedOpponents, setSelectedOpponents] = useState([]);
   const streams = useSelector(state => state.activeCall.streams ?? []);
-  const callSession = useSelector(state => state.activeCall.session);
   const isIncoming = useSelector(state => state.activeCall.isIncoming);
+  const isIncomingCallScreen = useSelector(state => state.activeCall.isIncomingCallScreen);
   const isEarlyAccepted = useSelector(state => state.activeCall.isEarlyAccepted);
+  const isAccepted = useSelector(state => state.activeCall.isAccepted);
   const currentUser = useSelector(state => state.currentUser);
   const opponents = users.filter(({ id }) => id !== currentUser.id);
 
@@ -30,20 +31,26 @@ export default function VideoIncomingCallScreen() {
   }, [navigation, currentUser]);
 
   useEffect(() => {
-    if (isIncoming && !isEarlyAccepted) {
-      const isAlreadyOnIncomingCallScreen = isCurrentRoute(navigation, 'IncomingCallScreen');
-      const isAlreadyOnVideoScreenScreen = isCurrentRoute(navigation, 'VideoScreen');
-      if (!isAlreadyOnIncomingCallScreen && !isAlreadyOnVideoScreenScreen) {
-        navigation.push('IncomingCallScreen');
-      }
+    const isAlreadyOnIncomingCallScreen = isCurrentRoute(navigation, 'IncomingCallScreen');
+    const isAlreadyOnVideoScreenScreen = isCurrentRoute(navigation, 'VideoScreen');
+
+    if (
+      isIncoming &&
+      isIncomingCallScreen &&
+      !isAlreadyOnIncomingCallScreen &&
+      !isAlreadyOnVideoScreenScreen
+    ) {
+      navigation.push('IncomingCallScreen');
     }
-  }, [navigation, callSession, isIncoming, isEarlyAccepted]);
+  }, [navigation, isIncoming, isIncomingCallScreen]);
 
   useEffect(() => {
-    if (isEarlyAccepted && streams.length > 1) {
+    const isAlreadyOnVideoScreenScreen = isCurrentRoute(navigation, 'VideoScreen');
+
+    if ((isAccepted || isEarlyAccepted) && streams.length > 1 && !isAlreadyOnVideoScreenScreen) {
       navigation.push('VideoScreen');
     }
-  }, [navigation, isEarlyAccepted, streams]);
+  }, [navigation, isAccepted, isEarlyAccepted, streams]);
 
   const selectUser = opponent => {
     setSelectedOpponents([...selectedOpponents, opponent]);
@@ -54,16 +61,16 @@ export default function VideoIncomingCallScreen() {
   };
 
   const logout = async () => {
-    await PushNotificationsService.deleteSubscription();
+    await PushService.deleteSubscriptions();
     await AuthService.logout();
   };
 
   const startAudioCall = async () => {
-    await startCall(ConnectyCube.videochat.CallType.AUDIO);
+    await startCall(CallType.AUDIO);
   };
 
   const startVideoCall = async () => {
-    await startCall(ConnectyCube.videochat.CallType.VIDEO);
+    await startCall(CallType.VIDEO);
   };
 
   const startCall = async (callType) => {
@@ -81,9 +88,9 @@ export default function VideoIncomingCallScreen() {
       initiatorId: session.initiatorID,
       opponentsIds: selectedOpponentsIds.join(','),
       uuid: session.ID,
-      callType: callType === ConnectyCube.videochat.CallType.VIDEO ? 'video' : 'audio',
+      callType: callType === CallType.VIDEO ? 'video' : 'audio',
     };
-    PushNotificationsService.sendPushNotification(selectedOpponentsIds, pushParams); // send push notification to opponents
+    PushService.sendPushNotification(selectedOpponentsIds, pushParams); // send push notification to opponents
     navigation.push('VideoScreen');
   };
 
@@ -94,9 +101,9 @@ export default function VideoIncomingCallScreen() {
         const id = opponent.id;
         const user = getUserById(id);
         const selected = selectedOpponents.some(item => id === item.id);
-        const type = selected
-          ? 'radio-button-checked'
-          : 'radio-button-unchecked';
+        const RadioIcon = selected
+          ? CircleCheckBig
+          : Circle;
         const onPress = selected ? unselectUser : selectUser;
 
         return (
@@ -105,7 +112,7 @@ export default function VideoIncomingCallScreen() {
             style={styles.userLabel(user.color)}
             onPress={() => onPress(opponent)}>
             <Text numberOfLines={1} style={styles.userName}>{user?.full_name ?? 'Unknown'}</Text>
-            <MaterialIcon name={type} size={20} color="white" />
+            <RadioIcon size={20} color="white" />
           </TouchableOpacity>
         );
       })}
@@ -113,12 +120,12 @@ export default function VideoIncomingCallScreen() {
         <TouchableOpacity
           style={[styles.buttonStartCall]}
           onPress={startAudioCall}>
-          <MaterialIcon name={'call'} size={32} color="white" />
+          <Phone size={32} color="white" />
         </TouchableOpacity>
         <TouchableOpacity
           style={[styles.buttonStartCall]}
           onPress={startVideoCall}>
-          <MaterialIcon name={'videocam'} size={32} color="white" />
+          <Video size={32} color="white" />
         </TouchableOpacity>
       </View>
     </SafeAreaView>

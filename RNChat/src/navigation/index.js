@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { NavigationContainer } from '../../node_modules/@react-navigation/native/lib/typescript/src';
+import { NavigationContainer } from '@react-navigation/native';
 import Splash from '../screens/splash';
 import AppStack from './AppStack';
 

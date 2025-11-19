@@ -1,5 +1,5 @@
 import React from 'react';
-import { createNativeStackNavigator } from '../../node_modules/@react-navigation/native-stack/lib/typescript/src';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Auth from '../screens/auth';
 
 const Stack = createNativeStackNavigator();

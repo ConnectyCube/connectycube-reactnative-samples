@@ -1,4 +1,4 @@
-import { ConnectyCube } from '../../node_modules/@connectycube/react/dist/types';
+import { ConnectyCube } from '@connectycube/react';
 import UserModel from '../models/user';
 import store from '../redux/store';
 import { fetchUsers } from '../redux/slices/users';

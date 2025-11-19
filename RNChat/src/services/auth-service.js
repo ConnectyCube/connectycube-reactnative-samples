@@ -1,4 +1,4 @@
-import { ConnectyCube } from '../../node_modules/@connectycube/react/dist/types';
+import { ConnectyCube } from '@connectycube/react';
 import { appCredentials, appConfig } from '../config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import User from '../models/user';

@@ -304,7 +304,7 @@
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = LQZ558R8Q8;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = rnchat/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "RNChat";
+				INFOPLIST_KEY_CFBundleDisplayName = RNChat;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -341,7 +341,7 @@
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = LQZ558R8Q8;
 				INFOPLIST_FILE = rnchat/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "RNChat";
+				INFOPLIST_KEY_CFBundleDisplayName = RNChat;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

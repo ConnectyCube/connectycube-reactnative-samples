@@ -4,7 +4,7 @@ import Avatar from '../../components/avatar';
 import { getTime } from '../../../helpers/getTime';
 import MessageStatus from '../../components/messageStatus';
 import ChatImage from '../../components/chatImage';
-import { useNavigation } from '../../../../node_modules/@react-navigation/native/lib/typescript/src';
+import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import { SIZE_SCREEN } from '../../../helpers/constants';
 

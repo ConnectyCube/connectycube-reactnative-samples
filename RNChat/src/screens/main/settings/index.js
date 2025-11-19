@@ -5,7 +5,7 @@ import { AuthService } from '../../../services';
 import Indicator from '../../components/indicator';
 import { showAlert } from '../../../helpers/alert';
 import ImgPicker from '../../components/imgPicker';
-import { useRoute } from '../../../../node_modules/@react-navigation/native/lib/typescript/src';
+import { useRoute } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import useKeyboardOffset from '../../../hooks/useKeyboardOffset';
 import { isIOS } from '../../../helpers/platform';

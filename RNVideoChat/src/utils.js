@@ -44,3 +44,5 @@ export function isCurrentRoute(navigation, routeName) {
   return currentRoute.name === routeName;
 }
 
+export const wait = (timeout = 1000) => new Promise((resolve) => setTimeout(resolve, timeout));
+

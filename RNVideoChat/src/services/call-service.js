@@ -1,5 +1,5 @@
-import ConnectyCube from 'react-native-connectycube';
-import InCallManager from 'react-native-incall-manager';
+import { ConnectyCube, CallEvent, CallType } from '@connectycube/react';
+import inCallManager from 'react-native-incall-manager';
 import Sound from 'react-native-sound';
 import { CONSTANTS as CK_CONSTANTS } from 'react-native-callkeep';
 import { showToast, getUserById, getCallRecipientString, platformOS, isAndroid } from '../utils';
@@ -12,6 +12,7 @@ import {
   acceptCall,
   earlyAcceptCall,
   muteMicrophone,
+  setDummyCallSession,
 } from '../redux/slices/activeCall';
 import CallKeepService from './call-keep-service';
 
@@ -22,9 +23,9 @@ class CallService {
 
   mediaDevices = [];
 
-  _outgoingCallSound = null;
-  _incomingCallSound = null;
-  _endCallSound = null;
+  _outgoingCallSound = undefined;
+  _incomingCallSound = undefined;
+  _endCallSound = undefined;
 
   constructor() {
     if (CallService.instance) {
@@ -32,19 +33,15 @@ class CallService {
     }
 
     CallService.instance = this;
-
-    this._outgoingCallSound = new Sound(require('../../assets/sounds/dialing.mp3'));
-    this._incomingCallSound = new Sound(require('../../assets/sounds/calling.mp3'));
-    this._endCallSound = new Sound(require('../../assets/sounds/end_call.mp3'));
   }
 
-  registerEvents() {
-    ConnectyCube.videochat.onCallListener = this._onCallListener.bind(this);
-    ConnectyCube.videochat.onAcceptCallListener = this._onAcceptCallListener.bind(this);
-    ConnectyCube.videochat.onRejectCallListener = this._onRejectCallListener.bind(this);
-    ConnectyCube.videochat.onStopCallListener = this._onStopCallListener.bind(this);
-    ConnectyCube.videochat.onUserNotAnswerListener = this._onUserNotAnswerListener.bind(this);
-    ConnectyCube.videochat.onRemoteStreamListener = this._onRemoteStreamListener.bind(this);
+  init() {
+    ConnectyCube.videochat.addListener(CallEvent.CALL, this._onCallListener);
+    ConnectyCube.videochat.addListener(CallEvent.ACCEPT, this._onAcceptCallListener);
+    ConnectyCube.videochat.addListener(CallEvent.REJECT, this._onRejectCallListener);
+    ConnectyCube.videochat.addListener(CallEvent.STOP, this._onStopCallListener);
+    ConnectyCube.videochat.addListener(CallEvent.NOT_ANSWER, this._onUserNotAnswerListener);
+    ConnectyCube.videochat.addListener(CallEvent.REMOTE_STREAM, this._onRemoteStreamListener);
   }
 
   get currentUser() {
@@ -71,6 +68,17 @@ class CallService {
     return store.getState().activeCall.isDummySession;
   }
 
+  createDummyCallSession(data = {}) {
+    const { uuid, initiatorId, opponentsIds, callType } = data;
+    const session = { ID: uuid };
+
+    if (initiatorId) session.initiatorID = initiatorId;
+    if (opponentsIds) session.opponentsIDs = opponentsIds.split(',').map(Number);
+    if (callType) session.callType = callType === 'video' ? CallType.VIDEO : CallType.AUDIO;
+
+    store.dispatch(setDummyCallSession(session));
+  }
+
   // Call API
   async startCall(usersIds, callType, options = {}) {
     const session = ConnectyCube.videochat.createNewSession(usersIds, callType, options);
@@ -80,7 +88,7 @@ class CallService {
 
     const mediaOptions = { ...CallService.MEDIA_OPTIONS }; // create local stream
 
-    if (callType === ConnectyCube.videochat.CallType.AUDIO) {
+    if (callType === CallType.AUDIO) {
       mediaOptions.video = false;
     }
 
@@ -106,19 +114,23 @@ class CallService {
     }
 
     this.playSound('outgoing');
-    this.setSpeakerphoneOn(this.callSession.callType === ConnectyCube.videochat.CallType.VIDEO);
+    this.setSpeakerphoneOn(this.callSession.callType === CallType.VIDEO);
 
     return session;
   }
 
   async acceptCall(options = {}, skipCallKit = false) {
+    this.stopSounds();
+
+    if (this.isAccepted) {
+      return;
+    }
+
     if (this.isDummySession) {
       store.dispatch(earlyAcceptCall());
       console.log('[acceptCall] earlyAcceptCall');
       return;
     }
-
-    this.stopSounds();
 
     console.log('[acceptCall]');
 
@@ -126,7 +138,7 @@ class CallService {
 
     // create local stream
     const mediaOptions = { ...CallService.MEDIA_OPTIONS };
-    if (this.callSession.callType === ConnectyCube.videochat.CallType.AUDIO) {
+    if (this.callSession?.callType === CallType.AUDIO) {
       mediaOptions.video = false;
     }
     const stream = await this.callSession.getUserMedia(mediaOptions);
@@ -148,7 +160,7 @@ class CallService {
 
     store.dispatch(acceptCall());
 
-    this.setSpeakerphoneOn(this.callSession.callType === ConnectyCube.videochat.CallType.VIDEO);
+    this.setSpeakerphoneOn(this.callSession.callType === CallType.VIDEO);
   }
 
   stopCall(options = {}, skipCallKit = false) {
@@ -212,24 +224,41 @@ class CallService {
     localStream.stream.getVideoTracks().forEach(track => track._switchCamera());
   }
 
-  setSpeakerphoneOn = flag => InCallManager.setSpeakerphoneOn(flag);
+  setSpeakerphoneOn(flag) {
+    inCallManager.setSpeakerphoneOn(flag);
+  }
 
   playSound(type) {
     switch (type) {
       case 'outgoing':
-        if (!this._outgoingCallSound.isPlaying()) {
-          this._outgoingCallSound.setNumberOfLoops(-1);
-          this._outgoingCallSound.play();
+        if (!this._outgoingCallSound) {
+          this._outgoingCallSound = new Sound('dialing.mp3', Sound.MAIN_BUNDLE, (error) => {
+            if (!error) {
+              this._outgoingCallSound.setNumberOfLoops(-1);
+              this._outgoingCallSound.play();
+            }
+          });
         }
         break;
       case 'incoming':
-        if (!this._incomingCallSound.isPlaying() && !this.isAccepted) {
-          this._incomingCallSound.setNumberOfLoops(-1);
-          this._incomingCallSound.play();
+        if (!this._incomingCallSound && !this.isAccepted) {
+          this._incomingCallSound = new Sound('calling.mp3', Sound.MAIN_BUNDLE, (error) => {
+            if (!error) {
+              this._incomingCallSound.setNumberOfLoops(-1);
+              this._incomingCallSound.play();
+            }
+          });
         }
         break;
       case 'end':
-        this._endCallSound.play();
+        this._endCallSound = new Sound('end_call.mp3', Sound.MAIN_BUNDLE, (error) => {
+          if (!error) {
+            this._endCallSound.play(() => {
+              this._endCallSound?.release();
+              this._endCallSound = undefined;
+            });
+          }
+        });
         break;
 
       default:
@@ -238,11 +267,17 @@ class CallService {
   }
 
   stopSounds() {
-    if (this._incomingCallSound.isPlaying()) {
-      this._incomingCallSound.pause();
+    if (this._incomingCallSound?.isPlaying()) {
+      this._incomingCallSound?.stop(() => {
+        this._incomingCallSound?.release();
+        this._incomingCallSound = undefined;
+      });
     }
-    if (this._outgoingCallSound.isPlaying()) {
-      this._outgoingCallSound.pause();
+    if (this._outgoingCallSound?.isPlaying()) {
+      this._outgoingCallSound?.stop(() => {
+        this._outgoingCallSound?.release();
+        this._outgoingCallSound = undefined;
+      });
     }
   }
 
@@ -250,11 +285,11 @@ class CallService {
     this.mediaDevices = await ConnectyCube.videochat.getMediaDevices();
   }
 
-  async _onCallListener(session, extension) {
+  _onCallListener = async (session, extension) => {
     // if already on a call
     if (this.callSession && !this.isDummySession) {
       console.log('[CallService][_onCallListener] reject, already_on_call');
-      this.rejectCall(session, { already_on_call: true });
+      session.reject({ already_on_call: true });
       return;
     }
 
@@ -267,11 +302,9 @@ class CallService {
         this.acceptCall();
       });
     }
+  };
 
-    this.playSound('incoming');
-  }
-
-  async _onAcceptCallListener(session, userId, extension) {
+  _onAcceptCallListener = async (session, userId, extension) => {
     console.log('_onAcceptCallListener', userId);
 
     if (this.callSession) {
@@ -279,9 +312,9 @@ class CallService {
     }
 
     showToast(`${getUserById(userId, 'full_name')} has accepted the call`);
-  }
+  };
 
-  async _onRejectCallListener(session, userId, extension) {
+  _onRejectCallListener = async (session, userId, extension) => {
     store.dispatch(removeStream({ userId }));
 
     const userName = getUserById(userId, 'full_name');
@@ -290,9 +323,9 @@ class CallService {
       : `${userName} rejected the call request`;
 
     showToast(message);
-  }
+  };
 
-  async _onStopCallListener(session, userId, extension) {
+  _onStopCallListener = async (session, userId, extension) => {
     this.stopSounds();
 
     const userName = getUserById(userId, 'full_name');
@@ -305,17 +338,17 @@ class CallService {
       store.dispatch(resetActiveCall());
       CallKeepService.reportEndCallWithoutUserInitiating(session.ID, CK_CONSTANTS.END_CALL_REASONS.REMOTE_ENDED);
     }
-  }
+  };
 
-  async _onUserNotAnswerListener(session, userId) {
+  _onUserNotAnswerListener = async (session, userId) => {
     showToast(`${getUserById(userId, 'full_name')} did not answer`);
 
     store.dispatch(removeStream({ userId }));
-  }
+  };
 
-  async _onRemoteStreamListener(session, userId, stream) {
+  _onRemoteStreamListener = async (session, userId, stream) => {
     store.dispatch(upsertStreams([{ userId, stream }]));
-  }
+  };
 }
 
 export default new CallService();

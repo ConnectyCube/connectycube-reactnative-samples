@@ -1,4 +1,3 @@
-import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { RTCView } from 'react-native-webrtc';
 
@@ -34,8 +33,8 @@ export default ({ streams }) => {
     case 2:
       RTCListView = (
         <View style={styles.inColumn}>
-          <RTCViewRendered userId={streams[0].userId} stream={streams[0].stream} />
           <RTCViewRendered userId={streams[1].userId} stream={streams[1].stream} />
+          <RTCViewRendered userId={streams[0].userId} stream={streams[0].stream} />
         </View>
       );
       break;
@@ -44,10 +43,10 @@ export default ({ streams }) => {
       RTCListView = (
         <View style={styles.inColumn}>
           <View style={styles.inRow}>
-            <RTCViewRendered userId={streams[0].userId} stream={streams[0].stream} />
             <RTCViewRendered userId={streams[1].userId} stream={streams[1].stream} />
+            <RTCViewRendered userId={streams[2].userId} stream={streams[2].stream} />
           </View>
-          <RTCViewRendered userId={streams[2].userId} stream={streams[2].stream} />
+          <RTCViewRendered userId={streams[0].userId} stream={streams[0].stream} />
         </View>
       );
       break;
@@ -56,12 +55,12 @@ export default ({ streams }) => {
       RTCListView = (
         <View style={styles.inColumn}>
           <View style={styles.inRow}>
-            <RTCViewRendered userId={streams[0].userId} stream={streams[0].stream} />
             <RTCViewRendered userId={streams[1].userId} stream={streams[1].stream} />
+            <RTCViewRendered userId={streams[2].userId} stream={streams[2].stream} />
           </View>
           <View style={styles.inRow}>
-            <RTCViewRendered userId={streams[2].userId} stream={streams[2].stream} />
             <RTCViewRendered userId={streams[3].userId} stream={streams[3].stream} />
+            <RTCViewRendered userId={streams[0].userId} stream={streams[0].stream} />
           </View>
         </View>
       );

@@ -1,4 +1,4 @@
-import { ConnectyCube } from '../../node_modules/@connectycube/react/dist/types';
+import { ConnectyCube } from '@connectycube/react';
 import Dialog from '../models/dialogs';
 import { AppState } from 'react-native';
 import { fetchDialogs, sortDialogs, updateDialog, addNewDialog, deleteDialog } from '../redux/slices/dialogs';

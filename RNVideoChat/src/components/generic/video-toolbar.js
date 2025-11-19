@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import { Aperture, CircleUser, Mic, MicOff, PhoneOff } from 'lucide-react-native';
 import { useSelector } from 'react-redux';
 
 export default function VideoToolBar({ displaySwitchCam, onSwitchCamera, onStopCall, onMute, canSwitchCamera }) {
@@ -22,31 +22,31 @@ export default function VideoToolBar({ displaySwitchCam, onSwitchCamera, onStopC
       <TouchableOpacity
         style={[styles.buttonContainer, styles.buttonCallEnd]}
         onPress={onStopCall}>
-        <MaterialIcon name={'call-end'} size={32} color="white" />
+        <PhoneOff size={32} color="white" />
       </TouchableOpacity>
     );
   }
 
   function _renderMuteButton() {
-    const type = isMicrophoneMuted ? 'mic-off' : 'mic';
+    const MicIcon = isMicrophoneMuted ? MicOff : Mic;
 
     return (
       <TouchableOpacity
         style={[styles.buttonContainer, styles.buttonMute]}
         onPress={muteUnmuteAudio}>
-        <MaterialIcon name={type} size={32} color="white" />
+        <MicIcon size={32} color="white" />
       </TouchableOpacity>
     );
   }
 
   function _renderSwitchVideoSourceButton() {
-    const type = isFrontCamera ? 'camera-rear' : 'camera-front';
+    const CameraIcon = isFrontCamera ? Aperture : CircleUser;
 
     return (
       <TouchableOpacity
         style={[styles.buttonContainer, styles.buttonSwitch]}
         onPress={switchCamera}>
-        <MaterialIcon name={type} size={32} color="white" />
+        <CameraIcon size={32} color="white" />
       </TouchableOpacity>
     );
   }

@@ -1,130 +1,97 @@
-# [ConnectyCube](https://connectycube.com) Video Chat sample for React Native
+This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
 
-This README introduces [ConnectyCube](https://connectycube.com) Video Chat code sample for React Native
+# Getting Started
 
-Project contains the following features implemented:
+> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
 
-- User authorization
-- Video/audio calls up to 4 users
-- Mute/unmute microphone
-- Mute/unmute video
-- Switch camera
-- Receive incoming calls in background/killed state (Android)
-- iOS CallKit (coming soon)
-- Snack bars to notify users about changes
+## Step 1: Start Metro
 
-## Documentation
+First, you will need to run **Metro**, the JavaScript build tool for React Native.
 
-Getting Started - [https://developers.connectycube.com/reactnative](https://developers.connectycube.com/reactnative)
+To start the Metro dev server, run the following command from the root of your React Native project:
 
-Video Chat API documentation - [https://developers.connectycube.com/reactnative/videocalling](https://developers.connectycube.com/reactnative/videocalling)
+```sh
+# Using npm
+npm start
 
-## Screenshots
-
-<kbd><img alt="React Native video chat code sample, login" src="https://developers.connectycube.com/images/code_samples/reactnative/reactnative_codesample_video_login.PNG" width="200" /></kbd> <kbd><img alt="React Native video chat code sample, select users" src="https://developers.connectycube.com/images/code_samples/reactnative/reactnative_codesample_video_select_users.PNG" width="200" /></kbd> <kbd><img alt="React Native video chat code sample, video chat" src="https://developers.connectycube.com/images/code_samples/reactnative/reactnative_codesample_video_video.PNG" width="200" /></kbd>
-
-## Quick start
-
-### Step 1: Clone the project
-
-Clone the project:
-
-```bash
-# clone the project
-git clone https://github.com/ConnectyCube/connectycube-reactnative-samples.git
-# navigate to React Native Video Chat sample project
-cd connectycube-reactnative-samples/RNVideoChat
-```
-
-### Step 2: Install 'node_modules'
-
-```bash
-yarn install
-```
-
-### Step 3: Obtain ConnectyCube credentials
-
-Register new account and application at [https://admin.connectycube.com](https://admin.connectycube.com) and then put Application credentials from 'Overview' page into `src/config.js` file:
-
-```javascript
-export const appCredentials = {
-  appId: 111,
-  authKey: 'zzzxxxccc',
-};
-```
-
-Also, create from 2 to 4 users in 'Users' module and put them into `src/config.js` file as well:
-
-```javascript
-export const users = [
-  {
-    id: 10001,
-    full_name: 'User1',
-    login: 'videouser1',
-    password: 'videouser1',
-    color: '#34ad86',
-  },
-  {
-    id: 10002,
-    full_name: 'User2',
-    login: 'videouser2',
-    password: 'videouser2',
-    color: '#077988',
-  },
-  {
-    id: 10003,
-    full_name: 'User3',
-    login: 'videouser3',
-    password: 'videouser3',
-    color: '#13aaae',
-  },
-  {
-    id: 10004,
-    full_name: 'User4',
-    login: 'videouser4',
-    password: 'videouser4',
-    color: '#056a96',
-  },
-];
-```
-
-### Step 4: Add a Firebase configuration file
-
-**Android**
-
-Go to the [Firebase console](https://console.firebase.google.com/), create Android app and download **google-services.json**. Then put it into **RNVideoChat/android/app/google-services.json** location.
-
-Follow <https://firebase.google.com/docs/android/setup#console> (Option 1, Step 1 and 2) for more detailed guide how to obtain Firebase configuration file for Android.
-
-**iOS**
-
-Go to the [Firebase console](https://console.firebase.google.com/), create iOS app and download **GoogleService-Info.plist**. Then put it into **RNVideoChat/ios/RNVideoChat/GoogleService-Info.plist** location.
-
-Follow <https://firebase.google.com/docs/ios/setup> (Step 1, 2 and 3) for more detailed guide how to obtain Firebase configuration file for iOS.
-
-### Step 5: Start the Metro Server
-
-```bash
+# OR using Yarn
 yarn start
 ```
 
-### Step 6: Start the Application
+## Step 2: Build and run your app
 
-From other terminal window, run Android:
+With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
 
-```bash
+### Android
+
+```sh
+# Using npm
+npm run android
+
+# OR using Yarn
 yarn android
 ```
 
-For iOS, do:
+### iOS
 
-```bash
-cd ios
-pod install
+For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
+
+The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
+
+```sh
+bundle install
 ```
 
-Then open **RNVideoChat/ios/RNVideoChat.xcworkspace** in Xcode and run the project.
+Then, and every time you update your native dependencies, run:
 
-## Can't build yourself?
+```sh
+bundle exec pod install
+```
 
-Got troubles with building React Native code sample? Just create an issue at [Issues page](https://github.com/ConnectyCube/connectycube-reactnative-samples/issues).
+For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+
+```sh
+# Using npm
+npm run ios
+
+# OR using Yarn
+yarn ios
+```
+
+If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+
+This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+
+## Step 3: Modify your app
+
+Now that you have successfully run the app, let's make changes!
+
+Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+
+When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
+
+- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
+- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
+
+## Congratulations! :tada:
+
+You've successfully run and modified your React Native App. :partying_face:
+
+### Now what?
+
+- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
+- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
+
+# Troubleshooting
+
+If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+
+# Learn More
+
+To learn more about React Native, take a look at the following resources:
+
+- [React Native Website](https://reactnative.dev) - learn more about React Native.
+- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
+- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
+- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
+- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.

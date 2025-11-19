@@ -70,3 +70,4 @@ index.android.bundle
 new/
 
 **/vendor/bundle/
+**/src/config.local.js

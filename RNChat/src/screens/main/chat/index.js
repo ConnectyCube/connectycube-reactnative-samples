@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { KeyboardAvoidingView, KeyboardStickyView, } from 'react-native-keyboard-controller';
 import { useSelector } from 'react-redux';
-import { useNavigation, useRoute } from '../../../../node_modules/@react-navigation/native/lib/typescript/src';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { Paperclip, Send } from 'lucide-react-native';
 import { ChatService, UsersService } from '../../../services';
 import Message from './message';
@@ -20,7 +20,7 @@ import { DIALOG_TYPE } from '../../../helpers/constants';
 import { isIOS } from '../../../helpers/platform';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import useKeyboardOffset from '../../../hooks/useKeyboardOffset';
-import { LiquidGlassView, isLiquidGlassSupported } from '../../../../node_modules/@callstack/liquid-glass/lib/typescript/src';
+import { LiquidGlassView, isLiquidGlassSupported } from '@callstack/liquid-glass';
 
 const INPUT_OFFSET = 15;
 

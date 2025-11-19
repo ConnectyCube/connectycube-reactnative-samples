@@ -1,9 +1,10 @@
-import ConnectyCube from 'react-native-connectycube';
+import { ConnectyCube, initConnectyCube } from '@connectycube/react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { credentials, appConfig } from '../config';
 import store, { resetStore } from '../redux/store';
 import { setCurrentUser } from '../redux/slices/currentUser';
 import { setIsLogging } from '../redux/slices/isLogging';
-import { PushNotificationsService } from '.';
+import { PushService } from '.';
 
 class AuthService {
   constructor() {
@@ -14,10 +15,14 @@ class AuthService {
     AuthService.instance = this;
   }
 
+  init() {
+    initConnectyCube(credentials, appConfig);
+  }
+
   async login(user) {
     store.dispatch(setIsLogging(true));
     await ConnectyCube.createSession(user);
-    await PushNotificationsService.register();
+    await PushService.register();
     await this.setUserToAsyncStorage(user);
     await ConnectyCube.chat.connect({
       userId: user.id,
@@ -40,10 +45,10 @@ class AuthService {
   }
 
   async logout() {
-    ConnectyCube.chat.disconnect();
+    await ConnectyCube.chat.disconnect();
     await ConnectyCube.destroySession();
     await this.removeUserFromAsyncStorage();
-    store.dispatch(resetStore());
+    resetStore();
   }
 
   async setUserToAsyncStorage(user) {

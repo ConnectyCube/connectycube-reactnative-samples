@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import {
   StyleSheet,
   View,
@@ -11,8 +11,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { AuthService } from '../../services';
 import { users } from '../../config';
 import { useSelector } from 'react-redux';
-
-const logoSrc = require('../../../assets/image/logo.png');
+import logoSrc from '../../../assets/image/logo.png';
 
 export default function LoginScreen() {
   const isLogging = useSelector((state) => state.isLogging);

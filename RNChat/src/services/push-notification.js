@@ -1,4 +1,4 @@
-import { ConnectyCube } from '../../node_modules/@connectycube/react/dist/types';
+import { ConnectyCube } from '@connectycube/react';
 import { PermissionsAndroid } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
 import notifee, { AndroidImportance, AndroidVisibility } from '@notifee/react-native';

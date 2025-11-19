@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
 import { Image, useWindowDimensions } from 'react-native';
-import { useNavigation, useRoute } from '../../../../node_modules/@react-navigation/native/lib/typescript/src';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { fitContainer, ResumableZoom, useImageResolution, } from 'react-native-zoom-toolkit';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 

@@ -1,4 +1,4 @@
-import { ConnectyCube } from '../../node_modules/@connectycube/react/dist/types';
+import { ConnectyCube } from '@connectycube/react';
 
 export function preparationUploadImg(file) {
   const str = file.path.split('/');
