@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, TextInput, FlatList, Text, TouchableOpacity } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import IconGroup from 'react-native-vector-icons/FontAwesome';
+import { User, Users, X } from 'lucide-react-native';
 import { ChatService, UsersService } from '../../../services';
 import Indicator from '../../components/indicator';
 import Participant from './participant';
@@ -69,7 +68,7 @@ export default function Contacts() {
             iconSize="medium"
           />
           <View style={{ position: 'absolute', bottom: 7, right: 7, backgroundColor: 'white', width: 20, height: 20, borderRadius: 10 }}>
-            <Icon name="cancel" size={20} color="grey" />
+            <X size={20} color="grey" />
           </View>
         </View>
         <Text numberOfLines={2} style={{ textAlign: 'center', color: 'grey' }}>{item.full_name}</Text>
@@ -142,8 +141,8 @@ export default function Contacts() {
       <View style={styles.dialogTypeContainer}>
         {!isGroupDetails &&
           <TouchableOpacity style={styles.dialogType} onPress={changeTypeDialog}>
-            {!isGroupDialog ? <IconGroup name="group" size={25} color="#48A6E3" /> :
-              <IconGroup name="user" size={25} color="#48A6E3" />
+            {!isGroupDialog ? <Users size={25} color="#48A6E3" /> :
+              <User size={25} color="#48A6E3" />
             }
             <Text style={styles.dialogTypeText}>{isGroupDialog ? 'Switch to private chat creation' : 'Switch to group chat creation'}</Text>
           </TouchableOpacity>

@@ -1,24 +1,15 @@
-/*
- * Copyright @ 2021-present 8x8, Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+//
+//  SampleHandler.swift
+//  Broadcast Extension
+//
+//  Created by Alex-Dan Bumbu on 04.06.2021.
+//
 
 import ReplayKit
 
 private enum Constants {
     // the App Group ID value that the app and the broadcast extension targets are setup with. It differs for each app.
-    static let appGroupIdentifier = "group.com.rnconference"
+    static let appGroupIdentifier = "group.react-native.videochatconf"
 }
 
 class SampleHandler: RPBroadcastSampleHandler {
@@ -29,25 +20,22 @@ class SampleHandler: RPBroadcastSampleHandler {
     private var frameCount: Int = 0
     
     var socketFilePath: String {
-        let sharedContainer = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: Constants.appGroupIdentifier)
-        
+      let sharedContainer = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: Constants.appGroupIdentifier)
         return sharedContainer?.appendingPathComponent("rtc_SSFD").path ?? ""
     }
     
     override init() {
-        super.init()
+      super.init()
         if let connection = SocketConnection(filePath: socketFilePath) {
-            clientConnection = connection
-            setupConnection()
-            
-            uploader = SampleUploader(connection: connection)
+          clientConnection = connection
+          setupConnection()
+          
+          uploader = SampleUploader(connection: connection)
         }
     }
 
     override func broadcastStarted(withSetupInfo setupInfo: [String: NSObject]?) {
         // User has requested to start the broadcast. Setup info from the UI extension can be supplied but optional.
-        print("broadcast started")
-        
         frameCount = 0
         
         DarwinNotificationCenter.shared.postNotification(.broadcastStarted)

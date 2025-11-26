@@ -62,7 +62,4 @@ typings/
 
 .DS_Store
 
-google-services.json
-GoogleService-Info.plist
-
-index.android.bundle
+.vscode/

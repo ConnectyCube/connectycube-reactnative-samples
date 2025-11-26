@@ -1,18 +1,11 @@
-/*
- * Copyright @ 2021-present 8x8, Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+
+//
+//  SampleUploader.swift
+//  Broadcast Extension
+//
+//  Created by Alex-Dan Bumbu on 22/03/2021.
+//  Copyright © 2021 8x8, Inc. All rights reserved.
+//
 
 import Foundation
 import ReplayKit
@@ -25,7 +18,7 @@ class SampleUploader {
     
     private static var imageContext = CIContext(options: nil)
     
-    @Atomic private var isReady: Bool = false
+    @Atomic private var isReady = false
     private var connection: SocketConnection
   
     private var dataToSend: Data?
@@ -41,7 +34,7 @@ class SampleUploader {
     }
   
     @discardableResult func send(sample buffer: CMSampleBuffer) -> Bool {
-        guard isReady == true else {
+        guard isReady else {
             return false
         }
         
@@ -66,7 +59,9 @@ private extension SampleUploader {
         }
         connection.streamHasSpaceAvailable = { [weak self] in
             self?.serialQueue.async {
-                self?.isReady = !(self?.sendDataChunk() ?? true)
+                if let success = self?.sendDataChunk() {
+                    self?.isReady = !success
+                }
             }
         }
     }
@@ -83,7 +78,7 @@ private extension SampleUploader {
             guard let ptr = $0.bindMemory(to: UInt8.self).baseAddress else {
                 return 0
             }
-          
+
             return connection.writeToStream(buffer: ptr, maxLength: length)
         }
 
@@ -139,16 +134,14 @@ private extension SampleUploader {
     }
     
     func jpegData(from buffer: CVPixelBuffer, scale scaleTransform: CGAffineTransform) -> Data? {
-        var image = CIImage(cvPixelBuffer: buffer)
-        image = image.transformed(by: scaleTransform)
+        let image = CIImage(cvPixelBuffer: buffer).transformed(by: scaleTransform)
         
         guard let colorSpace = image.colorSpace else {
             return nil
         }
       
         let options: [CIImageRepresentationOption: Float] = [kCGImageDestinationLossyCompressionQuality as CIImageRepresentationOption: 1.0]
-        let imageData = SampleUploader.imageContext.jpegRepresentation(of: image, colorSpace: colorSpace, options: options)
-      
-        return imageData
+
+        return SampleUploader.imageContext.jpegRepresentation(of: image, colorSpace: colorSpace, options: options)
     }
 }

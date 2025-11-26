@@ -3,7 +3,7 @@ import React from 'react';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { RTCView } from 'react-native-webrtc';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import { Minimize } from 'lucide-react-native';
 
 const RTCViewFullScreenModal = () => {
   const route = useRoute();
@@ -29,7 +29,7 @@ const RTCViewFullScreenModal = () => {
         <View style={styles.placeholder} />
         <Text style={styles.userName}>{userName}</Text>
         <TouchableOpacity style={styles.button} onPress={exitFullScreen}>
-          <MaterialIcon name="fullscreen-exit" size={30} color="white" />
+          <Minimize size={30} color="white" />
         </TouchableOpacity>
       </View>
       <RTCView

@@ -1,7 +1,6 @@
-import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
-import { CallService } from '../../services';
+import { Circle, CircleCheckBig } from 'lucide-react-native';
+import CallService from '../../services/call-service';
 
 export default ({
   isActiveSelect,
@@ -20,9 +19,7 @@ export default ({
       {opponentsIds.map(id => {
         const user = CallService.getUserById(id);
         const selected = selectedUsersIds.some(userId => id === userId);
-        const type = selected
-          ? 'radio-button-checked'
-          : 'radio-button-unchecked';
+        const SelectIcon = selected ? CircleCheckBig : Circle;
         const onPress = selected ? unselectUser : selectUser;
 
         return (
@@ -31,7 +28,7 @@ export default ({
             style={styles.userLabel(user.color)}
             onPress={() => onPress(id)}>
             <Text numberOfLines={1} style={styles.userName}>{user.full_name}</Text>
-            <MaterialIcon name={type} size={20} color="white" />
+            <SelectIcon size={20} color="white" />
           </TouchableOpacity>
         );
       })}

@@ -1,3 +1,10 @@
+//
+//  Atomic.swift
+//  Broadcast Extension
+//
+//  Created by Maksym Shcheglov.
+//  https://www.onswiftwings.com/posts/atomic-property-wrapper/
+//
 
 import Foundation
 
@@ -12,8 +19,8 @@ struct Atomic<Value> {
     }
 
     var wrappedValue: Value {
-      get { return load() }
-      set { store(newValue: newValue) }
+        get { load() }
+        set { store(newValue: newValue) }
     }
 
     func load() -> Value {

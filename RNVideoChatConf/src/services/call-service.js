@@ -1,25 +1,32 @@
 import Toast from 'react-native-simple-toast';
-import ConnectyCube from 'react-native-connectycube';
+import { ConnectyCube } from '@connectycube/react';
 import InCallManager from 'react-native-incall-manager';
 import Sound from 'react-native-sound';
 import { users, NO_ANSWER_TIMER } from '../config';
 import customEventEmitter, { CUSTOM_EVENTS } from './customEvents';
 
-export default class CallService {
+class CallService {
   static MEDIA_OPTIONS = { audio: true, video: { facingMode: 'user' } };
-  static CURRENT_USER = null;
+  currentUser = null;
 
   _session = null;
   mediaDevices = [];
   _answerUserTimers = {};
   participantIds = [];
 
-  outgoingCall = new Sound(require('../../assets/sounds/dialing.mp3'));
-  incomingCall = new Sound(require('../../assets/sounds/calling.mp3'));
-  endCall = new Sound(require('../../assets/sounds/end_call.mp3'));
+  outgoingCall = undefined;
+  incomingCall = undefined;
+  endCall = undefined;
 
   get hasSession() {
     return !!this._session;
+  }
+
+  setCurrentUser(user) {
+    this.currentUser = {
+      id: user.id,
+      full_name: user.full_name,
+    };
   }
 
   getUserMedia(params = CallService.MEDIA_OPTIONS) {
@@ -42,7 +49,7 @@ export default class CallService {
       opponentIds.push(+userId);
 
       opponentIds = opponentIds.filter(
-        (user_id) => user_id !== CallService.CURRENT_USER.id,
+        (user_id) => user_id !== this.currentUser.id,
       );
       if (this.janusRoomId) {
         return this.sendRejectCallMessage(
@@ -77,8 +84,8 @@ export default class CallService {
       (stream) => {
         this._session.join(
           this.janusRoomId,
-          CallService.CURRENT_USER.id,
-          CallService.CURRENT_USER.full_name,
+          this.currentUser.id,
+          this.currentUser.full_name,
         );
 
         return stream;
@@ -147,8 +154,8 @@ export default class CallService {
     return this.getUserMedia().then((stream) => {
       this._session.join(
         this.janusRoomId,
-        CallService.CURRENT_USER.id,
-        CallService.CURRENT_USER.full_name,
+        this.currentUser.id,
+        this.currentUser.full_name,
       );
       return stream;
     });
@@ -273,18 +280,36 @@ export default class CallService {
     return ConnectyCube.chat.helpers.getBsonObjectId();
   }
 
-  playSound(type) {
+  async playSound(type) {
     switch (type) {
       case 'outgoing':
-        this.outgoingCall.setNumberOfLoops(-1);
-        this.outgoingCall.play();
+        this.outgoingCall = new Sound('outgoing.mp3', Sound.MAIN_BUNDLE, (error) => {
+          console.warn(error);
+          if (!error) {
+            this.outgoingCall.setNumberOfLoops(-1);
+            this.outgoingCall.play();
+          }
+        });
         break;
+
       case 'incoming':
-        this.incomingCall.setNumberOfLoops(-1);
-        this.incomingCall.play();
+        this.incomingCall = new Sound('calling.mp3', Sound.MAIN_BUNDLE, (error) => {
+          if (!error) {
+            this.incomingCall.setNumberOfLoops(-1);
+            this.incomingCall.play();
+          }
+        });
         break;
+
       case 'end':
-        this.endCall.play();
+        this.endCall = new Sound('end_call.mp3', Sound.MAIN_BUNDLE, (error) => {
+          if (!error) {
+            this.endCall.play(() => {
+              this.endCall.release();
+              this.endCall = undefined;
+            });
+          }
+        });
         break;
 
       default:
@@ -293,12 +318,14 @@ export default class CallService {
   }
 
   stopSounds() {
-    if (this.incomingCall.isPlaying()) {
-      this.incomingCall.pause();
-    }
-    if (this.outgoingCall.isPlaying()) {
-      this.outgoingCall.pause();
-    }
+    this.outgoingCall?.stop(() => {
+      this.outgoingCall?.release();
+      this.outgoingCall = undefined;
+    });
+    this.incomingCall?.stop(() => {
+      this.incomingCall?.release();
+      this.incomingCall = undefined;
+    });
   }
 
   isAudioMuted() {
@@ -306,7 +333,6 @@ export default class CallService {
   }
 
   isVideoMuted() {
-    return this._session?.isVideoMuted();
   }
 
   setAudioMute() {
@@ -374,3 +400,5 @@ export default class CallService {
     this.stopCall(userId);
   }
 }
+
+export default new CallService();

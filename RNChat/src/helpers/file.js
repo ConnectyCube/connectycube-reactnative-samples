@@ -1,4 +1,4 @@
-import ConnectyCube from 'react-native-connectycube';
+import { ConnectyCube } from '@connectycube/react';
 
 export function preparationUploadImg(file) {
   const str = file.path.split('/');

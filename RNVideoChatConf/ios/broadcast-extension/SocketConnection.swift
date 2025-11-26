@@ -1,18 +1,10 @@
-/*
- * Copyright @ 2021-present 8x8, Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+//
+//  SocketConnection.swift
+//  Broadcast Extension
+//
+//  Created by Alex-Dan Bumbu on 22/03/2021.
+//  Copyright © 2021 Atlassian Inc. All rights reserved.
+//
 
 import Foundation
 
@@ -79,7 +71,7 @@ class SocketConnection: NSObject {
     }
 
     func writeToStream(buffer: UnsafePointer<UInt8>, maxLength length: Int) -> Int {
-        return outputStream?.write(buffer, maxLength: length) ?? 0
+        outputStream?.write(buffer, maxLength: length) ?? 0
     }
 }
 
@@ -107,7 +99,7 @@ extension SocketConnection: StreamDelegate {
                 streamHasSpaceAvailable?()
             }
         case .errorOccurred:
-            print("client stream error occurred: \(String(describing: aStream.streamError))")
+            print("client stream error occured: \(String(describing: aStream.streamError))")
             close()
             notifyDidClose(error: aStream.streamError)
 
@@ -179,6 +171,7 @@ private extension SocketConnection {
         networkQueue?.async { [weak self] in
             self?.inputStream?.schedule(in: .current, forMode: .common)
             self?.outputStream?.schedule(in: .current, forMode: .common)
+            RunLoop.current.run()
             
             var isRunning = false
                         

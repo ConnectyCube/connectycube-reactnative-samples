@@ -15,7 +15,7 @@ export default function Message({ message, messageSendState, messageAttachments,
 
   const renderAttachment = () => {
     return (
-      <TouchableOpacity style={{ marginBottom: 3 }} onPress={handleModalState}>
+      <TouchableOpacity className="mb-1 rounded-t-md overflow-hidden" onPress={handleModalState}>
         <ChatImage photo={messageAttachments[0].url} width={200} height={150} />
       </TouchableOpacity>
     );
@@ -27,13 +27,13 @@ export default function Message({ message, messageSendState, messageAttachments,
 
   return otherSender ?
     (
-      <View style={[styles.container, styles.positionToLeft]} >
+      <View className="p-1 flex flex-row items-end justify-start ml-2">
         <Avatar
           photo={user.avatar}
           name={user.full_name}
           iconSize="small"
         />
-        <View style={[styles.message, styles.messageToLeft]}>
+        <View style={[styles.message, styles.messageToLeft]} className='ml-2'>
           {messageAttachments && renderAttachment()}
           <Text style={[styles.messageText, (otherSender ? styles.selfToLeft : styles.selfToRight)]}>
             {message.body || ' '}
@@ -44,7 +44,7 @@ export default function Message({ message, messageSendState, messageAttachments,
         </View>
       </View>
     ) : (
-      <View style={[styles.container, styles.positionToRight]}>
+      <View className="p-1 flex flex-row items-end justify-end mr-2">
         <View style={[styles.message, styles.messageToRight]}>
           {messageAttachments && renderAttachment()}
           <Text style={[styles.messageText, styles.selfToRight]}>
@@ -62,17 +62,6 @@ export default function Message({ message, messageSendState, messageAttachments,
 }
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 10,
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-  },
-  positionToLeft: {
-    justifyContent: 'flex-start',
-  },
-  positionToRight: {
-    justifyContent: 'flex-end',
-  },
   message: {
     paddingTop: 5,
     paddingBottom: 3,

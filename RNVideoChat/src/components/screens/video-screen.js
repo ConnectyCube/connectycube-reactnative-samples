@@ -1,30 +1,26 @@
-import React, { useCallback, useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
-import ConnectyCube from 'react-native-connectycube';
+import { CallType } from '@connectycube/react';
 import VideoGrid from '../generic/video-grid';
 import { CallService } from '../../services';
 import VideoToolBar from '../generic/video-toolbar';
 import Loader from '../generic/loader';
-import { showToast } from '../../utils';
 import { StyleSheet } from 'react-native';
 
 export default function VideoScreen() {
   const navigation = useNavigation();
   const streams = useSelector(state => state.activeCall.streams);
   const callSession = useSelector(state => state.activeCall.session);
+  const isAccepted = useSelector(state => state.activeCall.isAccepted);
   const isEarlyAccepted = useSelector(state => state.activeCall.isEarlyAccepted);
-  const isVideoCall = callSession?.callType === ConnectyCube.videochat.CallType.VIDEO;
+  const isVideoCall = callSession?.callType === CallType.VIDEO;
 
   useEffect(() => {
     if (streams.length <= 1) {
       stopCall(); // stop call if all opponents are left
     }
-
-    return () => {
-      showToast('Call is ended');
-    };
   }, [streams, stopCall]);
 
   const stopCall = useCallback(() => {
@@ -43,7 +39,7 @@ export default function VideoScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <VideoGrid streams={streams} />
-      {isEarlyAccepted && <Loader text="connecting.." />}
+      {isEarlyAccepted && isAccepted && <Loader text="connecting..." />}
       <VideoToolBar
         displaySwitchCam={isVideoCall}
         onSwitchCamera={switchCamera}

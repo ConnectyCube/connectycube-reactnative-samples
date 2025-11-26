@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { StyleSheet, View, TextInput, Text, TouchableOpacity, Image, Keyboard } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import Avatar from '../../components/avatar';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import ImagePicker from 'react-native-image-crop-picker';
 import { SIZE_SCREEN } from '../../../helpers/constants';
 import { ChatService } from '../../../services';
@@ -10,6 +9,7 @@ import CreateBtn from '../../components/createBtn';
 import { BTN_TYPE } from '../../../helpers/constants';
 import Indicator from '../../components/indicator';
 import { showAlert } from '../../../helpers/alert';
+import { Camera } from 'lucide-react-native';
 
 export default function CreateDialog() {
   const route = useRoute();
@@ -82,7 +82,7 @@ export default function CreateDialog() {
             />
           ) :
             <View style={styles.iconPicker}>
-              <Icon name="local-see" size={50} color="#48A6E3" />
+              <Camera size={50} color="#48A6E3" />
             </View>
           }
         </TouchableOpacity>

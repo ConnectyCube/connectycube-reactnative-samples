@@ -8,6 +8,7 @@ const activeCallInitialState = {
   isDummySession: false, // used when got incoming call on Android in bg/killed
   isMicrophoneMuted: false,
   streams: [],
+  isIncomingCallScreen: false,
 };
 
 const activeCallSlice = createSlice({
@@ -50,6 +51,12 @@ const activeCallSlice = createSlice({
       streams: state.streams.filter(s => s.userId !== payload.userId),
     }),
     resetActiveCall: () => activeCallInitialState,
+    showIncomingCallScreen: (state) => Object.assign({}, state, {
+      isIncomingCallScreen: true,
+    }),
+    hideIncomingCallScreen: (state) => Object.assign({}, state, {
+      isIncomingCallScreen: false,
+    }),
   },
 });
 
@@ -63,4 +70,6 @@ export const {
   upsertStreams,
   removeStream,
   resetActiveCall,
+  showIncomingCallScreen,
+  hideIncomingCallScreen,
 } = activeCallSlice.actions;

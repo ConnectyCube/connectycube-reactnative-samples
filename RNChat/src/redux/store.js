@@ -1,11 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { combineReducers } from 'redux';
-import { currentUser, resetCurrentUser } from '../redux/slices/currentUser';
-import { appIsLoading, resetAppIsLoading } from '../redux/slices/app';
-import { dialogs, resetDialogs } from '../redux/slices/dialogs';
-import { messages, resetMessages } from '../redux/slices/messages';
-import { users, resetUsers } from '../redux/slices/users';
-import { selectedDialog, unselectDialog } from '../redux/slices/selectedDialog';
+import { currentUser, resetCurrentUser } from './slices/currentUser';
+import { appIsLoading, resetAppIsLoading } from './slices/app';
+import { dialogs, resetDialogs } from './slices/dialogs';
+import { messages, resetMessages } from './slices/messages';
+import { users, resetUsers } from './slices/users';
+import { selectedDialog, unselectDialog } from './slices/selectedDialog';
 
 const rootReducer = combineReducers({
   currentUser,

@@ -1,13 +1,15 @@
-import React, { useCallback, useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
-import { useSelector } from 'react-redux';
-import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
-import { CallService } from '../../services';
-import { getUserById, showToast } from '../../utils';
+import { useDispatch, useSelector } from 'react-redux';
+import { Phone, PhoneOff } from 'lucide-react-native';
+import { CallService, PushService } from '../../services';
+import { getUserById } from '../../utils';
+import { hideIncomingCallScreen } from '../../redux/slices/activeCall';
 
 export default function IncomingCallScreen() {
+  const dispatch = useDispatch();
   const navigation = useNavigation();
   const callSession = useSelector(store => store.activeCall.session);
   const isCallAccepted = useSelector(store => store.activeCall.isAccepted);
@@ -21,18 +23,19 @@ export default function IncomingCallScreen() {
     if (typeof callSession.accept === 'function') {
       await CallService.acceptCall();
     }
-  }, [callSession]);
+    dispatch(hideIncomingCallScreen());
+  }, [callSession, dispatch]);
 
   const rejectCall = useCallback(() => {
     if (typeof callSession.reject === 'function') {
       CallService.rejectCall();
     }
-  }, [callSession]);
+    dispatch(hideIncomingCallScreen());
+  }, [callSession, dispatch]);
 
   useEffect(() => {
     if (!callSession) {
       navigation.goBack();
-      showToast('Call is ended');
     }
   }, [navigation, callSession]);
 
@@ -48,6 +51,16 @@ export default function IncomingCallScreen() {
     }
   }, [acceptCall, isCallEarlyAccepted]);
 
+  useEffect(() => {
+    PushService.cancelNotification();
+    CallService.playSound('incoming');
+
+    return () => {
+      PushService.cancelNotification();
+      CallService.stopSounds();
+    };
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.containerName}>
@@ -57,12 +70,12 @@ export default function IncomingCallScreen() {
         <TouchableOpacity
           style={[styles.button, styles.buttonAcceptCall]}
           onPress={acceptCall}>
-          <MaterialIcon name={'call'} size={40} color="white" />
+          <Phone size={40} color="white" />
         </TouchableOpacity>
         <TouchableOpacity
           style={[styles.button, styles.buttonRejectCall]}
           onPress={rejectCall}>
-          <MaterialIcon name={'call-end'} size={40} color="white" />
+          <PhoneOff size={40} color="white" />
         </TouchableOpacity>
       </View>
     </SafeAreaView>

@@ -1,9 +1,12 @@
-import React, { useState, useLayoutEffect, useCallback } from 'react';
+import React, { useState, useLayoutEffect, useCallback, useEffect } from 'react';
 import { StyleSheet, View, FlatList, Text, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import Dialog from './elements/dialog';
-import { ChatService, PushNotificationService } from '../../../services';
+import {
+  ChatService,
+  PushNotificationService
+} from '../../../services';
 import Indicator from '../../components/indicator';
 import CreateBtn from '../../components/createBtn';
 import { BTN_TYPE } from '../../../helpers/constants';
@@ -19,12 +22,10 @@ export default function Dialogs() {
   useLayoutEffect(() => {
     setIsLoader(true);
 
-    ChatService.fetchDialogsFromServer()
-      .then(() => {
-        PushNotificationService.init();
-      }).finally(() => {
-        setIsLoader(false);
-      });
+    PushNotificationService.init();
+    ChatService.fetchDialogsFromServer().finally(() => {
+      setIsLoader(false);
+    });
 
     customEventEmitter.addListener(
       CUSTOM_EVENTS.ON_NOTIFICATION_OPEN,

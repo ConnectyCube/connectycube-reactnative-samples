@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import { KeyboardStickyView } from 'react-native-keyboard-controller';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import { Check, MessageCircleMore } from 'lucide-react-native';
 import { BTN_TYPE } from '../../helpers/constants';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -11,15 +11,15 @@ export default function CreateBtn({ goToScreen, type }) {
   let renderIcon;
   switch (type) {
     case BTN_TYPE.DIALOG: {
-      renderIcon = <Icon name="chat" size={30} color="white" />;
+      renderIcon = <MessageCircleMore size={30} color="white" />;
       break;
     }
     case BTN_TYPE.CONTACTS: {
-      renderIcon = <Icon name="check" size={40} color="white" />;
+      renderIcon = <Check size={40} color="white" />;
       break;
     }
     case BTN_TYPE.CREATE_GROUP: {
-      renderIcon = <Icon name="check" size={40} color="white" />;
+      renderIcon = <Check size={40} color="white" />;
       break;
     }
   }

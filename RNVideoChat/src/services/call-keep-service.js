@@ -1,7 +1,10 @@
+import { ConnectyCube } from '@connectycube/react';
 import DeviceInfo from 'react-native-device-info';
 import RNCallKeep from 'react-native-callkeep';
-import { isIOS, platformOS } from '../utils';
+import { isIOS, platformOS, wait } from '../utils';
 import CallService from './call-service';
+import NativeLocalStorage from '../../specs/NativeLocalStorage';
+import { AuthService } from '.';
 
 class CallKeepService {
   constructor() {
@@ -34,28 +37,26 @@ class CallKeepService {
   async registerEvents() {
     if (!isIOS) { return; }
     // Add RNCallKeep Events
-    // RNCallKeep.addEventListener('didReceiveStartCallAction', this.didReceiveStartCallAction);
+    RNCallKeep.addEventListener('didReceiveStartCallAction', this.didReceiveStartCallAction);
     RNCallKeep.addEventListener('answerCall', this.onAnswerCallAction);
     RNCallKeep.addEventListener('endCall', this.onEndCallAction);
     RNCallKeep.addEventListener('didPerformSetMutedCallAction', this.onToggleMute);
     RNCallKeep.addEventListener('didChangeAudioRoute', this.onChangeAudioRoute);
     RNCallKeep.addEventListener('didLoadWithEvents', this.onLoadWithEvents);
-    RNCallKeep.addEventListener('didDisplayIncomingCall', ({ error, callUUID, handle, localizedCallerName, hasVideo, fromPushKit, payload }) => {
-      console.log(platformOS, '[CallKeepService][reportStartCall]', { error, callUUID, handle, localizedCallerName, hasVideo, fromPushKit, payload });
-    });
+    RNCallKeep.addEventListener('didDisplayIncomingCall', this.onDisplayIncomingCall);
   }
 
-  displayIncomingCall(payload) {
-    if (!isIOS) { return; }
-    RNCallKeep.displayIncomingCall(
-      payload?.uuid || '',
-      payload?.handle || payload.initiatorId || 'Unknown',
-      payload?.message || 'Incoming call',
-      'generic',
-      true,
-      {}
-    );
-  }
+  // displayIncomingCall(payload) {
+  //   if (!isIOS) { return; }
+  //   RNCallKeep.displayIncomingCall(
+  //     payload?.uuid || '',
+  //     payload?.handle || payload.initiatorId || 'Unknown',
+  //     payload?.message || 'Incoming call',
+  //     'generic',
+  //     true,
+  //     {}
+  //   );
+  // }
 
   // Use startCall to ask the system to start a call - Initiate an outgoing call from this point
   reportStartCall(callUUID, handle, contactIdentifier, handleType, hasVideo) {
@@ -107,45 +108,46 @@ class CallKeepService {
     RNCallKeep.reportEndCallWithUUID(callUUID, reason);
   }
 
+  onDisplayIncomingCall = (data) => {
+    console.log(platformOS, '[CallKeepService][reportStartCall]', data);
+  };
+
   didReceiveStartCallAction = (data) => {
     console.log(platformOS, '[CallKeepService][didReceiveStartCallAction]', data);
-    let { handle, callUUID, name } = data;
     // Get this event after the system decides you can start a call
     // You can now start a call from within your app
   };
 
-  onAnswerCallAction = (data) => {
+  onAnswerCallAction = async (data) => {
     console.log(platformOS, '[CallKeepService][onAnswerCallAction]', data);
-    // RNCallKeep.rejectCall(data.callUUID);
+    const sessionInfo = this.getSessionInfoByCallUUID(data.callUUID);
+
+    if (!CallService.callSession) {
+      CallService.createDummyCallSession(sessionInfo);
+      await wait();
+    }
+
     CallService.acceptCall({}, true);
   };
 
   onEndCallAction = async (data) => {
     console.log(platformOS, '[CallKeepService][onEndCallAction]', data);
 
-    if (CallService.callSession) {
-      if (CallService.isAccepted) {
-        CallService.stopCall({}, true);
-      } else {
-        CallService.rejectCall({}, true);
-      }
-    } else {
-      // const voipIncomingCallSessions = Settings.get('voipIncomingCallSessions');
+    const sessionInfo = this.getSessionInfoByCallUUID(data.callUUID);
 
-      // if (voipIncomingCallSessions) {
-      //   const sessionInfo = voipIncomingCallSessions[data.callUUID];
-      //   if (sessionInfo) {
-      //     const initiatorId = sessionInfo.initiatorId;
-      //     // most probably this is a call reject, so let's reject it via HTTP API
-      //     ConnectyCube.videochat.callRejectRequest({
-      //       sessionID: callUUID,
-      //       platform: platformOS,
-      //       recipientId: initiatorId,
-      //     }).then(_res => {
-      //       console.log(platformOS, '[CallKeepService][onEndCallAction] [callRejectRequest] done');
-      //     });
-      //   }
-      // }
+    if (!CallService.callSession) {
+      CallService.createDummyCallSession(sessionInfo);
+      AuthService.getUserFromAsyncStorage().then(ConnectyCube.createSession).then(() => {
+        CallService.rejectCall({}, true);
+      });
+
+      return;
+    }
+
+    if (CallService.isAccepted) {
+      CallService.stopCall({}, true);
+    } else {
+      CallService.rejectCall({}, true);
     }
   };
 
@@ -198,6 +200,15 @@ class CallKeepService {
           CallService.acceptCall({}, true);
         }
       }
+    }
+  };
+
+  getSessionInfoByCallUUID = (uuid) => {
+    try {
+      const jsonCallInfo = NativeLocalStorage?.getItem(uuid);
+      return jsonCallInfo ? JSON.parse(jsonCallInfo) : { uuid };
+    } catch (error) {
+      return { uuid };
     }
   };
 }

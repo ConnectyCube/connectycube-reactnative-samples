@@ -15,7 +15,7 @@ const COLORS = [
   'skyblue',
 ];
 
-export default function Avatar({ photo, name, iconSize }) {
+export default function Avatar({ photo = '', name = 'unknown', iconSize = 'medium' }) {
   let styles;
 
   switch (iconSize) {
@@ -121,7 +121,6 @@ const smallIcon = StyleSheet.create({
     borderRadius: 18,
     height: 36,
     width: 36,
-    marginRight: 5,
     justifyContent: 'center',
     alignItems: 'center',
   },

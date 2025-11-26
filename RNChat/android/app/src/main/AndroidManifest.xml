@@ -9,6 +9,7 @@
       android:roundIcon="@mipmap/ic_launcher_round"
       android:allowBackup="false"
       android:theme="@style/SplashTheme"
+      android:usesCleartextTraffic="${usesCleartextTraffic}"
       android:supportsRtl="true">
       <activity
         android:name=".MainActivity"
@@ -27,6 +28,7 @@
         android:name="com.google.firebase.messaging.default_notification_icon"
         android:resource="@drawable/ic_notification" />
       <meta-data
+        tools:replace="android:resource"
         android:name="com.google.firebase.messaging.default_notification_color"
         android:resource="@color/colorAccent" />
     </application>

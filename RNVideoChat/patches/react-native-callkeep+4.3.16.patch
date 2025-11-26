@@ -1,0 +1,34 @@
+diff --git a/node_modules/react-native-callkeep/android/src/main/java/io/wazo/callkeep/RNCallKeepModule.java b/node_modules/react-native-callkeep/android/src/main/java/io/wazo/callkeep/RNCallKeepModule.java
+index 025480a..2722d74 100644
+--- a/node_modules/react-native-callkeep/android/src/main/java/io/wazo/callkeep/RNCallKeepModule.java
++++ b/node_modules/react-native-callkeep/android/src/main/java/io/wazo/callkeep/RNCallKeepModule.java
+@@ -434,10 +434,10 @@ public class RNCallKeepModule extends ReactContextBaseJavaModule implements Life
+         this.hasListeners = false;
+     }
+ 
+-    @ReactMethod
+-    public void displayIncomingCall(String uuid, String number, String callerName) {
+-        this.displayIncomingCall(uuid, number, callerName, false, null);
+-    }
++    // @ReactMethod
++    // public void displayIncomingCall(String uuid, String number, String callerName) {
++    //     this.displayIncomingCall(uuid, number, callerName, false, null);
++    // }
+ 
+     @ReactMethod
+     public void displayIncomingCall(String uuid, String number, String callerName, boolean hasVideo) {
+@@ -483,10 +483,10 @@ public class RNCallKeepModule extends ReactContextBaseJavaModule implements Life
+         conn.onAnswer();
+     }
+ 
+-    @ReactMethod
+-    public void startCall(String uuid, String number, String callerName) {
+-        this.startCall(uuid, number, callerName, false, null);
+-    }
++    // @ReactMethod
++    // public void startCall(String uuid, String number, String callerName) {
++    //     this.startCall(uuid, number, callerName, false, null);
++    // }
+ 
+     @ReactMethod
+     public void startCall(String uuid, String number, String callerName, boolean hasVideo) {

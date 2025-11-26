@@ -8,8 +8,8 @@ import {
 } from 'react-native';
 import { ScreenCapturePickerView } from 'react-native-webrtc';
 import notifee, { AndroidImportance } from '@notifee/react-native';
-import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
-import { CallService } from '../../services';
+import { ScreenShare, ScreenShareOff } from 'lucide-react-native';
+import CallService from '../../services/call-service';
 
 const isAndroid = Platform.OS === 'android';
 const isIOS = Platform.OS === 'ios';
@@ -79,14 +79,12 @@ const ShareScreenButton = ({
     }
   }, [isSharedScreen, startShareScreen, stopShareScreen]);
 
+  const ScreenShareIcon = React.useMemo(() => isSharedScreen ? ScreenShareOff : ScreenShare, [isSharedScreen]);
+
   return visible ? (
     <>
       <TouchableOpacity style={styles.container} onPress={shareScreen}>
-        <MaterialIcon
-          name={isSharedScreen ? 'stop-screen-share' : 'screen-share'}
-          size={32}
-          color="white"
-        />
+        <ScreenShareIcon size={32} color="white" />
       </TouchableOpacity>
       {isIOS && (
         <ScreenCapturePickerView
@@ -109,7 +107,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'purple',
   },
   screenCapturePickerView: {
-    display: 'none',
+    height: 0,
+    width: 0,
   },
 });
 
